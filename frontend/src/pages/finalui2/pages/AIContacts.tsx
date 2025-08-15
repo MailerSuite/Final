@@ -64,6 +64,8 @@ import { deleteLead, validateLead } from '@/api/leads'
 import { uploadLeads } from '@/api/leadBases'
 import axiosInstance from '@/http/axios';
 import { useEffect } from 'react';
+import EmailValidationDetailsDialog, { type EmailValidationDetails } from '@/components/emailValidation/EmailValidationDetailsDialog'
+import BulkPasteUploader from '@/components/Upload/BulkPasteUploader'
 
 interface Contact {
   id: string;
@@ -101,6 +103,9 @@ export const AIContacts: React.FC = () => {
   const [formEmail, setFormEmail] = useState('');
   const [formCompany, setFormCompany] = useState('');
   const [formStatus, setFormStatus] = useState<Contact['status']>('NEW');
+  const [showValidation, setShowValidation] = useState(false)
+  const [validationDetails, setValidationDetails] = useState<EmailValidationDetails | null>(null)
+  const [openUpload, setOpenUpload] = useState(false)
 
   const defaultContacts: Contact[] = [
     {
@@ -253,6 +258,22 @@ export const AIContacts: React.FC = () => {
 
   const fileInputRef = React.useRef<HTMLInputElement>(null)
 
+  const onOpenValidationDetails = (item: Contact) => {
+    setValidationDetails({
+      email: item.email,
+      syntaxCheck: 'OK',
+      domainCheck: 'OK',
+      smtpCheck: 'Pending',
+      disposable: false,
+      acceptAll: false,
+      status: 'Queued',
+      message: 'Validation requested',
+      checkedAt: new Date().toISOString(),
+      source: 'Manual'
+    })
+    setShowValidation(true)
+  }
+
   return (
     <PageShell
       title="Leads"
@@ -289,6 +310,9 @@ export const AIContacts: React.FC = () => {
           }} />
           <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
             <ArrowUpTrayIcon className="w-4 h-4 mr-2" /> Import Leads
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => setOpenUpload(true)}>
+            <ArrowUpTrayIcon className="w-4 h-4 mr-2" /> Upload
           </Button>
           <Button variant="outline" size="sm">
             <ArrowDownTrayIcon className="w-4 h-4 mr-2" /> Export
@@ -532,6 +556,7 @@ export const AIContacts: React.FC = () => {
                                     toast.error?.(e?.message || 'Validation failed')
                                   }
                                 }}>Validate Email</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => onOpenValidationDetails(item)}>View Validation Details</DropdownMenuItem>
                                 <DropdownMenuItem>Edit Tags</DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem className="text-red-600" onClick={async () => {
@@ -706,6 +731,32 @@ export const AIContacts: React.FC = () => {
           </motion.div>
         )}
       </motion.div>
+      <EmailValidationDetailsDialog isOpen={showValidation} onClose={() => setShowValidation(false)} details={validationDetails} />
+      <Sheet open={openUpload} onOpenChange={setOpenUpload}>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Bulk Import Contacts</SheetTitle>
+            <SheetDescription>Paste or upload a file with one email per line.</SheetDescription>
+          </SheetHeader>
+          <div className="mt-4">
+            <BulkPasteUploader
+              onSubmit={async (emails) => {
+                try {
+                  if (!DEFAULT_LEAD_BASE_ID) { toast.error?.('No default lead base configured'); return }
+                  const blob = new Blob([emails.join('\n')], { type: 'text/plain' })
+                  const file = new File([blob], 'contacts.txt', { type: 'text/plain' })
+                  await uploadLeads(DEFAULT_LEAD_BASE_ID, file)
+                  toast.success?.(`Uploaded ${emails.length} contacts`)
+                  setOpenUpload(false)
+                  void fetchContacts()
+                } catch (e: unknown) {
+                  toast.error?.(e?.message || 'Import failed')
+                }
+              }}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
     </PageShell>
   );
 };

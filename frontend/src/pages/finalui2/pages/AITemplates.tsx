@@ -412,6 +412,9 @@ export const AITemplates: React.FC = () => {
               <SparklesIcon className="w-4 h-4 mr-2" /> Variant Generator
               <ProBadge className="ml-2" />
             </Button>
+            <Button variant="outline" onClick={() => (window.location.href = '/template-builder')}>
+              <CodeBracketIcon className="w-4 h-4 mr-2" /> Open Visual Builder
+            </Button>
             <input id="tpl-import" type="file" accept="application/json,.json" className="hidden" onChange={async (e) => {
               try {
                 const file = e.target.files?.[0]
