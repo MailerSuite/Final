@@ -1,0 +1,19 @@
+Generic single-database configuration.
+
+## Usage
+Run migrations with:
+
+```bash
+alembic upgrade head
+```
+
+## Troubleshooting
+
+**If you see** "Can't locate revision identified by '...'" after restoring or changing migrations, you can either:
+
+1. Create a stub migration matching that revision ID (see example in `migrations/versions/2cfa4a2ad8a1_create_missing_revision.py`), or
+2. Stamp the database to the current head with:
+
+   ```bash
+   alembic stamp head
+   ```

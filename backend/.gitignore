@@ -1,0 +1,153 @@
+# ======================
+# Python
+# ======================
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.pyo
+*.egg-info/
+*.egg
+*.log
+*.sqlite3
+*.db
+*.bak
+*.swp
+*.tmp
+*.backup
+*.old
+*.temp
+*~
+
+# Editor files
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env.local
+.env.*.local
+
+# SQL backups
+*.sql
+*.dump
+
+# ======================
+# Pydantic v2 cache
+# ======================
+.pydantic/
+
+# ======================
+# Virtual Environments
+# ======================
+.venv/
+.venv311/
+venv/
+ENV/
+env/
+env.bak/
+
+# ======================
+# IDEs and editors
+# ======================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ======================
+# OS files
+# ======================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ======================
+# Test files / coverage
+# ======================
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+.coverage
+coverage.xml
+.cache/
+nosetests.xml
+test-results.xml
+junit-*.xml
+
+# ======================
+# Migrations
+# ======================
+migrations/__pycache__/
+migrations/versions/__pycache__/
+migrations/versions/*.pyc
+migrations/versions/*.pyo
+
+# ======================
+# Alembic SQLite DB
+# ======================
+alembic.sqlite
+
+# ======================
+# Docker
+# ======================
+
+docker-compose.override.yml
+*.pid
+__docker_volume/
+
+# ======================
+# Node.js (if using frontend)
+# ======================
+node_modules/
+*.tsbuildinfo
+dist/
+build/
+*.lock
+
+# ======================
+# Logs & dumps
+# ======================
+*.log
+logs/
+*.sql
+*.dump
+*.out
+
+# ======================
+# Coverage / profiling
+# ======================
+prof/
+*.prof
+
+# ======================
+# Secrets (never commit these)
+# ======================
+secrets.json
+*.key
+*.pem
+*.crt
+*.pub
+
+# ======================
+# Backup files
+# ======================
+*~
+*.bak
+*.old
+*.orig
+
+# ======================
+# JetBrains IDE shared folders
+# ======================
+.idea/
+
+ip_hello.py
+translate_proxy.session
+
+venv
+.venv311

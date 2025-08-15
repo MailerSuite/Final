@@ -1,0 +1,3 @@
+# Modals
+
+Reusable dialog components.
