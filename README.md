@@ -414,3 +414,20 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 *Built with ❤️ using modern web technologies*
 
 *Last Updated: August 2025 | Version: 2.1.0 | Status: Under Development*
+
+## 🚀 One-command VPS setup (Debian 12)
+
+```bash
+# From the project root on your VPS
+chmod +x scripts/setup-debian12.sh
+./scripts/setup-debian12.sh
+```
+
+- Installs Docker + Compose plugin
+- Builds backend, worker, flower, and frontend images
+- Starts Postgres, Redis, Backend (Uvicorn), Celery worker, Flower, and Nginx (frontend)
+- Access:
+  - Frontend: http://YOUR_VPS_IP/
+  - API: http://YOUR_VPS_IP:8000
+  - Docs: http://YOUR_VPS_IP:8000/docs
+  - Flower: http://YOUR_VPS_IP:5555/flower
