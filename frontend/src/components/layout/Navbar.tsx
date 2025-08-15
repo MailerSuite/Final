@@ -34,6 +34,8 @@ interface NavbarProps {
 
 import { Bot, LifeBuoy } from 'lucide-react'
 
+const hoverScale = { scale: 1.05 }
+
 export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick, onSupportClick, className }) => {
   const [notifications] = React.useState(3) // Mock notification count
 
@@ -246,7 +248,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </FadeInRight>
+        </motion.div>
       </div>
     </header>
   )
