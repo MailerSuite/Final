@@ -109,7 +109,7 @@ class AsyncPerformanceMonitor:
         try:
             # System metrics
             memory = psutil.virtual_memory()
-            cpu_percent = psutil.cpu_percent(interval=1)
+            cpu_percent = psutil.cpu_percent(interval=0.0)
 
             # Application metrics
             metrics = ConcurrencyMetrics(

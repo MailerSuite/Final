@@ -66,7 +66,7 @@ async def get_admin_dashboard(
         
         # Add system metrics
         system_metrics = {
-            'cpu_percent': psutil.cpu_percent(interval=1),
+            'cpu_percent': psutil.cpu_percent(interval=0.0),
             'memory_percent': psutil.virtual_memory().percent,
             'disk_percent': psutil.disk_usage('/').percent,
             'system_load_avg': psutil.getloadavg()[0] if hasattr(psutil, 'getloadavg') else 0.0
@@ -339,7 +339,7 @@ async def get_admin_statistics(
         
         # System health
         system_health = {
-            'cpu_percent': psutil.cpu_percent(interval=1),
+            'cpu_percent': psutil.cpu_percent(interval=0.0),
             'memory_percent': psutil.virtual_memory().percent,
             'disk_percent': psutil.disk_usage('/').percent,
             'uptime_hours': (datetime.utcnow() - datetime.fromtimestamp(psutil.boot_time())).total_seconds() / 3600

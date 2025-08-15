@@ -885,7 +885,7 @@ async def get_monitoring_metrics(
         import platform
         
         # Get real system metrics
-        cpu_percent = psutil.cpu_percent(interval=1)
+        cpu_percent = psutil.cpu_percent(interval=0.0)
         memory = psutil.virtual_memory()
         disk = psutil.disk_usage('/')
         network = psutil.net_io_counters()
@@ -1144,7 +1144,7 @@ async def get_performance_metrics(
         import time as time_module
         
         # Get current system performance
-        cpu_percent = psutil.cpu_percent(interval=1)
+        cpu_percent = psutil.cpu_percent(interval=0.0)
         memory = psutil.virtual_memory()
         disk = psutil.disk_usage('/')
         network = psutil.net_io_counters()
@@ -1556,7 +1556,7 @@ async def get_system_status(
         import platform
         
         # System information
-        cpu_percent = psutil.cpu_percent(interval=1)
+        cpu_percent = psutil.cpu_percent(interval=0.0)
         memory = psutil.virtual_memory()
         disk = psutil.disk_usage('/')
         

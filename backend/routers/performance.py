@@ -73,7 +73,7 @@ async def performance_status(
     import psutil
 
     # Get system metrics
-    cpu_percent = psutil.cpu_percent(interval=0.1)
+    cpu_percent = psutil.cpu_percent(interval=0.0)
     memory = psutil.virtual_memory()
     disk = psutil.disk_usage("/")
 
@@ -126,7 +126,7 @@ async def get_system_check(
         import psutil
 
         return {
-            "cpu_usage": psutil.cpu_percent(),
+            "cpu_usage": psutil.cpu_percent(interval=0.0),
             "memory_usage": psutil.virtual_memory().percent,
             "disk_usage": psutil.disk_usage("/").percent,
             "system_healthy": True,
@@ -286,7 +286,7 @@ async def get_current_metrics(
         import psutil
 
         return PerformanceMetrics(
-            cpu_usage=psutil.cpu_percent(),
+            cpu_usage=psutil.cpu_percent(interval=0.0),
             memory_usage=psutil.virtual_memory().percent,
             response_time=125.0,
             throughput=150.0,
@@ -310,7 +310,7 @@ async def get_live_metrics(
         return LivePerformanceStream(
             timestamp=datetime.utcnow(),
             metrics=PerformanceMetrics(
-                cpu_usage=psutil.cpu_percent(),
+                cpu_usage=psutil.cpu_percent(interval=0.0),
                 memory_usage=psutil.virtual_memory().percent,
                 response_time=125.0,
                 throughput=150.0,

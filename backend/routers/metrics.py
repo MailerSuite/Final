@@ -90,7 +90,7 @@ async def get_system_metrics() -> dict[str, Any]:
     """Get detailed system metrics."""
     try:
         memory = psutil.virtual_memory()
-        cpu_percent = psutil.cpu_percent(interval=1)
+        cpu_percent = psutil.cpu_percent(interval=0.0)
         disk = psutil.disk_usage('/')
         
         return {
@@ -156,7 +156,7 @@ async def get_realtime_metrics() -> dict[str, Any]:
     """Get real-time system metrics."""
     try:
         memory = psutil.virtual_memory()
-        cpu_percent = psutil.cpu_percent(interval=1)
+        cpu_percent = psutil.cpu_percent(interval=0.0)
         
         return {
             "timestamp": datetime.utcnow().isoformat(),
@@ -214,7 +214,7 @@ async def get_admin_overview(
 
         # System overview
         memory = psutil.virtual_memory()
-        cpu_percent = psutil.cpu_percent(interval=1)
+        cpu_percent = psutil.cpu_percent(interval=0.0)
 
         return {
             "timestamp": datetime.utcnow().isoformat(),

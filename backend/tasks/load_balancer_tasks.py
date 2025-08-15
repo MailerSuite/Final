@@ -143,7 +143,7 @@ class LoadBalancer:
 
     def _get_system_load(self) -> dict[str, float]:
         """Get current system resource utilization"""
-        cpu_percent = psutil.cpu_percent(interval=1)
+        cpu_percent = psutil.cpu_percent(interval=0.0)
         memory = psutil.virtual_memory()
 
         return {
