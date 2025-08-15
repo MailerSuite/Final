@@ -49,6 +49,7 @@ export * from './BackgroundEffects';
 export * from './loading-states';
 export * from './language-selector';
 export * from './multi-select';
+export * from './BangText';
 
 // Enhanced Components (curated, present on disk only)
 export { default as AnimatedCard } from './animated-card';

@@ -42,6 +42,7 @@ const MailboxSettingsPage = lazy(() => import('./pages/MailboxSettingsPage'));
 const InboxCheckPage = lazy(() => import('./pages/InboxCheckPage'));
 const PerformanceTestingPage = lazy(() => import('./pages/PerformanceTestingPage'));
 const MailingDashboard = lazy(() => import('./pages/MailingDashboard'));
+const EmailManagementPage = lazy(() => import('./pages/EmailManagementPage'));
 const NavigationHub = lazy(() => import('./pages/NavigationHub'));
 // Deprecated marketing dashboard removed
 const AccountRouter = lazy(() => import('./pages/AccountRouter'));
@@ -68,7 +69,7 @@ const TestPage = lazy(() => import('../TestPage'));
 
 export const FinalUI2: React.FC = () => {
   console.log('🚀 FinalUI2 component rendered, current path:', window.location.pathname);
-  
+
   return (
     <Suspense fallback={<div className="p-10 flex items-center justify-center"><MailLoader icon="paper" size="xl" variant="ring" /></div>}>
       <Routes>
@@ -108,7 +109,7 @@ export const FinalUI2: React.FC = () => {
         <Route path="/settings/*" element={<AISettings />} />
         {/* Account management */}
         <Route path="/account/*" element={<AccountRouter />} />
-        
+
         {/* New UI Flows */}
         <Route path="/integrations" element={<MarketplacePage />} />
         <Route path="/deliverability" element={<DeliverabilityDashboard />} />
@@ -146,6 +147,7 @@ export const FinalUI2: React.FC = () => {
         <Route path="/inbox-check" element={<InboxCheckPage />} />
         <Route path="/performance" element={<PerformanceTestingPage />} />
         <Route path="/mailing-dashboard" element={<MailingDashboard />} />
+        <Route path="/email-management" element={<EmailManagementPage />} />
         <Route path="/template-builder" element={<TemplateBuilderEnhanced />} />
         {/* Legacy dashboard removed */}
         {/* Campaign parity */}
