@@ -3,16 +3,16 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
-# Install dependencies first (no lockfile present)
-COPY package.json package-lock.json* ./
+# Install dependencies first (safe glob for lockfile)
+COPY package*.json ./
 RUN npm install
 
 # Copy source
 COPY . .
 
 # Configure Vite env for build
-ARG VITE_API_BASE=/api
-ARG VITE_WS_URL=/ws
+ARG VITE_API_BASE=/api/v1
+ARG VITE_WS_URL=/api/v1/ws
 ENV VITE_API_BASE=$VITE_API_BASE
 ENV VITE_WS_URL=$VITE_WS_URL
 

@@ -84,8 +84,8 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_API_BASE: /api
-        VITE_WS_URL: /ws
+        VITE_API_BASE: /api/v1
+        VITE_WS_URL: /api/v1/ws
     depends_on:
       - backend
     ports:
