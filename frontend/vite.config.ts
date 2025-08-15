@@ -131,7 +131,7 @@ export default defineConfig(({ mode }) => ({
     },
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'http://localhost:8001',
         changeOrigin: true,
         ws: true,
         configure: (proxy) => {
@@ -146,7 +146,7 @@ export default defineConfig(({ mode }) => ({
       },
       // Proxy health endpoints used by the dashboard to avoid CORS in dev
       '/health': {
-        target: 'http://localhost:8000',
+        target: 'http://localhost:8001',
         changeOrigin: true,
         configure: (proxy) => {
           proxy.on('error', (err: any, _req: any, res: any) => {

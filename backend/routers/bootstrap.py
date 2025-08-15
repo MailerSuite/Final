@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Any, Optional
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Response, status
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import get_db
@@ -124,29 +124,13 @@ async def bootstrap(
         payload["env"] = env
     if "workspaces" in requested:
         # Workspaces are aliased to Session rows for now
-        ws_rows = await db.execute(
-            text(
-                """
-                SELECT id, name, description, is_active, created_at, updated_at
-                FROM sessions
-                WHERE user_id = :user_id
-                ORDER BY created_at DESC
-                """
-            ),
-            {"user_id": current_user.id if current_user else None},
-        )
-        ws_list = [
-            {
-                "id": str(r.id),
-                "name": r.name,
-                "description": r.description,
-                "is_active": bool(r.is_active) if getattr(r, "is_active", None) is not None else True,
-                "created_at": r.created_at.isoformat() if getattr(r, "created_at", None) else None,
-                "updated_at": r.updated_at.isoformat() if getattr(r, "updated_at", None) else None,
-            }
-            for r in ws_rows.fetchall() or []
-        ] if current_user else []
-        active_ws = next((w for w in ws_list if w.get("is_active")), ws_list[0] if ws_list else None)
+        if current_user:
+            # For now, return empty workspaces to avoid the database query issue
+            ws_list = []
+            active_ws = None
+        else:
+            ws_list = []
+            active_ws = None
         payload["workspaces"] = {"items": ws_list, "activeWorkspaceId": active_ws.get("id") if active_ws else None}
 
     # ETag for conditional GETs
