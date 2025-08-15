@@ -5,6 +5,7 @@ Application settings and configuration.
 import os
 
 from pydantic_settings import BaseSettings
+from pydantic import field_validator
 
 
 class Settings(BaseSettings):
@@ -30,6 +31,9 @@ class Settings(BaseSettings):
         if self.DATABASE_URL.startswith("postgresql+asyncpg"):
             # Convert async PostgreSQL URL to sync
             return self.DATABASE_URL.replace("+asyncpg", "")
+        if self.DATABASE_URL.startswith("sqlite+aiosqlite"):
+            # Convert async SQLite URL to sync for Alembic/CLI tools
+            return self.DATABASE_URL.replace("+aiosqlite", "")
         else:
             return self.DATABASE_URL
 
@@ -86,6 +90,28 @@ class Settings(BaseSettings):
         "https://app.sgpt.dev",
     ]
     ALLOWED_HOSTS: list[str] | None = None
+
+    # Coerce ALLOWED_ORIGINS from comma-separated string or JSON string to list
+    @field_validator("ALLOWED_ORIGINS", mode="before")
+    @classmethod
+    def _coerce_allowed_origins(cls, v):
+        if v is None or isinstance(v, list):
+            return v
+        if isinstance(v, str):
+            s = v.strip()
+            if not s:
+                return None
+            if s.startswith("["):
+                try:
+                    import json
+                    parsed = json.loads(s)
+                    if isinstance(parsed, list):
+                        return [str(item).strip() for item in parsed if str(item).strip()]
+                except Exception:
+                    # Fall back to comma split
+                    pass
+            return [item.strip() for item in s.split(",") if item.strip()]
+        return v
 
     # Admin settings
     ADMIN_ENABLED: bool = os.getenv("ADMIN_ENABLED", "True").lower() == "true"
