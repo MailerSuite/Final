@@ -52,7 +52,7 @@ export class WebSocketPool {
                     title: 'Connection delayed',
                     description: `Connections for '${type}' are temporarily paused. Retrying in ${Math.ceil(wait / 1000)}s.`
                 })
-            } catch (_) { }
+            } catch { }
             throw new Error(`Backoff active for type: ${type}. retry in ${wait}ms`)
         }
         // enforce per-type and total limits
@@ -63,7 +63,7 @@ export class WebSocketPool {
                     title: 'Connection limit reached',
                     description: `Too many active '${type}' connections. Please close other sessions or try again later.`
                 })
-            } catch (_) { }
+            } catch { }
             throw new Error(`Connection limit reached for type: ${type}`)
         }
         if (this.connections.size >= this.maxTotal) {
@@ -73,7 +73,7 @@ export class WebSocketPool {
                     title: 'Connection limit reached',
                     description: 'The application has reached the maximum number of concurrent live connections. Please try again later.'
                 })
-            } catch (_) { }
+            } catch { }
             throw new Error('Total connection limit reached')
         }
 
@@ -94,7 +94,7 @@ export class WebSocketPool {
         const onOpen = (ev: Event) => {
             this.typeCounts.set(type, (this.typeCounts.get(type) || 0) + 1)
             // successful connection - reset any backoff for this type
-            try { this.errorLimiter.reset(type) } catch (_) { }
+            try { this.errorLimiter.reset(type) } catch { }
             // start heartbeat
             rec.heartbeatTimer = window.setInterval(() => {
                 if (ws.readyState === WebSocket.OPEN) {
@@ -122,13 +122,13 @@ export class WebSocketPool {
                 if (code !== 1000) {
                     this.errorLimiter.recordError(type)
                 }
-            } catch (_) { }
+            } catch { }
             handlers.close.forEach(h => h(ev))
         }
 
         const onError = (ev: Event) => {
             // record error occurrences
-            try { this.errorLimiter.recordError(type) } catch (_) { }
+            try { this.errorLimiter.recordError(type) } catch { }
             handlers.error.forEach(h => h(ev))
         }
 
@@ -161,15 +161,17 @@ export class WebSocketPool {
         // onClose handler will cleanup
     }
 
-    on(id: string, event: 'message' | 'open' | 'close' | 'error', handler: (ev: unknown) => void) {
+    on(id: string, event: 'message' | 'open' | 'close' | 'error', handler: (ev: Event | MessageEvent | CloseEvent) => void) {
         const rec = this.connections.get(id)
         if (!rec) return
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rec.handlers[event].add(handler as any)
     }
 
-    off(id: string, event: 'message' | 'open' | 'close' | 'error', handler: (ev: unknown) => void) {
+    off(id: string, event: 'message' | 'open' | 'close' | 'error', handler: (ev: Event | MessageEvent | CloseEvent) => void) {
         const rec = this.connections.get(id)
         if (!rec) return
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rec.handlers[event].delete(handler as any)
     }
 

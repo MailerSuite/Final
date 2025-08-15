@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Auto-sync Git repository script
-# This script automatically syncs your local repository with the remote
+# Auto-sync script for the Final repository
+# This script monitors file changes and automatically syncs them to GitHub
 
 set -e
 
@@ -12,78 +12,82 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Log function
-log() {
-    echo -e "${BLUE}[$(date '+%Y-%m-%d %H:%M:%S')]${NC} $1"
-}
+# Repository path
+REPO_PATH="/home/pc/Desktop/Final"
+cd "$REPO_PATH"
 
-error() {
-    echo -e "${RED}[ERROR]${NC} $1"
-}
+echo -e "${BLUE}🚀 Starting auto-sync for Final repository...${NC}"
+echo -e "${BLUE}📁 Repository: $REPO_PATH${NC}"
+echo -e "${BLUE}🔗 Remote: $(git remote get-url origin | sed 's/.*@github\.com\//github.com\//')${NC}"
+echo ""
 
-success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
-}
-
-warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
-}
-
-# Change to the repository directory
-cd "$(dirname "$0")/.." || {
-    error "Failed to change to repository directory"
-    exit 1
-}
-
-log "Starting automatic Git synchronization..."
-
-# Check if we're in a git repository
-if ! git rev-parse --git-dir > /dev/null 2>&1; then
-    error "Not in a git repository"
-    exit 1
-fi
-
-# Get current branch
-CURRENT_BRANCH=$(git branch --show-current)
-log "Current branch: $CURRENT_BRANCH"
-
-# Check if there are any uncommitted changes
-if git diff-index --quiet HEAD --; then
-    log "No uncommitted changes detected"
-else
-    log "Uncommitted changes detected, staging all files..."
-    git add -A
+# Function to sync changes
+sync_changes() {
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
     
-    # Create commit message with timestamp
-    COMMIT_MSG="Auto-sync: $(date '+%Y-%m-%d %H:%M:%S') - Automated synchronization"
-    
-    log "Committing changes..."
-    if git commit -m "$COMMIT_MSG"; then
-        success "Changes committed successfully"
+    # Check if there are any changes
+    if [[ -n $(git status --porcelain) ]]; then
+        echo -e "${YELLOW}📝 Changes detected at $timestamp${NC}"
+        
+        # Add all changes
+        git add .
+        
+        # Commit with timestamp
+        git commit -m "Auto-sync: $timestamp - $(git status --porcelain | head -1 | cut -c4- | head -c50)..."
+        
+        # Push to remote
+        echo -e "${BLUE}⬆️  Pushing changes...${NC}"
+        if git push origin main; then
+            echo -e "${GREEN}✅ Successfully synced at $timestamp${NC}"
+        else
+            echo -e "${RED}❌ Failed to push changes${NC}"
+            return 1
+        fi
     else
-        error "Failed to commit changes"
-        exit 1
+        echo -e "${GREEN}✨ No changes to sync at $timestamp${NC}"
     fi
-fi
+}
 
-# Pull latest changes from remote
-log "Pulling latest changes from remote..."
-if git pull origin "$CURRENT_BRANCH"; then
-    success "Successfully pulled latest changes"
-else
-    warning "Failed to pull changes (this might be normal if no new changes)"
-fi
+# Function to check git status
+check_status() {
+    echo -e "${BLUE}📊 Current git status:${NC}"
+    git status --short
+    echo ""
+}
 
-# Push changes to remote
-log "Pushing changes to remote..."
-if git push origin "$CURRENT_BRANCH"; then
-    success "Successfully pushed changes to remote"
-else
-    warning "Failed to push changes (this might be normal if no new changes)"
-fi
+# Function to show recent commits
+show_recent_commits() {
+    echo -e "${BLUE}📜 Recent commits:${NC}"
+    git log --oneline -5
+    echo ""
+}
 
-# Show final status
-log "Final repository status:"
-git status --short
+# Main sync loop
+main() {
+    echo -e "${GREEN}🔄 Auto-sync is running... Press Ctrl+C to stop${NC}"
+    echo ""
+    
+    # Initial status check
+    check_status
+    show_recent_commits
+    
+    # Continuous monitoring
+    while true; do
+        # Sync any pending changes
+        sync_changes
+        
+        # Wait for 30 seconds before next check
+        sleep 30
+        
+        # Show status every 5 minutes
+        if (( $(date +%s) % 300 == 0 )); then
+            check_status
+        fi
+    done
+}
 
-success "Automatic Git synchronization completed successfully!"
+# Handle script interruption
+trap 'echo -e "\n${YELLOW}🛑 Auto-sync stopped by user${NC}"; exit 0' INT TERM
+
+# Start the main loop
+main
