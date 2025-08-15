@@ -61,6 +61,7 @@ const LeadBasesPage = lazy(() => import('./pages/LeadBasesPage'));
 const SegmentBuilderPage = lazy(() => import('./pages/SegmentBuilderPage'));
 const ComplianceManagementPage = lazy(() => import('./pages/ComplianceManagementPage'));
 const AdvancedReportingPage = lazy(() => import('./pages/AdvancedReportingPage'));
+const BounceManagementPage = lazy(() => import('./pages/BounceManagementPage'));
 const SmtpPoolPage = lazy(() => import('../pools/SmtpPoolPage'));
 const ProxyPoolPage = lazy(() => import('../pools/ProxyPoolPage'));
 const SpamTutorPage = lazy(() => import('../ai-tutor/SpamTutorPage'));
@@ -96,6 +97,7 @@ export const FinalUI2: React.FC = () => {
         <Route path="/segments" element={<SegmentBuilderPage />} />
         <Route path="/compliance" element={<ComplianceManagementPage />} />
         <Route path="/reporting" element={<AdvancedReportingPage />} />
+        <Route path="/bounce-management" element={<BounceManagementPage />} />
         <Route path="/analytics" element={<AnalyticsDashboard />} />
         <Route path="/analytics-dashboard" element={<AIAnalyticsDashboard />} />
         <Route path="/content-generator" element={<AIContentGenerator />} />

@@ -7,7 +7,11 @@ import { SparkleEffect } from '@/components/ui/sparkle-effect'
 import { Icon } from '@/components/ui/icon'
 import { AnimatedLogo } from '@/components/ui/animated-logo'
 import { motion } from 'framer-motion'
+<<<<<<< Current (Your changes)
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+=======
+import { useAuthStore } from '@/store/auth'
+>>>>>>> Incoming (Background Agent changes)
 
 interface SidebarProps {
   collapsed?: boolean
@@ -15,7 +19,7 @@ interface SidebarProps {
   className?: string
 }
 
-const navigation = [
+const baseNavigation = [
   {
     title: 'Main',
     items: [
@@ -43,11 +47,14 @@ const navigation = [
     title: 'Tools',
     items: [
       { to: '/smtp-checker', label: 'SMTP Checker', icon: 'Mail' },
+      { to: '/smtp/checker?tab=bulk', label: 'Bulk SMTP Checker', icon: 'MailCheck' },
       { to: '/smtp-pool', label: 'SMTP Pool', icon: 'Server', badge: 'HOT' },
       { to: '/imap-inbox', label: 'IMAP Inbox', icon: 'Inbox' },
+      { to: '/imap/checker?tab=host-config', label: 'IMAP Checker', icon: 'Inbox' },
       { to: '/live-console', label: 'Live Console', icon: 'Terminal' },
       { to: '/blacklist-status', label: 'Blacklist', icon: 'Shield' },
       { to: '/proxies', label: 'Proxies', icon: 'Server' },
+      { to: '/proxies/checker', label: 'Proxy Checker', icon: 'ShieldCheck' },
       { to: '/proxy-pool', label: 'Proxy Pool', icon: 'Cloud', badge: 'HOT' },
       { to: '/domains', label: 'Domains', icon: 'Globe' },
       { to: '/performance', label: 'Performance', icon: 'Zap' },
@@ -71,9 +78,41 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const location = useLocation()
   const [shouldAnimate, setShouldAnimate] = useState(true)
   const [animationKey, setAnimationKey] = useState(0)
+  const { userData } = useAuthStore()
+  const isAdmin = userData?.is_admin === true
+
+  const sections = React.useMemo(() => {
+    const sectionsList = [...baseNavigation]
+
+    // Account section (always visible)
+    sectionsList.push({
+      title: 'Account',
+      items: [
+        { to: '/account/profile', label: 'Profile', icon: 'User' },
+        { to: '/account/subscription', label: 'Subscription', icon: 'CreditCard' },
+        { to: '/account/billing', label: 'Billing', icon: 'FileText' },
+      ]
+    })
+
+    // Admin section (admins only; shown in dev for easy access)
+    if (isAdmin || import.meta.env.DEV) {
+      sectionsList.push({
+        title: 'Admin',
+        items: [
+          { to: '/admin', label: 'Admin Dashboard', icon: 'Shield' },
+          { to: '/admin/users', label: 'Users', icon: 'Users' },
+          { to: '/admin/analytics', label: 'Analytics', icon: 'BarChart3' },
+          { to: '/admin/settings', label: 'Settings', icon: 'Settings' },
+        ]
+      })
+    }
+
+    return sectionsList
+  }, [isAdmin])
 
   const isActive = (path: string) => {
-    return location.pathname === path || location.pathname.startsWith(path + '/')
+    const destPath = (path || '').split('?')[0]
+    return location.pathname === destPath || location.pathname.startsWith(destPath + '/')
   }
 
   return (
@@ -89,9 +128,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="flex items-center justify-between p-4 border-b border-sidebar-border relative z-10">
         {!collapsed ? (
           <div className="flex items-center justify-between w-full">
-            <AnimatedLogo 
-              size="md" 
-              showText={true} 
+            <AnimatedLogo
+              size="md"
+              showText={true}
               collapsed={false}
             />
             {onToggle && (
@@ -107,9 +146,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         ) : (
           <div className="flex items-center justify-center w-full">
-            <AnimatedLogo 
-              size="sm" 
-              showText={false} 
+            <AnimatedLogo
+              size="sm"
+              showText={false}
               collapsed={true}
             />
           </div>
@@ -119,7 +158,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Navigation */}
       <ScrollArea className="flex-1 relative z-10">
         <div className="px-3 py-4 space-y-6">
-          {navigation.map((section) => (
+          {sections.map((section) => (
             <div key={section.title}>
               {!collapsed && (
                 <h2 className="px-3 mb-2 text-xs font-semibold tracking-wider text-sidebar-foreground/60 uppercase">
@@ -226,12 +265,35 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     "flex-shrink-0",
                     active ? "text-sidebar-primary" : "text-sidebar-foreground/70"
                   )}
+<<<<<<< Current (Your changes)
                   ariaLabel={item.label}
                 />
                 {!collapsed && (
                   <span className="ml-3">{item.label}</span>
                 )}
               </Link>
+=======
+                  data-active={active ? 'true' : undefined}
+                  aria-current={active ? 'page' : undefined}
+                >
+                  <Icon
+                    name={item.icon as any}
+                    size="base"
+                    className={cn(
+                      "flex-shrink-0 transition-colors",
+                      active ? "text-accent" : "text-tertiary group-hover:text-primary",
+                      !collapsed && "mr-3"
+                    )}
+                    ariaLabel={item.label}
+                  />
+                  {!collapsed && (
+                    <span className="flex-1 text-sm font-medium">
+                      {item.label}
+                    </span>
+                  )}
+                </Link>
+              </div>
+>>>>>>> Incoming (Background Agent changes)
             )
           })}
         </nav>

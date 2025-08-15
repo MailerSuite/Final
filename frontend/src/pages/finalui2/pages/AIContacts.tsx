@@ -64,6 +64,8 @@ import { deleteLead, validateLead } from '@/api/leads'
 import { uploadLeads } from '@/api/leadBases'
 import axiosInstance from '@/http/axios';
 import { useEffect } from 'react';
+import EmailValidationDetailsDialog, { type EmailValidationDetails } from '@/components/emailValidation/EmailValidationDetailsDialog'
+import BulkPasteUploader from '@/components/Upload/BulkPasteUploader'
 
 interface Contact {
   id: string;
@@ -101,6 +103,9 @@ export const AIContacts: React.FC = () => {
   const [formEmail, setFormEmail] = useState('');
   const [formCompany, setFormCompany] = useState('');
   const [formStatus, setFormStatus] = useState<Contact['status']>('NEW');
+  const [showValidation, setShowValidation] = useState(false)
+  const [validationDetails, setValidationDetails] = useState<EmailValidationDetails | null>(null)
+  const [openUpload, setOpenUpload] = useState(false)
 
   const defaultContacts: Contact[] = [
     {
@@ -253,6 +258,22 @@ export const AIContacts: React.FC = () => {
 
   const fileInputRef = React.useRef<HTMLInputElement>(null)
 
+  const onOpenValidationDetails = (item: Contact) => {
+    setValidationDetails({
+      email: item.email,
+      syntaxCheck: 'OK',
+      domainCheck: 'OK',
+      smtpCheck: 'Pending',
+      disposable: false,
+      acceptAll: false,
+      status: 'Queued',
+      message: 'Validation requested',
+      checkedAt: new Date().toISOString(),
+      source: 'Manual'
+    })
+    setShowValidation(true)
+  }
+
   return (
     <PageShell
       title="Leads"
@@ -290,6 +311,9 @@ export const AIContacts: React.FC = () => {
           <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
             <ArrowUpTrayIcon className="w-4 h-4 mr-2" /> Import Leads
           </Button>
+          <Button variant="outline" size="sm" onClick={() => setOpenUpload(true)}>
+            <ArrowUpTrayIcon className="w-4 h-4 mr-2" /> Upload
+          </Button>
           <Button variant="outline" size="sm">
             <ArrowDownTrayIcon className="w-4 h-4 mr-2" /> Export
           </Button>
@@ -310,15 +334,15 @@ export const AIContacts: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <Label htmlFor="name">Name</Label>
-                    <Input id="name" placeholder="Jane Doe" value={formName} onChange={(e)=>setFormName(e.target.value)} />
+                    <Input id="name" placeholder="Jane Doe" value={formName} onChange={(e) => setFormName(e.target.value)} />
                   </div>
                   <div>
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" placeholder="jane@example.com" type="email" value={formEmail} onChange={(e)=>setFormEmail(e.target.value)} />
+                    <Input id="email" placeholder="jane@example.com" type="email" value={formEmail} onChange={(e) => setFormEmail(e.target.value)} />
                   </div>
                   <div>
                     <Label htmlFor="company">Company</Label>
-                    <Input id="company" placeholder="Acme Inc." value={formCompany} onChange={(e)=>setFormCompany(e.target.value)} />
+                    <Input id="company" placeholder="Acme Inc." value={formCompany} onChange={(e) => setFormCompany(e.target.value)} />
                   </div>
                   <div>
                     <Label htmlFor="country">Country</Label>
@@ -326,7 +350,7 @@ export const AIContacts: React.FC = () => {
                   </div>
                   <div>
                     <Label htmlFor="status">Status</Label>
-                    <Select value={formStatus} onValueChange={(v)=>setFormStatus(v as Contact['status'])}>
+                    <Select value={formStatus} onValueChange={(v) => setFormStatus(v as Contact['status'])}>
                       <SelectTrigger id="status"><SelectValue placeholder="Select status" /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="NEW">NEW</SelectItem>
@@ -399,7 +423,7 @@ export const AIContacts: React.FC = () => {
                         {segment.count.toLocaleString()}
                       </p>
                     </div>
-                      <div className="w-8 h-8 rounded-full border border-border/60 flex items-center justify-center text-muted-foreground/60">{idx+1}</div>
+                    <div className="w-8 h-8 rounded-full border border-border/60 flex items-center justify-center text-muted-foreground/60">{idx + 1}</div>
                   </div>
                 </CardContent>
               </Card>
@@ -409,7 +433,7 @@ export const AIContacts: React.FC = () => {
 
         {/* Main Content */}
         <Tabs defaultValue="all" className="space-y-4">
-        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div className="flex items-center justify-between flex-wrap gap-3">
             <TabsList>
               <TabsTrigger value="all">All Leads</TabsTrigger>
               <TabsTrigger value="segments">Segments</TabsTrigger>
@@ -445,7 +469,7 @@ export const AIContacts: React.FC = () => {
               </Button>
             </div>
             <div className="flex gap-2 flex-wrap">
-              {['VIP','Enterprise','Startup'].map(tag => (
+              {['VIP', 'Enterprise', 'Startup'].map(tag => (
                 <Badge
                   key={tag}
                   variant={filterTag === tag ? 'default' : 'outline'}
@@ -473,80 +497,99 @@ export const AIContacts: React.FC = () => {
                       rowHeight={48}
                       headerClassName="sticky top-0 z-10"
                       columns={[
-                        { key: 'select', header: '', width: 48, render: (item: Contact) => (
-                          <Checkbox
-                            checked={selectedContacts.includes(item.id)}
-                            onCheckedChange={() => handleSelectContact(item.id)}
-                          />
-                        )},
-                        { key: 'contact', header: 'Contact', width: 260, render: (item: Contact) => (
-                          <div>
-                            <p className="font-medium">{item.name}</p>
-                            <p className="text-sm text-muted-foreground">{item.email}</p>
-                          </div>
-                        )},
-                        { key: 'company', header: 'Company', width: 220, render: (item: Contact) => (
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm">{item.company}</span>
-                            {item.country && (
-                              <Badge variant="outline" className="text-[10px] uppercase">{item.country}</Badge>
-                            )}
-                          </div>
-                        )},
-                        { key: 'status', header: 'Status', width: 120, render: (item: Contact) => (
-                          <Badge className={getStatusColor(item.status)}>{item.status}</Badge>
-                        )},
-                        { key: 'count', header: 'Count', width: 80, render: (item: Contact) => (
-                          <span className="font-medium">{item.count ?? 0}</span>
-                        )},
-                        { key: 'tags', header: 'Tags', width: 220, render: (item: Contact) => (
-                          <div className="flex gap-1 flex-wrap">
-                            {item.tags.map(tag => (
-                              <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
-                            ))}
-                          </div>
-                        )},
-                        { key: 'lastUsed', header: 'Last used', width: 160, render: (item: Contact) => (
-                          <span className="text-sm text-muted-foreground">{item.lastUsed || '—'}</span>
-                        )},
-                        { key: 'eng', header: 'Engagement', width: 180, render: (item: Contact) => (
-                          <div className="text-sm">
-                            <div className="flex items-center gap-2"><EnvelopeIcon className="w-3 h-3" /><span>{item.opens} opens</span></div>
-                            <div className="flex items-center gap-2"><ChartBarIcon className="w-3 h-3" /><span>{item.clicks} clicks</span></div>
-                          </div>
-                        )},
-                        { key: 'actions', header: 'Actions', width: 100, render: (item: Contact) => (
-                          <div className="text-right">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm" aria-label="Contact actions" title="Contact actions">•••</Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem onClick={() => { setEditing(item); setFormName(item.name); setFormEmail(item.email); setFormCompany(item.company || ''); setFormStatus(item.status); setOpenEditor(true); }}>Edit</DropdownMenuItem>
-                                <DropdownMenuItem onClick={async () => {
-                                  try {
-                                    await validateLead(item.id)
-                                    toast.success?.('Validation requested')
-                                  } catch (e: unknown) {
-                                    toast.error?.(e?.message || 'Validation failed')
-                                  }
-                                }}>Validate Email</DropdownMenuItem>
-                                <DropdownMenuItem>Edit Tags</DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem className="text-red-600" onClick={async () => {
-                                  try {
-                                    await deleteLead(item.id)
-                                    toast.success?.('Lead removed')
-                                    void fetchContacts()
-                                  } catch (e: unknown) {
-                                    toast.error?.(e?.message || 'Failed to remove lead')
-                                  }
-                                }}>Remove</DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        )},
+                        {
+                          key: 'select', header: '', width: 48, render: (item: Contact) => (
+                            <Checkbox
+                              checked={selectedContacts.includes(item.id)}
+                              onCheckedChange={() => handleSelectContact(item.id)}
+                            />
+                          )
+                        },
+                        {
+                          key: 'contact', header: 'Contact', width: 260, render: (item: Contact) => (
+                            <div>
+                              <p className="font-medium">{item.name}</p>
+                              <p className="text-sm text-muted-foreground">{item.email}</p>
+                            </div>
+                          )
+                        },
+                        {
+                          key: 'company', header: 'Company', width: 220, render: (item: Contact) => (
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm">{item.company}</span>
+                              {item.country && (
+                                <Badge variant="outline" className="text-[10px] uppercase">{item.country}</Badge>
+                              )}
+                            </div>
+                          )
+                        },
+                        {
+                          key: 'status', header: 'Status', width: 120, render: (item: Contact) => (
+                            <Badge className={getStatusColor(item.status)}>{item.status}</Badge>
+                          )
+                        },
+                        {
+                          key: 'count', header: 'Count', width: 80, render: (item: Contact) => (
+                            <span className="font-medium">{item.count ?? 0}</span>
+                          )
+                        },
+                        {
+                          key: 'tags', header: 'Tags', width: 220, render: (item: Contact) => (
+                            <div className="flex gap-1 flex-wrap">
+                              {item.tags.map(tag => (
+                                <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
+                              ))}
+                            </div>
+                          )
+                        },
+                        {
+                          key: 'lastUsed', header: 'Last used', width: 160, render: (item: Contact) => (
+                            <span className="text-sm text-muted-foreground">{item.lastUsed || '—'}</span>
+                          )
+                        },
+                        {
+                          key: 'eng', header: 'Engagement', width: 180, render: (item: Contact) => (
+                            <div className="text-sm">
+                              <div className="flex items-center gap-2"><EnvelopeIcon className="w-3 h-3" /><span>{item.opens} opens</span></div>
+                              <div className="flex items-center gap-2"><ChartBarIcon className="w-3 h-3" /><span>{item.clicks} clicks</span></div>
+                            </div>
+                          )
+                        },
+                        {
+                          key: 'actions', header: 'Actions', width: 100, render: (item: Contact) => (
+                            <div className="text-right">
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="sm" aria-label="Contact actions" title="Contact actions">•••</Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                  <DropdownMenuItem onClick={() => { setEditing(item); setFormName(item.name); setFormEmail(item.email); setFormCompany(item.company || ''); setFormStatus(item.status); setOpenEditor(true); }}>Edit</DropdownMenuItem>
+                                  <DropdownMenuItem onClick={async () => {
+                                    try {
+                                      await validateLead(item.id)
+                                      toast.success?.('Validation requested')
+                                    } catch (e: unknown) {
+                                      toast.error?.(e?.message || 'Validation failed')
+                                    }
+                                  }}>Validate Email</DropdownMenuItem>
+                                  <DropdownMenuItem onClick={() => onOpenValidationDetails(item)}>View Validation Details</DropdownMenuItem>
+                                  <DropdownMenuItem>Edit Tags</DropdownMenuItem>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem className="text-red-600" onClick={async () => {
+                                    try {
+                                      await deleteLead(item.id)
+                                      toast.success?.('Lead removed')
+                                      void fetchContacts()
+                                    } catch (e: unknown) {
+                                      toast.error?.(e?.message || 'Failed to remove lead')
+                                    }
+                                  }}>Remove</DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
+                          )
+                        },
                       ]}
                       getRowKey={(item: Contact) => item.id}
                     />
@@ -706,6 +749,32 @@ export const AIContacts: React.FC = () => {
           </motion.div>
         )}
       </motion.div>
+      <EmailValidationDetailsDialog isOpen={showValidation} onClose={() => setShowValidation(false)} details={validationDetails} />
+      <Sheet open={openUpload} onOpenChange={setOpenUpload}>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Bulk Import Contacts</SheetTitle>
+            <SheetDescription>Paste or upload a file with one email per line.</SheetDescription>
+          </SheetHeader>
+          <div className="mt-4">
+            <BulkPasteUploader
+              onSubmit={async (emails) => {
+                try {
+                  if (!DEFAULT_LEAD_BASE_ID) { toast.error?.('No default lead base configured'); return }
+                  const blob = new Blob([emails.join('\n')], { type: 'text/plain' })
+                  const file = new File([blob], 'contacts.txt', { type: 'text/plain' })
+                  await uploadLeads(DEFAULT_LEAD_BASE_ID, file)
+                  toast.success?.(`Uploaded ${emails.length} contacts`)
+                  setOpenUpload(false)
+                  void fetchContacts()
+                } catch (e: unknown) {
+                  toast.error?.(e?.message || 'Import failed')
+                }
+              }}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
     </PageShell>
   );
 };

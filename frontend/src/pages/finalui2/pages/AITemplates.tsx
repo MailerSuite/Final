@@ -265,7 +265,7 @@ export const AITemplates: React.FC = () => {
     }
 
     const content = editor.htmlContent || editor.textContent;
-    
+
     // Validate content first
     if (!validatePlaceholders(content)) {
       setValidationError('Invalid placeholder syntax detected');
@@ -411,6 +411,9 @@ export const AITemplates: React.FC = () => {
             <Button variant="outline" onClick={() => setVariantPanelOpen(true)}>
               <SparklesIcon className="w-4 h-4 mr-2" /> Variant Generator
               <ProBadge className="ml-2" />
+            </Button>
+            <Button variant="outline" onClick={() => (window.location.href = '/template-builder')}>
+              <CodeBracketIcon className="w-4 h-4 mr-2" /> Open Visual Builder
             </Button>
             <input id="tpl-import" type="file" accept="application/json,.json" className="hidden" onChange={async (e) => {
               try {
@@ -567,10 +570,10 @@ export const AITemplates: React.FC = () => {
                   <div className="flex flex-wrap items-center gap-4">
                     <div className="relative flex-1 min-w-64">
                       <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                      <Input 
-                        placeholder="Search templates..." 
-                        value={query} 
-                        onChange={(e) => setQuery(e.target.value)} 
+                      <Input
+                        placeholder="Search templates..."
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -636,7 +639,7 @@ export const AITemplates: React.FC = () => {
                         <TableRow key={template.id}>
                           <TableCell>
                             <div className="flex items-center gap-3">
-                              <div 
+                              <div
                                 className="w-16 h-10 rounded border border-border bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center"
                                 style={template.thumbnail.startsWith('gradient:') ? {
                                   background: template.thumbnail.replace('gradient:', '')
@@ -749,7 +752,7 @@ export const AITemplates: React.FC = () => {
                     <Label>Upload attachments</Label>
                     <Input type="file" multiple onChange={(e) => {
                       const files = Array.from(e.target.files || [])
-                      ;(window as any)._tplFiles = files
+                        ; (window as any)._tplFiles = files
                       toast.success?.(`${files.length} file(s) selected`)
                     }} />
                     <Button variant="outline" onClick={async () => {
@@ -772,13 +775,13 @@ export const AITemplates: React.FC = () => {
                       <Input
                         id="template-name"
                         value={editor.name}
-                        onChange={(e) => setEditor(prev => ({...prev, name: e.target.value}))}
+                        onChange={(e) => setEditor(prev => ({ ...prev, name: e.target.value }))}
                         placeholder="Enter template name"
                       />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="template-category">Category</Label>
-                      <Select value={editor.category} onValueChange={(value) => setEditor(prev => ({...prev, category: value as TemplateMeta['category']}))}>
+                      <Select value={editor.category} onValueChange={(value) => setEditor(prev => ({ ...prev, category: value as TemplateMeta['category'] }))}>
                         <SelectTrigger id="template-category">
                           <SelectValue />
                         </SelectTrigger>
@@ -804,7 +807,7 @@ export const AITemplates: React.FC = () => {
                       <Input
                         id="template-subject"
                         value={editor.subject}
-                        onChange={(e) => setEditor(prev => ({...prev, subject: e.target.value}))}
+                        onChange={(e) => setEditor(prev => ({ ...prev, subject: e.target.value }))}
                         placeholder="Enter email subject"
                         className="flex-1"
                       />
@@ -870,7 +873,7 @@ export const AITemplates: React.FC = () => {
                       <Textarea
                         id="html-content"
                         value={editor.htmlContent}
-                        onChange={(e) => setEditor(prev => ({...prev, htmlContent: e.target.value}))}
+                        onChange={(e) => setEditor(prev => ({ ...prev, htmlContent: e.target.value }))}
                         placeholder="Enter HTML template content"
                         className="min-h-64 font-mono text-sm"
                       />
@@ -880,7 +883,7 @@ export const AITemplates: React.FC = () => {
                       <Textarea
                         id="text-content"
                         value={editor.textContent}
-                        onChange={(e) => setEditor(prev => ({...prev, textContent: e.target.value}))}
+                        onChange={(e) => setEditor(prev => ({ ...prev, textContent: e.target.value }))}
                         placeholder="Enter plain text template content"
                         className="min-h-64"
                       />
@@ -921,15 +924,15 @@ export const AITemplates: React.FC = () => {
                         {variantLoading ? 'Generating...' : 'Generate Variants'}
                       </Button>
                     </div>
-                    
+
                     {validationError && (
                       <Alert variant="destructive">
                         <AlertDescription>{validationError}</AlertDescription>
                       </Alert>
                     )}
 
-                    <TemplateOptionsPanel 
-                      options={randomOptions} 
+                    <TemplateOptionsPanel
+                      options={randomOptions}
                       onChange={setRandomOptions}
                       className="border-0 p-0"
                     />
@@ -947,7 +950,7 @@ export const AITemplates: React.FC = () => {
                             </TabsList>
                           </Tabs>
                         </div>
-                        
+
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
                           {variants.map((variant) => (
                             <Card key={variant.id}>
@@ -969,8 +972,8 @@ export const AITemplates: React.FC = () => {
                                   </pre>
                                 ) : (
                                   <div className={`border rounded ${previewMode === 'mobile' ? 'w-64 mx-auto' : ''}`}>
-                                    <iframe 
-                                      srcDoc={variant.content} 
+                                    <iframe
+                                      srcDoc={variant.content}
                                       className="w-full h-32 border-0 rounded"
                                       title={`Preview ${variant.id}`}
                                     />
@@ -988,7 +991,7 @@ export const AITemplates: React.FC = () => {
                 <TabsContent value="settings" className="space-y-4">
                   <div className="space-y-4">
                     <h3 className="text-lg font-semibold">Template Settings</h3>
-                    
+
                     <div className="grid grid-cols-2 gap-6">
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
@@ -1008,19 +1011,19 @@ export const AITemplates: React.FC = () => {
                           <Switch id="mobile-optimize" defaultChecked />
                         </div>
                       </div>
-                      
+
                       <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Default macros</Label>
-                      <div className="text-sm text-muted-foreground space-y-1">
-                        <div>{'{FIRST_NAME}'} - Recipient's first name</div>
-                        <div>{'{LAST_NAME}'} - Recipient's last name</div>
-                        <div>{'{EMAIL}'} - Recipient's email</div>
-                        <div>{'{COMPANY}'} - Recipient's company</div>
-                        <div>{'{TRACKING_PIXEL}'} - Tracking pixel URL</div>
-                        <div>{'{UNSUBSCRIBE_URL}'} - Unsubscribe link</div>
-                      </div>
-                    </div>
+                        <div className="space-y-2">
+                          <Label>Default macros</Label>
+                          <div className="text-sm text-muted-foreground space-y-1">
+                            <div>{'{FIRST_NAME}'} - Recipient's first name</div>
+                            <div>{'{LAST_NAME}'} - Recipient's last name</div>
+                            <div>{'{EMAIL}'} - Recipient's email</div>
+                            <div>{'{COMPANY}'} - Recipient's company</div>
+                            <div>{'{TRACKING_PIXEL}'} - Tracking pixel URL</div>
+                            <div>{'{UNSUBSCRIBE_URL}'} - Unsubscribe link</div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1043,8 +1046,8 @@ export const AITemplates: React.FC = () => {
                                 Subject: {editor.subject || 'No subject'}
                               </div>
                             </div>
-                            <iframe 
-                              srcDoc={editor.htmlContent || '<p>No content</p>'} 
+                            <iframe
+                              srcDoc={editor.htmlContent || '<p>No content</p>'}
                               className="w-full h-96 border-0"
                               title="Desktop preview"
                             />
@@ -1058,8 +1061,8 @@ export const AITemplates: React.FC = () => {
                                   {editor.subject || 'No subject'}
                                 </div>
                               </div>
-                              <iframe 
-                                srcDoc={editor.htmlContent || '<p>No content</p>'} 
+                              <iframe
+                                srcDoc={editor.htmlContent || '<p>No content</p>'}
                                 className="w-full h-96 border-0"
                                 title="Mobile preview"
                               />
@@ -1118,12 +1121,12 @@ export const AITemplates: React.FC = () => {
                     <Label>Template Content</Label>
                     <Textarea
                       value={editor.htmlContent}
-                      onChange={(e) => setEditor(prev => ({...prev, htmlContent: e.target.value}))}
+                      onChange={(e) => setEditor(prev => ({ ...prev, htmlContent: e.target.value }))}
                       placeholder="Enter template content with {choice1|choice2} or [A-Z]{3} patterns"
                       className="min-h-32 font-mono text-sm"
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label>Quick Insert</Label>
                     <div className="grid grid-cols-2 gap-2">
@@ -1148,8 +1151,8 @@ export const AITemplates: React.FC = () => {
                     </Alert>
                   )}
 
-                  <TemplateOptionsPanel 
-                    options={randomOptions} 
+                  <TemplateOptionsPanel
+                    options={randomOptions}
                     onChange={setRandomOptions}
                   />
 
@@ -1170,7 +1173,7 @@ export const AITemplates: React.FC = () => {
                       </TabsList>
                     </Tabs>
                   </div>
-                  
+
                   <ScrollArea className="flex-1 h-96">
                     <div className="space-y-3">
                       {variants.map((variant) => (
@@ -1186,7 +1189,7 @@ export const AITemplates: React.FC = () => {
                                   <ClipboardDocumentIcon className="w-4 h-4" />
                                 </Button>
                                 <Button size="icon" variant="ghost" onClick={() => {
-                                  setEditor(prev => ({...prev, htmlContent: variant.content}));
+                                  setEditor(prev => ({ ...prev, htmlContent: variant.content }));
                                   toast.success?.('Applied to editor');
                                 }}>
                                   <ArrowUpTrayIcon className="w-4 h-4" />
@@ -1201,8 +1204,8 @@ export const AITemplates: React.FC = () => {
                               </pre>
                             ) : (
                               <div className={`border rounded ${previewMode === 'mobile' ? 'w-48 mx-auto' : ''}`}>
-                                <iframe 
-                                  srcDoc={variant.content} 
+                                <iframe
+                                  srcDoc={variant.content}
                                   className="w-full h-20 border-0 rounded"
                                   title={`Preview ${variant.id}`}
                                 />
@@ -1211,7 +1214,7 @@ export const AITemplates: React.FC = () => {
                           </CardContent>
                         </Card>
                       ))}
-                      
+
                       {variants.length === 0 && !variantLoading && (
                         <div className="text-center py-8 text-muted-foreground">
                           <SparklesIcon className="w-8 h-8 mx-auto mb-2" />
@@ -1261,7 +1264,7 @@ export const AITemplates: React.FC = () => {
                     </Button>
                   </div>
                 </div>
-                
+
                 <div className="bg-white rounded-lg p-8 text-black">
                   <div className="max-w-2xl mx-auto">
                     <h2 className="text-2xl font-bold mb-4">Sample Email Preview</h2>

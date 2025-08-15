@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
-import { Activity, Cpu, Database, Globe, Mail, Network, Server, Shield, Sparkles, TrendingUp, RefreshCcw, Rocket } from 'lucide-react'
+import { Activity, Cpu, Database, Globe, Mail, Network, Server, Shield, Sparkles, TrendingUp, RefreshCcw, Rocket, CheckCircle, XCircle, Clock } from 'lucide-react'
 import PageShell from '../components/PageShell'
 import { generateDashboardData } from '@/services/mockData'
 import { useAuthStore } from '@/store/auth'
@@ -32,6 +33,24 @@ interface FunctionStats {
   imapAccounts: number
 }
 
+interface SmtpAccount {
+  id: string
+  email: string
+  provider: string
+  status: 'active' | 'inactive' | 'error'
+  sent24h: number
+  limit: number
+}
+
+interface ProxyAccount {
+  id: string
+  host: string
+  port: number
+  type: string
+  status: 'active' | 'inactive' | 'error'
+  country: string
+}
+
 const statusColor = (s: HealthState) => {
   switch (s) {
     case 'healthy': return 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20'
@@ -42,11 +61,29 @@ const statusColor = (s: HealthState) => {
   }
 }
 
+const generateMockSmtpAccounts = (): SmtpAccount[] => [
+  { id: '1', email: 'sender1@company.com', provider: 'Gmail', status: 'active', sent24h: 245, limit: 500 },
+  { id: '2', email: 'sender2@company.com', provider: 'Outlook', status: 'active', sent24h: 180, limit: 300 },
+  { id: '3', email: 'sender3@company.com', provider: 'SendGrid', status: 'inactive', sent24h: 0, limit: 1000 },
+  { id: '4', email: 'sender4@company.com', provider: 'Gmail', status: 'error', sent24h: 45, limit: 500 },
+  { id: '5', email: 'sender5@company.com', provider: 'Mailgun', status: 'active', sent24h: 320, limit: 800 },
+]
+
+const generateMockProxyAccounts = (): ProxyAccount[] => [
+  { id: '1', host: '192.168.1.100', port: 8080, type: 'HTTP', status: 'active', country: 'US' },
+  { id: '2', host: '10.0.0.50', port: 3128, type: 'HTTPS', status: 'active', country: 'UK' },
+  { id: '3', host: '172.16.0.25', port: 1080, type: 'SOCKS5', status: 'inactive', country: 'DE' },
+  { id: '4', host: '203.45.67.89', port: 8080, type: 'HTTP', status: 'error', country: 'CA' },
+  { id: '5', host: '198.51.100.42', port: 3128, type: 'HTTPS', status: 'active', country: 'FR' },
+]
+
 export default function UnifiedFunctionsDashboard() {
   const [loading, setLoading] = useState(true)
   const [health, setHealth] = useState<LiveHealth>({ status: 'unknown' })
   const [metrics, setMetrics] = useState<SystemMetrics | null>(null)
   const [funcStats, setFuncStats] = useState<FunctionStats | null>(null)
+  const [smtpAccounts, setSmtpAccounts] = useState<SmtpAccount[]>([])
+  const [proxyAccounts, setProxyAccounts] = useState<ProxyAccount[]>([])
   const [activeTab, setActiveTab] = useState<'overview' | 'system' | 'functions'>('overview')
 
   const { token, userData } = useAuthStore()
@@ -71,6 +108,11 @@ export default function UnifiedFunctionsDashboard() {
           smtpAccounts: 8,
           imapAccounts: 6,
         })
+        
+        // Mock SMTP and Proxy accounts
+        setSmtpAccounts(generateMockSmtpAccounts())
+        setProxyAccounts(generateMockProxyAccounts())
+        
         setLoading(false)
         return
       }
@@ -162,6 +204,8 @@ export default function UnifiedFunctionsDashboard() {
       setHealth(newHealth)
       setMetrics(sys)
       setFuncStats(fs)
+      setSmtpAccounts(generateMockSmtpAccounts())
+      setProxyAccounts(generateMockProxyAccounts())
     } catch (_) {
       // Fall back to mock data on error
       const mockData = generateDashboardData()
@@ -178,6 +222,8 @@ export default function UnifiedFunctionsDashboard() {
         smtpAccounts: 8,
         imapAccounts: 6,
       })
+      setSmtpAccounts(generateMockSmtpAccounts())
+      setProxyAccounts(generateMockProxyAccounts())
     } finally {
       setLoading(false)
     }
@@ -332,6 +378,123 @@ export default function UnifiedFunctionsDashboard() {
             </CardContent>
           </Card>
         </div>
+      </div>
+
+      {/* SMTP Accounts Table */}
+      <div className="mt-8">
+        <h3 className="text-xl font-semibold mb-4 text-foreground">SMTP Accounts</h3>
+        <Card>
+          <CardContent className="p-0">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Provider</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Sent (24h)</TableHead>
+                  <TableHead>Limit</TableHead>
+                  <TableHead>Usage</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {smtpAccounts.map((account) => {
+                  const usagePercent = (account.sent24h / account.limit) * 100
+                  return (
+                    <TableRow key={account.id}>
+                      <TableCell className="font-medium">{account.email}</TableCell>
+                      <TableCell>{account.provider}</TableCell>
+                      <TableCell>
+                        <Badge className={cn(
+                          account.status === 'active' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20' :
+                          account.status === 'inactive' ? 'bg-gray-500/15 text-gray-400 border-gray-500/20' :
+                          'bg-rose-500/15 text-rose-400 border-rose-500/20'
+                        )}>
+                          {account.status === 'active' && <CheckCircle className="w-3 h-3 mr-1" />}
+                          {account.status === 'inactive' && <Clock className="w-3 h-3 mr-1" />}
+                          {account.status === 'error' && <XCircle className="w-3 h-3 mr-1" />}
+                          {account.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>{account.sent24h.toLocaleString()}</TableCell>
+                      <TableCell>{account.limit.toLocaleString()}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <div className="w-16 bg-muted rounded-full h-2">
+                            <div 
+                              className={cn(
+                                "h-2 rounded-full transition-all",
+                                usagePercent > 80 ? "bg-red-500" :
+                                usagePercent > 60 ? "bg-yellow-500" :
+                                "bg-emerald-500"
+                              )}
+                              style={{ width: `${Math.min(usagePercent, 100)}%` }}
+                            />
+                          </div>
+                          <span className="text-xs text-muted-foreground">
+                            {usagePercent.toFixed(0)}%
+                          </span>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Proxy Accounts Table */}
+      <div className="mt-8">
+        <h3 className="text-xl font-semibold mb-4 text-foreground">Proxy Accounts</h3>
+        <Card>
+          <CardContent className="p-0">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Host</TableHead>
+                  <TableHead>Port</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Country</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {proxyAccounts.map((proxy) => (
+                  <TableRow key={proxy.id}>
+                    <TableCell className="font-medium font-mono">{proxy.host}</TableCell>
+                    <TableCell className="font-mono">{proxy.port}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="text-xs">
+                        {proxy.type}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={cn(
+                        proxy.status === 'active' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20' :
+                        proxy.status === 'inactive' ? 'bg-gray-500/15 text-gray-400 border-gray-500/20' :
+                        'bg-rose-500/15 text-rose-400 border-rose-500/20'
+                      )}>
+                        {proxy.status === 'active' && <CheckCircle className="w-3 h-3 mr-1" />}
+                        {proxy.status === 'inactive' && <Clock className="w-3 h-3 mr-1" />}
+                        {proxy.status === 'error' && <XCircle className="w-3 h-3 mr-1" />}
+                        {proxy.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 rounded-sm bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-[10px] font-bold text-white">
+                          {proxy.country}
+                        </div>
+                        <span>{proxy.country}</span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </div>
     </PageShell>
   )

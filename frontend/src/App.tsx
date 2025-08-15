@@ -399,6 +399,250 @@ const router = createBrowserRouter([
     )
   },
   {
+    path: '/assistant/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/content-generator/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/email-optimizer/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/analytics-dashboard/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/lead-scorer/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/content-personalizer/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  // Tools routes
+  {
+    path: '/smtp-checker/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/smtp-pool/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/smtp/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/imap-inbox/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+<<<<<<< Current (Your changes)
+    path: '/imap/*',
+=======
+    path: '/smtp/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/imap-inbox/*',
+>>>>>>> Incoming (Background Agent changes)
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/imap/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/live-console/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/blacklist-status/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/proxies/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/proxy-pool/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/domains/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/performance/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/playground/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/settings/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    element: (
+      <Suspense fallback={<Loading />}>
+        <LandingPageIndex />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
     path: '/oauth/callback',
     element: (
       <Suspense fallback={<Loading />}>
