@@ -120,7 +120,7 @@ export default defineConfig(({ mode }) => ({
     target: 'esnext',
   },
   server: {
-    port: 3000,
+    port: 4000,
     host: true,
     // Add headers to avoid any stale caching that can cause MIME issues in dev
     headers: {

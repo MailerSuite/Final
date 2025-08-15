@@ -1,0 +1,4 @@
+# Require codeowner review for critical areas
+/backend/* @your-org/backend-maintainers
+/frontend/* @your-org/frontend-maintainers
+/.github/* @your-org/infra-maintainers
