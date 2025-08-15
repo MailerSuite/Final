@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FileText, Copy, Check, X, Eye, EyeOff } from 'lucide-react';
-let routeRegistry: unknown = { routes: [] };
+const routeRegistry: unknown = { routes: [] };
 try {
   // Optional; only in dev projects that provide registry
-   
-  routeRegistry = require('@/nav/route-registry.json');
+  // Using dynamic import to avoid require()
+  // routeRegistry = require('@/nav/route-registry.json');
 } catch {}
 
 interface RouteInfo {

@@ -66,9 +66,10 @@ class SGPTLogger:
         log_dir.mkdir(exist_ok=True)
         
         # Configuration for different environments
-        if settings.DEBUG:
+        # Use DEBUG level for development environment
+        if settings.ENVIRONMENT == "development" or settings.DEBUG:
             level = logging.DEBUG
-            console_level = logging.INFO
+            console_level = logging.DEBUG
         else:
             level = logging.INFO
             console_level = logging.WARNING
@@ -93,6 +94,12 @@ class SGPTLogger:
         file_handler.setLevel(level)
         file_handler.setFormatter(detailed_formatter)
         handlers.append(file_handler)
+        
+        # Backend-specific log file
+        backend_handler = logging.FileHandler(log_dir / "backend.log")
+        backend_handler.setLevel(level)
+        backend_handler.setFormatter(simple_formatter)
+        handlers.append(backend_handler)
         
         # Error file handler
         error_handler = logging.FileHandler(log_dir / "sgpt_errors.log")

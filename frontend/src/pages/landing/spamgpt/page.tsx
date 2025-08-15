@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import { LandingHeader, LandingFooter } from '@/components/landing';
 import { BackgroundEffects } from '@/components/ui/BackgroundEffects';
 import { GradientOrbs } from '@/components/landing/animations/GradientOrbs';
@@ -9,6 +8,17 @@ import { HeroFeatures, HeroTitle, HeroSubtitle, HeroCTA } from '@/components/lan
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { DemoModal } from '@/components/landing/DemoModal';
+import AIEmailOptimizer from '@/pages/finalui2/pages/AIEmailOptimizer';
+import AnalyticsDashboard from '@/pages/finalui2/pages/AnalyticsDashboard';
+import { AIPlayground } from '@/pages/finalui2/pages/AIPlayground';
+import CampaignCreateWizard from '@/pages/finalui2/pages/CampaignCreateWizard';
+import AIContentGenerator from '@/pages/finalui2/pages/AIContentGenerator';
+import SMTPCheckerPage from '@/pages/finalui2/pages/SMTPCheckerPage';
+import AIAnalyticsDashboard from '@/pages/finalui2/pages/AIAnalyticsDashboard';
+import { AIAssistant } from '@/pages/finalui2/pages/AIAssistant';
+import BlacklistCheckerEnhanced from '@/pages/finalui2/pages/BlacklistCheckerEnhanced';
+import IMAPInboxPage from '@/pages/finalui2/pages/IMAPInboxPage';
 import {
     CpuChipIcon,
     ShieldCheckIcon,
@@ -21,6 +31,8 @@ import {
     CheckCircleIcon,
     CursorArrowRaysIcon,
     SparklesIcon,
+    ExclamationTriangleIcon,
+    InboxIcon,
 } from '@heroicons/react/24/outline';
 
 const features = [
@@ -60,62 +72,99 @@ const demoCards = [
     {
         title: 'AI Email Optimizer (Demo)',
         description: 'Try the AI-powered wizard that analyzes and improves your emails instantly.',
-        path: '/landing/spamgpt/demo/optimizer',
+        component: <AIEmailOptimizer />,
         color: 'from-indigo-500 to-purple-600',
         icon: <BoltIcon className="w-5 h-5" />,
+        demoNote: 'Demo: optimizer actions are simulated',
     },
     {
         title: 'Analytics Dashboard (Demo)',
         description: 'Explore live-style analytics and monitoring with simulated data.',
-        path: '/landing/spamgpt/demo/analytics',
+        component: <AnalyticsDashboard />,
         color: 'from-blue-500 to-cyan-600',
         icon: <ChartBarIcon className="w-5 h-5" />,
+        demoNote: 'Demo: data is sample information',
     },
     {
-        title: 'SpamGPT AI Tutor (Demo)',
-        description: 'Learn inboxing, server setup, and scaling strategies with our AI Tutor.',
-        path: '/landing/spamgpt/demo/tutor',
+        title: 'AI Playground (Demo)',
+        description: 'Experiment with AI tools and learn inboxing strategies interactively.',
+        component: <AIPlayground />,
         color: 'from-fuchsia-500 to-pink-600',
         icon: <RocketLaunchIcon className="w-5 h-5" />,
+        demoNote: 'Demo: AI interactions are simulated',
     },
     {
         title: 'Campaign Wizard (Demo)',
         description: 'See how easy it is to plan and launch a campaign in minutes.',
-        path: '/landing/spamgpt/demo/campaign-wizard',
+        component: <CampaignCreateWizard />,
         color: 'from-violet-500 to-purple-600',
         icon: <CursorArrowRaysIcon className="w-5 h-5" />,
+        demoNote: 'Demo: campaign creation is simulated',
     },
     {
         title: 'Content Generator (Demo)',
         description: 'Generate high-converting subject lines and body copy on the fly.',
-        path: '/landing/spamgpt/demo/content-generator',
+        component: <AIContentGenerator />,
         color: 'from-sky-500 to-indigo-600',
         icon: <SparklesIcon className="w-5 h-5" />,
+        demoNote: 'Demo: content generation is simulated',
     },
     {
-        title: 'SMTP & Deliverability (Demo)',
+        title: 'SMTP Checker (Demo)',
         description: 'Validate SMTP, test inbox placement, and monitor deliverability.',
-        path: '/landing/spamgpt/demo/smtp',
+        component: <SMTPCheckerPage />,
         color: 'from-emerald-500 to-teal-600',
         icon: <ShieldCheckIcon className="w-5 h-5" />,
+        demoNote: 'Demo: SMTP actions are simulated',
     },
     {
-        title: 'Deliverability Dashboard (Demo)',
+        title: 'AI Analytics (Demo)',
         description: 'Understand reputation, spam triggers, and how to fix them.',
-        path: '/landing/spamgpt/demo/deliverability',
+        component: <AIAnalyticsDashboard />,
         color: 'from-rose-500 to-orange-600',
         icon: <CheckCircleIcon className="w-5 h-5" />,
+        demoNote: 'Demo: analytics use sample data',
     },
     {
         title: 'AI Assistant (Demo)',
         description: 'Chat with an AI assistant that helps you execute tasks end-to-end.',
-        path: '/landing/spamgpt/demo/assistant',
+        component: <AIAssistant />,
         color: 'from-purple-500 to-cyan-600',
         icon: <SparklesIcon className="w-5 h-5" />,
+        demoNote: 'Demo: assistant responses are simulated',
+    },
+    {
+        title: 'Blacklist Checker (Demo)',
+        description: 'Check domain/IP against major RBLs with simulated results.',
+        component: <BlacklistCheckerEnhanced />,
+        color: 'from-amber-500 to-red-600',
+        icon: <ExclamationTriangleIcon className="w-5 h-5" />,
+        demoNote: 'Demo: blacklist checks use mocked responses',
+    },
+    {
+        title: 'IMAP Inbox (Demo)',
+        description: 'Preview a live-style inbox experience with sample data.',
+        component: <IMAPInboxPage />,
+        color: 'from-emerald-500 to-teal-600',
+        icon: <InboxIcon className="w-5 h-5" />,
+        demoNote: 'Demo: mailbox content is sample data',
     },
 ];
 
 const SpamGPTLandingPage: React.FC = () => {
+    const [selectedDemo, setSelectedDemo] = useState<typeof demoCards[0] | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openDemo = (demo: typeof demoCards[0]) => {
+        setSelectedDemo(demo);
+        setIsModalOpen(true);
+    };
+
+    const closeDemo = () => {
+        setIsModalOpen(false);
+        setSelectedDemo(null);
+    };
+
     return (
         <div className="relative min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-foreground">
             <BackgroundEffects className="opacity-90" />
@@ -201,9 +250,9 @@ const SpamGPTLandingPage: React.FC = () => {
                             <p className="text-muted-foreground mt-2">Launch fully interactive demos—no signup required.</p>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                            {demoCards.map((demo) => (
-                                <Card key={demo.path} className="bg-card/60 backdrop-blur border border-border/60">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                            {demoCards.map((demo, index) => (
+                                <Card key={index} className="bg-card/60 backdrop-blur border border-border/60">
                                     <CardHeader>
                                         <CardTitle className="flex items-center gap-2">
                                             <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r ${demo.color}`}>{demo.icon}</span>
@@ -212,10 +261,19 @@ const SpamGPTLandingPage: React.FC = () => {
                                         <CardDescription>{demo.description}</CardDescription>
                                     </CardHeader>
                                     <CardContent className="flex items-center justify-between">
-                                        <Link to={demo.path}>
-                                            <Button className={`bg-gradient-to-r ${demo.color} text-white`}>Launch Demo</Button>
-                                        </Link>
-                                        <Link to={demo.path} className="text-sm text-muted-foreground hover:text-foreground">Learn more →</Link>
+                                        <Button 
+                                            onClick={() => openDemo(demo)}
+                                            className={`bg-gradient-to-r ${demo.color} text-white`}
+                                        >
+                                            Launch Demo
+                                        </Button>
+                                        <Button 
+                                            variant="ghost" 
+                                            onClick={() => openDemo(demo)}
+                                            className="text-sm text-muted-foreground hover:text-foreground"
+                                        >
+                                            Learn more →
+                                        </Button>
                                     </CardContent>
                                 </Card>
                             ))}
@@ -243,6 +301,19 @@ const SpamGPTLandingPage: React.FC = () => {
 
                 <LandingFooter />
             </div>
+
+            {/* Demo Modal */}
+            {selectedDemo && (
+                <DemoModal
+                    isOpen={isModalOpen}
+                    onClose={closeDemo}
+                    title={selectedDemo.title}
+                    description={selectedDemo.description}
+                    demoNote={selectedDemo.demoNote}
+                >
+                    {selectedDemo.component}
+                </DemoModal>
+            )}
         </div>
     );
 };

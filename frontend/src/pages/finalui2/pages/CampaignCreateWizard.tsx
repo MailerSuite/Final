@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import PageShell from '../components/PageShell'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -20,6 +21,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { PlusIcon, TrashIcon } from 'lucide-react'
 
 const CampaignCreateWizard: React.FC = () => {
+  const navigate = useNavigate()
   const sid = getSessionId()
   const [step, setStep] = React.useState(1)
   const [name, setName] = React.useState('')
@@ -159,8 +161,17 @@ const CampaignCreateWizard: React.FC = () => {
           if (id) await campaignService.scheduleCampaign(String(id), new Date(scheduledAt).toISOString())
         } catch { /* non-fatal */ }
       }
-      toast.success?.('Campaign created')
+      toast.success?.('Campaign created successfully! Redirecting...')
       setStep(7)
+      
+      // Navigate to campaign details or campaigns list after a short delay
+      setTimeout(() => {
+        if (created?.id) {
+          navigate(`/campaigns/${created.id}`)
+        } else {
+          navigate('/campaigns')
+        }
+      }, 2000)
     } catch (e: unknown) {
       toast.error?.(e?.message || 'Failed to create campaign')
     } finally { setCreating(false) }

@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .neon-ring { box-shadow: 0 0 0 3px rgba(34,211,238,0.25); }
+  .perspective-1000 { perspective: 1000px; }
+  .preserve-3d { transform-style: preserve-3d; }
+  .backface-hidden { backface-visibility: hidden; }
+  .blend-soft-light { mix-blend-mode: soft-light; }
+  .blend-screen { mix-blend-mode: screen; }
+}
+
+/* Enhanced background effects */
+@layer components {
+  @keyframes auroraShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .bg-aurora {
+    /* Crypto-themed multi-hue aurora: BTC, ETH, SOL, USDT, BNB, DOGE, LTC */
+    background-image:
+      linear-gradient(120deg,
+        rgba(247,147,26,0.18),   /* BTC */
+        rgba(98,126,234,0.14),   /* ETH */
+        rgba(153,69,255,0.14),   /* SOL purple */
+        rgba(20,241,149,0.14),   /* SOL green */
+        rgba(38,161,123,0.14),   /* USDT */
+        rgba(243,186,47,0.16),   /* BNB */
+        rgba(194,166,51,0.14),   /* DOGE */
+        rgba(184,184,184,0.12)   /* LTC */
+      );
+    background-size: 200% 200%;
+    filter: blur(60px);
+    opacity: 0.55;
+    mix-blend-mode: screen;
+    animation: auroraShift 42s ease-in-out infinite;
+  }
+
+  .noise-soft {
+    background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 3px 3px;
+    opacity: 0.18;
+    mix-blend-mode: soft-light;
+  }
+
+  @keyframes orbDrift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(3%, -2%) scale(1.04); }
+  }
+  .orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(30px);
+    mix-blend-mode: screen;
+    animation: orbDrift 26s ease-in-out infinite;
+  }
+  .orb-btc { background: radial-gradient(closest-side, rgba(247,147,26,0.40), transparent 60%); }
+  .orb-eth { background: radial-gradient(closest-side, rgba(98,126,234,0.35), transparent 60%); }
+  .orb-sol { background: radial-gradient(closest-side, rgba(20,241,149,0.35), transparent 60%); }
+  .orb-sol2{ background: radial-gradient(closest-side, rgba(153,69,255,0.35), transparent 60%); }
+  .orb-usdt{ background: radial-gradient(closest-side, rgba(38,161,123,0.35), transparent 60%); }
+  .orb-bnb { background: radial-gradient(closest-side, rgba(243,186,47,0.38), transparent 60%); }
+  .orb-doge{ background: radial-gradient(closest-side, rgba(194,166,51,0.35), transparent 60%); }
+  .orb-ltc { background: radial-gradient(closest-side, rgba(184,184,184,0.30), transparent 60%); }
+}
+
+/* Mail lanes and badges */
+@layer components {
+  @keyframes mailFlow {
+    0% { transform: translateX(-15%); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateX(115%); opacity: 1; }
+  }
+  .animate-mail-flow { animation: mailFlow var(--flow-dur, 10s) linear infinite; }
+  .mail-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 9999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    backdrop-filter: blur(6px);
+  }
+}
+
+/* Crypto rain */
+@layer components {
+  /* Marquee for crypto icon strips */
+  @keyframes marqueeX {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marqueeXReverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0%); }
+  }
+  .animate-marquee { animation: marqueeX var(--marquee-dur, 50s) linear infinite; }
+  .animate-marquee-reverse { animation: marqueeXReverse var(--marquee-dur, 50s) linear infinite; }
+  @keyframes coinFall {
+    0% { transform: translate3d(var(--cx, 0), -120%, 0) rotate(var(--cr, 0deg)); opacity: 0; }
+    10% { opacity: 0.85; }
+    100% { transform: translate3d(calc(var(--cx, 0) + var(--dx, 0)), 120%, 0) rotate(calc(var(--cr, 0deg) + 360deg)); opacity: 0.95; }
+  }
+  .crypto-coin {
+    position: absolute;
+    top: -10%;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
+    opacity: 0.8;
+    animation: coinFall var(--cdur, 22s) linear infinite;
+    will-change: transform;
+  }
+}
+
+/* Mail flow envelopes */
+@layer components {
+  .envelope {
+    width: 44px;
+    height: 30px;
+    position: absolute;
+    border-radius: 6px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.75));
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    transform-origin: center;
+  }
+  .envelope::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, transparent 49%, rgba(14,21,48,0.2) 50%, transparent 51%) top left / 50% 50% no-repeat,
+      linear-gradient(225deg, transparent 49%, rgba(14,21,48,0.2) 50%, transparent 51%) top right / 50% 50% no-repeat,
+      linear-gradient(315deg, transparent 49%, rgba(14,21,48,0.2) 50%, transparent 51%) bottom right / 50% 50% no-repeat,
+      linear-gradient(45deg, transparent 49%, rgba(14,21,48,0.2) 50%, transparent 51%) bottom left / 50% 50% no-repeat;
+    border-radius: 6px;
+    pointer-events: none;
+  }
+  @keyframes envelopeFall {
+    0% { transform: translateY(-120vh) rotateZ(var(--rz, 0deg)); opacity: 0; }
+    60% { opacity: 1; }
+    100% { transform: translateY(0) rotateZ(var(--rz, 0deg)); opacity: 1; }
+  }
+  .animate-envelope-fall { animation: envelopeFall 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+}
+

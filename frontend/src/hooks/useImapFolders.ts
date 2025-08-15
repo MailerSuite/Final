@@ -8,7 +8,7 @@ export function useImapFolders(accountId?: string) {
     enabled: !!accountId,
   })
 
-  const messagesQuery = (folder?: string, search = '') =>
+  const useMessagesQuery = (folder?: string, search = '') =>
     useQuery({
       queryKey: ['imapMessages', accountId, folder, search],
       queryFn: async () => {
@@ -24,5 +24,5 @@ export function useImapFolders(accountId?: string) {
       enabled: !!accountId && !!folder,
     })
 
-  return { foldersQuery, messagesQuery }
+  return { foldersQuery, useMessagesQuery }
 }

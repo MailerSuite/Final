@@ -57,7 +57,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
       <div className="absolute inset-0 overflow-hidden">
         <SparkleEffect intensity="subtle" className="mix-blend-screen" />
       </div>
-      <div className="relative flex h-full items-center px-4 md:px-6 gap-4">
+      <div className="relative flex h-full items-center px-4 md:px-6 gap-2 md:gap-4">
         {/* Mobile Menu Button */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -97,8 +97,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.3 }}
+          className="flex-1 mx-2 md:mx-4"
         >
-          <div className="flex-1 max-w-full sm:max-w-md">
+          <div className="w-full max-w-xs sm:max-w-md lg:max-w-lg xl:max-w-xl">
             <motion.div
               className="relative"
               whileHover={{ scale: 1.02 }}
@@ -119,16 +120,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.25, duration: 0.3 }}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 md:gap-2">
             {/* Quick Actions */}
             <div className="hidden lg:flex items-center gap-1">
               <motion.div whileHover={hoverScale}>
-                <Button variant="ghost" size="sm" className="h-8 px-2 text-xs text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
+                <Button variant="ghost" size="sm" className="h-8 px-3 text-xs text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
                   Quick Send
                 </Button>
               </motion.div>
               <motion.div whileHover={hoverScale}>
-                <Button variant="ghost" size="sm" className="h-8 px-2 text-xs text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
+                <Button variant="ghost" size="sm" className="h-8 px-3 text-xs text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
                   New Campaign
                 </Button>
               </motion.div>
@@ -136,7 +137,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 px-2 text-xs flex items-center gap-1 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-primary/10 transition-all"
+                  className="h-8 px-3 text-xs flex items-center gap-1 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-primary/10 transition-all"
                   onClick={onAIAssistantClick}
                 >
                   <Bot className="h-4 w-4" />
@@ -146,7 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
               <motion.div whileHover={hoverScale}>
                 <Button
                   variant="ghost"
-                  size="sm" className="h-8 px-2 text-xs flex items-center gap-1 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors"
+                  size="sm" className="h-8 px-3 text-xs flex items-center gap-1 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors"
                   onClick={onSupportClick}
                 >
                   <LifeBuoy className="h-4 w-4" />

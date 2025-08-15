@@ -17,7 +17,14 @@ export const Panel: React.FC<React.PropsWithChildren<{ title?: string; actions?:
     )
 }
 
-export const SectionHeader: React.FC<{ leading?: React.ReactNode; title: string; subtitle?: string; trailing?: React.ReactNode }>> = ({ leading, title, subtitle, trailing }) => {
+interface SectionHeaderProps {
+    leading?: React.ReactNode
+    title: string
+    subtitle?: string
+    trailing?: React.ReactNode
+}
+
+export const SectionHeader: React.FC<SectionHeaderProps> = ({ leading, title, subtitle, trailing }) => {
     return (
         <div className="flex items-center justify-between py-2">
             <div className="flex items-center gap-3">
@@ -32,7 +39,11 @@ export const SectionHeader: React.FC<{ leading?: React.ReactNode; title: string;
     )
 }
 
-export const Toolbar: React.FC<{ children?: React.ReactNode }>> = ({ children }) => {
+interface ToolbarProps {
+    children?: React.ReactNode
+}
+
+export const Toolbar: React.FC<ToolbarProps> = ({ children }) => {
     return (
         <div className="flex items-center gap-2 py-2">
             {children}
@@ -40,7 +51,13 @@ export const Toolbar: React.FC<{ children?: React.ReactNode }>> = ({ children })
     )
 }
 
-export const Metric: React.FC<{ label: string; value: React.ReactNode; hint?: string }>> = ({ label, value, hint }) => {
+interface MetricProps {
+    label: string
+    value: React.ReactNode
+    hint?: string
+}
+
+export const Metric: React.FC<MetricProps> = ({ label, value, hint }) => {
     return (
         <div>
             <div className="text-sm text-muted-foreground">{label}</div>

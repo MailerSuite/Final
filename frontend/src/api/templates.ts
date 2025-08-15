@@ -58,8 +58,8 @@ export const duplicateTemplate = async (id: string, newName: string) => {
   return data
 }
 
-export const fetchTemplates = (sessionId: string) =>
-  axios.get(`/api/v1/templates/`, { params: { session_id: sessionId } })
+export const fetchTemplates = (workspaceId: string) =>
+  axios.get(`/api/v1/templates/`, { params: { session_id: workspaceId } })
 
 /** Fetch available randomization options */
 export const fetchTemplateOptions = async () => {

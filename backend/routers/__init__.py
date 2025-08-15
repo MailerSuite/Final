@@ -26,7 +26,7 @@ from . import debug
 # from . import email_check  # ARCHIVED - consolidated into unified_email_operations_router
 from . import handshake
 # from . import health  # ARCHIVED - consolidated into unified_health_router
-# from . import imap  # ARCHIVED - consolidated into unified_imap_router
+from . import imap  # ✅ ACTIVE - workspace-based endpoints
 # from . import imap_checker  # ARCHIVED - consolidated into unified_imap_router
 # from . import imap_client  # ARCHIVED - consolidated into unified_imap_router
 # from . import imap_discovery  # ARCHIVED - consolidated into unified_imap_router
@@ -47,8 +47,8 @@ from . import processes
 # from . import proxies  # ARCHIVED - consolidated into unified_infrastructure_router
 # from . import proxy_checker  # ARCHIVED - consolidated into unified_infrastructure_router
 from . import security
-from . import sessions
-# from . import smtp  # ARCHIVED - consolidated into unified_smtp_router
+# from . import sessions  # REMOVED - functionality consolidated into workspaces
+from . import smtp  # ✅ ACTIVE - workspace-based endpoints
 # from . import smtp_checker  # ARCHIVED - consolidated into unified_smtp_router
 # from . import smtp_discovery  # ARCHIVED - consolidated into unified_smtp_router
 # from . import smtp_metrics  # ARCHIVED - consolidated into unified_smtp_router

@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
-import { Activity, Cpu, Database, Globe, Mail, Network, Server, Shield, Sparkles, TrendingUp, RefreshCcw, Rocket, CheckCircle, XCircle, Clock } from 'lucide-react'
+import { Activity, Cpu, Database, Globe, Mail, Network, Server, Shield, Sparkles, TrendingUp, RefreshCcw, Rocket, CheckCircle, XCircle, Clock, Send } from 'lucide-react'
 import PageShell from '../components/PageShell'
 import { generateDashboardData } from '@/services/mockData'
 import { useAuthStore } from '@/store/auth'
@@ -78,6 +79,7 @@ const generateMockProxyAccounts = (): ProxyAccount[] => [
 ]
 
 export default function UnifiedFunctionsDashboard() {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [health, setHealth] = useState<LiveHealth>({ status: 'unknown' })
   const [metrics, setMetrics] = useState<SystemMetrics | null>(null)
@@ -280,6 +282,15 @@ export default function UnifiedFunctionsDashboard() {
       titleIcon={<Rocket className="w-4 h-4 text-primary" />}
       actions={(
         <>
+          <Button 
+            size="sm" 
+            variant="default" 
+            className="rounded-full bg-primary hover:bg-primary/90"
+            onClick={() => navigate('/campaigns/create')}
+          >
+            <Send className="w-4 h-4 mr-2" />
+            Quick Send
+          </Button>
           <Button size="sm" variant="outline" className="rounded-full" onClick={fetchAll} disabled={loading}>
             <RefreshCcw className={cn('w-4 h-4 mr-2', loading ? 'animate-spin' : '')} />
             Refresh
@@ -292,7 +303,7 @@ export default function UnifiedFunctionsDashboard() {
       {/* Top stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
         {statCards.map((c) => (
-          <Card key={c.title} variant="elevated" className="rounded-2xl border-border/20 bg-card hover:bg-card/80 transition-colors">
+          <Card key={c.title} variant="gradient-subtle" className="rounded-2xl border-border/20 bg-card hover:bg-card/80 transition-colors">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-base font-semibold text-card-foreground">{c.title}</CardTitle>
               <c.icon className="h-4 w-4 text-muted-foreground" />
@@ -313,7 +324,7 @@ export default function UnifiedFunctionsDashboard() {
         <h3 className="text-xl font-semibold mb-4 text-foreground">Business Metrics</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {businessCards.map((c) => (
-            <Card key={c.title} variant="elevated" className="rounded-2xl border-primary/10 bg-white">
+            <Card key={c.title} variant="gradient-card" className="rounded-2xl border-primary/10 bg-card">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-base font-semibold text-foreground">{c.title}</CardTitle>
                 <c.icon className="h-4 w-4 text-muted-foreground" />

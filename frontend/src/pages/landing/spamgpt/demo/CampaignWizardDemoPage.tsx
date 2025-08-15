@@ -2,6 +2,7 @@ import React from 'react';
 import { LandingHeader, LandingFooter } from '@/components/landing';
 import { BackgroundEffects } from '@/components/ui/BackgroundEffects';
 import CampaignCreateWizard from '@/pages/finalui2/pages/CampaignCreateWizard';
+import DemoSandbox from '@/components/demo/DemoSandbox';
 
 const CampaignWizardDemoPage: React.FC = () => {
     return (
@@ -10,7 +11,9 @@ const CampaignWizardDemoPage: React.FC = () => {
             <div className="relative z-10 flex flex-col min-h-screen">
                 <LandingHeader />
                 <main className="flex-1">
-                    <CampaignCreateWizard />
+                    <DemoSandbox note="Demo: wizard runs in read-only mode">
+                        <CampaignCreateWizard />
+                    </DemoSandbox>
                 </main>
                 <LandingFooter />
             </div>

@@ -12,6 +12,7 @@ import FloatingActionButton from '@/components/ui/floating-action-button'
 import { AnimatePresence } from 'framer-motion'
 // Centralized routes moved from ./router
 import { CommandLineIcon, ArrowUpIcon } from '@heroicons/react/24/outline'
+import { RouteGuard } from '@/components/security/route-guard'
 // Remove sample Vite styles to avoid conflicts
 
 // Create a query client
@@ -133,140 +134,6 @@ const router = createBrowserRouter([
     element: <SkeletonAI />
   },
   {
-    path: '/',
-    element: <Navigate to="/dashboard" replace />
-  },
-  {
-    path: '/dashboard',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <DashboardEnhancedStandalone />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/hub',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <HubPage />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/contact',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <ContactPage />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/status',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <StatusPage />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/pricing',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <PricingPage />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/help',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <HelpPage />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/support',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <SupportPage />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/legal/terms',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <TermsPage />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/legal/privacy',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <PrivacyPage />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/onboarding',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <AuthLogin />
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/integrations',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/deliverability',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
     path: '/auth/login',
     element: (
       <Suspense fallback={<Loading />}>
@@ -332,12 +199,14 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <Outlet />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
+      <RouteGuard requiredAuth={true} adminOnly={true}>
+        <Suspense fallback={<Loading />}>
+          <MainLayout>
+            <Outlet />
+          </MainLayout>
+          <AppWrapper />
+        </Suspense>
+      </RouteGuard>
     ),
     children: [
       {
@@ -373,284 +242,6 @@ const router = createBrowserRouter([
         ),
       },
     ],
-  },
-  // Specific routes for main navigation items
-  {
-    path: '/campaigns/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/templates/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/contacts/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/lead-bases/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/analytics/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  // AI Tools routes
-  {
-    path: '/ai-tutor/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/workspace-test',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <WorkspaceTestPage />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/animation-demo',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <AnimationDemo />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/assistant/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/content-generator/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/email-optimizer/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/analytics-dashboard/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/lead-scorer/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/content-personalizer/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  // Tools routes
-  {
-    path: '/smtp-checker/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/smtp-pool/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/imap-inbox/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/live-console/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/blacklist-status/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/proxies/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/proxy-pool/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/domains/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/performance/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/playground/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/settings/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
   },
   // Landing Pages
   {
@@ -763,7 +354,8 @@ const router = createBrowserRouter([
       </Suspense>
     )
   },
-  // Mount main app at root for any remaining routes
+
+  // Main app routes - everything handled by FinalUI2
   {
     path: '/*',
     element: (
@@ -773,35 +365,12 @@ const router = createBrowserRouter([
         </MainLayout>
         <AppWrapper />
       </Suspense>
-    )
-  },
-  // Backward compatibility: redirect legacy /finalui2/* to root equivalent
-  {
-    path: '/finalui2/*',
-    element: <Navigate to={location.pathname.replace('/finalui2', '') || '/'} replace />
-  },
-  // Support /frontend/* alias, redirect to root equivalent
-  {
-    path: '/frontend/*',
-    element: <Navigate to={location.pathname.replace('/frontend', '') || '/'} replace />
-  },
-  // Removed /openai/* routes
-  {
-    path: '/error',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <ErrorPage />
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '*',
-    element: (
+    ),
+    errorElement: (
       <Suspense fallback={<Loading />}>
         <ErrorPage />
       </Suspense>
-    )
+    ),
   },
 ])
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { LandingHeader, LandingFooter } from '@/components/landing';
 import { BackgroundEffects } from '@/components/ui/BackgroundEffects';
 import AnalyticsDashboard from '@/pages/finalui2/pages/AnalyticsDashboard';
+import DemoSandbox from '@/components/demo/DemoSandbox';
 
 const AnalyticsDemoPage: React.FC = () => {
     return (
@@ -10,7 +11,9 @@ const AnalyticsDemoPage: React.FC = () => {
             <div className="relative z-10 flex flex-col min-h-screen">
                 <LandingHeader />
                 <main className="flex-1">
-                    <AnalyticsDashboard />
+                    <DemoSandbox note="Demo: analytics data is simulated">
+                        <AnalyticsDashboard />
+                    </DemoSandbox>
                 </main>
                 <LandingFooter />
             </div>

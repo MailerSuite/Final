@@ -1,12 +1,19 @@
 """
 🚀 Unified Admin Router
 Consolidates administration endpoints into a single, organized router
+SECURITY: All endpoints require admin privileges
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from typing import Dict, Any
 
-router = APIRouter(tags=["Administration & Control"])
+from core.dependencies import require_admin
+from models.base import User
+
+router = APIRouter(
+    tags=["Administration & Control"],
+    dependencies=[Depends(require_admin)]  # All endpoints require admin privileges
+)
 
 # =============================================================================
 # 🧭 OVERVIEW

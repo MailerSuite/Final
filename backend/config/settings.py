@@ -5,14 +5,20 @@ Application settings and configuration.
 import os
 
 from pydantic_settings import BaseSettings
+from pydantic import field_validator
 
 
 class Settings(BaseSettings):
     """Application settings."""
 
     # Basic settings
-    DEBUG: bool = os.getenv("DEBUG", "False").lower() == "true"
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
+    # Auto-enable DEBUG for development environment
+    DEBUG: bool = (
+        os.getenv("DEBUG", "auto").lower() == "true" 
+        if os.getenv("DEBUG", "auto").lower() != "auto"
+        else ENVIRONMENT == "development"
+    )
     # Testing mode flag (must be present for test-only behaviors like SQLite)
     TESTING: bool = os.getenv("TESTING", "False").lower() == "true"
     HOST: str = os.getenv("HOST", "0.0.0.0")
@@ -30,11 +36,16 @@ class Settings(BaseSettings):
         if self.DATABASE_URL.startswith("postgresql+asyncpg"):
             # Convert async PostgreSQL URL to sync
             return self.DATABASE_URL.replace("+asyncpg", "")
+        if self.DATABASE_URL.startswith("sqlite+aiosqlite"):
+            # Convert async SQLite URL to sync for Alembic/CLI tools
+            return self.DATABASE_URL.replace("+aiosqlite", "")
         else:
             return self.DATABASE_URL
 
-    # Security settings - CRITICAL: Must be set in production  
-    SECRET_KEY: str = os.getenv("SECRET_KEY") or "generated-secure-key-change-in-production"
+    # Security settings - CRITICAL: Must be set in production
+    # JWT_SECRET_KEY for JWT tokens, SECRET_KEY for general app security
+    SECRET_KEY: str = os.getenv("SECRET_KEY") or os.getenv("JWT_SECRET_KEY") or "generated-secure-key-change-in-production"
+    JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY") or os.getenv("SECRET_KEY") or "generated-secure-key-change-in-production"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(
         os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "240")  # Extended to 4 hours for better UX
@@ -86,6 +97,28 @@ class Settings(BaseSettings):
         "https://app.sgpt.dev",
     ]
     ALLOWED_HOSTS: list[str] | None = None
+
+    # Coerce ALLOWED_ORIGINS from comma-separated string or JSON string to list
+    @field_validator("ALLOWED_ORIGINS", mode="before")
+    @classmethod
+    def _coerce_allowed_origins(cls, v):
+        if v is None or isinstance(v, list):
+            return v
+        if isinstance(v, str):
+            s = v.strip()
+            if not s:
+                return None
+            if s.startswith("["):
+                try:
+                    import json
+                    parsed = json.loads(s)
+                    if isinstance(parsed, list):
+                        return [str(item).strip() for item in parsed if str(item).strip()]
+                except Exception:
+                    # Fall back to comma split
+                    pass
+            return [item.strip() for item in s.split(",") if item.strip()]
+        return v
 
     # Admin settings
     ADMIN_ENABLED: bool = os.getenv("ADMIN_ENABLED", "True").lower() == "true"

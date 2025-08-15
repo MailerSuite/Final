@@ -1,0 +1,13 @@
+{
+  "name": "opus-land2",
+  "private": true,
+  "scripts": {
+    "dev": "npx --yes live-server --port=3003 --watch=./ --no-browser | cat",
+    "build:css": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
+    "watch:css": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.10"
+  }
+}
+

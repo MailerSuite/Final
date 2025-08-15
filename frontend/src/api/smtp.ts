@@ -3,19 +3,19 @@ import { apiClient } from '@/http/stable-api-client'
 import type { SMTPAccount } from '@/types/smtp'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-/** List SMTP accounts for a session */
-export const listSmtp = async (sessionId: string) => {
-  const { data } = await axios.get<SMTPAccount[]>(`/api/v1/smtp/${sessionId}/accounts`)
+/** List SMTP accounts for a workspace */
+export const listSmtp = async (workspaceId: string) => {
+  const { data } = await axios.get<SMTPAccount[]>(`/api/v1/smtp/${workspaceId}/accounts`)
   return data
 }
 
 /** Create SMTP account */
 export const createSmtp = async (
-  sessionId: string,
+  workspaceId: string,
   payload: Partial<SMTPAccount>
 ) => {
   const { data } = await axios.post<SMTPAccount>(
-    `/api/v1/smtp/${sessionId}/accounts`,
+    `/api/v1/smtp/${workspaceId}/accounts`,
     payload
   )
   return data
@@ -23,25 +23,25 @@ export const createSmtp = async (
 
 /** Update SMTP account */
 export const updateSmtp = async (
-  sessionId: string,
+  workspaceId: string,
   id: string,
   payload: Partial<SMTPAccount>
 ) => {
   const { data } = await axios.put<SMTPAccount>(
-    `/api/v1/smtp/${sessionId}/accounts/${id}`,
+    `/api/v1/smtp/${workspaceId}/accounts/${id}`,
     payload
   )
   return data
 }
 
 /** Delete SMTP account */
-export const deleteSmtp = async (sessionId: string, id: string) => {
-  await axios.delete(`/api/v1/smtp/${sessionId}/accounts/${id}`)
+export const deleteSmtp = async (workspaceId: string, id: string) => {
+  await axios.delete(`/api/v1/smtp/${workspaceId}/accounts/${id}`)
 }
 
 /** Bulk upload SMTP accounts */
-export const bulkUploadSmtp = async (sessionId: string, data: string) => {
-  await axios.post(`/api/v1/smtp/${sessionId}/bulk-upload`, { data })
+export const bulkUploadSmtp = async (workspaceId: string, data: string) => {
+  await axios.post(`/api/v1/smtp/${workspaceId}/bulk-upload`, { data })
 }
 
 export interface SMTPBatchAccountInput {
@@ -64,37 +64,37 @@ export async function smtpTestBatch(
 
 export const SMTP_LIST_KEY = ['smtp-list'] as const
 
-export function useSmtpList(sessionId: string) {
+export function useSmtpList(workspaceId: string) {
   return useQuery({
     queryKey: [...SMTP_LIST_KEY, sessionId],
     queryFn: () => listSmtp(sessionId),
   })
 }
 
-export function useCreateSmtp(sessionId: string) {
+export function useCreateSmtp(workspaceId: string) {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (payload: Partial<SMTPAccount>) => createSmtp(sessionId, payload),
+    mutationFn: (payload: Partial<SMTPAccount>) => createSmtp(workspaceId, payload),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [...SMTP_LIST_KEY, sessionId] })
     },
   })
 }
 
-export function useUpdateSmtp(sessionId: string) {
+export function useUpdateSmtp(workspaceId: string) {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: Partial<SMTPAccount> }) => updateSmtp(sessionId, id, payload),
+    mutationFn: ({ id, payload }: { id: string; payload: Partial<SMTPAccount> }) => updateSmtp(workspaceId, id, payload),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [...SMTP_LIST_KEY, sessionId] })
     },
   })
 }
 
-export function useDeleteSmtp(sessionId: string) {
+export function useDeleteSmtp(workspaceId: string) {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (id: string) => deleteSmtp(sessionId, id),
+    mutationFn: (id: string) => deleteSmtp(workspaceId, id),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [...SMTP_LIST_KEY, sessionId] })
     },

@@ -38,6 +38,8 @@ services:
       HOST: 0.0.0.0
       PORT: 8000
       WORKERS: 4
+      # Allow synchronous DB URL override for Alembic when needed (dev override)
+      SYNC_DATABASE_URL: ${SYNC_DATABASE_URL:-}
     depends_on:
       postgres:
         condition: service_healthy
@@ -59,6 +61,8 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://mailersuite:mailersuite_secure_2024@postgres:5432/mailersuite2_prod
       REDIS_URL: redis://redis:6379/0
+      # Allow synchronous DB URL override for tooling when needed (dev override)
+      SYNC_DATABASE_URL: ${SYNC_DATABASE_URL:-}
     command: bash -lc "celery -A core.celery_app:celery_app worker --loglevel=info --concurrency=4"
     depends_on:
       postgres:

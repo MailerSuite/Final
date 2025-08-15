@@ -59,10 +59,7 @@ export default function PageShell({
             )}
 
             {/* Header */}
-            <div className="relative overflow-hidden rounded-xl border border-border bg-background/60">
-                <div className="absolute inset-0 opacity-60" style={{
-                    backgroundImage: 'radial-gradient(1200px 400px at 10% -10%, rgba(59,130,246,0.15), transparent), radial-gradient(900px 300px at 90% -20%, rgba(147,51,234,0.15), transparent)'
-                }} />
+            <div className="gradient-overlay rounded-xl border border-border bg-background/60">
                 <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between p-4 md:p-6">
                     <div className="space-y-1 min-w-0 flex-1">
                         <div className="flex items-center gap-3">

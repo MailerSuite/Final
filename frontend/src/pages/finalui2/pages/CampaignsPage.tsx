@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getSessionId } from '@/utils/getSessionId';
 import { listCampaigns } from '@/api/campaigns';
 import type { Campaign as ApiCampaign } from '@/types/campaign';
@@ -114,6 +115,7 @@ interface Campaign extends ApiCampaign {
 }
 
 const CampaignsPage: React.FC = () => {
+  const navigate = useNavigate();
   const toDate = (v: unknown): Date | undefined => {
     if (!v) return undefined
     const d = typeof v === 'string' || typeof v === 'number' ? new Date(v) : (v as Date)
@@ -564,7 +566,7 @@ const CampaignsPage: React.FC = () => {
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Campaigns' }]}
         toolbar={
           <div className="flex items-center gap-2 flex-wrap">
-            <Button onClick={() => setShowCreateDialog(true)}>
+            <Button onClick={() => navigate('/campaigns/create')}>
               <PlusIcon className="w-4 h-4 mr-2" /> New Campaign
             </Button>
             <Button variant="outline"><Download className="w-4 h-4 mr-2 rotate-180" /> Import CSV</Button>
@@ -592,7 +594,7 @@ const CampaignsPage: React.FC = () => {
           />
           {/* Large Analytics under Console */}
           <div className="mb-6">
-            <Card variant="premium" className="hover:border-cyan-500/30 transition-all">
+            <Card variant="gradient" className="hover:border-cyan-500/30 transition-all">
               <div className="flex items-center gap-2 mb-2">
                 <ChartBarIcon className="w-5 h-5 text-cyan-400" />
                 <h3 className="text-lg font-semibold text-muted-800">Live Campaign Analytics</h3>
@@ -690,7 +692,7 @@ const CampaignsPage: React.FC = () => {
                     <Button variant="outline" onClick={() => setShowAIAssistant(!showAIAssistant)}>
                       <Sparkles className="w-4 h-4 mr-2" /> AI Assistant
                     </Button>
-                    <Button onClick={() => setShowCreateDialog(true)}>
+                    <Button onClick={() => navigate('/campaigns/create')}>
                       <PlusIcon className="w-4 h-4 mr-2" /> New Campaign
                     </Button>
                   </div>
@@ -858,7 +860,7 @@ const CampaignsPage: React.FC = () => {
                   </div>
 
                   {/* Filters and Search */}
-                  <Card variant="premium">
+                  <Card variant="gradient">
                     <CardContent className="p-4">
                       <div className="flex flex-wrap items-center premium-spacing">
                         <div className="relative flex-1 min-w-64">
@@ -1147,7 +1149,7 @@ const CampaignsPage: React.FC = () => {
               {/* Global Campaigns Metrics Overview */}
               <div className="mt-8">
                 {selectedIds.length > 0 && (
-                  <Card variant="elevated" className="mb-4 border-primary/30">
+                  <Card variant="gradient-subtle" className="mb-4 border-primary/30">
                     <div className="flex items-center justify-between gap-2 flex-wrap">
                       <div className="text-sm">{selectedIds.length} selected</div>
                       <div className="flex items-center gap-2">
@@ -1159,7 +1161,7 @@ const CampaignsPage: React.FC = () => {
                     </div>
                   </Card>
                 )}
-                <Card variant="premium" className="hover:border-cyan-500/30 transition-all">
+                <Card variant="gradient" className="hover:border-cyan-500/30 transition-all">
                   <div className="flex items-center gap-2 mb-4">
                     <ChartBarIcon className="w-5 h-5 text-purple-400" />
                     <h3 className="text-lg font-semibold text-muted-800">All Campaigns Overview</h3>

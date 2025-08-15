@@ -49,19 +49,19 @@ router = APIRouter(tags=["SMTP"])
 class SmtpThreadPoolUpdate(BaseModel):
     thread_pool_id: str
 
-@router.post("/{session_id}/accounts/{account_id}/thread-pool")
+@router.post("/{workspace_id}/accounts/{account_id}/thread-pool")
 async def set_smtp_account_thread_pool(
-    session_id: str,
+    workspace_id: str,
     account_id: str,
     payload: SmtpThreadPoolUpdate,
     db=Depends(get_db),
     current_user=Depends(get_current_user),
 ):
     """Persist default thread_pool_id on an SMTP account."""
-    await verify_session_access(session_id, current_user.id, db)
+    await verify_session_access(workspace_id, current_user.id, db)
     res = await db.execute(
         select(SMTPAccountModel).where(
-            SMTPAccountModel.id == account_id, SMTPAccountModel.session_id == session_id
+            SMTPAccountModel.id == account_id, SMTPAccountModel.session_id == workspace_id
         )
     )
     account = res.scalar_one_or_none()
@@ -81,9 +81,9 @@ async def smtp_info() -> dict[str, Any]:
         "version": "1.0.0",
         "description": "SMTP server configuration and testing",
         "endpoints": {
-            "accounts": "/{session_id}/accounts",
-            "bulk_upload": "/{session_id}/bulk-upload",
-            "check": "/{session_id}/check",
+            "accounts": "/{workspace_id}/accounts",
+            "bulk_upload": "/{workspace_id}/bulk-upload",
+            "check": "/{workspace_id}/check",
             "test": "/test",
             "status": "/status",
         },
@@ -109,13 +109,13 @@ def _normalize_smtp_account(account_row) -> SMTPAccount:
 
 
 async def verify_session_access(
-    session_id: str, user_id: str, db: AsyncSession
+    workspace_id: str, user_id: str, db: AsyncSession
 ):
     try:
         result = await db.execute(
             select(SessionModel).where(
                 and_(
-                    SessionModel.id == session_id,
+                    SessionModel.id == workspace_id,
                     SessionModel.user_id == user_id,
                 )
             )
@@ -134,16 +134,16 @@ async def verify_session_access(
         )
 
 
-@router.post("/{session_id}/accounts", response_model=SMTPAccount)
+@router.post("/{workspace_id}/accounts", response_model=SMTPAccount)
 async def create_smtp_account(
-    session_id: str,
+    workspace_id: str,
     smtp: SMTPAccountCreate,
     background_tasks: BackgroundTasks,
     db=Depends(get_db),
     current_user=Depends(get_current_user),
 ):
     try:
-        await verify_session_access(session_id, current_user.id, db)
+        await verify_session_access(workspace_id, current_user.id, db)
         account_id = str(uuid.uuid4())
 
         server = smtp.server or ""
@@ -158,7 +158,7 @@ async def create_smtp_account(
             """),
             {
                 "account_id": account_id,
-                "session_id": session_id,
+                "session_id": workspace_id,
                 "server": smtp.server,
                 "port": smtp.port,
                 "email": smtp.email,
@@ -179,16 +179,16 @@ async def create_smtp_account(
         )
 
 
-@router.post("/{session_id}/bulk-upload", response_model=MessageResponse)
+@router.post("/{workspace_id}/bulk-upload", response_model=MessageResponse)
 async def bulk_upload_smtp(
-    session_id: str,
+    workspace_id: str,
     upload: SMTPBulkUpload,
     background_tasks: BackgroundTasks,
     db=Depends(get_db),
     current_user=Depends(get_current_user),
 ):
     try:
-        await verify_session_access(session_id, current_user.id, db)
+        await verify_session_access(workspace_id, current_user.id, db)
         accounts = parse_smtp_data(upload.data)
         if not accounts:
             raise HTTPException(
@@ -204,7 +204,7 @@ async def bulk_upload_smtp(
             values.extend(
                 [
                     account_id,
-                    session_id,
+                    workspace_id,
                     account["server"],
                     account["port"],
                     account["email"],
@@ -239,9 +239,9 @@ async def bulk_upload_smtp(
         )
 
 
-@router.get("/{session_id}/accounts", response_model=list[SMTPAccount])
+@router.get("/{workspace_id}/accounts", response_model=list[SMTPAccount])
 async def list_smtp_accounts(
-    session_id: str,
+    workspace_id: str,
     status_filter: str | None = None,
     limit: int = Query(50, ge=1, le=100),
     offset: int = Query(0, ge=0),
@@ -249,9 +249,9 @@ async def list_smtp_accounts(
     current_user=Depends(get_current_user),
 ):
     try:
-        await verify_session_access(session_id, current_user.id, db)
+        await verify_session_access(workspace_id, current_user.id, db)
         query = "SELECT id, session_id, smtp_server AS server, smtp_port AS port, email, password, status, last_checked, response_time, error_message, created_at FROM smtp_accounts WHERE session_id = $1"
-        params = [session_id]
+        params = [workspace_id]
         if status_filter:
             query += " AND status = $2"
             params.append(status_filter)
@@ -271,16 +271,16 @@ async def list_smtp_accounts(
         )
 
 
-@router.put("/{session_id}/accounts/{account_id}", response_model=SMTPAccount)
+@router.put("/{workspace_id}/accounts/{account_id}", response_model=SMTPAccount)
 async def update_smtp_account(
-    session_id: str,
+    workspace_id: str,
     account_id: str,
     smtp: SMTPAccountUpdate,
     db=Depends(get_db),
     current_user=Depends(get_current_user),
 ):
     """Update existing SMTP account."""
-    await verify_session_access(session_id, current_user.id, db)
+    await verify_session_access(workspace_id, current_user.id, db)
     fields = []
     values = []
     if smtp.server is not None:
@@ -313,7 +313,7 @@ async def update_smtp_account(
         values.append(smtp.error_message)
     if not fields:
         raise HTTPException(status_code=400, detail="No fields to update")
-    values.extend([account_id, session_id])
+    values.extend([account_id, workspace_id])
     query = f"\n        UPDATE smtp_accounts\n        SET {', '.join(fields)}\n        WHERE id = ${len(values) - 1} AND session_id = ${len(values)}\n        RETURNING id, session_id, smtp_server AS server, smtp_port AS port,\n                  email, password, status, last_checked, response_time, error_message, created_at\n    "
     account = await db.execute(query, *values)
     account_row = account.scalar_one()
@@ -326,19 +326,19 @@ async def update_smtp_account(
 
 
 @router.delete(
-    "/{session_id}/accounts/{account_id}", response_model=MessageResponse
+    "/{workspace_id}/accounts/{account_id}", response_model=MessageResponse
 )
 async def delete_smtp_account(
-    session_id: str,
+    workspace_id: str,
     account_id: str,
     db=Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    await verify_session_access(session_id, current_user.id, db)
+    await verify_session_access(workspace_id, current_user.id, db)
     result = await db.execute(
         "DELETE FROM smtp_accounts WHERE id = $1 AND session_id = $2",
         account_id,
-        session_id,
+        workspace_id,
     )
     if result.rowcount == 0:
         raise HTTPException(
@@ -349,22 +349,22 @@ async def delete_smtp_account(
 
 
 @router.delete(
-    "/{session_id}/configurations",
+    "/{workspace_id}/configurations",
     response_model=MessageResponse,
     summary="Bulk delete SMTP account configurations",
 )
 async def delete_smtp_configurations(
-    session_id: str,
+    workspace_id: str,
     payload: dict = Body(...),
     db=Depends(get_db),
     current_user=Depends(get_current_user),
 ):
     ids: list[UUID] = payload.get("ids", [])
-    await verify_session_access(session_id, current_user.id, db)
+    await verify_session_access(workspace_id, current_user.id, db)
     result = await db.execute(
         "DELETE FROM smtp_accounts WHERE id = ANY($1::uuid[]) AND session_id = $2",
         ids,
-        session_id,
+        workspace_id,
     )
     deleted_count = result.rowcount
     return MessageResponse(
@@ -485,9 +485,9 @@ async def test_and_update_single_smtp(
     )
 
 
-@router.post("/{session_id}/check", response_model=MessageResponse)
+@router.post("/{workspace_id}/check", response_model=MessageResponse)
 async def check_smtp_accounts(
-    session_id: str,
+    workspace_id: str,
     background_tasks: BackgroundTasks,
     account_ids: list[str] = Body(None),
     smtp_account_ids: list[str] = Body(None, alias="smtp_account_ids"),
@@ -497,7 +497,7 @@ async def check_smtp_accounts(
     current_user=Depends(get_current_user),
     response: Response = None,
 ):
-    await verify_session_access(session_id, current_user.id, db)
+    await verify_session_access(workspace_id, current_user.id, db)
     # Hint clients about unified testers for ad-hoc checks
     if response is not None:
         response.headers["Link"] = "</api/v1/smtp/test>; rel=alternate, </api/v1/smtp/test-file>; rel=alternate, </api/v1/smtp/test-batch>; rel=alternate"
@@ -510,23 +510,23 @@ async def check_smtp_accounts(
     base_select = "SELECT id, session_id, smtp_server AS server, smtp_port AS port, email, password, status, last_checked, response_time, error_message, created_at FROM smtp_accounts "
     if ids_to_check:
         query = base_select + "WHERE id = ANY($1) AND session_id = $2"
-        accounts = await db.execute(query, ids_to_check, session_id)
+        accounts = await db.execute(query, ids_to_check, workspace_id)
     else:
         query = base_select + "WHERE session_id = $1 AND status = 'none'"
-        accounts = await db.execute(query, session_id)
+        accounts = await db.execute(query, workspace_id)
     proxies = []
     if proxy_ids:
         proxies = await db.execute(
             "SELECT * FROM proxy_servers WHERE id = ANY($1) AND session_id = $2",
             proxy_ids,
-            session_id,
+            workspace_id,
         )
     background_tasks.add_task(
         check_smtp_accounts_background,
         accounts,
         proxies,
         timeout,
-        session_id,
+        workspace_id,
         db,
     )
     return MessageResponse(
@@ -538,7 +538,7 @@ async def check_smtp_accounts_background(
     accounts: list[dict],
     proxies: list[dict],
     timeout: int,
-    session_id: str,
+    workspace_id: str,
     db: AsyncSession,
 ):
     """Background task to check SMTP accounts"""
@@ -590,10 +590,10 @@ async def check_smtp_accounts_background(
                     "message": result["message"],
                     "response_time": result.get("response_time"),
                 },
-                session_id=session_id,
+                session_id=workspace_id,
             )
             await send_job_log_update(
-                session_id,
+                workspace_id,
                 {
                     "account_id": account["id"],
                     "status": result["status"],
@@ -617,17 +617,17 @@ async def check_smtp_accounts_background(
     )
 
 
-@router.get("/{session_id}/check-progress")
+@router.get("/{workspace_id}/check-progress")
 async def get_check_progress(
-    session_id: str,
+    workspace_id: str,
     db=Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    await verify_session_access(session_id, current_user.id, db)
+    await verify_session_access(workspace_id, current_user.id, db)
     total = await db.execute(
         select(func.count())
         .select_from(SMTPAccountModel)
-        .where(SMTPAccountModel.session_id == session_id)
+        .where(SMTPAccountModel.session_id == workspace_id)
     )
     total_count = total.scalar_one()
     valid_count = await db.execute(
@@ -635,7 +635,7 @@ async def get_check_progress(
         .select_from(SMTPAccountModel)
         .where(
             and_(
-                SMTPAccountModel.session_id == session_id,
+                SMTPAccountModel.session_id == workspace_id,
                 SMTPAccountModel.status == SMTPStatus.VALID.value,
             )
         )
@@ -646,7 +646,7 @@ async def get_check_progress(
         .select_from(SMTPAccountModel)
         .where(
             and_(
-                SMTPAccountModel.session_id == session_id,
+                SMTPAccountModel.session_id == workspace_id,
                 SMTPAccountModel.status == SMTPStatus.INVALID.value,
             )
         )

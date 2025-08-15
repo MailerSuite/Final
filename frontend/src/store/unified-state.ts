@@ -213,8 +213,8 @@ export interface SessionActions {
   
   // Proxy management
   setActiveProxy: (proxy: unknown) => void
-  loadActiveProxy: (sessionId: string) => Promise<void>
-  updateActiveProxy: (sessionId: string, proxyId: string) => Promise<void>
+  loadActiveProxy: (workspaceId: string) => Promise<void>
+  updateActiveProxy: (workspaceId: string, proxyId: string) => Promise<void>
 }
 
 export interface UIActions {
@@ -507,11 +507,11 @@ export const useUnifiedStore = create<UnifiedStore>()(
           state.session.activeProxy = proxy
         }),
 
-        loadActiveProxy: async (sessionId) => {
+        loadActiveProxy: async (workspaceId) => {
           // Implementation here
         },
 
-        updateActiveProxy: async (sessionId, proxyId) => {
+        updateActiveProxy: async (workspaceId, proxyId) => {
           // Implementation here
         },
 

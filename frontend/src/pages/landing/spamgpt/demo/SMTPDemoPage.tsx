@@ -2,6 +2,7 @@ import React from 'react';
 import { LandingHeader, LandingFooter } from '@/components/landing';
 import { BackgroundEffects } from '@/components/ui/BackgroundEffects';
 import SMTPCheckerPage from '@/pages/finalui2/pages/SMTPCheckerPage';
+import DemoSandbox from '@/components/demo/DemoSandbox';
 
 const SMTPDemoPage: React.FC = () => {
     return (
@@ -10,7 +11,9 @@ const SMTPDemoPage: React.FC = () => {
             <div className="relative z-10 flex flex-col min-h-screen">
                 <LandingHeader />
                 <main className="flex-1">
-                    <SMTPCheckerPage />
+                    <DemoSandbox note="Demo: SMTP tests are simulated; no emails are sent">
+                        <SMTPCheckerPage />
+                    </DemoSandbox>
                 </main>
                 <LandingFooter />
             </div>

@@ -339,34 +339,54 @@ class DatabaseStartupManager:
         """Create default data if tables are empty"""
         try:
             async with engine.begin() as conn:
-                # Check if users table is empty and create default admin with UUID
-                result = await conn.execute(text("SELECT COUNT(*) FROM users"))
-                user_count = result.scalar()
+                # Check if specific default users exist
+                result = await conn.execute(
+                    text("SELECT email FROM users WHERE email IN ('first@admin.com', 'first@client.com')")
+                )
+                existing_emails = {row[0] for row in result.fetchall()}
 
-            if user_count == 0:
-                # Create default admin user using ORM to avoid DB-specific UUID funcs
+            # Create missing default users
+            if 'first@admin.com' not in existing_emails or 'first@client.com' not in existing_emails:
+                # Create both admin and client users using ORM to avoid DB-specific UUID funcs
+                # Note: These are temporary passwords that should be changed immediately
                 admin_password_hashed = get_password_hash("admin123")
+                client_password_hashed = get_password_hash("client123")
+                
                 try:
                     async with async_session() as session:
                         from models.base import User  # local import to ensure model loaded
-                        admin = User(
-                            email="admin@sgpt.dev",
-                            password_hash=admin_password_hashed,
-                            is_active=True,
-                            is_admin=True,
-                        )
-                        session.add(admin)
+                        
+                        # Create admin user if not exists
+                        if 'first@admin.com' not in existing_emails:
+                            admin = User(
+                                email="first@admin.com",
+                                password_hash=admin_password_hashed,
+                                is_active=True,
+                                is_admin=True,
+                            )
+                            session.add(admin)
+                            self.log_operation(
+                                "Default Data", "SUCCESS", "Created admin user: first@admin.com"
+                            )
+                        
+                        # Create client user if not exists
+                        if 'first@client.com' not in existing_emails:
+                            client = User(
+                                email="first@client.com",
+                                password_hash=client_password_hashed,
+                                is_active=True,
+                                is_admin=False,
+                            )
+                            session.add(client)
+                            self.log_operation(
+                                "Default Data", "SUCCESS", "Created client user: first@client.com"
+                            )
+                        
                         await session.commit()
-                    self.log_operation(
-                        "Default Data", "SUCCESS", "Created default admin user"
-                    )
+                    
                 except Exception as e:
                     self.log_operation(
-                        "Default Data", "ERROR", "Failed to create default admin user via ORM", str(e)
-                    )
-
-                    self.log_operation(
-                        "Default Data", "SUCCESS", "Created default admin user"
+                        "Default Data", "ERROR", "Failed to create default users via ORM", str(e)
                     )
 
                 return True

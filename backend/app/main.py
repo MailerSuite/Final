@@ -94,7 +94,9 @@ CONSOLIDATION_ENABLED = True
 from routers import (
     auth,           # ✅ Authentication (JWT, 2FA, sessions)
     security,       # ✅ Security monitoring
-    sessions,       # ✅ Session management
+    # sessions,       # ❌ Removed - consolidated into workspaces
+    smtp,           # ✅ SMTP management (workspace-based)
+    imap,           # ✅ IMAP management (workspace-based)
     dashboard,      # ✅ Core dashboard
     system,         # ✅ System utilities
     debug,          # ✅ Debug tools
@@ -706,23 +708,23 @@ async def _add_correlation_id(request: Request, call_next):
 # ✅ CORE AUTHENTICATION & SECURITY (Always preserved)
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])
 app.include_router(security.router, prefix="/api/v1/security", tags=["Security"])
-app.include_router(sessions.router, prefix="/api/v1/sessions", tags=["Sessions"])
+# sessions router removed - functionality consolidated into workspaces router
 
-# 🔄 EMAIL MANAGEMENT - UNIFIED SMTP + UNIFIED IMAP
-# Replace legacy individual routers with consolidated ones for clean Swagger
+# 🔄 EMAIL MANAGEMENT - CLEAN WORKSPACE-BASED ROUTERS
+# Use individual routers with workspace-based endpoints (/{workspace_id}/accounts)
 try:
-    from routers.consolidated.unified_smtp_router import router as unified_smtp_router
-    app.include_router(unified_smtp_router, prefix="/api/v1/smtp", tags=["Email Management"])
-    logger.info("✅ CONSOLIDATED: 6 SMTP routers → 1 unified SMTP router")
+    from routers import smtp
+    app.include_router(smtp.router, prefix="/api/v1/smtp", tags=["SMTP Management"])
+    logger.info("✅ CLEAN: SMTP router with workspace-based endpoints mounted")
 except Exception as e:
-    logger.error(f"❌ Unified SMTP router could not be mounted: {e}")
+    logger.error(f"❌ SMTP router could not be mounted: {e}")
 
 try:
-    from routers.consolidated.unified_imap_router import router as unified_imap_router
-    app.include_router(unified_imap_router, prefix="/api/v1/imap", tags=["Email Management"])
-    logger.info("✅ CONSOLIDATED: 6 IMAP routers → 1 unified IMAP router")
+    from routers import imap
+    app.include_router(imap.router, prefix="/api/v1/imap", tags=["IMAP Management"])
+    logger.info("✅ CLEAN: IMAP router with workspace-based endpoints mounted")
 except Exception as e:
-    logger.error(f"❌ Unified IMAP router could not be mounted: {e}")
+    logger.error(f"❌ IMAP router could not be mounted: {e}")
 
 # 🔄 ADMINISTRATION - UNIFIED
 try:

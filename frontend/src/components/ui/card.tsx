@@ -16,6 +16,9 @@ const cardVariants = cva(
         interactive: "border-border shadow-sm gap-4 p-6 cursor-pointer hover:shadow-md hover:-translate-y-0.5",
         compact: "border-border shadow-sm gap-3 p-4",
         spacious: "border-border shadow-sm gap-8 p-8",
+        gradient: "border-border shadow-sm gap-4 p-6 gradient-overlay",
+        "gradient-subtle": "border-border shadow-sm gap-4 p-6 gradient-overlay-subtle",
+        "gradient-card": "border-border shadow-sm gap-4 p-6 gradient-overlay-card",
       },
       size: {
         sm: "gap-3 p-4",

@@ -118,6 +118,25 @@ The backend uses a **Smart Consolidation Architecture** that attempts to load co
 - **Maintainability**: 86% less code duplication
 - **Compatibility**: Seamless fallback ensures stability
 
+### Security & Access Control
+
+The application implements **role-based access control** with secure separation between admin and client users:
+
+#### **Default Accounts** (Created Automatically on Startup)
+- **Admin Account**: `first@admin.com` (password: `admin123` - **CHANGE IMMEDIATELY**)
+- **Client Account**: `first@client.com` (password: `client123` - **CHANGE IMMEDIATELY**)
+
+#### **Access Control Layers**
+1. **Backend Protection**: Admin endpoints require `Depends(require_admin)` dependency
+2. **Frontend Protection**: Admin routes protected by `RouteGuard` with `adminOnly={true}`  
+3. **JWT Security**: User role information embedded in signed tokens (`is_admin` claim)
+4. **Password Security**: System detects default passwords and forces immediate change
+
+#### **Admin vs Client Separation**
+- **Admin Users**: Access `/admin/*` routes and admin API endpoints (`/api/v1/admin/*`)
+- **Client Users**: Access client dashboard and client-specific endpoints
+- **Cross-Access Blocked**: Admin users cannot access client-only endpoints and vice versa
+
 ### Frontend Architecture
 
 - **Single-Page Application** - React 19 with TypeScript

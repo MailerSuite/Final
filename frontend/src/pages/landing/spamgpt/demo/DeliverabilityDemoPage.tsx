@@ -2,6 +2,7 @@ import React from 'react';
 import { LandingHeader, LandingFooter } from '@/components/landing';
 import { BackgroundEffects } from '@/components/ui/BackgroundEffects';
 import DeliverabilityDashboard from '@/pages/deliverability/DeliverabilityDashboard';
+import DemoSandbox from '@/components/demo/DemoSandbox';
 
 const DeliverabilityDemoPage: React.FC = () => {
     return (
@@ -10,7 +11,9 @@ const DeliverabilityDemoPage: React.FC = () => {
             <div className="relative z-10 flex flex-col min-h-screen">
                 <LandingHeader />
                 <main className="flex-1">
-                    <DeliverabilityDashboard />
+                    <DemoSandbox note="Demo: deliverability signals are simulated">
+                        <DeliverabilityDashboard />
+                    </DemoSandbox>
                 </main>
                 <LandingFooter />
             </div>

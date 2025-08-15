@@ -20,6 +20,9 @@
     <script src="js/main.js" defer></script>
 </head>
 <body>
+    <!-- Background neural network canvas -->
+    <canvas id="neural-network" aria-hidden="true"></canvas>
+    
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav-container">
@@ -33,7 +36,10 @@
                 <li><a href="#pricing" class="nav-link">Pricing</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
             </ul>
-            <button class="nav-cta">Get Started</button>
+            <div class="nav-buttons">
+                <button class="nav-login" onclick="redirectToLogin()">Login</button>
+                <button class="nav-cta" onclick="scrollToSection('pricing')">Get Started</button>
+            </div>
         </div>
     </nav>
     
@@ -48,7 +54,7 @@
                 </div>
                 <h1 class="hero-title">
                     <span class="gradient-text">Next-Gen Email</span><br>
-                    <span class="typewriter">Intelligence Platform</span>
+                    <span class="typewriter" data-phrases='["Intelligence Platform","Deliverability Engine","Orchestrator for Scale"]'>Intelligence Platform</span>
                 </h1>
                 <p class="hero-description">
                     Harness the power of AI to revolutionize your email infrastructure. 
@@ -80,7 +86,7 @@
                 </div>
             </div>
             <div class="hero-visual">
-                <div class="ai-brain">
+                <div class="ai-brain float">
                     <div class="brain-core"></div>
                     <div class="brain-ring ring-1"></div>
                     <div class="brain-ring ring-2"></div>
@@ -94,6 +100,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="scroll-indicator" aria-hidden="true">
+            <span></span>
         </div>
     </section>
     
@@ -216,25 +225,16 @@
                 </div>
                 
                 <div class="demo-card">
-                    <h3>Real-time Metrics</h3>
-                    <div class="metrics-grid">
-                        <div class="metric">
-                            <span class="metric-label">Delivery Rate</span>
-                            <span class="metric-value">98.7%</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-label">Active Servers</span>
-                            <span class="metric-value">1,234</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-label">Emails Sent Today</span>
-                            <span class="metric-value">2.4M</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-label">Avg Response Time</span>
-                            <span class="metric-value">245ms</span>
-                        </div>
+                    <h3>Interactive App Demo</h3>
+                    <div class="demo-toolbar">
+                        <button class="demo-switch active" data-demo="animation">Animations</button>
+                        <button class="demo-switch" data-demo="optimizer">Optimizer</button>
+                        <button class="demo-switch" data-demo="analytics">Analytics</button>
                     </div>
+                    <div class="demo-embed">
+                        <iframe id="demo-iframe" title="SpamGPT Demo" loading="lazy" referrerpolicy="no-referrer" allow="clipboard-read; clipboard-write; fullscreen;" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" src="about:blank"></iframe>
+                    </div>
+                    <p class="demo-note">Tip: Run the app at <code>http://localhost:4000</code> during development. The demo will auto-load.</p>
                 </div>
             </div>
         </div>
@@ -265,7 +265,7 @@
                         <li><i class="fas fa-check"></i> Basic analytics</li>
                         <li><i class="fas fa-check"></i> Email support</li>
                     </ul>
-                    <button class="pricing-cta">Get Started</button>
+                    <button class="pricing-cta" onclick="redirectToSignup()">Get Started</button>
                 </div>
                 
                 <div class="pricing-card featured">
@@ -284,7 +284,7 @@
                         <li><i class="fas fa-check"></i> Priority support</li>
                         <li><i class="fas fa-check"></i> AI optimization</li>
                     </ul>
-                    <button class="pricing-cta">Get Started</button>
+                    <button class="pricing-cta" onclick="redirectToSignup()">Get Started</button>
                 </div>
                 
                 <div class="pricing-card">
@@ -328,7 +328,7 @@
                         <span class="stat-number">50+</span>
                         <span class="stat-label">Countries Served</span>
                     </div>
-                    <div class="stat>
+                    <div class="about-stat">
                         <span class="stat-number">99.9%</span>
                         <span class="stat-label">Uptime</span>
                     </div>

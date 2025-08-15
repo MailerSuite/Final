@@ -2,6 +2,7 @@ import React from 'react';
 import { LandingHeader, LandingFooter } from '@/components/landing';
 import { BackgroundEffects } from '@/components/ui/BackgroundEffects';
 import { AIAssistant } from '@/pages/finalui2/pages/AIAssistant';
+import DemoSandbox from '@/components/demo/DemoSandbox';
 
 const AssistantDemoPage: React.FC = () => {
     return (
@@ -10,7 +11,9 @@ const AssistantDemoPage: React.FC = () => {
             <div className="relative z-10 flex flex-col min-h-screen">
                 <LandingHeader />
                 <main className="flex-1">
-                    <AIAssistant />
+                    <DemoSandbox note="Demo: assistant tools are restricted">
+                        <AIAssistant />
+                    </DemoSandbox>
                 </main>
                 <LandingFooter />
             </div>

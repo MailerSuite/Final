@@ -14,7 +14,7 @@ interface ResourceCountsState {
   proxies: number | null
   leads: number | null
   loading: boolean
-  fetchCounts: (sessionId: string) => Promise<void>
+  fetchCounts: (workspaceId: string) => Promise<void>
 }
 
 const useResourceCountsStore = create<ResourceCountsState>((set) => ({
@@ -24,15 +24,15 @@ const useResourceCountsStore = create<ResourceCountsState>((set) => ({
   proxies: null,
   leads: null,
   loading: false,
-  fetchCounts: async (sessionId: string) => {
+  fetchCounts: async (workspaceId: string) => {
     set({ loading: true })
     try {
       const [smtpRes, imapRes, proxyRes, templateRes, leadBases] =
         await Promise.all([
-          smtpApi.list(Number(sessionId)).then((r) => r.data),
-          imapApi.list(sessionId).then((r) => r.data),
-          proxyApi.list(sessionId).then((r) => r.data),
-          templateApi.list({ session_id: sessionId }).then((r) => r.data),
+          smtpApi.list(Number(workspaceId)).then((r) => r.data),
+          imapApi.list(workspaceId).then((r) => r.data),
+          proxyApi.list(workspaceId).then((r) => r.data),
+          templateApi.list({ session_id: workspaceId }).then((r) => r.data),
           leadBaseApi.list('').then((r) => r.data),
         ])
       const activeCount = smtpRes.filter(

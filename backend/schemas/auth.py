@@ -82,7 +82,7 @@ class RefreshTokenRequest(BaseModel):
 
 
 class TokenResponse(BaseModel):
-    """Enhanced token response with refresh token."""
+    """Enhanced token response with refresh token and security warnings."""
 
     access_token: str
     refresh_token: str = Field(
@@ -96,6 +96,8 @@ class TokenResponse(BaseModel):
     requires_2fa: bool = Field(False, description="Whether 2FA verification is required")
     user_id: str = Field(None, description="User ID for 2FA verification")
     message: str = Field(None, description="Additional message for 2FA flow")
+    security_warning: str = Field(None, description="Security warning message if using default password")
+    requires_password_change: bool = Field(False, description="Whether user should change password immediately")
 
 
 class LoginActivityResponse(BaseModel):

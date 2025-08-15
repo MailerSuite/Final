@@ -47,19 +47,19 @@ router = APIRouter()
 class ImapThreadPoolUpdate(BaseModel):
     thread_pool_id: str
 
-@router.post("/{session_id}/accounts/{account_id}/thread-pool")
+@router.post("/{workspace_id}/accounts/{account_id}/thread-pool")
 async def set_imap_account_thread_pool(
-    session_id: str,
+    workspace_id: str,
     account_id: str,
     payload: ImapThreadPoolUpdate,
     db=Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    await verify_session_access(session_id, current_user.id, db)
+    await verify_session_access(workspace_id, current_user.id, db)
     res = await db.execute(
         "SELECT id FROM imap_accounts WHERE id = $1 AND session_id = $2",
         account_id,
-        session_id,
+        workspace_id,
     )
     if not res:
         raise HTTPException(status_code=404, detail="IMAP account not found")
@@ -67,7 +67,7 @@ async def set_imap_account_thread_pool(
         "UPDATE imap_accounts SET thread_pool_id = $1 WHERE id = $2 AND session_id = $3",
         payload.thread_pool_id,
         account_id,
-        session_id,
+        workspace_id,
     )
     await db.commit()
     return {"message": "IMAP account thread pool updated", "account_id": account_id, "thread_pool_id": payload.thread_pool_id}
@@ -119,12 +119,12 @@ def _normalize_imap_account(account_row: Any) -> IMAPAccountResponse:
 
 
 async def verify_session_access(
-    session_id: str, user_id: str, db: AsyncSession
+    workspace_id: str, user_id: str, db: AsyncSession
 ):
     try:
         session = result = await db.execute(
             "SELECT id FROM sessions WHERE id = $1 AND user_id = $2",
-            session_id,
+            workspace_id,
             user_id,
         )
     except Exception:
@@ -136,20 +136,20 @@ async def verify_session_access(
         )
 
 
-@router.post("/{session_id}/accounts", response_model=IMAPAccountResponse)
+@router.post("/{workspace_id}/accounts", response_model=IMAPAccountResponse)
 async def create_imap_account(
-    session_id: str,
+    workspace_id: str,
     imap: IMAPAccountCreate,
     background_tasks: BackgroundTasks,
     db=Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    await verify_session_access(session_id, current_user.id, db)
+    await verify_session_access(workspace_id, current_user.id, db)
     account_id = str(uuid.uuid4())
     account = result = await db.execute(
         "INSERT INTO imap_accounts (id, session_id, imap_server, imap_port, email, password)\n           VALUES ($1, $2, $3, $4, $5, $6)\n           RETURNING id, session_id, imap_server, imap_port, email, password, status,\n                     last_checked, response_time, error_message, created_at",
         account_id,
-        session_id,
+        workspace_id,
         imap.server,
         imap.port,
         imap.email,
@@ -159,16 +159,16 @@ async def create_imap_account(
     return _normalize_imap_account(account)
 
 
-@router.get("/{session_id}/accounts", response_model=list[IMAPAccountResponse])
+@router.get("/{workspace_id}/accounts", response_model=list[IMAPAccountResponse])
 async def list_imap_accounts(
-    session_id: str,
+    workspace_id: str,
     status_filter: str = None,
     db=Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    await verify_session_access(session_id, current_user.id, db)
+    await verify_session_access(workspace_id, current_user.id, db)
     query = "SELECT id, session_id, email, password, imap_server, imap_port, use_ssl, oauth_provider, access_token, refresh_token, token_expires_at, status, is_checked, last_checked, response_time, inbox_count, error_message, created_at FROM imap_accounts WHERE session_id = $1"
-    params = [session_id]
+    params = [workspace_id]
     if status_filter:
         query += " AND status = $2"
         params.append(status_filter)
@@ -183,26 +183,26 @@ async def list_imap_accounts(
     return [_normalize_imap_account(account) for account in account_dicts]
 
 
-@router.get("/{session_id}/folders", response_model=FolderListResponse)
-async def list_folders(session_id: str, db=Depends(get_db)):
+@router.get("/{workspace_id}/folders", response_model=FolderListResponse)
+async def list_folders(workspace_id: str, db=Depends(get_db)):
     """List folders for an active IMAP session."""
     imap_service = IMAPService(db)
-    folders = await imap_service.list_imap_folders(session_id)
+    folders = await imap_service.list_imap_folders(workspace_id)
     return {"folders": folders}
 
 
 @router.put(
-    "/{session_id}/accounts/{account_id}", response_model=IMAPAccountResponse
+    "/{workspace_id}/accounts/{account_id}", response_model=IMAPAccountResponse
 )
 async def update_imap_account(
-    session_id: str,
+    workspace_id: str,
     account_id: str,
     imap: IMAPAccountUpdate,
     db=Depends(get_db),
     current_user=Depends(get_current_user),
 ):
     """Update existing IMAP account."""
-    await verify_session_access(session_id, current_user.id, db)
+    await verify_session_access(workspace_id, current_user.id, db)
     fields = []
     values = []
     if imap.server is not None:
@@ -235,7 +235,7 @@ async def update_imap_account(
         values.append(imap.response_time)
     if not fields:
         raise HTTPException(status_code=400, detail="No fields to update")
-    values.extend([account_id, session_id])
+    values.extend([account_id, workspace_id])
     query = f"\n        UPDATE imap_accounts\n        SET {', '.join(fields)}\n        WHERE id = ${len(values) - 1} AND session_id = ${len(values)}\n        RETURNING id, session_id, imap_server, imap_port, email, password, status,\n                  last_checked, response_time, inbox_count, error_message, created_at\n    "
     try:
         account = result = await db.execute(query, *values)
@@ -253,15 +253,15 @@ async def update_imap_account(
 
 
 @router.delete(
-    "/{session_id}/accounts/{account_id}", response_model=MessageResponse
+    "/{workspace_id}/accounts/{account_id}", response_model=MessageResponse
 )
 async def delete_imap_account(
-    session_id: str,
+    workspace_id: str,
     account_id: str,
     db=Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    await verify_session_access(session_id, current_user.id, db)
+    await verify_session_access(workspace_id, current_user.id, db)
     await db.execute(
         "DELETE FROM imap_messages WHERE folder_id IN (SELECT id FROM imap_folders WHERE imap_account_id = $1)",
         account_id,
@@ -272,7 +272,7 @@ async def delete_imap_account(
     result = await db.execute(
         "DELETE FROM imap_accounts WHERE id = $1 AND session_id = $2",
         account_id,
-        session_id,
+        workspace_id,
     )
     if result == "DELETE 0":
         raise HTTPException(
@@ -454,31 +454,14 @@ async def test_imap_accounts_from_file(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/parse", response_model=SuccessResponse)
-async def parse_imap_list_endpoint(
-    imap_file: UploadFile = File(...),
-) -> SuccessResponse:
-    """Parse IMAP list from file and return parsed accounts"""
-    try:
-        content = await imap_file.read()
-        content_str = content.decode("utf-8")
-        imap_accounts = parse_imap_list(content_str)
-        return SuccessResponse(
-            success=True,
-            message=f"Parsed {len(imap_accounts)} IMAP accounts",
-            data={
-                "accounts": [account.dict() for account in imap_accounts],
-                "count": len(imap_accounts),
-            },
-        )
-    except Exception as e:
-        logger.error(f"IMAP parse error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+# Removed generic "/parse" endpoint from IMAP router
+# File parsing functionality should be part of the specific upload endpoints
+# Use /{workspace_id}/bulk-upload-from-email instead which includes parsing
 
 
-@router.post("/{session_id}/check", response_model=MessageResponse)
+@router.post("/{workspace_id}/check", response_model=MessageResponse)
 async def check_imap_accounts(
-    session_id: str,
+    workspace_id: str,
     background_tasks: BackgroundTasks,
     account_ids: list[str] = None,
     timeout: int = 30,
@@ -486,7 +469,7 @@ async def check_imap_accounts(
     current_user=Depends(get_current_user),
     response: Response = None,
 ):
-    await verify_session_access(session_id, current_user.id, db)
+    await verify_session_access(workspace_id, current_user.id, db)
     if response is not None:
         response.headers["Link"] = "</api/v1/imap/test>; rel=alternate, </api/v1/imap/test-file>; rel=alternate, </api/v1/imap/test-batch>; rel=alternate"
         response.headers["Deprecation"] = "true"
@@ -494,15 +477,15 @@ async def check_imap_accounts(
         accounts = result = await db.execute(
             "SELECT id, session_id, email, password, imap_server, imap_port, use_ssl, oauth_provider, access_token, refresh_token, token_expires_at, status, is_checked, last_checked, error_message, created_at FROM imap_accounts WHERE id = ANY($1) AND session_id = $2",
             account_ids,
-            session_id,
+            workspace_id,
         )
     else:
         accounts = result = await db.execute(
             "SELECT id, session_id, email, password, imap_server, imap_port, use_ssl, oauth_provider, access_token, refresh_token, token_expires_at, status, is_checked, last_checked, error_message, created_at FROM imap_accounts WHERE session_id = $1 AND status = 'none'",
-            session_id,
+            workspace_id,
         )
     background_tasks.add_task(
-        check_imap_accounts_background, accounts, timeout, session_id, db
+        check_imap_accounts_background, accounts, timeout, workspace_id, db
     )
     return MessageResponse(
         message=f"Started checking {len(accounts)} IMAP accounts"
@@ -510,7 +493,7 @@ async def check_imap_accounts(
 
 
 async def check_imap_accounts_background(
-    accounts: list[dict], timeout: int, session_id: str, db: AsyncSession
+    accounts: list[dict], timeout: int, workspace_id: str, db: AsyncSession
 ):
     """Background task to check IMAP accounts"""
     total = len(accounts)
@@ -555,7 +538,7 @@ async def check_imap_accounts_background(
                     "inbox_count": result.inbox_count,
                 },
                 duration=asyncio.get_event_loop().time() - start_ts,
-                session_id=session_id,
+                session_id=workspace_id,
             )
             checked += 1
             if result.status == IMAPStatus.VALID:
@@ -574,16 +557,16 @@ async def check_imap_accounts_background(
 
 
 @router.post(
-    "/{session_id}/bulk-upload-from-email", response_model=MessageResponse
+    "/{workspace_id}/bulk-upload-from-email", response_model=MessageResponse
 )
 async def bulk_upload_from_email(
-    session_id: str,
+    workspace_id: str,
     email_data: str,
     background_tasks: BackgroundTasks,
     db=Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    await verify_session_access(session_id, current_user.id, db)
+    await verify_session_access(workspace_id, current_user.id, db)
     accounts = []
     lines = email_data.strip().split("\n")
     for line in lines:
@@ -615,7 +598,7 @@ async def bulk_upload_from_email(
         values.extend(
             [
                 account_id,
-                session_id,
+                workspace_id,
                 account["server"],
                 account["port"],
                 account["email"],
@@ -636,46 +619,13 @@ async def bulk_upload_from_email(
     )
 
 
-@router.post("/send-test-email", status_code=status.HTTP_202_ACCEPTED)
-async def send_test_email(
-    payload: IMAPSendTestEmailRequest, db=Depends(get_db)
-):
-    if not payload.imap_account_id and (not payload.recipient_override):
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="imap_account_id or recipient_override required",
-        )
-    account_id = payload.imap_account_id
-    if account_id is None:
-        account = result = await db.execute(
-            "SELECT id FROM imap_accounts WHERE status='checked' ORDER BY RANDOM() LIMIT 1"
-        )
-        if not account:
-            raise HTTPException(
-                status_code=404, detail="No IMAP accounts available"
-            )
-        account_id = account["id"]
-    job_id = uuid.uuid4()
-    imap_tasks.send_test_email_bulk.delay(
-        str(job_id),
-        str(payload.template_id),
-        str(account_id),
-        payload.recipient_override,
-        payload.emails_per_item,
-    )
-    return {"id": job_id, "status": "queued"}
+# Removed nonsensical "send-test-email" endpoint from IMAP router
+# Email sending belongs in SMTP router, not IMAP
+# This endpoint was confusing because IMAP is for receiving emails, not sending them
 
 
-@router.post("/start", response_model=MessageResponse)
-async def start_imap_test(cfg: IMAPTestConfig):
-    """Start IMAP login testing."""
-    try:
-        await imap_test_service.start(
-            cfg.server, cfg.port, cfg.email, cfg.password
-        )
-    except RuntimeError as exc:
-        raise HTTPException(status_code=400, detail=str(exc))
-    return MessageResponse(message="started")
+# Removed vague "/start" endpoint from IMAP router
+# Use specific workspace-based endpoints like /{workspace_id}/check instead
 
 
 @router.post("/stop", response_model=MessageResponse)

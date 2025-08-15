@@ -40,12 +40,6 @@ export const RouteGuard = ({
   // Use prop userData if provided, otherwise use store userData
   const userData = propUserData || storeUserData;
 
-  // DEVELOPMENT MODE: Bypass all authentication checks
-  if (isAuthBypassed()) {
-    console.log('🔓 DEV MODE: Bypassing authentication - allowing access to all pages');
-    return <Outlet />;
-  }
-
   // Navigation loop detection
   useEffect(() => {
     const currentPath = location.pathname;
@@ -146,6 +140,12 @@ export const RouteGuard = ({
   // Rate limiting check
   if (isCheckingLimits || isLoading) {
     return <PageLoader />;
+  }
+
+  // DEVELOPMENT MODE: Bypass all authentication checks
+  if (isAuthBypassed()) {
+    console.log('🔓 DEV MODE: Bypassing authentication - allowing access to all pages');
+    return <Outlet />;
   }
 
   // If auth is required but user is not authenticated

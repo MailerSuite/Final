@@ -43,12 +43,6 @@ export const StableRouteGuard = ({
   // Use prop userData if provided, otherwise use store userData
   const userData = propUserData || storeUserData;
 
-  // DEVELOPMENT MODE: Bypass all authentication checks
-  if (isAuthBypassed()) {
-    console.log('🔓 DEV MODE: Bypassing authentication - allowing access to all pages');
-    return <Outlet />;
-  }
-
   // Effect for rate limiting check
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -81,6 +75,12 @@ export const StableRouteGuard = ({
   // Rate limiting check
   if (isCheckingLimits || isLoading) {
     return <PageLoader />;
+  }
+
+  // DEVELOPMENT MODE: Bypass all authentication checks
+  if (isAuthBypassed()) {
+    console.log('🔓 DEV MODE: Bypassing authentication - allowing access to all pages');
+    return <Outlet />;
   }
 
   // Dev bypass: allow unrestricted access in development

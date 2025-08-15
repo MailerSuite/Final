@@ -29,10 +29,10 @@ export interface DeleteSessionResponse {
 }
 
 export const deleteSession = async (
-  sessionId: string,
+  workspaceId: string,
 ): Promise<DeleteSessionResponse> => {
   const response = await apiClient.delete<DeleteSessionResponse>(
-    `/api/v1/sessions/${sessionId}`,
+    `/api/v1/sessions/${workspaceId}`,
   )
   return response.data as DeleteSessionResponse
 }

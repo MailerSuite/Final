@@ -8,7 +8,8 @@ interface Props extends React.ComponentProps<typeof Input> {
 }
 
 export default function TextField({ label, id, error, className, ...props }: Props) {
-  const inputId = id || useId()
+  const generatedId = useId()
+  const inputId = id || generatedId
   return (
     <div className={cn('space-y-1', className)}>
       <label htmlFor={inputId} className="text-sm font-medium">

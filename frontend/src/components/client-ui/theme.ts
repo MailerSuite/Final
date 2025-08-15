@@ -1,3 +1,4 @@
+import React from 'react'
 import { colorTokens, radiusTokens } from './tokens'
 
 export const applyClientTheme = (root: HTMLElement = document.documentElement) => {
@@ -14,10 +15,14 @@ export const applyClientTheme = (root: HTMLElement = document.documentElement) =
     root.style.setProperty('--radius', radiusTokens.md)
 }
 
-export const ClientThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface ClientThemeProviderProps {
+    children: React.ReactNode
+}
+
+export const ClientThemeProvider: React.FC<ClientThemeProviderProps> = ({ children }) => {
     React.useEffect(() => {
         applyClientTheme()
     }, [])
-    return <>{ children } </>
+    return <>{children}</>
 }
 

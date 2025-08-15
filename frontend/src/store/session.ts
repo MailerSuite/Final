@@ -25,9 +25,9 @@ interface Session {
     addSession: (name: string) => void
     getSessions: (abortSignal?: AbortSignal) => void
     removeSession: (id: string) => void
-    getActiveProxy: (sessionId: string) => void
+    getActiveProxy: (workspaceId: string) => void
     setActiveProxy: (
-        sessionId: string,
+        workspaceId: string,
         proxyId: string,
         firewallEnabled: boolean
     ) => void
@@ -162,9 +162,9 @@ const useSessionStore = create<Session>()(
                     // Delete session error
                 }
             },
-            getActiveProxy: async (sessionId: string) => {
+            getActiveProxy: async (workspaceId: string) => {
                 try {
-                    const data = await fetchActiveProxyApi(sessionId)
+                    const data = await fetchActiveProxyApi(workspaceId)
                     set({ activeProxy: data })
                 } catch (error: unknown) {
                     // Fetch active proxy error
@@ -172,12 +172,12 @@ const useSessionStore = create<Session>()(
                 }
             },
             setActiveProxy: async (
-                sessionId: string,
+                workspaceId: string,
                 proxyId: string,
                 firewallEnabled: boolean,
             ) => {
                 try {
-                    const data = await updateActiveProxyApi(sessionId, proxyId)
+                    const data = await updateActiveProxyApi(workspaceId, proxyId)
                     if (data) {
                         set({
                             activeProxy: {

@@ -36,20 +36,22 @@ export function PlanGate({
 }: PlanGateProps) {
   const { userPlan, upgradeInfo, isLoading } = usePlan()
   
-  // Determine which hook to use based on props
+  // Call all hooks unconditionally
+  const featureAccess = useFeatureAccess(feature || '')
+  const featuresAccess = useFeaturesAccess(features || [], requireAll)
+  const tierAccess = usePlanTier(planTier || '')
+  
+  // Determine which result to use based on props
   let hasAccess = false
   let loadingState = isLoading
   
   if (feature) {
-    const featureAccess = useFeatureAccess(feature)
     hasAccess = featureAccess.hasAccess
     loadingState = featureAccess.isLoading
   } else if (features) {
-    const featuresAccess = useFeaturesAccess(features, requireAll)
     hasAccess = featuresAccess.hasAccess
     loadingState = featuresAccess.isLoading
   } else if (planTier) {
-    const tierAccess = usePlanTier(planTier)
     hasAccess = tierAccess.hasAccess
     loadingState = tierAccess.isLoading
   }

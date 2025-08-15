@@ -48,6 +48,7 @@ export * from './floating-action-button';
 export * from './BackgroundEffects';
 export * from './loading-states';
 export * from './language-selector';
+export * from './gradient-overlay';
 export * from './multi-select';
 export * from './BangText';
 

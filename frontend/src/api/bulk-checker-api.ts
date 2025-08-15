@@ -40,14 +40,14 @@ interface MessageResponse {
 
 export const bulkCheckerApi = {
   // SMTP Bulk Checker endpoints
-  async startSMTPBulkCheck(sessionId: string, request: BulkCheckRequest): Promise<BulkCheckResponse> {
-    const response = await apiClient.post(`/api/v1/bulk-checker/${sessionId}/smtp/bulk`, request);
+  async startSMTPBulkCheck(workspaceId: string, request: BulkCheckRequest): Promise<BulkCheckResponse> {
+    const response = await apiClient.post(`/api/v1/bulk-checker/${workspaceId}/smtp/bulk`, request);
     return response.data;
   },
 
-  async startSMTPFileCheck(sessionId: string, formData: FormData): Promise<BulkCheckResponse> {
+  async startSMTPFileCheck(workspaceId: string, formData: FormData): Promise<BulkCheckResponse> {
     const response = await apiClient.post(
-      `/api/v1/bulk-checker/${sessionId}/smtp/bulk-file`,
+      `/api/v1/bulk-checker/${workspaceId}/smtp/bulk-file`,
       formData,
       {
         headers: {
@@ -58,30 +58,30 @@ export const bulkCheckerApi = {
     return response.data;
   },
 
-  async getSMTPProgress(sessionId: string, jobId: string): Promise<CheckProgressResponse> {
-    const response = await apiClient.get(`/api/v1/bulk-checker/${sessionId}/smtp/progress/${jobId}`);
+  async getSMTPProgress(workspaceId: string, jobId: string): Promise<CheckProgressResponse> {
+    const response = await apiClient.get(`/api/v1/bulk-checker/${workspaceId}/smtp/progress/${jobId}`);
     return response.data;
   },
 
-  async stopSMTPCheck(sessionId: string, jobId: string): Promise<MessageResponse> {
-    const response = await apiClient.post(`/api/v1/bulk-checker/${sessionId}/smtp/stop/${jobId}`);
+  async stopSMTPCheck(workspaceId: string, jobId: string): Promise<MessageResponse> {
+    const response = await apiClient.post(`/api/v1/bulk-checker/${workspaceId}/smtp/stop/${jobId}`);
     return response.data;
   },
 
-  async getSMTPResults(sessionId: string, jobId: string): Promise<unknown> {
-    const response = await apiClient.get(`/api/v1/bulk-checker/${sessionId}/smtp/results/${jobId}`);
+  async getSMTPResults(workspaceId: string, jobId: string): Promise<unknown> {
+    const response = await apiClient.get(`/api/v1/bulk-checker/${workspaceId}/smtp/results/${jobId}`);
     return response.data;
   },
 
   // IMAP Bulk Checker endpoints
-  async startIMAPBulkCheck(sessionId: string, request: Omit<BulkCheckRequest, 'enable_inbox_test'>): Promise<BulkCheckResponse> {
-    const response = await apiClient.post(`/api/v1/bulk-checker/${sessionId}/imap/bulk`, request);
+  async startIMAPBulkCheck(workspaceId: string, request: Omit<BulkCheckRequest, 'enable_inbox_test'>): Promise<BulkCheckResponse> {
+    const response = await apiClient.post(`/api/v1/bulk-checker/${workspaceId}/imap/bulk`, request);
     return response.data;
   },
 
-  async startIMAPFileCheck(sessionId: string, formData: FormData): Promise<BulkCheckResponse> {
+  async startIMAPFileCheck(workspaceId: string, formData: FormData): Promise<BulkCheckResponse> {
     const response = await apiClient.post(
-      `/api/v1/bulk-checker/${sessionId}/imap/bulk-file`,
+      `/api/v1/bulk-checker/${workspaceId}/imap/bulk-file`,
       formData,
       {
         headers: {
@@ -92,18 +92,18 @@ export const bulkCheckerApi = {
     return response.data;
   },
 
-  async getIMAPProgress(sessionId: string, jobId: string): Promise<CheckProgressResponse> {
-    const response = await apiClient.get(`/api/v1/bulk-checker/${sessionId}/imap/progress/${jobId}`);
+  async getIMAPProgress(workspaceId: string, jobId: string): Promise<CheckProgressResponse> {
+    const response = await apiClient.get(`/api/v1/bulk-checker/${workspaceId}/imap/progress/${jobId}`);
     return response.data;
   },
 
-  async stopIMAPCheck(sessionId: string, jobId: string): Promise<MessageResponse> {
-    const response = await apiClient.post(`/api/v1/bulk-checker/${sessionId}/imap/stop/${jobId}`);
+  async stopIMAPCheck(workspaceId: string, jobId: string): Promise<MessageResponse> {
+    const response = await apiClient.post(`/api/v1/bulk-checker/${workspaceId}/imap/stop/${jobId}`);
     return response.data;
   },
 
-  async getIMAPResults(sessionId: string, jobId: string): Promise<unknown> {
-    const response = await apiClient.get(`/api/v1/bulk-checker/${sessionId}/imap/results/${jobId}`);
+  async getIMAPResults(workspaceId: string, jobId: string): Promise<unknown> {
+    const response = await apiClient.get(`/api/v1/bulk-checker/${workspaceId}/imap/results/${jobId}`);
     return response.data;
   },
 }; 

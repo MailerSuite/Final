@@ -26,7 +26,7 @@ interface CampaignState {
   isLoading: boolean
   draft: CampaignDraft
   setCampaigns: (campaigns: EmailCampaign[]) => void
-  getCampaigns: (sessionId: string) => Promise<void>
+  getCampaigns: (workspaceId: string) => Promise<void>
   updateDraft: (values: Partial<CampaignDraft>) => void
   clearDraft: () => void
 }
@@ -56,10 +56,10 @@ const useCampaignStore = create<CampaignState>()(
       isLoading: false,
       draft: { ...defaultDraft },
       setCampaigns: (campaigns) => set({ campaigns }),
-      getCampaigns: async (sessionId) => {
+      getCampaigns: async (workspaceId) => {
         set({ isLoading: true })
         try {
-          const { data } = await campaignsApi.list(sessionId)
+          const { data } = await campaignsApi.list(workspaceId)
           set({ campaigns: Array.isArray(data) ? data : [] })
         } catch (err) {
           console.error(err)

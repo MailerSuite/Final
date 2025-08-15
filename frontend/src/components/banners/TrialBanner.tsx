@@ -25,14 +25,14 @@ function useDismissState(endsOnIso: string) {
 }
 
 export const TrialBanner: React.FC = () => {
+  const { isTrialActive, daysLeft, trialEndsOn } = useTrial();
+  const endsOnIso = React.useMemo(() => trialEndsOn.toISOString(), [trialEndsOn]);
+  const { dismissed, dismiss } = useDismissState(endsOnIso);
+
   // Disable in dev mode to avoid any potential issues
   if (import.meta.env.DEV) {
     return null;
   }
-
-  const { isTrialActive, daysLeft, trialEndsOn } = useTrial();
-  const endsOnIso = React.useMemo(() => trialEndsOn.toISOString(), [trialEndsOn]);
-  const { dismissed, dismiss } = useDismissState(endsOnIso);
 
   if (!isTrialActive || dismissed) return null;
 

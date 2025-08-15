@@ -142,10 +142,10 @@ export default defineConfig(({ mode }) => ({
         changeOrigin: true,
         ws: true,
         configure: (proxy) => {
-          proxy.on('error', (err: Error & { code?: string }, _req: unknown, res: { writeHead?: (statusCode: number, headers?: Record<string, string>) => void; end: (body: string) => void }) => {
+          proxy.on('error', (err: Error & { code?: string }, _req: unknown, res: { writeHead?: (code: number) => void; end: (body: string) => void }) => {
             // Gracefully silence ECONNREFUSED noise and return a JSON error
             if (res.writeHead) {
-              res.writeHead(503, { 'Content-Type': 'application/json' })
+              res.writeHead(503)
             }
             res.end(JSON.stringify({ error: 'Backend unreachable', code: err?.code || 'E_PROXY' }))
           })

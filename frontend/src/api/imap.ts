@@ -3,14 +3,14 @@ import { apiClient } from '@/http/stable-api-client'
 import type { IMAPAccount, IMAPMessage, IMAPRetrieveResponse } from '@/types/imap'
 
 /** List IMAP accounts for a session */
-export const listImap = async (sessionId: string) => {
-  const { data } = await axios.get<IMAPAccount[]>(`/api/v1/imap/${sessionId}/accounts`)
+export const listImap = async (workspaceId: string) => {
+  const { data } = await axios.get<IMAPAccount[]>(`/api/v1/imap/${workspaceId}/accounts`)
   return data
 }
 
 /** Create IMAP account */
 export const createImap = async (
-  sessionId: string,
+  workspaceId: string,
   payload: Partial<IMAPAccount>
 ) => {
   const body: unknown = {
@@ -21,20 +21,20 @@ export const createImap = async (
     use_oauth: payload.use_oauth ?? false,
   }
   const { data } = await axios.post<IMAPAccount>(
-    `/api/v1/imap/${sessionId}/accounts`,
+    `/api/v1/imap/${workspaceId}/accounts`,
     body
   )
   return data
 }
 
 /** Delete IMAP account */
-export const deleteImap = async (sessionId: string, id: string) => {
-  await axios.delete(`/api/v1/imap/${sessionId}/accounts/${id}`)
+export const deleteImap = async (workspaceId: string, id: string) => {
+  await axios.delete(`/api/v1/imap/${workspaceId}/accounts/${id}`)
 }
 
 /** Update IMAP account */
 export const updateImap = async (
-  sessionId: string,
+  workspaceId: string,
   id: string,
   payload: Partial<IMAPAccount>
 ) => {
@@ -46,15 +46,15 @@ export const updateImap = async (
     use_oauth: payload.use_oauth,
   }
   const { data } = await axios.put<IMAPAccount>(
-    `/api/v1/imap/${sessionId}/accounts/${id}`,
+    `/api/v1/imap/${workspaceId}/accounts/${id}`,
     body
   )
   return data
 }
 
 /** Bulk upload accounts from email */
-export const bulkUploadImap = async (sessionId: string, data: string) => {
-  await axios.post(`/api/v1/imap/${sessionId}/bulk-upload-from-email`, null, {
+export const bulkUploadImap = async (workspaceId: string, data: string) => {
+  await axios.post(`/api/v1/imap/${workspaceId}/bulk-upload-from-email`, null, {
     params: { email_data: data },
   })
 }

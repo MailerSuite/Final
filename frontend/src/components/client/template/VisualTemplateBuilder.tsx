@@ -1037,7 +1037,7 @@ export const VisualTemplateBuilder: React.FC<VisualTemplateBuilderProps> = ({
                 </ScrollArea>
               </TabsContent>
             </Tabs>
-          </div>
+          </motion.div>
 
           {/* Center - Canvas */}
           <motion.div 
@@ -1201,8 +1201,8 @@ export const VisualTemplateBuilder: React.FC<VisualTemplateBuilderProps> = ({
                   />
                 )}
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right Sidebar - Properties */}
           <motion.div 

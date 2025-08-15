@@ -88,8 +88,28 @@ async def require_admin(
     if not current_user.is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Admin privileges required"
+            detail="Admin privileges required. Access denied."
         )
+    return current_user
+
+
+async def require_client(
+    current_user: User = Depends(get_current_user)
+) -> User:
+    """Require client (non-admin) privileges"""
+    if current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Client-only endpoint. Admin users cannot access this resource."
+        )
+    return current_user
+
+
+async def require_active_user(
+    current_user: User = Depends(get_current_user)
+) -> User:
+    """Require any active authenticated user (admin or client)"""
+    # User is already verified as active in get_current_user
     return current_user
 
 

@@ -247,7 +247,7 @@ const CampaignDetailsPage: React.FC = () => {
           if (window.confirm(`Are you sure you want to delete "${campaign.name}"?`)) {
             await deleteCampaign(sessionId, id);
             toast.success?.(`Campaign "${campaign.name}" deleted`);
-            navigate('/finalui2/campaigns');
+            navigate('/campaigns');
           }
           break;
         case 'export-csv':
@@ -334,7 +334,7 @@ const CampaignDetailsPage: React.FC = () => {
         subtitle="Loading campaign..."
         breadcrumbs={[
           { label: 'Home', href: '/' },
-          { label: 'Campaigns', href: '/finalui2/campaigns' },
+          { label: 'Campaigns', href: '/campaigns' },
           { label: 'Loading...' }
         ]}
       >
@@ -354,14 +354,14 @@ const CampaignDetailsPage: React.FC = () => {
         subtitle="Error loading campaign"
         breadcrumbs={[
           { label: 'Home', href: '/' },
-          { label: 'Campaigns', href: '/finalui2/campaigns' },
+          { label: 'Campaigns', href: '/campaigns' },
           { label: 'Error' }
         ]}
       >
         <Alert variant="destructive">
           <AlertDescription>{error || 'Campaign not found'}</AlertDescription>
         </Alert>
-        <Button onClick={() => navigate('/finalui2/campaigns')} className="mt-4">
+        <Button onClick={() => navigate('/campaigns')} className="mt-4">
           <ArrowLeftIcon className="w-4 h-4 mr-2" /> Back to Campaigns
         </Button>
       </PageShell>
@@ -379,12 +379,12 @@ const CampaignDetailsPage: React.FC = () => {
       subtitle={`Campaign ID: ${campaign.id}`}
       breadcrumbs={[
         { label: 'Home', href: '/' },
-        { label: 'Campaigns', href: '/finalui2/campaigns' },
+        { label: 'Campaigns', href: '/campaigns' },
         { label: campaign.name }
       ]}
       toolbar={
         <div className="flex items-center gap-2">
-          <Button onClick={() => navigate('/finalui2/campaigns')} variant="outline">
+          <Button onClick={() => navigate('/campaigns')} variant="outline">
             <ArrowLeftIcon className="w-4 h-4 mr-2" /> Back
           </Button>
           {campaign.status === 'draft' || campaign.status === 'scheduled' || campaign.status === 'paused' ? (

@@ -509,7 +509,7 @@ async def login(user_data: UserLogin, request: Request, db=Depends(get_db)):
                     minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
                 )
                 access_token = create_access_token(
-                    data={"sub": "dev-admin"},
+                    data={"sub": "dev-admin", "is_admin": True, "email": SUPER_USER_EMAIL},
                     expires_delta=access_token_expires,
                 )
                 refresh_token = create_refresh_token("dev-admin")
@@ -584,7 +584,7 @@ async def login(user_data: UserLogin, request: Request, db=Depends(get_db)):
             minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
         )
         access_token = create_access_token(
-            data={"sub": str(user.id)},
+            data={"sub": str(user.id), "is_admin": getattr(user, "is_admin", False), "email": user.email},
             expires_delta=access_token_expires,
         )
         refresh_token = create_refresh_token(str(user.id))
@@ -603,6 +603,15 @@ async def login(user_data: UserLogin, request: Request, db=Depends(get_db)):
             f"Successful login for user ID: {user.id} from IP: {client_ip}, Origin: {origin}"
         )
 
+        # Check if user is using default password (security warning)
+        using_default_password = False
+        security_warning = None
+        
+        # Check for default passwords
+        if verify_password("admin123", user.password_hash) or verify_password("client123", user.password_hash):
+            using_default_password = True
+            security_warning = "SECURITY WARNING: You are using a default password. Please change your password immediately for account security."
+        
         # Return complete response with CORS headers
         response_data = {
             "access_token": access_token,
@@ -615,6 +624,8 @@ async def login(user_data: UserLogin, request: Request, db=Depends(get_db)):
                 "is_active": getattr(user, "is_active", True),
                 "is_admin": getattr(user, "is_admin", False),
             },
+            "security_warning": security_warning,
+            "requires_password_change": using_default_password,
         }
 
         return JSONResponse(

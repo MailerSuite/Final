@@ -26,6 +26,8 @@ const baseNavigation = [
       { to: '/contacts', label: 'Contacts', icon: 'Users' },
       { to: '/lead-bases', label: 'Lead Bases', icon: 'Grid' },
       { to: '/analytics', label: 'Analytics', icon: 'BarChart3' },
+      { to: '/deliverability', label: 'Deliverability', icon: 'Shield' },
+      { to: '/integrations', label: 'Integrations', icon: 'Plug' },
     ]
   },
   {
@@ -43,6 +45,7 @@ const baseNavigation = [
   {
     title: 'Tools',
     items: [
+      { to: '/template-builder', label: 'Template Builder', icon: 'Layout' },
       { to: '/smtp-checker', label: 'SMTP Checker', icon: 'Mail' },
       { to: '/smtp/checker?tab=bulk', label: 'Bulk SMTP Checker', icon: 'MailCheck' },
       { to: '/smtp-pool', label: 'SMTP Pool', icon: 'Server', badge: 'HOT' },
@@ -54,6 +57,13 @@ const baseNavigation = [
       { to: '/proxies/checker', label: 'Proxy Checker', icon: 'ShieldCheck' },
       { to: '/proxy-pool', label: 'Proxy Pool', icon: 'Cloud', badge: 'HOT' },
       { to: '/domains', label: 'Domains', icon: 'Globe' },
+      { to: '/segments', label: 'Segments', icon: 'Filter' },
+      { to: '/compliance', label: 'Compliance', icon: 'Shield' },
+      { to: '/reporting', label: 'Reporting', icon: 'FileText' },
+      { to: '/bounce-management', label: 'Bounce Management', icon: 'AlertCircle' },
+      { to: '/email-management', label: 'Email Management', icon: 'Mail' },
+      { to: '/mailing-dashboard', label: 'Mailing Dashboard', icon: 'Send' },
+      { to: '/inbox-check', label: 'Inbox Check', icon: 'CheckCircle' },
       { to: '/performance', label: 'Performance', icon: 'Zap' },
       { to: '/playground', label: 'Playground', icon: 'FlaskConical', badge: 'NEW' },
       { to: '/workspace-test', label: 'Workspace Test', icon: 'Briefcase', badge: 'TEST' },
