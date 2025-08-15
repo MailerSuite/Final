@@ -130,7 +130,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
       )}>
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
+            <CardTitle className="text-base font-semibold text-foreground">{title}</CardTitle>
             {icon && (
               <div className="text-primary opacity-70">
                 {icon}
@@ -140,7 +140,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
         </CardHeader>
         <CardContent>
           <div className="flex items-baseline space-x-2">
-            <div className="text-2xl font-bold text-white">{value}</div>
+            <div className="text-2xl font-bold text-foreground">{value}</div>
             {change && (
               <div className={cn("text-sm flex items-center", changeColor)}>
                 <span>{change.type === 'increase' ? '↗' : change.type === 'decrease' ? '↘' : '→'}</span>
@@ -149,7 +149,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
             )}
           </div>
           {description && (
-            <p className="text-xs text-muted-foreground mt-1">{description}</p>
+            <p className="text-sm text-muted-foreground mt-1">{description}</p>
           )}
         </CardContent>
 
@@ -209,7 +209,7 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
                 </div>
               )}
               <div>
-                <CardTitle className="text-white">{title}</CardTitle>
+                <CardTitle className="text-base font-semibold text-foreground">{title}</CardTitle>
                 {badge && (
                   <Badge variant={badgeVariant} className="mt-1">
                     {badge}
@@ -220,7 +220,7 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
           </div>
         </CardHeader>
         <CardContent>
-          <CardDescription className="text-muted-foreground">
+          <CardDescription className="text-sm text-muted-foreground">
             {description}
           </CardDescription>
         </CardContent>
@@ -412,11 +412,11 @@ export const SectionHeader: React.FC<{
     {...animations.slideInLeft}
   >
     <div>
-      <h2 className="text-2xl font-bold text-white mb-1">
+      <h2 className="text-xl font-semibold text-foreground mb-1">
         {title}
       </h2>
       {description && (
-        <p className="text-muted-foreground">
+        <p className="text-sm text-muted-foreground">
           {description}
         </p>
       )}

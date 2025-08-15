@@ -6,13 +6,13 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { 
-  Briefcase, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Check, 
-  X, 
+import {
+  Briefcase,
+  Plus,
+  Edit,
+  Trash2,
+  Check,
+  X,
   Loader2,
   RefreshCw,
   AlertCircle
@@ -62,7 +62,7 @@ export default function WorkspaceTestPage() {
       alert('Cannot delete the last workspace')
       return
     }
-    
+
     if (confirm('Are you sure you want to delete this workspace?')) {
       try {
         await deleteWorkspace(id)
@@ -80,7 +80,7 @@ export default function WorkspaceTestPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <Loader2 className="h-6 w-6 animate-spin" />
           <span>Loading workspaces...</span>
         </div>
@@ -89,23 +89,25 @@ export default function WorkspaceTestPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
+      {/* Page Header */}
       <div className="flex items-center justify-between">
-        <div>
+        <div className="space-y-2">
           <h1 className="text-3xl font-bold">Workspace Test Page</h1>
           <p className="text-muted-foreground">Test and manage your workspaces</p>
         </div>
-        <Button onClick={refreshWorkspaces} variant="outline" size="sm">
-          <RefreshCw className="h-4 w-4 mr-2" />
+        <Button onClick={refreshWorkspaces} variant="outline" size="sm" className="flex items-center gap-2">
+          <RefreshCw className="h-4 w-4" />
           Refresh
         </Button>
       </div>
 
+      {/* Error Display */}
       {error && (
         <Card className="border-destructive">
           <CardContent className="pt-6">
-            <div className="flex items-center gap-2 text-destructive">
-              <AlertCircle className="h-4 w-4" />
+            <div className="flex items-center gap-3 text-destructive">
+              <AlertCircle className="h-4 w-4 flex-shrink-0" />
               <span>{error}</span>
             </div>
           </CardContent>
@@ -114,10 +116,12 @@ export default function WorkspaceTestPage() {
 
       {/* Current Active Workspace */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Briefcase className="h-5 w-5" />
-            Active Workspace
+        <CardHeader className="space-y-3">
+          <CardTitle className="flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-br from-primary/10 to-primary/20 rounded-lg border border-primary/20">
+              <Briefcase className="h-5 w-5 text-primary" />
+            </div>
+            <span>Active Workspace</span>
           </CardTitle>
           <CardDescription>
             Currently selected workspace for this session
@@ -125,24 +129,24 @@ export default function WorkspaceTestPage() {
         </CardHeader>
         <CardContent>
           {activeWorkspace ? (
-            <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-              <div>
-                <h3 className="font-semibold">{activeWorkspace.name}</h3>
+            <div className="flex items-center justify-between p-6 bg-muted/50 rounded-lg">
+              <div className="space-y-2">
+                <h3 className="font-semibold text-lg">{activeWorkspace.name}</h3>
                 <p className="text-sm text-muted-foreground">
                   ID: {activeWorkspace.id}
                 </p>
                 {activeWorkspace.description && (
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-muted-foreground">
                     {activeWorkspace.description}
                   </p>
                 )}
               </div>
-              <Badge variant="default">Active</Badge>
+              <Badge variant="default" className="ml-4">Active</Badge>
             </div>
           ) : (
-            <div className="text-center py-8 text-muted-foreground">
-              <Briefcase className="h-12 w-12 mx-auto mb-2 opacity-50" />
-              <p>No active workspace</p>
+            <div className="text-center py-12 text-muted-foreground">
+              <Briefcase className="h-16 w-16 mx-auto mb-4 opacity-50" />
+              <p className="text-lg font-medium">No active workspace</p>
             </div>
           )}
         </CardContent>
@@ -150,14 +154,14 @@ export default function WorkspaceTestPage() {
 
       {/* Create New Workspace */}
       <Card>
-        <CardHeader>
+        <CardHeader className="space-y-3">
           <CardTitle>Create New Workspace</CardTitle>
           <CardDescription>
             Add a new workspace to organize your work
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <div className="flex-1">
               <Label htmlFor="new-workspace" className="sr-only">
                 Workspace Name
@@ -170,10 +174,11 @@ export default function WorkspaceTestPage() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') handleCreate()
                 }}
+                className="h-10"
               />
             </div>
-            <Button onClick={handleCreate} disabled={!newWorkspaceName.trim()}>
-              <Plus className="h-4 w-4 mr-2" />
+            <Button onClick={handleCreate} disabled={!newWorkspaceName.trim()} className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
               Create
             </Button>
           </div>
@@ -182,27 +187,29 @@ export default function WorkspaceTestPage() {
 
       {/* Workspaces List */}
       <Card>
-        <CardHeader>
+        <CardHeader className="space-y-3">
           <CardTitle>All Workspaces</CardTitle>
           <CardDescription>
             Manage your workspaces ({workspaces.length} total)
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-2">
+          <div className="space-y-4">
             {workspaces.map((workspace) => (
               <div
                 key={workspace.id}
-                className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"
+                className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
               >
-                <div className="flex items-center gap-3 flex-1 min-w-0">
-                  <Briefcase className={cn(
-                    "h-4 w-4 flex-shrink-0",
-                    workspace.is_active ? "text-primary" : "text-muted-foreground"
-                  )} />
-                  
+                <div className="flex items-center gap-4 flex-1 min-w-0">
+                  <div className="p-2 bg-muted rounded-lg">
+                    <Briefcase className={cn(
+                      "h-4 w-4 flex-shrink-0",
+                      workspace.is_active ? "text-primary" : "text-muted-foreground"
+                    )} />
+                  </div>
+
                   {editingId === workspace.id ? (
-                    <div className="flex items-center gap-2 flex-1">
+                    <div className="flex items-center gap-3 flex-1">
                       <Input
                         value={editName}
                         onChange={(e) => setEditName(e.target.value)}
@@ -210,13 +217,14 @@ export default function WorkspaceTestPage() {
                           if (e.key === 'Enter') handleUpdate(workspace.id)
                           if (e.key === 'Escape') setEditingId(null)
                         }}
-                        className="flex-1 max-w-xs"
+                        className="flex-1 max-w-xs h-9"
                         autoFocus
                       />
                       <Button
                         size="sm"
                         onClick={() => handleUpdate(workspace.id)}
                         disabled={!editName.trim()}
+                        className="h-9 px-3"
                       >
                         <Check className="h-3 w-3" />
                       </Button>
@@ -224,14 +232,15 @@ export default function WorkspaceTestPage() {
                         size="sm"
                         variant="outline"
                         onClick={() => setEditingId(null)}
+                        className="h-9 px-3"
                       >
                         <X className="h-3 w-3" />
                       </Button>
                     </div>
                   ) : (
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 space-y-1">
                       <h4 className={cn(
-                        "font-medium truncate",
+                        "font-medium truncate text-base",
                         workspace.is_active && "text-primary"
                       )}>
                         {workspace.name}
@@ -243,7 +252,7 @@ export default function WorkspaceTestPage() {
                   )}
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3 ml-4">
                   {workspace.is_active ? (
                     <Badge variant="default">Active</Badge>
                   ) : (
@@ -251,26 +260,28 @@ export default function WorkspaceTestPage() {
                       size="sm"
                       variant="outline"
                       onClick={() => setActiveWorkspace(workspace)}
+                      className="h-8 px-3"
                     >
                       Activate
                     </Button>
                   )}
-                  
+
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={() => startEditing(workspace)}
                     disabled={editingId !== null}
+                    className="h-8 w-8 p-0"
                   >
                     <Edit className="h-3 w-3" />
                   </Button>
-                  
+
                   {workspaces.length > 1 && (
                     <Button
                       size="sm"
                       variant="ghost"
                       onClick={() => handleDelete(workspace.id)}
-                      className="text-destructive hover:text-destructive"
+                      className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
                     >
                       <Trash2 className="h-3 w-3" />
                     </Button>
@@ -281,9 +292,9 @@ export default function WorkspaceTestPage() {
           </div>
 
           {workspaces.length === 0 && (
-            <div className="text-center py-8 text-muted-foreground">
-              <Briefcase className="h-12 w-12 mx-auto mb-2 opacity-50" />
-              <p>No workspaces found</p>
+            <div className="text-center py-12 text-muted-foreground">
+              <Briefcase className="h-16 w-16 mx-auto mb-4 opacity-50" />
+              <p className="text-lg font-medium">No workspaces found</p>
               <p className="text-sm">Create your first workspace to get started</p>
             </div>
           )}
@@ -292,18 +303,30 @@ export default function WorkspaceTestPage() {
 
       {/* Debug Info */}
       <Card>
-        <CardHeader>
+        <CardHeader className="space-y-3">
           <CardTitle>Debug Information</CardTitle>
           <CardDescription>
             Technical details for debugging
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-2 text-sm font-mono">
-            <div>Total Workspaces: {workspaces.length}</div>
-            <div>Active Workspace ID: {activeWorkspace?.id || 'None'}</div>
-            <div>Loading State: {isLoading.toString()}</div>
-            <div>Error State: {error || 'None'}</div>
+          <div className="space-y-3 text-sm font-mono">
+            <div className="flex items-center gap-3">
+              <span className="text-muted-foreground">Total Workspaces:</span>
+              <span className="font-semibold">{workspaces.length}</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-muted-foreground">Active Workspace ID:</span>
+              <span className="font-semibold">{activeWorkspace?.id || 'None'}</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-muted-foreground">Loading State:</span>
+              <span className="font-semibold">{isLoading.toString()}</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-muted-foreground">Error State:</span>
+              <span className="font-semibold">{error || 'None'}</span>
+            </div>
           </div>
         </CardContent>
       </Card>

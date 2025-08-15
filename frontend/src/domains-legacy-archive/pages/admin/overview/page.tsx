@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PageWrapper from "@/components/layout/PageWrapper";
-import { 
+import {
   EnhancedStatsCard,
   RealTimeStatsCard,
   SystemHealthMonitor,
@@ -13,14 +13,14 @@ import {
 import { adminAnimations } from '@/components/admin/AdminUIKit';
 import { toast } from 'sonner';
 import axios from '@/http/axios';
-import { 
-  Users, 
-  Mail, 
-  Server, 
-  Activity, 
-  AlertTriangle, 
-  CheckCircle, 
-  TrendingUp, 
+import {
+  Users,
+  Mail,
+  Server,
+  Activity,
+  AlertTriangle,
+  CheckCircle,
+  TrendingUp,
   Database,
   Shield,
   Settings,
@@ -50,16 +50,16 @@ const AdminOverviewPage = () => {
   const loadAdminData = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch user statistics
       const userCountResponse = await axios.get('/api/v1/admin/users/count');
-      
+
       // Fetch system status
       const systemStatusResponse = await axios.get('/api/v1/admin/system/status');
-      
+
       // Fetch system health
       const systemHealthResponse = await axios.get('/api/v1/admin/system/health');
-      
+
       // Update stats with real data
       setSystemStats(prev => ({
         ...prev,
@@ -73,9 +73,9 @@ const AdminOverviewPage = () => {
         activeCampaigns: prev.activeCampaigns,
         emailsSent: prev.emailsSent
       }));
-      
+
       setSystemHealth(systemHealthResponse.data);
-      
+
     } catch (error) {
       console.error('Error loading admin data:', error);
       toast.error('Failed to load admin dashboard data');
@@ -128,11 +128,11 @@ const AdminOverviewPage = () => {
   const getAlertIcon = (type: string) => {
     switch (type) {
       case 'error':
-        return <AlertTriangle className="w-4 h-4 text-red-500" />;
+        return <AlertTriangle className="w-4 h-4 text-destructive" />;
       case 'warning':
         return <AlertTriangle className="w-4 h-4 text-yellow-500" />;
       case 'info':
-        return <CheckCircle className="w-4 h-4 text-blue-500" />;
+        return <CheckCircle className="w-4 h-4 text-primary" />;
       default:
         return <CheckCircle className="w-4 h-4 text-muted-foreground" />;
     }
@@ -140,9 +140,9 @@ const AdminOverviewPage = () => {
 
   const getAlertBadge = (type: string) => {
     const variants = {
-      error: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+      error: 'bg-destructive/20 text-destructive-800 dark:bg-destructive/20 dark:text-destructive-300',
       warning: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-      info: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+      info: 'bg-primary/20 text-primary-800 dark:bg-primary/20 dark:text-primary-300'
     };
 
     return (
@@ -153,12 +153,12 @@ const AdminOverviewPage = () => {
   };
 
   return (
-    <PageWrapper 
-      title="Admin Overview" 
+    <PageWrapper
+      title="Admin Overview"
       description="System administration dashboard and platform management"
     >
       {/* Header with Refresh Button */}
-      <motion.div 
+      <motion.div
         className="flex items-center justify-between mb-6"
         variants={enhancedAnimations.slideUp}
         initial="initial"
@@ -166,7 +166,7 @@ const AdminOverviewPage = () => {
       >
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg border border-blue-500/30">
+            <div className="p-2 bg-gradient-to-br from-primary/20 to-muted/20 rounded-lg border border-primary/30">
               <span className="text-2xl">🎛️</span>
             </div>
             <div>
@@ -177,11 +177,11 @@ const AdminOverviewPage = () => {
             </div>
           </div>
         </div>
-        
+
         <Button
           onClick={loadAdminData}
           disabled={loading}
-          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
+          className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
         >
           <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
           Refresh Data
@@ -189,7 +189,7 @@ const AdminOverviewPage = () => {
       </motion.div>
 
       {/* Enhanced System Stats with 4D Animations */}
-      <motion.div 
+      <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
         variants={enhancedAnimations.pageContainer}
         initial="initial"
@@ -249,7 +249,7 @@ const AdminOverviewPage = () => {
         </motion.div>
       </motion.div>
 
-      <motion.div 
+      <motion.div
         className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8"
         variants={enhancedAnimations.pageContainer}
         initial="initial"
@@ -258,13 +258,13 @@ const AdminOverviewPage = () => {
         {/* Enhanced Quick Actions with Hover Animations */}
         <motion.div variants={enhancedAnimations.slideUp}>
           <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-background via-background to-muted/20">
-            <motion.div 
+            <motion.div
               className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0"
               whileHover={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
             />
             <CardHeader className="relative">
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-2"
                 variants={enhancedAnimations.pulse}
                 animate="animate"
@@ -278,8 +278,8 @@ const AdminOverviewPage = () => {
             </CardHeader>
             <CardContent className="space-y-3 relative">
               {quickActions.map((action, index) => (
-                <motion.div 
-                  key={index} 
+                <motion.div
+                  key={index}
                   className="group relative"
                   variants={enhancedAnimations.cardStagger}
                   whileHover={{ scale: 1.02, x: 4 }}
@@ -288,7 +288,7 @@ const AdminOverviewPage = () => {
                 >
                   <div className="flex items-center justify-between p-4 border rounded-xl bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300">
                     <div className="flex items-center gap-3">
-                      <motion.div 
+                      <motion.div
                         className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors"
                         whileHover={{ rotate: 360 }}
                         transition={{ duration: 0.6 }}
@@ -301,9 +301,9 @@ const AdminOverviewPage = () => {
                       </div>
                     </div>
                     <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         className="opacity-60 group-hover:opacity-100 transition-opacity"
                         onClick={() => handleQuickAction(action.action)}
                       >
@@ -320,13 +320,13 @@ const AdminOverviewPage = () => {
         {/* Enhanced Recent Alerts with Status Animations */}
         <motion.div variants={enhancedAnimations.slideUp}>
           <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-background via-background to-muted/20">
-            <motion.div 
+            <motion.div
               className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-red-500/5 opacity-0"
               whileHover={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
             />
             <CardHeader className="relative">
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-2"
                 variants={enhancedAnimations.pulse}
                 animate="animate"
@@ -340,8 +340,8 @@ const AdminOverviewPage = () => {
             </CardHeader>
             <CardContent className="space-y-3 relative">
               {recentAlerts.map((alert, index) => (
-                <motion.div 
-                  key={alert.id} 
+                <motion.div
+                  key={alert.id}
                   className="group"
                   variants={enhancedAnimations.cardStagger}
                   initial={{ opacity: 0, x: -20 }}
@@ -350,15 +350,15 @@ const AdminOverviewPage = () => {
                   whileHover={{ scale: 1.02, x: 4 }}
                 >
                   <div className="flex items-start gap-3 p-4 border rounded-xl bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300">
-                    <motion.div 
-                      animate={{ 
-                        scale: [1, 1.2, 1], 
-                        rotate: [0, 10, -10, 0] 
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.2, 1],
+                        rotate: [0, 10, -10, 0]
                       }}
-                      transition={{ 
-                        duration: 2, 
-                        repeat: Infinity, 
-                        ease: "easeInOut" 
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
                       }}
                     >
                       {getAlertIcon(alert.type)}
@@ -372,12 +372,12 @@ const AdminOverviewPage = () => {
                       </div>
                       <p className="text-sm group-hover:text-foreground transition-colors">{alert.message}</p>
                       <div className="flex items-center gap-2 mt-3">
-                        <motion.div 
+                        <motion.div
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                         >
-                          <Badge 
-                            variant={alert.status === 'resolved' ? 'secondary' : 'destructive'} 
+                          <Badge
+                            variant={alert.status === 'resolved' ? 'secondary' : 'destructive'}
                             className="text-xs"
                           >
                             {alert.status}
@@ -399,7 +399,7 @@ const AdminOverviewPage = () => {
         initial="initial"
         animate="animate"
       >
-        <SystemHealthMonitor 
+        <SystemHealthMonitor
           updateInterval={10000}
           showDetailedMetrics={true}
           animationLevel="enhanced"

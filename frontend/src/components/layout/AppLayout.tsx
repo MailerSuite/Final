@@ -8,6 +8,7 @@ import TrialBanner from '@/components/banners/TrialBanner'
 import { AIAssistantPanel } from '@/pages/finalui2/components/AIAssistantPanel'
 import { SupportPanel } from '@/pages/finalui2/components/SupportPanel'
 import { WorkspaceProvider } from '@/context/WorkspaceContext'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface AppLayoutProps {
   children: React.ReactNode
@@ -113,16 +114,40 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, className }) => 
           {/* Page Content */}
           <main className="flex-1 overflow-hidden">
             <ScrollArea className="h-[calc(100vh-3.5rem)]"> {/* 3.5rem = navbar height */}
-              <div
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.3,
+                  ease: [0.25, 0.46, 0.45, 0.94]
+                }}
                 className={cn(
                   'container mx-auto p-6 md:p-8 max-w-7xl premium-spacing text-foreground',
                   className
                 )}
               >
-                <ApiHealthBanner />
-                <TrialBanner />
-                {children}
-              </div>
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.3 }}
+                >
+                  <ApiHealthBanner />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.3 }}
+                >
+                  <TrialBanner />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.3 }}
+                >
+                  {children}
+                </motion.div>
+              </motion.div>
             </ScrollArea>
           </main>
         </div>

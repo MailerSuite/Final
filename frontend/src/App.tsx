@@ -9,6 +9,7 @@ import { Toaster } from '@/components/ui/toaster'
 import GlobalLoadingOverlay from '@/components/ui/GlobalLoadingOverlay'
 import CommandPalette, { useCommandPalette } from '@/components/ui/command-palette'
 import FloatingActionButton from '@/components/ui/floating-action-button'
+import { AnimatePresence } from 'framer-motion'
 // Centralized routes moved from ./router
 import { CommandLineIcon, ArrowUpIcon } from '@heroicons/react/24/outline'
 // Remove sample Vite styles to avoid conflicts
@@ -50,6 +51,7 @@ const FinalUI2 = lazyWithDelay(() => import('@/pages/finalui2/index'))
 const DashboardEnhancedStandalone = lazy(() => import('@/pages/finalui2/pages/UnifiedFunctionsDashboard'))
 const HubPage = lazyWithDelay(() => import('@/pages/finalui2/pages/NavigationHub'))
 const WorkspaceTestPage = lazy(() => import('@/pages/WorkspaceTestPage'))
+const AnimationDemo = lazy(() => import('@/pages/AnimationDemo'))
 // Removed OpenAI App shell
 const ContactPage = lazy(() => import('@/pages/contact/page'))
 const StatusPage = lazy(() => import('@/pages/status/page'))
@@ -436,6 +438,17 @@ const router = createBrowserRouter([
       <Suspense fallback={<Loading />}>
         <MainLayout>
           <WorkspaceTestPage />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/animation-demo',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <AnimationDemo />
         </MainLayout>
         <AppWrapper />
       </Suspense>

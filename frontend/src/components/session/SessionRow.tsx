@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Trash2 } from 'lucide-react'
+import { Icon } from '@/components/ui/icon'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -45,7 +45,7 @@ export default function SessionRow({ session, isCurrent = false }: Props) {
               variant="ghost"
               aria-label={`Logout session on ${session.name}`}
             >
-              <Trash2 className="w-4 h-4 text-destructive" />
+              <Icon name="Trash2" size="sm" className="text-destructive" ariaLabel="Delete session" />
             </Button>
           </DialogTrigger>
           <DialogContent>

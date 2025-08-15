@@ -48,7 +48,7 @@ export default function UnifiedFunctionsDashboard() {
   const [metrics, setMetrics] = useState<SystemMetrics | null>(null)
   const [funcStats, setFuncStats] = useState<FunctionStats | null>(null)
   const [activeTab, setActiveTab] = useState<'overview' | 'system' | 'functions'>('overview')
-  
+
   const { token, userData } = useAuthStore()
 
   const fetchAll = React.useCallback(async () => {
@@ -102,7 +102,7 @@ export default function UnifiedFunctionsDashboard() {
         disk: 0,
         uptime: '—',
       }
-      
+
       try {
         const metricsResp = await axiosInstance.get('/api/v1/admin/system/status')
         const metricsJson = metricsResp?.data
@@ -125,7 +125,7 @@ export default function UnifiedFunctionsDashboard() {
         smtpAccounts: 0,
         imapAccounts: 0,
       }
-      
+
       try {
         const statsResp = await axiosInstance.get('/api/v1/analytics/summary')
         const stats = statsResp?.data
@@ -248,12 +248,12 @@ export default function UnifiedFunctionsDashboard() {
         {statCards.map((c) => (
           <Card key={c.title} variant="elevated" className="rounded-2xl border-primary/10 bg-white">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">{c.title}</CardTitle>
+              <CardTitle className="text-base font-semibold text-foreground">{c.title}</CardTitle>
               <c.icon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{c.value}</div>
-              <p className="text-xs text-muted-foreground">{c.subtitle}</p>
+              <div className="text-2xl font-bold text-foreground">{c.value}</div>
+              <p className="text-sm text-muted-foreground">{c.subtitle}</p>
               <Badge className={cn('mt-2', statusColor(c.badge))}>
                 {c.badge}
               </Badge>
@@ -264,17 +264,17 @@ export default function UnifiedFunctionsDashboard() {
 
       {/* Business metrics */}
       <div className="mt-8">
-        <h3 className="text-lg font-semibold mb-4">Business Metrics</h3>
+        <h3 className="text-xl font-semibold mb-4 text-foreground">Business Metrics</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {businessCards.map((c) => (
             <Card key={c.title} variant="elevated" className="rounded-2xl border-primary/10 bg-white">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{c.title}</CardTitle>
+                <CardTitle className="text-base font-semibold text-foreground">{c.title}</CardTitle>
                 <c.icon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{c.value}</div>
-                <p className="text-xs text-muted-foreground">{c.subtitle}</p>
+                <div className="text-2xl font-bold text-foreground">{c.value}</div>
+                <p className="text-sm text-muted-foreground">{c.subtitle}</p>
               </CardContent>
             </Card>
           ))}
@@ -289,7 +289,7 @@ export default function UnifiedFunctionsDashboard() {
               <div className="flex items-center space-x-2">
                 <Shield className="h-5 w-5 text-amber-600" />
                 <div>
-                  <h4 className="font-medium text-amber-800">Authentication Required</h4>
+                  <h4 className="text-base font-semibold text-amber-800">Authentication Required</h4>
                   <p className="text-sm text-amber-700">
                     Please log in to view real-time system metrics and business data.
                   </p>
@@ -302,11 +302,11 @@ export default function UnifiedFunctionsDashboard() {
 
       {/* Deep dive section */}
       <div className="mt-8">
-        <h3 className="text-lg font-semibold mb-4">Service Health</h3>
+        <h3 className="text-xl font-semibold mb-4 text-foreground">Service Health</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
+              <CardTitle className="flex items-center space-x-2 text-base font-semibold text-foreground">
                 <Activity className="h-5 w-5" />
                 <span>API Status</span>
               </CardTitle>
@@ -317,10 +317,10 @@ export default function UnifiedFunctionsDashboard() {
               </Badge>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
+              <CardTitle className="flex items-center space-x-2 text-base font-semibold text-foreground">
                 <Globe className="h-5 w-5" />
                 <span>Web Service</span>
               </CardTitle>

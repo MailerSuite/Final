@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, Trash } from 'lucide-react'
+import { Icon } from '@/components/ui/icon'
 import useSessionStore from '@/store/session'
 import CreateSessionModal from './CreateSessionModal'
 import { Button } from '@/components/ui/button'
@@ -56,7 +56,7 @@ export default function SessionTabs() {
               onClick={() => setDeleteId(s.id)}
               className="absolute -top-2 -right-2 rounded-full bg-background text-muted-foreground hover:text-destructive"
             >
-              <Trash className="w-3 h-3 text-destructive" />
+              <Icon name="Trash" size="xs" className="text-destructive" ariaLabel="Delete session" />
             </button>
           )}
         </div>
@@ -67,7 +67,7 @@ export default function SessionTabs() {
         onClick={() => setCreateOpen(true)}
         className="flex-shrink-0"
       >
-        <Plus className="w-4 h-4" />
+        <Icon name="Plus" size="sm" ariaLabel="Create new session" />
       </Button>
 
       <CreateSessionModal

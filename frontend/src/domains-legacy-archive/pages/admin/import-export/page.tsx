@@ -581,10 +581,10 @@ const AdminImportExport: React.FC = () => {
   // Get status badge color
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
-      case "completed": return "bg-green-100 text-green-800 border-green-200";
-      case "running": return "bg-blue-100 text-blue-800 border-blue-200";
-      case "pending": return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "failed": case "cancelled": return "bg-red-100 text-red-800 border-red-200";
+      case "completed": return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-700/30";
+      case "running": return "bg-primary/20 text-primary-800 dark:text-primary-300 border-primary-200 dark:border-primary-700/30";
+      case "pending": return "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-700/30";
+      case "failed": case "cancelled": return "bg-destructive/20 text-destructive-800 dark:text-destructive-300 border-destructive-200 dark:border-destructive-700/30";
       default: return "bg-muted text-foreground border-border";
     }
   };
@@ -625,13 +625,13 @@ const AdminImportExport: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-muted/20 to-muted/30 dark:from-slate-950 dark:via-muted/20 dark:to-muted/30">
         <div className="container mx-auto px-6 py-8">
           <div className="flex items-center justify-center h-64">
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full"
+              className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full"
             />
           </div>
         </div>
@@ -640,7 +640,7 @@ const AdminImportExport: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-muted/20 to-muted/30 dark:from-slate-950 dark:via-muted/20 dark:to-muted/30">
       {/* Floating background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -653,7 +653,7 @@ const AdminImportExport: React.FC = () => {
             repeat: Infinity,
             ease: "linear",
           }}
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-200 dark:bg-blue-900 rounded-full mix-blend-multiply filter blur-xl opacity-30"
+          className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 dark:bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-30"
         />
         <motion.div
           animate={{
@@ -665,7 +665,7 @@ const AdminImportExport: React.FC = () => {
             repeat: Infinity,
             ease: "linear",
           }}
-          className="absolute top-3/4 right-1/4 w-96 h-96 bg-indigo-200 dark:bg-indigo-900 rounded-full mix-blend-multiply filter blur-xl opacity-20"
+          className="absolute top-3/4 right-1/4 w-96 h-96 bg-muted/20 dark:bg-muted/10 rounded-full mix-blend-multiply filter blur-xl opacity-20"
         />
       </div>
 
@@ -681,7 +681,7 @@ const AdminImportExport: React.FC = () => {
             <div>
               <motion.h1
                 variants={itemVariants}
-                className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent"
+                className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
               >
                 Import & Export
               </motion.h1>
@@ -940,7 +940,7 @@ const AdminImportExport: React.FC = () => {
                       <p className="text-sm font-medium text-muted-foreground">Total Imports</p>
                       <p className="text-2xl font-bold">{importStats.total_imports}</p>
                     </div>
-                    <FileUp className="h-8 w-8 text-blue-500" />
+                    <FileUp className="h-8 w-8 text-primary" />
                   </div>
                 </CardContent>
               </Card>
@@ -954,7 +954,7 @@ const AdminImportExport: React.FC = () => {
                       <p className="text-sm font-medium text-muted-foreground">Total Exports</p>
                       <p className="text-2xl font-bold">{exportStats.total_exports}</p>
                     </div>
-                    <FileDown className="h-8 w-8 text-green-500" />
+                    <FileDown className="h-8 w-8 text-green-600" />
                   </div>
                 </CardContent>
               </Card>
@@ -968,7 +968,7 @@ const AdminImportExport: React.FC = () => {
                       <p className="text-sm font-medium text-muted-foreground">Records Imported</p>
                       <p className="text-2xl font-bold text-purple-600">{importStats.records_imported.toLocaleString()}</p>
                     </div>
-                    <TrendingUp className="h-8 w-8 text-purple-500" />
+                    <TrendingUp className="h-8 w-8 text-primary" />
                   </div>
                 </CardContent>
               </Card>
@@ -982,7 +982,7 @@ const AdminImportExport: React.FC = () => {
                       <p className="text-sm font-medium text-muted-foreground">Records Exported</p>
                       <p className="text-2xl font-bold text-orange-600">{exportStats.records_exported.toLocaleString()}</p>
                     </div>
-                    <Activity className="h-8 w-8 text-orange-500" />
+                    <Activity className="h-8 w-8 text-orange-600" />
                   </div>
                 </CardContent>
               </Card>
@@ -1389,7 +1389,7 @@ const AdminImportExport: React.FC = () => {
                                         <span className="font-medium">Optional Fields:</span>
                                         <div className="flex gap-1 flex-wrap mt-1">
                                           {template.optional_fields.map((field, i) => (
-                                            <Badge key={i} variant="outline" className="text-xs bg-blue-50 text-blue-700">
+                                            <Badge key={i} variant="outline" className="text-xs bg-primary/20 text-primary-700 dark:text-primary-300">
                                               {field}
                                             </Badge>
                                           ))}

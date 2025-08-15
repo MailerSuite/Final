@@ -11,14 +11,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import axios from 'axios';
-import { 
-  Settings, 
-  Key, 
-  Shield, 
-  Activity, 
-  Copy, 
-  RefreshCw, 
-  Plus, 
+import {
+  Settings,
+  Key,
+  Shield,
+  Activity,
+  Copy,
+  RefreshCw,
+  Plus,
   Trash2,
   Eye,
   EyeOff,
@@ -41,7 +41,7 @@ const AdminAPI = () => {
     permissions: ['read'],
     rate_limit: 100
   });
-  
+
   const [apiSettings, setApiSettings] = useState({
     rate_limiting: {
       enabled: true,
@@ -193,9 +193,9 @@ const AdminAPI = () => {
     >
       {/* Floating Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-40 right-1/3 w-80 h-80 bg-pink-500/10 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute top-40 -left-40 w-80 h-80 bg-muted/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-40 right-1/3 w-80 h-80 bg-muted/10 rounded-full blur-3xl" />
       </div>
 
       <div className="relative max-w-7xl mx-auto space-y-8">
@@ -206,13 +206,13 @@ const AdminAPI = () => {
         >
           <div className="flex items-center justify-center space-x-3 mb-4">
             <motion.div
-              className="p-3 bg-purple-500/20 rounded-xl backdrop-blur-sm border border-purple-500/30"
+              className="p-3 bg-primary/20 rounded-xl backdrop-blur-sm border border-primary/30"
               whileHover={{ scale: 1.05, rotate: 5 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <Code className="w-8 h-8 text-purple-400" />
+              <Code className="w-8 h-8 text-primary" />
             </motion.div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-pink-400 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-muted bg-clip-text text-transparent">
               API Management
             </h1>
           </div>
@@ -229,8 +229,8 @@ const AdminAPI = () => {
           <Card className="bg-white/5 backdrop-blur-sm border-white/10">
             <CardContent className="p-4">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-blue-500/20 rounded-lg">
-                  <Key className="w-5 h-5 text-blue-400" />
+                <div className="p-2 bg-primary/20 rounded-lg">
+                  <Key className="w-5 h-5 text-primary" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">API Keys</p>
@@ -239,7 +239,7 @@ const AdminAPI = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white/5 backdrop-blur-sm border-white/10">
             <CardContent className="p-4">
               <div className="flex items-center space-x-3">
@@ -253,12 +253,12 @@ const AdminAPI = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white/5 backdrop-blur-sm border-white/10">
             <CardContent className="p-4">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-purple-500/20 rounded-lg">
-                  <Shield className="w-5 h-5 text-purple-400" />
+                <div className="p-2 bg-muted/20 rounded-lg">
+                  <Shield className="w-5 h-5 text-muted-foreground" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Security</p>
@@ -269,7 +269,7 @@ const AdminAPI = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white/5 backdrop-blur-sm border-white/10">
             <CardContent className="p-4">
               <div className="flex items-center space-x-3">
@@ -325,21 +325,21 @@ const AdminAPI = () => {
                         <span>Create New API Key</span>
                       </DialogTitle>
                     </DialogHeader>
-                    
+
                     <div className="space-y-4">
                       <div className="space-y-2">
                         <Label className="text-muted-foreground">Key Name</Label>
                         <Input
                           value={newKeyData.name}
-                          onChange={(e) => setNewKeyData({...newKeyData, name: e.target.value})}
+                          onChange={(e) => setNewKeyData({ ...newKeyData, name: e.target.value })}
                           placeholder="e.g., Production Frontend"
                           className="bg-card/50 border-border text-white"
                         />
                       </div>
-                      
+
                       <div className="space-y-2">
                         <Label className="text-muted-foreground">Environment</Label>
-                        <Select value={newKeyData.environment} onValueChange={(value) => setNewKeyData({...newKeyData, environment: value})}>
+                        <Select value={newKeyData.environment} onValueChange={(value) => setNewKeyData({ ...newKeyData, environment: value })}>
                           <SelectTrigger className="bg-card/50 border-border text-white">
                             <SelectValue />
                           </SelectTrigger>
@@ -350,17 +350,17 @@ const AdminAPI = () => {
                           </SelectContent>
                         </Select>
                       </div>
-                      
+
                       <div className="space-y-2">
                         <Label className="text-muted-foreground">Rate Limit (requests/min)</Label>
                         <Input
                           type="number"
                           value={newKeyData.rate_limit}
-                          onChange={(e) => setNewKeyData({...newKeyData, rate_limit: parseInt(e.target.value) || 100})}
+                          onChange={(e) => setNewKeyData({ ...newKeyData, rate_limit: parseInt(e.target.value) || 100 })}
                           className="bg-card/50 border-border text-white"
                         />
                       </div>
-                      
+
                       <div className="flex justify-end space-x-3">
                         <Button
                           variant="outline"
@@ -430,7 +430,7 @@ const AdminAPI = () => {
                           </div>
                         </div>
                       </CardHeader>
-                      
+
                       <CardContent className="space-y-4">
                         <div className="flex items-center space-x-2">
                           <div className="flex-1 bg-card/50 rounded-lg p-3 font-mono text-sm">
@@ -455,7 +455,7 @@ const AdminAPI = () => {
                             <Copy className="w-4 h-4" />
                           </Button>
                         </div>
-                        
+
                         <div className="grid grid-cols-2 gap-4 text-sm">
                           <div>
                             <span className="text-muted-foreground">Permissions:</span>
@@ -482,7 +482,7 @@ const AdminAPI = () => {
             {/* Settings Tab */}
             <TabsContent value="settings" className="space-y-6">
               <h2 className="text-2xl font-bold text-white">API Configuration</h2>
-              
+
               <div className="grid md:grid-cols-2 gap-6">
                 {/* Rate Limiting */}
                 <Card className="bg-white/5 backdrop-blur-sm border-white/10">
@@ -615,7 +615,7 @@ const AdminAPI = () => {
             {/* Documentation Tab */}
             <TabsContent value="docs" className="space-y-6">
               <h2 className="text-2xl font-bold text-white">API Documentation</h2>
-              
+
               <div className="grid md:grid-cols-2 gap-6">
                 <Card className="bg-white/5 backdrop-blur-sm border-white/10">
                   <CardHeader>
@@ -658,7 +658,7 @@ const AdminAPI = () => {
             {/* Monitoring Tab */}
             <TabsContent value="monitoring" className="space-y-6">
               <h2 className="text-2xl font-bold text-white">API Monitoring</h2>
-              
+
               <div className="grid md:grid-cols-3 gap-6">
                 <Card className="bg-white/5 backdrop-blur-sm border-white/10">
                   <CardHeader>
