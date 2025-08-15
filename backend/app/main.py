@@ -836,6 +836,13 @@ app.include_router(bootstrap.router, prefix="/api/v1/bootstrap", tags=["Core"])
 # ✅ ADVANCED FEATURES (Always preserved)
 app.include_router(todos.router, prefix="/api/v1/todos", tags=["Task Management"])
 app.include_router(template_builder.router, prefix="/api/v1/template-builder", tags=["Template Builder"])
+# Mount templates for unit tests compatibility
+try:
+	from routers import templates as templates_router
+	app.include_router(templates_router.router, prefix="/api/v1/templates", tags=["Templates"])
+	logger.info("✅ Mounted templates router at /api/v1/templates (tests compatibility)")
+except Exception as e:
+	logger.warning(f"⚠️ Could not mount templates router: {e}")
 # Tenant admin removed - no longer using multi-tenant architecture
 app.include_router(webhooks.router, prefix="/api/v1/webhooks", tags=["Webhooks"])
 app.include_router(workspaces.router, tags=["Workspaces"])
