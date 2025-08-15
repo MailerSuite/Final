@@ -1,6 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import { fileURLToPath, URL } from 'node:url'
+
+// Get __dirname equivalent in ES modules
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -138,12 +142,12 @@ export default defineConfig(({ mode }) => ({
         changeOrigin: true,
         ws: true,
         configure: (proxy) => {
-          proxy.on('error', (err: any, _req: any, res: any) => {
+          proxy.on('error', (err: Error, _req: unknown, res: { writeHead?: (code: number, headers: Record<string, string>) => void; end: (data: string) => void }) => {
             // Gracefully silence ECONNREFUSED noise and return a JSON error
             if (res.writeHead) {
               res.writeHead(503, { 'Content-Type': 'application/json' })
             }
-            res.end(JSON.stringify({ error: 'Backend unreachable', code: err?.code || 'E_PROXY' }))
+            res.end(JSON.stringify({ error: 'Backend unreachable', code: (err as NodeJS.ErrnoException)?.code || 'E_PROXY' }))
           })
         },
       },
@@ -152,11 +156,11 @@ export default defineConfig(({ mode }) => ({
         target: 'http://localhost:8001',
         changeOrigin: true,
         configure: (proxy) => {
-          proxy.on('error', (err: any, _req: any, res: any) => {
+          proxy.on('error', (err: Error, _req: unknown, res: { writeHead?: (code: number, headers: Record<string, string>) => void; end: (data: string) => void }) => {
             if (res.writeHead) {
               res.writeHead(503, { 'Content-Type': 'application/json' })
             }
-            res.end(JSON.stringify({ error: 'Backend unreachable', code: err?.code || 'E_PROXY' }))
+            res.end(JSON.stringify({ error: 'Backend unreachable', code: (err as NodeJS.ErrnoException)?.code || 'E_PROXY' }))
           })
         },
       },
