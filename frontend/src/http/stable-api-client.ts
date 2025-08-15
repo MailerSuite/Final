@@ -54,7 +54,12 @@ class StableAPIClient {
 
   constructor() {
     // Use environment variables with fallbacks
-    this.baseURL = import.meta.env.VITE_API_BASE || import.meta.env.VITE_API_URL || '/api';
+    // In development, prefer same-origin so Vite proxy/mocks handle '/api/*' calls
+    if (import.meta.env.DEV) {
+      this.baseURL = '';
+    } else {
+      this.baseURL = (import.meta.env.VITE_API_BASE || import.meta.env.VITE_API_URL || '/api') as string;
+    }
     this.defaultHeaders = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -206,16 +211,14 @@ class StableAPIClient {
   // ==================== UTILITY METHODS ====================
 
   private normalizeEndpoint(endpoint: string): string {
-    // Remove leading slash if present
-    if (endpoint.startsWith('/')) {
-      endpoint = endpoint.substring(1);
+    // Preserve absolute URLs and absolute paths so axios doesn't double-prefix
+    if (/^https?:\/\//.test(endpoint)) {
+      return endpoint;
     }
-    
-    // Add /api prefix if not present
-    if (!endpoint.startsWith('api/')) {
-      endpoint = `api/${endpoint}`;
+    // Ensure leading slash for relative endpoints
+    if (!endpoint.startsWith('/')) {
+      return `/${endpoint}`;
     }
-    
     return endpoint;
   }
 
