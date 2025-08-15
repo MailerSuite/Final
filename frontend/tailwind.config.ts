@@ -15,6 +15,18 @@ export default {
     },
     extend: {
       colors: {
+        // Wizard Tech Theme Colors
+        wizard: {
+          'primary-bg': '#0B0A17',        // Very dark purple base
+          'secondary-bg': '#15122B',      // Slightly lighter deep purple
+          'primary-accent': '#3AAFFF',    // Vibrant electric blue
+          'secondary-accent': '#7B2FF7',  // Rich violet
+          'text': '#E6E6E6',              // Light grey for body text
+          'heading': '#FFFFFF',           // Bright white for headings
+          'border': 'rgba(123, 47, 247, 0.3)', // Translucent purple
+          'glow-blue': '#3AAFFF',         // Neon blue for glows
+          'glow-purple': '#7B2FF7',       // Purple for glows
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -59,6 +71,18 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
+      backgroundImage: {
+        'wizard-gradient': 'linear-gradient(135deg, #3AAFFF 0%, #7B2FF7 100%)',
+        'wizard-gradient-subtle': 'linear-gradient(135deg, rgba(58, 175, 255, 0.1) 0%, rgba(123, 47, 247, 0.1) 100%)',
+        'wizard-radial': 'radial-gradient(circle at center, rgba(58, 175, 255, 0.15) 0%, transparent 70%)',
+        'wizard-swirl': 'conic-gradient(from 180deg at 50% 50%, #3AAFFF 0deg, #7B2FF7 120deg, #3AAFFF 240deg, #7B2FF7 360deg)',
+      },
+      boxShadow: {
+        'wizard-glow': '0 0 20px rgba(58, 175, 255, 0.5), 0 0 40px rgba(58, 175, 255, 0.3)',
+        'wizard-glow-sm': '0 0 10px rgba(58, 175, 255, 0.5)',
+        'wizard-glow-lg': '0 0 30px rgba(58, 175, 255, 0.6), 0 0 60px rgba(58, 175, 255, 0.4)',
+        'wizard-glow-purple': '0 0 20px rgba(123, 47, 247, 0.5), 0 0 40px rgba(123, 47, 247, 0.3)',
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -73,10 +97,36 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        // Wizard tech animations
+        "sparkle": {
+          '0%, 100%': { opacity: '0', transform: 'scale(0)' },
+          '50%': { opacity: '1', transform: 'scale(1)' },
+        },
+        "float": {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        "pulse-glow": {
+          '0%, 100%': { opacity: '0.5' },
+          '50%': { opacity: '1' },
+        },
+        "swirl": {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        "shimmer": {
+          '0%': { backgroundPosition: '-200% center' },
+          '100%': { backgroundPosition: '200% center' },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "sparkle": "sparkle 2s ease-in-out infinite",
+        "float": "float 3s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "swirl": "swirl 20s linear infinite",
+        "shimmer": "shimmer 3s linear infinite",
       },
     },
   },

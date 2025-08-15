@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+import { GlowingIcon } from '@/components/ui/sparkle-effect'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,15 +40,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
   return (
     <header
       className={cn(
-        'w-full h-14 border-b border-sidebar-border',
-        'bg-sidebar-background/95 backdrop-blur-xl',
+        'w-full h-14 navbar-wizard relative',
         className
       )}
     >
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 opacity-40 pointer-events-none" style={{
-        background: 'linear-gradient(90deg, rgba(59,130,246,0.1) 0%, rgba(99,102,241,0.08) 50%, rgba(139,92,246,0.1) 100%)'
-      }} />
+      {/* Wizard gradient overlay */}
+      <div className="absolute inset-0 bg-wizard-gradient-subtle opacity-40 pointer-events-none" />
       <div className="relative flex h-full items-center px-4 md:px-6 gap-4">
         {/* Mobile Menu Button */}
         <Button
@@ -88,11 +86,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 px-2 text-xs flex items-center gap-1 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-primary/10 transition-all"
+              className="h-8 px-2 text-xs flex items-center gap-1 text-wizard-primary-accent hover:text-white bg-wizard-primary-accent/10 hover:bg-wizard-primary-accent/20 wizard-hover-glow transition-all"
               onClick={onAIAssistantClick}
             >
-              <Bot className="h-4 w-4" />
-              AI Chat
+              <GlowingIcon size="sm" color="blue">
+                <Bot className="h-4 w-4" />
+              </GlowingIcon>
+              <span className="text-wizard-gradient font-semibold">AI Chat</span>
             </Button>
             <Button
               variant="ghost"

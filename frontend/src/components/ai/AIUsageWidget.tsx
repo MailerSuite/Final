@@ -19,6 +19,8 @@ import {
 } from 'lucide-react'
 import { toast } from '@/hooks/use-toast'
 import { aiMailingApi, AIUsageStats } from '@/api/ai-mailing-api'
+import { MagicalBackground, GlowingIcon } from '@/components/ui/sparkle-effect'
+import { cn } from '@/lib/utils'
 
 interface AIUsageWidgetProps {
   className?: string
@@ -172,12 +174,15 @@ export const AIUsageWidget: React.FC<AIUsageWidgetProps> = ({
   }
 
   return (
-    <Card className={className}>
-      <CardHeader className="pb-3">
+    <Card className={cn("ai-feature-card relative overflow-hidden", className)}>
+      <MagicalBackground showSparkles={true} showGradient={true} />
+      <CardHeader className="pb-3 relative z-10">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <PlanIcon className="h-5 w-5 text-purple-600" />
-            <span>AI Usage</span>
+            <GlowingIcon color="purple" size="sm">
+              <PlanIcon className="h-5 w-5 text-wizard-secondary-accent" />
+            </GlowingIcon>
+            <span className="text-wizard-gradient font-bold">AI Usage</span>
           </div>
           <div className="flex items-center gap-2">
             <Badge variant={getPlanBadgeVariant(plan.name)}>

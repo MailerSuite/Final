@@ -3,6 +3,7 @@ import { useLocation, Link } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { SparkleEffect, GlowingIcon } from '@/components/ui/sparkle-effect'
 import {
   HomeIcon,
   ChartBarIcon,
@@ -116,13 +117,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <div className={cn(
-      "flex flex-col h-screen bg-sidebar-background border-r border-sidebar-border",
+      "flex flex-col h-screen sidebar-wizard relative",
       collapsed ? "w-[60px]" : "w-[240px]",
       "transition-all duration-300",
       className
     )}>
+      {/* Magical sparkle effect */}
+      <SparkleEffect className="z-0" count={15} />
+      
       {/* Header - Match navbar height */}
-      <div className="h-14 flex items-center border-b border-sidebar-border bg-sidebar-background relative overflow-hidden">
+      <div className="h-14 flex items-center border-b border-wizard-border/30 relative overflow-hidden z-10">
         {/* Animated Background Layers - Dark cyberpunk theme */}
         <div className="absolute inset-0" key={`bg-${animationKey}`}>
           <div className={cn(
@@ -201,8 +205,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
               {/* Brand Text - Dashboard Style */}
               <div className="flex items-center" key={`text-${animationKey}`}>
                 <span className={cn(
-                  "font-black text-transparent bg-clip-text bg-gradient-to-r from-sidebar-primary via-sidebar-primary to-sidebar-accent text-xl tracking-tight",
-                  shouldAnimate && "animate-text-glow"
+                  "font-black text-wizard-gradient text-xl tracking-tight wizard-shimmer",
+                  shouldAnimate && "animate-pulse-glow"
                 )}>
                   SGPT
                 </span>
@@ -294,9 +298,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         setTimeout(() => setShouldAnimate(false), 3000)
                       }}
                       className={cn(
-                        "sidebar-nav-item group flex items-center px-3 py-2 rounded-lg cursor-pointer transition-all",
-                        active && "active shadow-glow",
-                        !active && "text-sidebar-foreground",
+                        "sidebar-nav-item group flex items-center px-3 py-2 rounded-lg cursor-pointer transition-all relative",
+                        active && "active bg-wizard-gradient-subtle border-l-2 border-wizard-primary-accent wizard-glow-sm",
+                        !active && "text-wizard-text hover:bg-wizard-primary-accent/10",
                         collapsed && "justify-center px-2"
                       )}
                       data-active={active ? 'true' : undefined}
