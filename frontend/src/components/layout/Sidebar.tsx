@@ -41,11 +41,14 @@ const navigation = [
     title: 'Tools',
     items: [
       { to: '/smtp-checker', label: 'SMTP Checker', icon: 'Mail' },
+      { to: '/smtp/checker?tab=bulk', label: 'Bulk SMTP Checker', icon: 'MailCheck' },
       { to: '/smtp-pool', label: 'SMTP Pool', icon: 'Server', badge: 'HOT' },
       { to: '/imap-inbox', label: 'IMAP Inbox', icon: 'Inbox' },
+      { to: '/imap/checker?tab=host-config', label: 'IMAP Checker', icon: 'Inbox' },
       { to: '/live-console', label: 'Live Console', icon: 'Terminal' },
       { to: '/blacklist-status', label: 'Blacklist', icon: 'Shield' },
       { to: '/proxies', label: 'Proxies', icon: 'Server' },
+      { to: '/proxies/checker', label: 'Proxy Checker', icon: 'ShieldCheck' },
       { to: '/proxy-pool', label: 'Proxy Pool', icon: 'Cloud', badge: 'HOT' },
       { to: '/domains', label: 'Domains', icon: 'Globe' },
       { to: '/performance', label: 'Performance', icon: 'Zap' },
@@ -71,7 +74,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const [animationKey, setAnimationKey] = useState(0)
 
   const isActive = (path: string) => {
-    return location.pathname === path || location.pathname.startsWith(path + '/')
+    const destPath = (path || '').split('?')[0]
+    return location.pathname === destPath || location.pathname.startsWith(destPath + '/')
   }
 
   return (
@@ -219,7 +223,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     ariaLabel={item.label}
                   />
                   {!collapsed && (
-                    <span className="text-sm font-medium text-sidebar-foreground">{item.label}</span>
+                    <span className="flex-1 text-sm font-medium">
+                      {item.label}
+                    </span>
                   )}
                 </Link>
               </div>
