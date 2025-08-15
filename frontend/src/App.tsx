@@ -64,6 +64,7 @@ const PrivacyPage = lazy(() => import('@/pages/legal/privacy'))
 // Landing Pages
 const SpamGPTHero = lazy(() => import('@/components/landing/spamgpt/SpamGPTHero'))
 const LandingPageIndex = lazy(() => import('@/pages/landing'))
+const OAuthCallbackPage = lazy(() => import('@/pages/OAuthCallbackPage'))
 
 import SkeletonAI from '@/components/ui/SkeletonAI'
 import MainLayout from '@/layouts/MainLayout'
@@ -652,9 +653,18 @@ const router = createBrowserRouter([
       </Suspense>
     )
   },
-
   {
-    path: '/landing/spamgpt',
+    path: '/oauth/callback',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <OAuthCallbackPage />
+        <AppWrapper />
+      </Suspense>
+    )
+    },
+ 
+   {
+     path: '/landing/spamgpt',
     element: (
       <Suspense fallback={<Loading />}>
         <SpamGPTHero />

@@ -17,10 +17,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { smtpTestBatch } from '@/api/smtp'
 // Error presentation moved to stable API client
 // For now, using simple error handling
-const presentErrorToUser = (error: any) => console.error('Error:', error);
+const presentErrorToUser = (error: any, context?: string) => {
+  console.error('Error:', context ? `${context}:` : '', error)
+}
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
+import { toast } from 'sonner'
+import ConfirmDialog from '@/components/common/ConfirmDialog'
 
 const Row: React.FC<{
   item: SMTPAccount;
@@ -34,55 +38,66 @@ const Row: React.FC<{
   const [port, setPort] = React.useState<number | string>(item.port)
   const [password, setPassword] = React.useState('')
   const [saving, setSaving] = React.useState(false)
+  const [confirmOpen, setConfirmOpen] = React.useState(false)
 
   return (
-    <TableRow>
-      <TableCell className="py-3 px-4 min-w-56">
-        {isEditing ? (
-          <Input value={email} onChange={(e) => setEmail(e.target.value)} />
-        ) : (
-          email
-        )}
-      </TableCell>
-      <TableCell className="py-3 px-4 text-muted-foreground min-w-56">
-        {isEditing ? (
-          <div className="flex gap-2">
-            <Input className="w-56" placeholder="smtp.server.com" value={server} onChange={(e) => setServer(e.target.value)} />
-            <Input className="w-24" type="number" placeholder="587" value={port} onChange={(e) => setPort(e.target.value)} />
-          </div>
-        ) : (
-          `${item.server}:${item.port}`
-        )}
-      </TableCell>
-      <TableCell className="py-3 px-4">
-        <span className="text-sm">
-          {item.status}
-        </span>
-      </TableCell>
-      <TableCell className="py-3 px-4 text-right">
-        {isEditing ? (
-          <div className="flex items-center justify-end gap-2">
-            <Input className="w-48" type="password" placeholder="New password (optional)" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
-            <Button size="sm" onClick={async () => {
-              try {
-                setSaving(true)
-                await onUpdate(item.id, { email, server, port: Number(port) || 587, ...(password ? { password } : {}) })
-                setIsEditing(false)
-              } finally { setSaving(false) }
-            }} disabled={saving}>
-              {saving ? 'Saving…' : 'Save'}
-            </Button>
-          </div>
-        ) : (
-          <>
-            <Button size="sm" variant="outline" className="mr-2" onClick={() => onCheck(item)}><PlayIcon className="w-4 h-4 mr-1" />Check</Button>
-            <Button size="sm" variant="outline" className="mr-2" onClick={() => setIsEditing(true)}>Edit</Button>
-            <Button size="sm" variant="destructive" onClick={() => onDelete(item.id)}><TrashIcon className="w-4 h-4 mr-1" />Delete</Button>
-          </>
-        )}
-      </TableCell>
-    </TableRow>
+    <>
+      <TableRow>
+        <TableCell className="py-3 px-4 min-w-56">
+          {isEditing ? (
+            <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+          ) : (
+            email
+          )}
+        </TableCell>
+        <TableCell className="py-3 px-4 text-muted-foreground min-w-56">
+          {isEditing ? (
+            <div className="flex gap-2">
+              <Input className="w-56" placeholder="smtp.server.com" value={server} onChange={(e) => setServer(e.target.value)} />
+              <Input className="w-24" type="number" placeholder="587" value={port} onChange={(e) => setPort(e.target.value)} />
+            </div>
+          ) : (
+            `${item.server}:${item.port}`
+          )}
+        </TableCell>
+        <TableCell className="py-3 px-4">
+          <span className="text-sm">
+            {item.status}
+          </span>
+        </TableCell>
+        <TableCell className="py-3 px-4 text-right">
+          {isEditing ? (
+            <div className="flex items-center justify-end gap-2">
+              <Input className="w-48" type="password" placeholder="New password (optional)" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button size="sm" onClick={async () => {
+                try {
+                  setSaving(true)
+                  await onUpdate(item.id, { email, server, port: Number(port) || 587, ...(password ? { password } : {}) })
+                  setIsEditing(false)
+                } finally { setSaving(false) }
+              }} disabled={saving}>
+                {saving ? 'Saving…' : 'Save'}
+              </Button>
+            </div>
+          ) : (
+            <>
+              <Button size="sm" variant="outline" className="mr-2" onClick={() => onCheck(item)}><PlayIcon className="w-4 h-4 mr-1" />Check</Button>
+              <Button size="sm" variant="outline" className="mr-2" onClick={() => setIsEditing(true)}>Edit</Button>
+              <Button size="sm" variant="destructive" onClick={() => setConfirmOpen(true)}><TrashIcon className="w-4 h-4 mr-1" />Delete</Button>
+            </>
+          )}
+        </TableCell>
+      </TableRow>
+      <ConfirmDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        title="Delete SMTP Account"
+        description={`Are you sure you want to delete ${item.email}? This action cannot be undone.`}
+        confirmLabel="Delete"
+        onConfirm={() => onDelete(item.id)}
+      />
+    </>
   )
 }
 
@@ -285,7 +300,40 @@ const SMTPListPage: React.FC = () => {
                     <Button onClick={() => navigate('/smtp/checker?tab=connection')}><PlayIcon className="w-4 h-4 mr-2" />Open Checker</Button>
                 </div>
             }
-            toolbar={<div className="flex items-center gap-2"><Button variant="outline"><ArrowDownTrayIcon className="w-4 h-4 mr-2 rotate-180" />Import</Button><Button variant="outline"><ArrowDownTrayIcon className="w-4 h-4 mr-2" />Export</Button><Button variant="outline" onClick={() => setBatchOpen(true)}><PlayIcon className="w-4 h-4 mr-2" />Batch Test</Button></div>}
+            toolbar={<div className="flex items-center gap-2">
+                <Button
+                    variant="outline"
+                    onClick={() => {
+                        // Placeholder import handler
+                        toast.info?.('Import coming soon: CSV format email:password@host:port')
+                    }}
+                >
+                    <ArrowDownTrayIcon className="w-4 h-4 mr-2 rotate-180" />Import
+                </Button>
+                <Button
+                    variant="outline"
+                    onClick={() => {
+                        try {
+                            const lines = (data || []).map(a => `${a.email}:${'****'}@${a.server}:${a.port}`).join('\n')
+                            const blob = new Blob([lines], { type: 'text/plain;charset=utf-8' })
+                            const url = URL.createObjectURL(blob)
+                            const link = document.createElement('a')
+                            link.href = url
+                            link.download = 'smtp-accounts.txt'
+                            document.body.appendChild(link)
+                            link.click()
+                            link.remove()
+                            URL.revokeObjectURL(url)
+                            toast.success?.('Export started')
+                        } catch (e) {
+                            presentErrorToUser(e, 'Export failed')
+                        }
+                    }}
+                >
+                    <ArrowDownTrayIcon className="w-4 h-4 mr-2" />Export
+                </Button>
+                <Button variant="outline" onClick={() => setBatchOpen(true)}><PlayIcon className="w-4 h-4 mr-2" />Batch Test</Button>
+            </div>}
         >
             <Card variant="premium">
                 <Dialog open={batchOpen} onOpenChange={setBatchOpen}>
@@ -479,7 +527,7 @@ const SMTPListPage: React.FC = () => {
                 <div className="mb-6">
                     <div className="text-sm text-muted-foreground mb-1">Bulk upload (email:password per line)</div>
                     <div className="flex gap-2">
-                        <Input placeholder="user1:pass1\nuser2:pass2" value={bulkData} onChange={(e) => setBulkData(e.target.value)} />
+                        <Textarea placeholder={"user1:pass1@host:port\nuser2:pass2@host:port"} value={bulkData} onChange={(e) => setBulkData(e.target.value)} className="min-h-28" />
                         <Button variant="outline" onClick={async () => {
                             if (!bulkData.trim()) return;
                             await bulkUploadSmtp(sessionId, bulkData.trim());
