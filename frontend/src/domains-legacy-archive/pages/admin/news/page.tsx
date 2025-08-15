@@ -57,7 +57,7 @@ const AdminNews = () => {
       const response = await axios.get('/api/v1/admin/news');
       setNews(response.data);
       toast.success('📰 News loaded - LIVE DATA!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to load news';
       toast.error(errorMessage);
       console.error('Error loading news:', error);
@@ -84,7 +84,7 @@ const AdminNews = () => {
       setCreateDialogOpen(false);
       await loadNews();
       toast.success('News item created successfully!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to create news';
       toast.error(errorMessage);
       console.error('Error creating news:', error);
@@ -100,7 +100,7 @@ const AdminNews = () => {
       await axios.delete(`/api/v1/admin/news/${newsId}`);
       await loadNews();
       toast.success('News item deleted successfully!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to delete news';
       toast.error(errorMessage);
       console.error('Error deleting news:', error);
@@ -239,7 +239,7 @@ const AdminNews = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label className="text-muted-foreground">Priority</Label>
-                      <Select value={formData.priority} onValueChange={(value: any) => setFormData({ ...formData, priority: value })}>
+                      <Select value={formData.priority} onValueChange={(value: unknown) => setFormData({ ...formData, priority: value })}>
                         <SelectTrigger className="bg-card/50 border-border text-white">
                           <SelectValue />
                         </SelectTrigger>

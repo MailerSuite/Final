@@ -546,7 +546,7 @@ export const unsubscribeApi = {
       unsubscribe_records: UnsubscribeRecord[]
       email_preferences: EmailPreference[]
       consent_logs: ConsentLog[]
-      campaign_interactions: any[]
+      campaign_interactions: unknown[]
     }
     data_processing_purposes: string[]
     legal_basis: string[]

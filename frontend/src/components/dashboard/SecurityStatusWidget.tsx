@@ -16,8 +16,7 @@ import {
   Server,
   Lock
 } from 'lucide-react';
-import { securityApi, type SecurityStatus } from '@/api/security-api';
-import { toast } from '@/hooks/smtp-checker/use-toast';
+import { securityApi } from '@/api/security-api';
 
 interface SecurityStatusWidgetProps {
   className?: string;
@@ -34,7 +33,7 @@ export const SecurityStatusWidget: React.FC<SecurityStatusWidgetProps> = ({ clas
       setError(null);
       const data = await securityApi.getStatus();
       setStatus(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const message = err.response?.data?.detail || 'Failed to fetch security status';
       setError(message);
       console.error('Security status fetch error:', err);

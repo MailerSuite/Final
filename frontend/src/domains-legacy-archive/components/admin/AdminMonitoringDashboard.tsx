@@ -21,12 +21,11 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useAdminDashboard, useSystemHealth, useRealtimeMetrics } from '@/hooks/useMetricsData';
+import { useAdminDashboard, useSystemHealth } from '@/hooks/useMetricsData';
 import { formatNumber } from '@/utils/numberFormat';
 import RealtimeMetricsWidget from '@/components/metrics/RealtimeMetricsWidget';
 

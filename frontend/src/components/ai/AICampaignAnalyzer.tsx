@@ -99,7 +99,7 @@ export const AICampaignAnalyzer: React.FC<AICampaignAnalyzerProps> = ({
       } else {
         throw new Error(response.error || 'Failed to analyze campaign')
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error analyzing campaign:', error)
       
       if (error.response?.status === 429) {

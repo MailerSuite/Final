@@ -67,7 +67,7 @@ const AdminSettings = () => {
     }
   };
 
-  const updateSetting = (key: string, value: any) => {
+  const updateSetting = (key: string, value: unknown) => {
     setSettings(prev => ({ ...prev, [key]: value }));
   };
 
@@ -96,7 +96,7 @@ const AdminSettings = () => {
       const saveResponse = await axios.put('/api/v1/admin/settings', apiSettings);
       
       toast.success('Settings saved successfully!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to save settings';
       toast.error(errorMessage);
       console.error('Error saving settings:', error);

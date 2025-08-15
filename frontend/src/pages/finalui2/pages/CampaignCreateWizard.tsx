@@ -75,9 +75,9 @@ const CampaignCreateWizard: React.FC = () => {
       try {
         if (!sid) return
         const t = await listTemplates()
-        setTemplates((t || []).map((x: any) => ({ id: x.id, name: x.name || x.template_name || x.id })))
+        setTemplates((t || []).map((x: unknown) => ({ id: x.id, name: x.name || x.template_name || x.id })))
         const s = await listSmtp(sid)
-        setSmtps((s || []).map((x: any) => ({ id: x.id, email: x.email })))
+        setSmtps((s || []).map((x: unknown) => ({ id: x.id, email: x.email })))
         try {
           const { data } = await leadBaseApi.list('')
           setLeadBases(Array.isArray(data) ? data : [])
@@ -162,7 +162,7 @@ const CampaignCreateWizard: React.FC = () => {
       }
       toast.success?.('Campaign created')
       setStep(7)
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error?.(e?.message || 'Failed to create campaign')
     } finally { setCreating(false) }
   }
@@ -242,7 +242,7 @@ const CampaignCreateWizard: React.FC = () => {
                         setNewListName(''); setNewListFile(null)
                         toast.success?.('List created and uploaded')
                       }
-                    } catch (e: any) {
+                    } catch (e: unknown) {
                       toast.error?.(e?.message || 'Create list failed')
                     }
                   }}>Create & Upload</Button>
@@ -374,7 +374,7 @@ const CampaignCreateWizard: React.FC = () => {
               <div className="space-y-4">
                 <div>
                   <Label>Schedule Type</Label>
-                  <Select value={scheduleType} onValueChange={(value: any) => setScheduleType(value)}>
+                  <Select value={scheduleType} onValueChange={(value: unknown) => setScheduleType(value)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -421,7 +421,7 @@ const CampaignCreateWizard: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label>Recurring Type</Label>
-                        <Select value={recurringType} onValueChange={(value: any) => setRecurringType(value)}>
+                        <Select value={recurringType} onValueChange={(value: unknown) => setRecurringType(value)}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
@@ -547,7 +547,7 @@ const CampaignCreateWizard: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <Label>Test Metric</Label>
-                        <Select value={abMetric} onValueChange={(value: any) => setAbMetric(value)}>
+                        <Select value={abMetric} onValueChange={(value: unknown) => setAbMetric(value)}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>

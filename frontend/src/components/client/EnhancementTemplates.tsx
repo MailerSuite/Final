@@ -171,7 +171,7 @@ interface TableTemplateProps {
     onClick: () => void
     variant?: 'default' | 'outline' | 'ghost'
   }[]
-  onRowAction?: (row: any, action: string) => void
+  onRowAction?: (row: unknown, action: string) => void
   children?: React.ReactNode
 }
 
@@ -304,7 +304,7 @@ interface AnalyticsTemplateProps {
   charts?: Array<{
     title: string
     type: 'line' | 'bar' | 'pie'
-    data: any[]
+    data: unknown[]
   }>
   children?: React.ReactNode
 }

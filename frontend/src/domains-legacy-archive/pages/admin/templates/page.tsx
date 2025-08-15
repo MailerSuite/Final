@@ -436,7 +436,7 @@ const AdminTemplates: React.FC = () => {
                     </div>
                     <div>
                       <Label htmlFor="template-type">Template Type</Label>
-                      <Select value={formData.type} onValueChange={(value: any) => setFormData(prev => ({ ...prev, type: value }))}>
+                      <Select value={formData.type} onValueChange={(value: unknown) => setFormData(prev => ({ ...prev, type: value }))}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select template type" />
                         </SelectTrigger>
@@ -736,7 +736,7 @@ const AdminTemplates: React.FC = () => {
               </div>
               <div>
                 <Label htmlFor="edit-template-type">Template Type</Label>
-                <Select value={formData.type} onValueChange={(value: any) => setFormData(prev => ({ ...prev, type: value }))}>
+                <Select value={formData.type} onValueChange={(value: unknown) => setFormData(prev => ({ ...prev, type: value }))}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select template type" />
                   </SelectTrigger>

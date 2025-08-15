@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -8,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { fetchModels } from "@/api/aimlapi";
 import { completionModels } from "@/lib/constants/models";
 
 interface ModelSelectorProps {

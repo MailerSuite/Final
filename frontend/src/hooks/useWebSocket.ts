@@ -42,7 +42,7 @@ export function useWebSocket(path: string, opts: WebSocketOptions = {}) {
     onmessage: ((this: WebSocket, ev: MessageEvent) => any) | null = null
     onerror: ((this: WebSocket, ev: Event) => any) | null = null
 
-    private listeners = new Map<string, Set<any>>()
+    private listeners = new Map<string, Set<unknown>>()
     private id: string
 
     constructor(id: string, url: string) {

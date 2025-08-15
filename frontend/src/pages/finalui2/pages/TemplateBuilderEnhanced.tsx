@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,10 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { Slider } from '@/components/ui/slider';
-import { Switch } from '@/components/ui/switch';
 import {
   Select,
   SelectContent,
@@ -113,7 +110,7 @@ import { toast } from '@/hooks/useToast';
 interface TemplateBlock {
   id: string;
   type: 'text' | 'image' | 'button' | 'divider' | 'spacer' | 'social' | 'video' | 'html' | 'product' | 'countdown';
-  content: any;
+  content: unknown;
   styles: Record<string, any>;
   animation?: string;
 }
@@ -860,7 +857,7 @@ const TemplateBuilderEnhanced: React.FC = () => {
                         />
                         <Select
                           value={variableSchema.types[varName] || 'string'}
-                          onValueChange={(value: any) => setVariableSchema(prev => ({
+                          onValueChange={(value: unknown) => setVariableSchema(prev => ({
                             ...prev,
                             types: { ...prev.types, [varName]: value }
                           }))}
@@ -919,7 +916,7 @@ const TemplateBuilderEnhanced: React.FC = () => {
                         />
                         <Select
                           value={variableSchema.types[varName] || 'string'}
-                          onValueChange={(value: any) => setVariableSchema(prev => ({
+                          onValueChange={(value: unknown) => setVariableSchema(prev => ({
                             ...prev,
                             types: { ...prev.types, [varName]: value }
                           }))}
@@ -1223,7 +1220,7 @@ const TemplateBuilderEnhanced: React.FC = () => {
                   value={newCollaborator.email}
                   onChange={(e) => setNewCollaborator(prev => ({ ...prev, email: e.target.value }))}
                 />
-                <Select value={newCollaborator.role} onValueChange={(value: any) => setNewCollaborator(prev => ({ ...prev, role: value }))}>
+                <Select value={newCollaborator.role} onValueChange={(value: unknown) => setNewCollaborator(prev => ({ ...prev, role: value }))}>
                   <SelectTrigger className="w-32">
                     <SelectValue />
                   </SelectTrigger>

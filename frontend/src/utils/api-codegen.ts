@@ -62,7 +62,7 @@ export function ${hookName}(${params}) {
       const res = await ${funcName}(override || ${state})
       setData(res)
       return res
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e?.message || 'Unknown error')
       throw e
     } finally {

@@ -56,7 +56,7 @@ export async function smtpTestBatch(
   accounts: SMTPBatchAccountInput[],
   opts?: { timeout?: number; max_concurrent?: number }
 ) {
-  const payload: any = { accounts }
+  const payload: unknown = { accounts }
   if (opts?.timeout != null) payload.timeout = opts.timeout
   if (opts?.max_concurrent != null) payload.max_concurrent = opts.max_concurrent
   return await apiClient.post('/api/v1/smtp/test-batch', payload)

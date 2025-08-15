@@ -129,7 +129,7 @@ const trialPlans = [
 
 export default function LicenseManagementForm({ onClose, mode = 'assign', selectedLicense }: LicenseManagementFormProps) {
   const [activeTab, setActiveTab] = useState(mode)
-  const [selectedPlan, setSelectedPlan] = useState<any>(null)
+  const [selectedPlan, setSelectedPlan] = useState<unknown>(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const assignForm = useForm<LicenseAssignData>({

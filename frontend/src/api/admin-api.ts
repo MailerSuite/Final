@@ -20,9 +20,9 @@ import type { AxiosInstance } from 'axios'
 const globalAxios: AxiosInstance = axiosInstance;
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import { DUMMY_BASE_URL, assertParamExists, setBearerAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 // @ts-ignore
 import type { HTTPValidationError } from './models';
 // @ts-ignore
@@ -286,7 +286,7 @@ export const AdminApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAdminStatsApiV1AdminStatsGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async getAdminStatsApiV1AdminStatsGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAdminStatsApiV1AdminStatsGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AdminApi.getAdminStatsApiV1AdminStatsGet']?.[localVarOperationServerIndex]?.url;
@@ -323,7 +323,7 @@ export const AdminApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listUsersApiV1AdminUsersGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async listUsersApiV1AdminUsersGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.listUsersApiV1AdminUsersGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AdminApi.listUsersApiV1AdminUsersGet']?.[localVarOperationServerIndex]?.url;
@@ -337,7 +337,7 @@ export const AdminApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateTicketStatusApiV1AdminSupportTicketsTicketIdStatusPut(ticketId: number, newStatus: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async updateTicketStatusApiV1AdminSupportTicketsTicketIdStatusPut(ticketId: number, newStatus: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateTicketStatusApiV1AdminSupportTicketsTicketIdStatusPut(ticketId, newStatus, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AdminApi.updateTicketStatusApiV1AdminSupportTicketsTicketIdStatusPut']?.[localVarOperationServerIndex]?.url;
@@ -369,7 +369,7 @@ export const AdminApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAdminStatsApiV1AdminStatsGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        getAdminStatsApiV1AdminStatsGet(options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.getAdminStatsApiV1AdminStatsGet(options).then((request) => request(axios, basePath));
         },
         /**
@@ -397,7 +397,7 @@ export const AdminApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listUsersApiV1AdminUsersGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        listUsersApiV1AdminUsersGet(options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.listUsersApiV1AdminUsersGet(options).then((request) => request(axios, basePath));
         },
         /**
@@ -408,7 +408,7 @@ export const AdminApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateTicketStatusApiV1AdminSupportTicketsTicketIdStatusPut(ticketId: number, newStatus: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        updateTicketStatusApiV1AdminSupportTicketsTicketIdStatusPut(ticketId: number, newStatus: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.updateTicketStatusApiV1AdminSupportTicketsTicketIdStatusPut(ticketId, newStatus, options).then((request) => request(axios, basePath));
         },
     };
@@ -495,28 +495,28 @@ export class AdminApi extends BaseAPI {
      * List Tarifs
      */
     public listTarifsApiV1AdminTarifsGet(options?: RawAxiosRequestConfig) {
-        return this.axios.get<any[]>("/api/v1/admin/tarifs", options);
+        return this.axios.get<unknown[]>("/api/v1/admin/tarifs", options);
     }
 
     /**
      * Create Tarif
      */
     public createTarifApiV1AdminTarifsPost(body: object, options?: RawAxiosRequestConfig) {
-        return this.axios.post<any>("/api/v1/admin/tarifs", body, options);
+        return this.axios.post<unknown>("/api/v1/admin/tarifs", body, options);
     }
 
     /**
      * List News
      */
     public listNewsApiV1AdminNewsGet(options?: RawAxiosRequestConfig) {
-        return this.axios.get<any[]>("/api/v1/admin/news", options);
+        return this.axios.get<unknown[]>("/api/v1/admin/news", options);
     }
 
     /**
      * Create News
      */
     public createNewsApiV1AdminNewsPost(body: object, options?: RawAxiosRequestConfig) {
-        return this.axios.post<any>("/api/v1/admin/news", body, options);
+        return this.axios.post<unknown>("/api/v1/admin/news", body, options);
     }
 }
 

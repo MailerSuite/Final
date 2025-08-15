@@ -572,7 +572,7 @@ const AdminNotifications: React.FC = () => {
                         <h4 className="font-medium mb-4">Frequency</h4>
                         <Select 
                           value={settings.notification_frequency} 
-                          onValueChange={(value: any) => 
+                          onValueChange={(value: unknown) => 
                             setSettings(prev => prev ? { ...prev, notification_frequency: value } : null)
                           }
                         >
@@ -639,7 +639,7 @@ const AdminNotifications: React.FC = () => {
                     <div className="grid grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="notification-type">Type</Label>
-                        <Select value={formData.type} onValueChange={(value: any) => setFormData(prev => ({ ...prev, type: value }))}>
+                        <Select value={formData.type} onValueChange={(value: unknown) => setFormData(prev => ({ ...prev, type: value }))}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
@@ -653,7 +653,7 @@ const AdminNotifications: React.FC = () => {
                       </div>
                       <div>
                         <Label htmlFor="notification-priority">Priority</Label>
-                        <Select value={formData.priority} onValueChange={(value: any) => setFormData(prev => ({ ...prev, priority: value }))}>
+                        <Select value={formData.priority} onValueChange={(value: unknown) => setFormData(prev => ({ ...prev, priority: value }))}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
@@ -667,7 +667,7 @@ const AdminNotifications: React.FC = () => {
                       </div>
                       <div>
                         <Label htmlFor="notification-category">Category</Label>
-                        <Select value={formData.category} onValueChange={(value: any) => setFormData(prev => ({ ...prev, category: value }))}>
+                        <Select value={formData.category} onValueChange={(value: unknown) => setFormData(prev => ({ ...prev, category: value }))}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>

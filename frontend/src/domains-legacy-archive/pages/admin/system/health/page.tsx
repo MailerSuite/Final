@@ -41,7 +41,7 @@ const SystemHealthPage = () => {
       const res = await axios.get('/api/v1/health');
       setData(res.data);
       toast.success('💚 System health loaded - LIVE DATA!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to load system health';
       toast.error(errorMessage);
       console.error('Error loading system health:', error);

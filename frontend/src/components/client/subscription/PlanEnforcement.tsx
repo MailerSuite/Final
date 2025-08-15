@@ -258,7 +258,7 @@ function UpgradePromptDialog({
   onOpenChange: (open: boolean) => void
   feature?: string
   requiredPlan?: string
-  currentPlan: any
+  currentPlan: unknown
 }) {
   const benefits = {
     premium: [

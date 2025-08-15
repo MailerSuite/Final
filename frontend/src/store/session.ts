@@ -56,7 +56,7 @@ const useSessionStore = create<Session>()(
                     if (!existing.find((s) => s.id === data.id)) {
                         set({ sessions: [...existing, data] })
                     }
-                } catch (error: any) {
+                } catch (error: unknown) {
                     const message = error?.response?.data?.error || "Invalid credentials. Please try again."
                     toast.error(message)
                     // Add session error
@@ -94,7 +94,7 @@ const useSessionStore = create<Session>()(
                     
                     // Reset API error state on successful request
                     get().resetApiErrorState();
-                } catch (error: any) {
+                } catch (error: unknown) {
                     // Ignore AbortError - it's intentional
                     if (error.name === 'AbortError' || abortSignal?.aborted) {
                         console.debug("Sessions request was aborted (intentional)");
@@ -156,7 +156,7 @@ const useSessionStore = create<Session>()(
                         }
                     })
                     toast.success(res.detail)
-                } catch (error: any) {
+                } catch (error: unknown) {
                     const message = error?.response?.data?.detail || "Something went wrong. Please try again"
                     toast.error(message)
                     // Delete session error
@@ -166,7 +166,7 @@ const useSessionStore = create<Session>()(
                 try {
                     const data = await fetchActiveProxyApi(sessionId)
                     set({ activeProxy: data })
-                } catch (error: any) {
+                } catch (error: unknown) {
                     // Fetch active proxy error
                     set({ activeProxy: null })
                 }
@@ -189,7 +189,7 @@ const useSessionStore = create<Session>()(
                     } else {
                         set({ activeProxy: null })
                     }
-                } catch (error: any) {
+                } catch (error: unknown) {
                     const message = error?.response?.data?.detail || 'Failed to set active proxy'
                     toast.error(message)
                     // Set active proxy error

@@ -63,7 +63,7 @@ export function useSmtpChecker(initial: SmtpConfig[] = []) {
             message: data.results[0]?.status || 'ok',
             data: data.results[0],
           }
-        } catch (e: any) {
+        } catch (e: unknown) {
           if (controller.signal.aborted) break
           resMap[i] = { status: 'error', message: e.message }
         }

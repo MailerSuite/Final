@@ -36,7 +36,7 @@ interface DashboardWidget {
     id: string
     type: 'metric' | 'chart' | 'table' | 'progress'
     title: string
-    config: any
+    config: unknown
     position: { x: number; y: number; w: number; h: number }
 }
 
@@ -651,7 +651,7 @@ const AdvancedReportingPage: React.FC = () => {
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <Label>Report Type</Label>
-                                    <Select value={newReport.type} onValueChange={(value: any) => setNewReport(prev => ({ ...prev, type: value }))}>
+                                    <Select value={newReport.type} onValueChange={(value: unknown) => setNewReport(prev => ({ ...prev, type: value }))}>
                                         <SelectTrigger>
                                             <SelectValue />
                                         </SelectTrigger>
@@ -665,7 +665,7 @@ const AdvancedReportingPage: React.FC = () => {
 
                                 <div>
                                     <Label>Frequency</Label>
-                                    <Select value={newReport.frequency} onValueChange={(value: any) => setNewReport(prev => ({ ...prev, frequency: value }))}>
+                                    <Select value={newReport.frequency} onValueChange={(value: unknown) => setNewReport(prev => ({ ...prev, frequency: value }))}>
                                         <SelectTrigger>
                                             <SelectValue />
                                         </SelectTrigger>
@@ -690,7 +690,7 @@ const AdvancedReportingPage: React.FC = () => {
 
                             <div>
                                 <Label>Template (Optional)</Label>
-                                <Select value={newReport.template} onValueChange={(value: any) => setNewReport(prev => ({ ...prev, template: value }))}>
+                                <Select value={newReport.template} onValueChange={(value: unknown) => setNewReport(prev => ({ ...prev, template: value }))}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select template" />
                                     </SelectTrigger>

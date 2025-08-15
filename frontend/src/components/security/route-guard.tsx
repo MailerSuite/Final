@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Navigate, useLocation, Outlet } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Shield, AlertTriangle, Lock, UserX } from "lucide-react";
+import { AlertTriangle, UserX } from "lucide-react";
 import { useSecurityContext } from "./security-provider";
 import { IUser } from "../../types";
 import { clearSavedRoute } from "@/hooks/usePersistedRoute";

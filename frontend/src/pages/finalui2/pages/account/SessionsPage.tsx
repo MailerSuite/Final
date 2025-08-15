@@ -16,7 +16,7 @@ export default function SessionsPage() {
       await axios.post('/api/v1/sessions/terminate-all')
       toast.success('All sessions terminated')
       mutate()
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e?.response?.data?.detail ?? 'Failed to terminate sessions')
     }
   }
@@ -26,7 +26,7 @@ export default function SessionsPage() {
       await axios.post(`/api/v1/sessions/${id}/terminate`)
       toast.success('Session terminated')
       mutate()
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e?.response?.data?.detail ?? 'Failed to terminate session')
     }
   }
@@ -50,7 +50,7 @@ export default function SessionsPage() {
         <CardContent>
           <div className="space-y-3">
             {sessions.length === 0 && <div className="text-sm text-muted-foreground">No active sessions</div>}
-            {sessions.map((s: any) => (
+            {sessions.map((s: unknown) => (
               <div key={s.id} className="flex items-center justify-between rounded border p-3">
                 <div>
                   <div className="font-medium">{s.name || 'Session'}</div>

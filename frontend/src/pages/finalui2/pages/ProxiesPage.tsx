@@ -75,7 +75,7 @@ export default function ProxiesPage() {
       try {
         const proxies = await listAllProxies()
         setEntries(
-          (proxies || []).map((p: any) => ({
+          (proxies || []).map((p: unknown) => ({
             id: String(p.id ?? p.proxy_id ?? Math.random()),
             country: p.country_code || p.country,
             host: p.ip || p.host || `${p.ip_address}`,
@@ -89,7 +89,7 @@ export default function ProxiesPage() {
           }))
         )
         setError(null)
-      } catch (e: any) {
+      } catch (e: unknown) {
         setError(e?.message || 'Failed to load proxies')
       }
     })()
@@ -201,7 +201,7 @@ export default function ProxiesPage() {
                           setNewHost(''); setNewPort(1080); setNewUser(''); setNewPass('')
                           try {
                             const proxies = await listAllProxies()
-                            setEntries((proxies || []).map((p: any) => ({ id: String(p.id ?? p.proxy_id ?? Math.random()), country: p.country_code || p.country, host: p.ip || p.host || `${p.ip_address}`, user: p.username || undefined, pass: p.password ? '***' : undefined, port: p.port, ssl: p.ssl ?? 'TLS', type: p.type || 'STANDARD', responseMs: p.response_ms ?? p.responseMs, aiPrediction: p.health || p.aiPrediction, })))
+                            setEntries((proxies || []).map((p: unknown) => ({ id: String(p.id ?? p.proxy_id ?? Math.random()), country: p.country_code || p.country, host: p.ip || p.host || `${p.ip_address}`, user: p.username || undefined, pass: p.password ? '***' : undefined, port: p.port, ssl: p.ssl ?? 'TLS', type: p.type || 'STANDARD', responseMs: p.response_ms ?? p.responseMs, aiPrediction: p.health || p.aiPrediction, })))
                           } catch { }
                         }}
                       >
@@ -283,7 +283,7 @@ export default function ProxiesPage() {
                           setBulkData('')
                           try {
                             const proxies = await listAllProxies()
-                            setEntries((proxies || []).map((p: any) => ({ id: String(p.id ?? p.proxy_id ?? Math.random()), country: p.country_code || p.country, host: p.ip || p.host || `${p.ip_address}`, user: p.username || undefined, pass: p.password ? '***' : undefined, port: p.port, ssl: p.ssl ?? 'TLS', type: p.type || 'STANDARD', responseMs: p.response_ms ?? p.responseMs, aiPrediction: p.health || p.aiPrediction, })))
+                            setEntries((proxies || []).map((p: unknown) => ({ id: String(p.id ?? p.proxy_id ?? Math.random()), country: p.country_code || p.country, host: p.ip || p.host || `${p.ip_address}`, user: p.username || undefined, pass: p.password ? '***' : undefined, port: p.port, ssl: p.ssl ?? 'TLS', type: p.type || 'STANDARD', responseMs: p.response_ms ?? p.responseMs, aiPrediction: p.health || p.aiPrediction, })))
                           } catch { }
                         }}><ArrowDownTrayIcon className="w-4 h-4 mr-2 rotate-180" />Bulk Upload</Button>
                         <Button variant="outline" onClick={() => setSelectedPool(selectedPool === 'default' ? 'premium' : selectedPool === 'premium' ? 'residential' : 'default')}>
@@ -296,7 +296,7 @@ export default function ProxiesPage() {
                               await proxyApi.createPool(sessionId, newPool.trim())
                               setAvailablePools(prev => [...prev, newPool.trim()])
                               toast.success?.('Pool created')
-                            } catch (e: any) {
+                            } catch (e: unknown) {
                               toast.error?.(e?.message || 'Failed to create pool')
                             }
                           }
@@ -438,7 +438,7 @@ export default function ProxiesPage() {
                         <td className="px-4 py-2 text-sm">{e.type || '-'}</td>
                         <td className="px-4 py-2 text-right">
                           <Button size="sm" variant="outline" className="mr-2" onClick={() => { setEditId(String(e.id)); setEditForm({ host: e.host, port: e.port || 1080, username: e.user || '', password: '' }) }}>Edit</Button>
-                          <Button size="sm" variant="destructive" onClick={async () => { try { await deleteProxy(sessionId, String(e.id)); const proxies = await listAllProxies(); setEntries((proxies || []).map((p: any) => ({ id: String(p.id ?? p.proxy_id ?? Math.random()), country: p.country_code || p.country, host: p.ip || p.host || `${p.ip_address}`, user: p.username || undefined, pass: p.password ? '***' : undefined, port: p.port, ssl: p.ssl ?? 'TLS', type: p.type || 'STANDARD', responseMs: p.response_ms ?? p.responseMs, aiPrediction: p.health || p.aiPrediction, }))) } catch { } }}>Delete</Button>
+                          <Button size="sm" variant="destructive" onClick={async () => { try { await deleteProxy(sessionId, String(e.id)); const proxies = await listAllProxies(); setEntries((proxies || []).map((p: unknown) => ({ id: String(p.id ?? p.proxy_id ?? Math.random()), country: p.country_code || p.country, host: p.ip || p.host || `${p.ip_address}`, user: p.username || undefined, pass: p.password ? '***' : undefined, port: p.port, ssl: p.ssl ?? 'TLS', type: p.type || 'STANDARD', responseMs: p.response_ms ?? p.responseMs, aiPrediction: p.health || p.aiPrediction, }))) } catch { } }}>Delete</Button>
                         </td>
                       </tr>
                     ))}
@@ -532,7 +532,7 @@ export default function ProxiesPage() {
                         const data = (res as any)?.data ?? res
                         const bad = Array.isArray(data?.hits) ? data.hits.length : (data?.blacklisted ? 1 : 0)
                         setBlStatus(bad ? `Listed on ${bad} lists` : 'Not listed')
-                      } catch (e: any) {
+                      } catch (e: unknown) {
                         setBlStatus('Check failed')
                       }
                     }}>Check</Button>
@@ -568,7 +568,7 @@ export default function ProxiesPage() {
                     await createProxy(sessionId, { host: editForm.host, port: Number(editForm.port) || 1080, username: editForm.username || undefined, password: editForm.password || undefined })
                     setEditId(null)
                     const proxies = await listAllProxies()
-                    setEntries((proxies || []).map((p: any) => ({ id: String(p.id ?? p.proxy_id ?? Math.random()), country: p.country_code || p.country, host: p.ip || p.host || `${p.ip_address}`, user: p.username || undefined, pass: p.password ? '***' : undefined, port: p.port, ssl: p.ssl ?? 'TLS', type: p.type || 'STANDARD', responseMs: p.response_ms ?? p.responseMs, aiPrediction: p.health || p.aiPrediction, })))
+                    setEntries((proxies || []).map((p: unknown) => ({ id: String(p.id ?? p.proxy_id ?? Math.random()), country: p.country_code || p.country, host: p.ip || p.host || `${p.ip_address}`, user: p.username || undefined, pass: p.password ? '***' : undefined, port: p.port, ssl: p.ssl ?? 'TLS', type: p.type || 'STANDARD', responseMs: p.response_ms ?? p.responseMs, aiPrediction: p.health || p.aiPrediction, })))
                   } catch { }
                 }}>Save</Button>
               </div>

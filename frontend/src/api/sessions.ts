@@ -4,9 +4,9 @@ import { toast } from '@/hooks/useToast'
 import { apiClient } from '@/http/stable-api-client'
 
 // Safe request wrapper that handles 404/500 errors gracefully
-const safeRequest = function<T>(p: Promise<any>) {
+const safeRequest = function<T>(p: Promise<unknown>) {
   return p.then(r => r.data)
-   .catch((err: any) => {
+   .catch((err: unknown) => {
      if ([404, 500].includes(err?.response?.status ?? 0)) return null;
      throw err;
    });
@@ -56,7 +56,7 @@ export function useDeleteSession() {
         description: data.detail,
       })
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast({
         severity: 'critical',
         title: 'Error deleting session',

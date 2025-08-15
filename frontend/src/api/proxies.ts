@@ -2,7 +2,7 @@ import axios from '@/http/axios'
 import type { ProxyServer } from '@/types/proxy'
 import { getSessionId } from '@/utils/getSessionId'
 
-const normalize = (p: any): ProxyServer => ({
+const normalize = (p: unknown): ProxyServer => ({
   id: p.id,
   ip_address: p.ip_address || p.host,
   port: p.port,
@@ -14,7 +14,7 @@ const normalize = (p: any): ProxyServer => ({
 
 /** List proxies for a session */
 export const listProxies = async (_sessionId: string) => {
-  const { data } = await axios.get<any[]>(`/api/v1/proxies`)
+  const { data } = await axios.get<unknown[]>(`/api/v1/proxies`)
   return data.map(normalize)
 }
 
@@ -26,7 +26,7 @@ export const listAllProxies = async () => {
     return []
   }
   // Prefer canonical default-session listing
-  const { data } = await axios.get<any[]>(`/api/v1/proxies`)
+  const { data } = await axios.get<unknown[]>(`/api/v1/proxies`)
   return data.map(normalize)
 }
 
@@ -35,7 +35,7 @@ export const createProxy = async (
   _sessionId: string,
   payload: Partial<ProxyServer>
 ) => {
-  const { data } = await axios.post<any>(`/api/v1/proxies`, payload)
+  const { data } = await axios.post<unknown>(`/api/v1/proxies`, payload)
   return normalize(data)
 }
 

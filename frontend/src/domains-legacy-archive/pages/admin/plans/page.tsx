@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import PageHeader from '@/components/ui/page-header';
 import { adminApi, PlanDetails } from "@/api/admin";
 import {
   Dialog,
@@ -82,7 +81,7 @@ const AdminPlans = () => {
     }
   };
 
-  const handleUpdate = async (planId: string, planData: any) => {
+  const handleUpdate = async (planId: string, planData: unknown) => {
     try {
       setLoading(true);
       await adminApi.updatePlan(planId, planData);

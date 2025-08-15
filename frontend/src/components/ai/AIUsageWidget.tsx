@@ -46,7 +46,7 @@ export const AIUsageWidget: React.FC<AIUsageWidgetProps> = ({
       } else {
         throw new Error(response.error || 'Failed to fetch usage stats')
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching AI usage stats:', error)
       toast({
         title: "Failed to load AI usage",

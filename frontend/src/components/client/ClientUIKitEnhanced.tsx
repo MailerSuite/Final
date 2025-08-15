@@ -7,10 +7,8 @@
  */
 
 import React, { forwardRef, HTMLAttributes, ButtonHTMLAttributes } from 'react';
-import { motion, HTMLMotionProps, Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { Slot } from '@radix-ui/react-slot';
 import {
   Card,
   CardContent,
@@ -19,7 +17,6 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import {
   Activity,
   AlertTriangle,

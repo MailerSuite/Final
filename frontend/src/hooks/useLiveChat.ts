@@ -238,7 +238,7 @@ export const useLiveChat = (): UseLiveChatReturn => {
   }, [canUseChat, upgradeMessage, hasReachedLimits, userData, loadChatLimits]);
 
   // Handle WebSocket messages (moved earlier so connectWebSocket can reference it)
-  const handleWebSocketMessage = useCallback((data: any) => {
+  const handleWebSocketMessage = useCallback((data: unknown) => {
     switch (data.type) {
       case 'chat_message': {
         const newMessage: ChatMessage = {
@@ -295,7 +295,7 @@ export const useLiveChat = (): UseLiveChatReturn => {
 
       if (response.ok) {
         const messageData = await response.json();
-        const formattedMessages: ChatMessage[] = messageData.map((msg: any) => ({
+        const formattedMessages: ChatMessage[] = messageData.map((msg: unknown) => ({
           id: msg.id,
           content: msg.content,
           type: msg.message_type,
@@ -328,7 +328,7 @@ export const useLiveChat = (): UseLiveChatReturn => {
       await wsPool.connect('chat', wsUrl);
 
       // register message handler
-      wsPool.on('message', (ev: any) => {
+      wsPool.on('message', (ev: unknown) => {
         try {
           const data = JSON.parse(ev.data);
           handleWebSocketMessage(data);
@@ -338,7 +338,7 @@ export const useLiveChat = (): UseLiveChatReturn => {
       });
 
       wsPool.on('open', () => setIsConnected(true));
-      wsPool.on('close', (ev: any) => {
+      wsPool.on('close', (ev: unknown) => {
         setIsConnected(false);
         // Attempt to reconnect if not a normal closure
         const code = (ev && (ev.code as number)) || 1000;

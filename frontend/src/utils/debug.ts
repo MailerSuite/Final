@@ -45,7 +45,7 @@ class ExtendedDebugSystem {
   private maxLogs: number = 1000
   private isEnabled: boolean
   private remoteLoggingEnabled: boolean
-  private originalConsole: any = {}
+  private originalConsole: unknown = {}
   private performance: {
     renders: number
     apiCalls: number
@@ -182,13 +182,13 @@ class ExtendedDebugSystem {
     return false
   }
 
-  private trimRequestBody(data: any): any {
+  private trimRequestBody(data: unknown): unknown {
     if (!data) return null
     const str = JSON.stringify(data)
     return str.length > 500 ? str.substring(0, 500) + '... (trimmed)' : data
   }
 
-  private trimResponseBody(data: any): any {
+  private trimResponseBody(data: unknown): unknown {
     if (!data) return null
     const str = JSON.stringify(data)
     return str.length > 1000 ? str.substring(0, 1000) + '... (trimmed)' : data
@@ -255,7 +255,7 @@ class ExtendedDebugSystem {
   }
 
   // LOGGING METHODS
-  log(level: DebugLogEntry['level'], ...args: any[]): void {
+  log(level: DebugLogEntry['level'], ...args: unknown[]): void {
     const timestamp = this.formatTimestamp()
     const runtime = Date.now() - this.startTime
     const traceId = this.generateTraceId()
@@ -364,12 +364,12 @@ class ExtendedDebugSystem {
     this.sendRemoteLog('performance', perfEntry)
   }
 
-  private logNetwork(type: 'REQUEST' | 'RESPONSE', data: any): void {
+  private logNetwork(type: 'REQUEST' | 'RESPONSE', data: unknown): void {
     this.log('NETWORK', `${type}: ${data.method} ${data.url}`, data)
   }
 
   // REMOTE LOGGING
-  private async sendRemoteLog(eventType: string, data: any): Promise<void> {
+  private async sendRemoteLog(eventType: string, data: unknown): Promise<void> {
     if (!this.remoteLoggingEnabled) return
 
     try {
@@ -441,7 +441,7 @@ class ExtendedDebugSystem {
   }
 
   // React integration method
-  captureRenderError(error: Error, errorInfo: any): void {
+  captureRenderError(error: Error, errorInfo: unknown): void {
     const errorData = {
       message: error.message,
       stack: error.stack,
@@ -466,7 +466,7 @@ class ExtendedDebugSystem {
     ]
     
     methods.forEach(method => {
-      (this as any)[method] = method === 'logPerf' ? (label: string, fn: any) => fn() : 
+      (this as any)[method] = method === 'logPerf' ? (label: string, fn: unknown) => fn() : 
                              method === 'getSummary' ? () => ({}) : noop
     })
     

@@ -161,7 +161,7 @@ const AdminMonitoring = () => {
       });
       
       // Update services with real data
-      const transformedServices = (servicesResponse.data.services || []).map((service: any) => ({
+      const transformedServices = (servicesResponse.data.services || []).map((service: unknown) => ({
         name: service.name,
         status: service.status === 'healthy' ? 'running' : service.status === 'degraded' ? 'warning' : 'stopped',
         uptime: service.uptime,
@@ -173,7 +173,7 @@ const AdminMonitoring = () => {
       setServices(transformedServices);
       
       // Update alerts with real data  
-      const transformedAlerts = (alertsResponse.data.alerts || []).map((alert: any) => ({
+      const transformedAlerts = (alertsResponse.data.alerts || []).map((alert: unknown) => ({
         id: alert.id,
         type: alert.severity,
         service: alert.source,
@@ -213,7 +213,7 @@ const AdminMonitoring = () => {
         alert.id === alertId ? { ...alert, acknowledged: true } : alert
       ));
       toast.success('Alert acknowledged successfully');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to acknowledge alert';
       toast.error(errorMessage);
       console.error('Error acknowledging alert:', error);

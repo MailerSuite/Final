@@ -118,7 +118,7 @@ const SmtpPoolPage: React.FC = () => {
   const [isAutoRotating, setIsAutoRotating] = useState(true)
   const [rotationInterval, setRotationInterval] = useState(30) // seconds
   const [showPurchaseDialog, setShowPurchaseDialog] = useState(false)
-  const [selectedPurchaseSmtp, setSelectedPurchaseSmtp] = useState<any>(null)
+  const [selectedPurchaseSmtp, setSelectedPurchaseSmtp] = useState<unknown>(null)
 
   // Auto-rotation effect
   useEffect(() => {
@@ -224,7 +224,7 @@ const SmtpPoolPage: React.FC = () => {
     }
   }
 
-  const handlePurchase = (smtp: any) => {
+  const handlePurchase = (smtp: unknown) => {
     setSelectedPurchaseSmtp(smtp)
     setShowPurchaseDialog(true)
   }

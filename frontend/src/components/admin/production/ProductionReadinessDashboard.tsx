@@ -5,14 +5,12 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Separator } from '@/components/ui/separator';
 import {
   CheckCircle,
   AlertTriangle,
@@ -37,7 +35,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { apiClient } from '@/http/stable-api-client';
-import { legacyMigrationService, useMigrationProgress, useLegacyFeatures } from '@/services/legacy-migration-service';
+import { useMigrationProgress, useLegacyFeatures } from '@/services/legacy-migration-service';
 import { useTheme } from '@/components/theme/EnhancedThemeSystem';
 import { toast } from 'sonner';
 

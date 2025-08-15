@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { apiClient } from '@/http/apiClient';
 
 // In development, always prefer the Vite proxy ("/api") to avoid CORS.
@@ -69,7 +68,7 @@ export const bulkCheckerApi = {
     return response.data;
   },
 
-  async getSMTPResults(sessionId: string, jobId: string): Promise<any> {
+  async getSMTPResults(sessionId: string, jobId: string): Promise<unknown> {
     const response = await apiClient.get(`/api/v1/bulk-checker/${sessionId}/smtp/results/${jobId}`);
     return response.data;
   },
@@ -103,7 +102,7 @@ export const bulkCheckerApi = {
     return response.data;
   },
 
-  async getIMAPResults(sessionId: string, jobId: string): Promise<any> {
+  async getIMAPResults(sessionId: string, jobId: string): Promise<unknown> {
     const response = await apiClient.get(`/api/v1/bulk-checker/${sessionId}/imap/results/${jobId}`);
     return response.data;
   },

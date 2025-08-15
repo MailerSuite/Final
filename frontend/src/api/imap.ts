@@ -13,7 +13,7 @@ export const createImap = async (
   sessionId: string,
   payload: Partial<IMAPAccount>
 ) => {
-  const body: any = {
+  const body: unknown = {
     email: payload.email,
     password: payload.password,
     imap_server: (payload as any).imap_server || (payload as any).server || '',
@@ -38,7 +38,7 @@ export const updateImap = async (
   id: string,
   payload: Partial<IMAPAccount>
 ) => {
-  const body: any = {
+  const body: unknown = {
     email: payload.email,
     password: payload.password,
     imap_server: (payload as any).imap_server || (payload as any).server,
@@ -71,7 +71,7 @@ export async function imapTestBatch(
   accounts: IMAPBatchAccountInput[],
   opts?: { timeout?: number; max_concurrent?: number }
 ) {
-  const payload: any = { accounts }
+  const payload: unknown = { accounts }
   if (opts?.timeout != null) payload.timeout = opts.timeout
   if (opts?.max_concurrent != null) payload.max_concurrent = opts.max_concurrent
   return await apiClient.post('/api/v1/imap/test-batch', payload)

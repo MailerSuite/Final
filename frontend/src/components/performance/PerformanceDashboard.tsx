@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
     Activity,
     Zap,
@@ -36,7 +35,7 @@ import {
     Shield,
     Rocket
 } from 'lucide-react';
-import { PerformanceMetricsCard, SystemMetricsCard, NetworkMetricsCard } from './PerformanceMetricsCard';
+import { SystemMetricsCard, NetworkMetricsCard } from './PerformanceMetricsCard';
 import { PerformanceTestRunner } from './PerformanceTestRunner';
 
 interface PerformanceOverview {

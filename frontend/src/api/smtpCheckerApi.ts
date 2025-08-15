@@ -45,7 +45,7 @@ export async function testSmtpAccount(
     )
     if (typeof data === 'string') return { message: data }
     return data
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       const detail =
         (error.response?.data as any)?.detail ||

@@ -81,7 +81,7 @@ const PerformanceTestingPage = () => {
       const response = await axios.get('/api/v1/admin/monitoring/performance-testing/tests');
       setTests(response.data.tests || []);
       toast.success('🧪 Performance tests loaded - LIVE DATA!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to load performance tests';
       toast.error(errorMessage);
       console.error('Error loading performance tests:', error);
@@ -94,7 +94,7 @@ const PerformanceTestingPage = () => {
     try {
       const response = await axios.get('/api/v1/admin/monitoring/performance-testing/metrics');
       setSystemMetrics(response.data);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error loading system metrics:', error);
     }
   };
@@ -111,7 +111,7 @@ const PerformanceTestingPage = () => {
       setCurrentTest(response.data.test);
       await loadTests();
       toast.success('Performance test started!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to start performance test';
       toast.error(errorMessage);
       console.error('Error starting test:', error);
@@ -128,7 +128,7 @@ const PerformanceTestingPage = () => {
       setCurrentTest(null);
       await loadTests();
       toast.success('Performance test stopped!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to stop performance test';
       toast.error(errorMessage);
       console.error('Error stopping test:', error);
@@ -347,7 +347,7 @@ const PerformanceTestingPage = () => {
                     
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-muted-foreground">Test Type</label>
-                      <Select value={testConfig.type} onValueChange={(value: any) => setTestConfig({...testConfig, type: value})}>
+                      <Select value={testConfig.type} onValueChange={(value: unknown) => setTestConfig({...testConfig, type: value})}>
                         <SelectTrigger className="bg-card/50 border-border text-white">
                           <SelectValue />
                         </SelectTrigger>

@@ -32,7 +32,7 @@ interface Integration {
   name: string
   description: string
   category: string
-  icon: React.ComponentType<any>
+  icon: React.ComponentType<unknown>
   isConnected: boolean
   isPremium: boolean
   rating: number

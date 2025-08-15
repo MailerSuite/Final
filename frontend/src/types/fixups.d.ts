@@ -5,7 +5,7 @@
 
 // JSON imports
 declare module '*.json' {
-  const value: any;
+  const value: unknown;
   export default value;
 }
 
@@ -13,13 +13,13 @@ declare module '*.json' {
 // Comprehensive shim for framer-motion used across the app
 declare module 'framer-motion' {
   // Runtime exports
-  export const motion: any
-  export const AnimatePresence: any
-  export const LayoutGroup: any
-  export const MotionConfig: any
+  export const motion: unknown
+  export const AnimatePresence: unknown
+  export const LayoutGroup: unknown
+  export const MotionConfig: unknown
 
   // Hooks
-  export const useReducedMotion: any
+  export const useReducedMotion: unknown
 
   // Types (loosened)
   export type Variants = any
@@ -31,13 +31,13 @@ declare module 'framer-motion' {
   export type MotionProps = any
 
   // Default export (not typically used in our code)
-  const FM: any
+  const FM: unknown
   export default FM
 }
 
 // Wildcard alias shims for missing internal modules referenced in code
-declare module '@/core/*' { const anyExport: any; export = anyExport }
-declare module '@/services/*' { const anyExport: any; export = anyExport }
-declare module '@/nav/*' { const anyExport: any; export = anyExport }
-declare module '@/apps/*' { const anyExport: any; export = anyExport }
-declare module '@/pages/analytics/*' { const anyExport: any; export = anyExport }
+declare module '@/core/*' { const anyExport: unknown; export = anyExport }
+declare module '@/services/*' { const anyExport: unknown; export = anyExport }
+declare module '@/nav/*' { const anyExport: unknown; export = anyExport }
+declare module '@/apps/*' { const anyExport: unknown; export = anyExport }
+declare module '@/pages/analytics/*' { const anyExport: unknown; export = anyExport }

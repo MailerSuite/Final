@@ -803,7 +803,7 @@ const AdminMaintenance: React.FC = () => {
                     <div className="grid grid-cols-3 gap-4">
                       <div>
                         <Label htmlFor="window-type">Type</Label>
-                        <Select value={windowFormData.type} onValueChange={(value: any) => setWindowFormData(prev => ({ ...prev, type: value }))}>
+                        <Select value={windowFormData.type} onValueChange={(value: unknown) => setWindowFormData(prev => ({ ...prev, type: value }))}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
@@ -818,7 +818,7 @@ const AdminMaintenance: React.FC = () => {
                       </div>
                       <div>
                         <Label htmlFor="window-priority">Priority</Label>
-                        <Select value={windowFormData.priority} onValueChange={(value: any) => setWindowFormData(prev => ({ ...prev, priority: value }))}>
+                        <Select value={windowFormData.priority} onValueChange={(value: unknown) => setWindowFormData(prev => ({ ...prev, priority: value }))}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>

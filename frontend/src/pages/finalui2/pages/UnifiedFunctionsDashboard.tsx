@@ -82,7 +82,7 @@ export default function UnifiedFunctionsDashboard() {
         axiosInstance.get('/health/ready').catch(() => null),
       ])
 
-      const toJson = async (res: any) => {
+      const toJson = async (res: unknown) => {
         try { return res?.data || null } catch { return null }
       }
       const j1 = await toJson(h1)

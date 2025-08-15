@@ -29,7 +29,7 @@ interface ToastItem {
 }
 
 interface Toast {
-  (...args: any[]): void;
+  (...args: unknown[]): void;
   success: (message: string, options?: ToastOptions) => void;
   error: (message: string, options?: ToastOptions) => void;
   info: (message: string, options?: ToastOptions) => void;
@@ -40,7 +40,7 @@ interface Toast {
     options: {
       loading: string;
       success: string | ((data: T) => string);
-      error: string | ((error: any) => string);
+      error: string | ((error: unknown) => string);
     }
   ) => Promise<T>;
   dismiss: (toastId?: string | number) => void;
@@ -106,7 +106,7 @@ const shouldShowError = (message: string): boolean => {
 };
 
 export const toast: Toast = Object.assign(
-  (...args: any[]) => {
+  (...args: unknown[]) => {
     // Handle object-based toast calls like toast({ description: '...', severity: '...' })
     if (args.length === 1 && typeof args[0] === 'object' && args[0].description && args[0].severity) {
       const { description, severity, ...rest } = args[0];
@@ -218,7 +218,7 @@ export const toast: Toast = Object.assign(
       options: {
         loading: string;
         success: string | ((data: T) => string);
-        error: string | ((error: any) => string);
+        error: string | ((error: unknown) => string);
       }
     ): Promise<T> => {
       return sonnerToast.promise(promise, {

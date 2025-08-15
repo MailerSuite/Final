@@ -5,7 +5,7 @@
  */
 
 import React, { useState, type FormEvent, type ChangeEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   Eye, 
@@ -196,7 +196,7 @@ const SignUp = () => {
       await getMe();
       toast({ description: "Account created successfully!", severity: "success" });
               navigate("/client/dashboard");
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorObj = error as { response?: { status?: number; data?: any } };
       const resp = errorObj.response;
 

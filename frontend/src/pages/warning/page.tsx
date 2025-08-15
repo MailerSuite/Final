@@ -4,7 +4,6 @@
  * Matches the login/signup page design with enhanced animations
  */
 
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {

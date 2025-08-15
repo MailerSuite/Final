@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Zap, Send, Globe, Shield, Sparkles } from 'lucide-react';
+import { Mail, Shield, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface LogoProps {

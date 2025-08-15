@@ -137,7 +137,7 @@ export default function ThreadPoolManagementPage() {
     return matchesSearch && matchesPriority && matchesStatus
   })
 
-  const handleCreatePool = async (data: any) => {
+  const handleCreatePool = async (data: unknown) => {
     setLoading(true)
     try {
       // Mock API call - replace with actual implementation
@@ -170,7 +170,7 @@ export default function ThreadPoolManagementPage() {
     }
   }
 
-  const handleUpdatePool = async (data: any) => {
+  const handleUpdatePool = async (data: unknown) => {
     if (!editingPool) return
     
     setLoading(true)
@@ -370,7 +370,7 @@ export default function ThreadPoolManagementPage() {
                 />
               </div>
               <div className="flex gap-2">
-                <Select value={filterPriority} onValueChange={(value: any) => setFilterPriority(value)}>
+                <Select value={filterPriority} onValueChange={(value: unknown) => setFilterPriority(value)}>
                   <SelectTrigger className="w-32">
                     <SelectValue />
                   </SelectTrigger>
@@ -381,7 +381,7 @@ export default function ThreadPoolManagementPage() {
                     <SelectItem value="low">Low</SelectItem>
                   </SelectContent>
                 </Select>
-                <Select value={filterStatus} onValueChange={(value: any) => setFilterStatus(value)}>
+                <Select value={filterStatus} onValueChange={(value: unknown) => setFilterStatus(value)}>
                   <SelectTrigger className="w-32">
                     <SelectValue />
                   </SelectTrigger>

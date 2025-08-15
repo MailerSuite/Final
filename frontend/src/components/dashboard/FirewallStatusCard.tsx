@@ -41,7 +41,7 @@ export default function FirewallStatusCard() {
         session_id: session.id,
         last_updated: new Date().toISOString()
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to fetch firewall status:', err);
       setError('Failed to load firewall status');
       // Fallback to local state
@@ -77,7 +77,7 @@ export default function FirewallStatusCard() {
       
       setFirewallStatus(prev => prev ? { ...prev, enabled: newStatus } : null);
       toast.success(`Firewall ${newStatus ? 'enabled' : 'disabled'}`);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const message = err.response?.data?.detail || 'Failed to toggle firewall';
       toast.error(message);
     } finally {

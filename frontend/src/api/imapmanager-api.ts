@@ -20,9 +20,9 @@ import type { AxiosInstance } from 'axios'
 const globalAxios: AxiosInstance = axiosInstance;
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import { DUMMY_BASE_URL, assertParamExists, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 // @ts-ignore
 import type { HTTPValidationError } from './models';
 // @ts-ignore
@@ -563,7 +563,7 @@ export const IMAPManagerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteImapAccountApiV1SessionsSessionIdImapAccountsAccountIdDelete(sessionId: string, accountId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async deleteImapAccountApiV1SessionsSessionIdImapAccountsAccountIdDelete(sessionId: string, accountId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteImapAccountApiV1SessionsSessionIdImapAccountsAccountIdDelete(sessionId, accountId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['IMAPManagerApi.deleteImapAccountApiV1SessionsSessionIdImapAccountsAccountIdDelete']?.[localVarOperationServerIndex]?.url;
@@ -579,7 +579,7 @@ export const IMAPManagerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFolderMessagesApiV1ImapAccountsAccountIdFoldersFolderNameMessagesGet(accountId: string, folderName: string, limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async getFolderMessagesApiV1ImapAccountsAccountIdFoldersFolderNameMessagesGet(accountId: string, folderName: string, limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getFolderMessagesApiV1ImapAccountsAccountIdFoldersFolderNameMessagesGet(accountId, folderName, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['IMAPManagerApi.getFolderMessagesApiV1ImapAccountsAccountIdFoldersFolderNameMessagesGet']?.[localVarOperationServerIndex]?.url;
@@ -620,7 +620,7 @@ export const IMAPManagerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getImapLogsApiV1ImapLogsAccountIdGet(accountId: string, limit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async getImapLogsApiV1ImapLogsAccountIdGet(accountId: string, limit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getImapLogsApiV1ImapLogsAccountIdGet(accountId, limit, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['IMAPManagerApi.getImapLogsApiV1ImapLogsAccountIdGet']?.[localVarOperationServerIndex]?.url;
@@ -632,7 +632,7 @@ export const IMAPManagerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getImapTemplatesApiV1ImapTemplatesGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async getImapTemplatesApiV1ImapTemplatesGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getImapTemplatesApiV1ImapTemplatesGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['IMAPManagerApi.getImapTemplatesApiV1ImapTemplatesGet']?.[localVarOperationServerIndex]?.url;
@@ -658,7 +658,7 @@ export const IMAPManagerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getServerSettingsApiV1ImapServerSettingsAccountIdGet(accountId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async getServerSettingsApiV1ImapServerSettingsAccountIdGet(accountId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getServerSettingsApiV1ImapServerSettingsAccountIdGet(accountId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['IMAPManagerApi.getServerSettingsApiV1ImapServerSettingsAccountIdGet']?.[localVarOperationServerIndex]?.url;
@@ -671,7 +671,7 @@ export const IMAPManagerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async syncImapAccountApiV1ImapAccountsAccountIdSyncPost(accountId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async syncImapAccountApiV1ImapAccountsAccountIdSyncPost(accountId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.syncImapAccountApiV1ImapAccountsAccountIdSyncPost(accountId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['IMAPManagerApi.syncImapAccountApiV1ImapAccountsAccountIdSyncPost']?.[localVarOperationServerIndex]?.url;
@@ -684,7 +684,7 @@ export const IMAPManagerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async testImapConnectionApiV1ImapAccountsAccountIdTestPost(accountId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async testImapConnectionApiV1ImapAccountsAccountIdTestPost(accountId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testImapConnectionApiV1ImapAccountsAccountIdTestPost(accountId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['IMAPManagerApi.testImapConnectionApiV1ImapAccountsAccountIdTestPost']?.[localVarOperationServerIndex]?.url;
@@ -713,7 +713,7 @@ export const IMAPManagerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateServerSettingsApiV1ImapServerSettingsAccountIdPut(accountId: string, iMAPSettingsUpdate: IMAPSettingsUpdate, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async updateServerSettingsApiV1ImapServerSettingsAccountIdPut(accountId: string, iMAPSettingsUpdate: IMAPSettingsUpdate, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateServerSettingsApiV1ImapServerSettingsAccountIdPut(accountId, iMAPSettingsUpdate, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['IMAPManagerApi.updateServerSettingsApiV1ImapServerSettingsAccountIdPut']?.[localVarOperationServerIndex]?.url;
@@ -748,7 +748,7 @@ export const IMAPManagerApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteImapAccountApiV1SessionsSessionIdImapAccountsAccountIdDelete(sessionId: string, accountId: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        deleteImapAccountApiV1SessionsSessionIdImapAccountsAccountIdDelete(sessionId: string, accountId: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.deleteImapAccountApiV1SessionsSessionIdImapAccountsAccountIdDelete(sessionId, accountId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -761,7 +761,7 @@ export const IMAPManagerApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFolderMessagesApiV1ImapAccountsAccountIdFoldersFolderNameMessagesGet(accountId: string, folderName: string, limit?: number, offset?: number, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        getFolderMessagesApiV1ImapAccountsAccountIdFoldersFolderNameMessagesGet(accountId: string, folderName: string, limit?: number, offset?: number, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.getFolderMessagesApiV1ImapAccountsAccountIdFoldersFolderNameMessagesGet(accountId, folderName, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
@@ -793,7 +793,7 @@ export const IMAPManagerApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getImapLogsApiV1ImapLogsAccountIdGet(accountId: string, limit?: number, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        getImapLogsApiV1ImapLogsAccountIdGet(accountId: string, limit?: number, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.getImapLogsApiV1ImapLogsAccountIdGet(accountId, limit, options).then((request) => request(axios, basePath));
         },
         /**
@@ -802,7 +802,7 @@ export const IMAPManagerApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getImapTemplatesApiV1ImapTemplatesGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        getImapTemplatesApiV1ImapTemplatesGet(options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.getImapTemplatesApiV1ImapTemplatesGet(options).then((request) => request(axios, basePath));
         },
         /**
@@ -822,7 +822,7 @@ export const IMAPManagerApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getServerSettingsApiV1ImapServerSettingsAccountIdGet(accountId: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        getServerSettingsApiV1ImapServerSettingsAccountIdGet(accountId: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.getServerSettingsApiV1ImapServerSettingsAccountIdGet(accountId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -832,7 +832,7 @@ export const IMAPManagerApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncImapAccountApiV1ImapAccountsAccountIdSyncPost(accountId: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        syncImapAccountApiV1ImapAccountsAccountIdSyncPost(accountId: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.syncImapAccountApiV1ImapAccountsAccountIdSyncPost(accountId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -842,7 +842,7 @@ export const IMAPManagerApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testImapConnectionApiV1ImapAccountsAccountIdTestPost(accountId: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        testImapConnectionApiV1ImapAccountsAccountIdTestPost(accountId: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.testImapConnectionApiV1ImapAccountsAccountIdTestPost(accountId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -865,7 +865,7 @@ export const IMAPManagerApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateServerSettingsApiV1ImapServerSettingsAccountIdPut(accountId: string, iMAPSettingsUpdate: IMAPSettingsUpdate, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        updateServerSettingsApiV1ImapServerSettingsAccountIdPut(accountId: string, iMAPSettingsUpdate: IMAPSettingsUpdate, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.updateServerSettingsApiV1ImapServerSettingsAccountIdPut(accountId, iMAPSettingsUpdate, options).then((request) => request(axios, basePath));
         },
     };

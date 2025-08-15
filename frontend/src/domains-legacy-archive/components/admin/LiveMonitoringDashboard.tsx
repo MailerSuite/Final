@@ -415,7 +415,7 @@ const LiveMonitoringDashboard: React.FC = () => {
                     <YAxis />
                     <Tooltip
                       labelFormatter={(value) => new Date(value).toLocaleString()}
-                      formatter={(value: any) => [`${value}ms`, 'Response Time']}
+                      formatter={(value: unknown) => [`${value}ms`, 'Response Time']}
                     />
                     <Line
                       type="monotone"
@@ -497,7 +497,7 @@ const LiveMonitoringDashboard: React.FC = () => {
                     <YAxis />
                     <Tooltip
                       labelFormatter={(value) => new Date(value).toLocaleString()}
-                      formatter={(value: any) => [`${value}%`, 'Error Rate']}
+                      formatter={(value: unknown) => [`${value}%`, 'Error Rate']}
                     />
                     <Area
                       type="monotone"

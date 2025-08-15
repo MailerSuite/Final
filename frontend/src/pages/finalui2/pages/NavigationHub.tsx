@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { ResponsiveGrid, SectionHeader, FeatureCard } from '@/components/ui/design-system';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { generateHubData } from '@/services/mockData';
 import {
   HomeIcon,
@@ -61,8 +61,8 @@ const NavigationHub: React.FC = () => {
     systemHealth: 99.9
   });
   const [showSystemStatus, setShowSystemStatus] = useState(false);
-  const [recentActivity, setRecentActivity] = useState<any[]>([]);
-  const [upcomingCampaigns, setUpcomingCampaigns] = useState<any[]>([]);
+  const [recentActivity, setRecentActivity] = useState<unknown[]>([]);
+  const [upcomingCampaigns, setUpcomingCampaigns] = useState<unknown[]>([]);
 
   // Initialize with loading state and mock data
   useEffect(() => {

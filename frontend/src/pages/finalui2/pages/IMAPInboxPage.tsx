@@ -250,7 +250,7 @@ export default function IMAPInboxPage(props: { initialTab?: string } = {}) {
       if (activeAccountId) {
         if (selectedFolder.toLowerCase() === 'inbox') {
           const data = await retrieveEmails(activeAccountId)
-          const msgs = (data?.messages || []).map((m: any, index: number) => ({
+          const msgs = (data?.messages || []).map((m: unknown, index: number) => ({
             id: String(m.uid ?? index),
             from: m.sender || 'unknown@example.com',
             subject: m.subject || '(no subject)',
@@ -266,7 +266,7 @@ export default function IMAPInboxPage(props: { initialTab?: string } = {}) {
         } else {
           const folder = selectedFolder.toUpperCase()
           const data: IMAPMessage[] = await getFolderMessages(activeAccountId, folder)
-          const msgs = (data || []).map((m: any, index: number) => ({
+          const msgs = (data || []).map((m: unknown, index: number) => ({
             id: String(m.uid ?? index),
             from: m.sender || 'unknown@example.com',
             subject: m.subject || '(no subject)',
@@ -292,7 +292,7 @@ export default function IMAPInboxPage(props: { initialTab?: string } = {}) {
       })
       toast.success('IMAP started')
       await fetchStatus()
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e.message)
     } finally {
       setLoading(false)
@@ -1111,7 +1111,7 @@ const IMAPQuickBlacklist: React.FC = () => {
     try {
       const api = BlacklistApiFactory()
       const res = await api.checkDomainBlacklistApiV1BlacklistBlacklistDomainDomainGet(domain.trim())
-      const data: any = (res as any)?.data ?? res
+      const data: unknown = (res as any)?.data ?? res
       const bad = Array.isArray(data?.hits) ? data.hits.length : (data?.blacklisted ? 1 : 0)
       setStatus(bad ? `Listed on ${bad} lists` : 'Not listed')
     } catch {

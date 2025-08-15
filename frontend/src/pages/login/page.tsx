@@ -5,7 +5,7 @@
  */
 
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Eye,
@@ -27,7 +27,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import Shell from '@/components/layouts/Shell';
-import PageHeader from '@/components/ui/page-header';
 import { useBreadcrumbs } from '@/hooks/useBreadcrumbs';
 
 // Simple animation variants
@@ -162,7 +161,7 @@ const Login = () => {
           }
         }, 1000);
       }, 500); // Increased delay to ensure auth store is updated
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage = err?.response?.data?.detail || 'Invalid email or password';
       setError(errorMessage);
       toast.error(errorMessage);

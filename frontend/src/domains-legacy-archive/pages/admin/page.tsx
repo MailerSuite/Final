@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { 
   Monitor, 
@@ -29,7 +28,6 @@ import {
 } from "lucide-react";
 import AdminMonitoringDashboard from "@/components/admin/AdminMonitoringDashboard";
 import { useSystemHealth } from "@/hooks/useMetricsData";
-import { useAdminDashboard } from "@/hooks/useAdminDashboard";
 import PageWrapper from "@/components/layout/PageWrapper";
 import { 
   AdminPageHeader, 

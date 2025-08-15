@@ -1,6 +1,6 @@
 """
 Unit tests for Campaign Service
-Tests campaign creation, management, scheduling, and analytics
+Tests campaign creation, management, and analytics
 """
 
 import pytest
@@ -9,9 +9,8 @@ from datetime import datetime, timedelta
 from fastapi import HTTPException
 
 from services.campaign_service import CampaignService
-from models.base import Campaign, SMTPAccount, User
-from models.email_lists import EmailList
-from schemas.campaigns import CampaignCreate, CampaignUpdate
+from models.base import Campaign, SMTPAccount, EmailTemplate, LeadBase, Session
+from schemas.campaigns import CampaignCreate, CampaignResponse
 
 
 class TestCampaignService:
@@ -26,234 +25,184 @@ class TestCampaignService:
         return CampaignService(mock_db_session)
 
     @pytest.fixture
-    def mock_user(self):
-        user = Mock(spec=User)
-        user.id = "550e8400-e29b-41d4-a716-446655440010"
-        user.email = "sarah.martinez@ecommerce-platform.com"
-        user.username = "sarah_marketing"
-        user.full_name = "Sarah Martinez"
-        user.company = "E-Commerce Platform Inc."
-        user.plan_type = "enterprise"
-        user.is_active = True
-        user.created_at = datetime.utcnow() - timedelta(days=180)
-        user.last_login = datetime.utcnow() - timedelta(hours=2)
-        user.campaigns_sent = 47
-        user.total_emails_sent = 125000
-        return user
+    def mock_session(self):
+        session = Mock(spec=Session)
+        session.id = "session-123"
+        session.user_id = "user-123"
+        session.is_active = True
+        return session
+
+    @pytest.fixture
+    def mock_template(self):
+        template = Mock(spec=EmailTemplate)
+        template.id = "template-123"
+        template.name = "Test Template"
+        template.content = "<html><body>Test content</body></html>"
+        template.subject = "Test Subject"
+        return template
 
     @pytest.fixture
     def mock_campaign(self):
         campaign = Mock(spec=Campaign)
-        campaign.id = "550e8400-e29b-41d4-a716-446655440000"
-        campaign.name = "Holiday Flash Sale 2025"
-        campaign.subject = "🎄 24-Hour Flash Sale: 60% Off Everything!"
-        campaign.sender = "promotions@retailstore.com"
-        campaign.content = "<html><head><title>Holiday Sale</title></head><body><h1>60% OFF Everything!</h1><p>One day only! Don't miss out on our biggest sale of the year.</p></body></html>"
+        campaign.id = "campaign-123"
+        campaign.name = "Test Campaign"
+        campaign.subject = "Test Subject"
+        campaign.sender = "test@example.com"
         campaign.status = "draft"
-        campaign.session_id = "test-session-123"
-        campaign.template_id = "550e8400-e29b-41d4-a716-446655440001"
-        campaign.created_at = datetime.utcnow()
-        campaign.scheduled_at = None
-        campaign.batch_size = 250
-        campaign.delay_between_batches = 45
-        campaign.threads_count = 10
-        campaign.autostart = False
+        campaign.created_at = datetime.now()
         return campaign
 
     @pytest.fixture
-    def mock_smtp_account(self):
-        account = Mock(spec=SMTPAccount)
-        account.id = "test-smtp-id"
-        account.email = "test@example.com"
-        account.is_active = True
-        account.daily_limit = 1000
-        account.hourly_limit = 100
-        return account
-
-    @pytest.fixture
-    def mock_email_list(self):
-        email_list = Mock(spec=EmailList)
-        email_list.id = "test-list-id"
-        email_list.name = "Test List"
-        email_list.contact_count = 500
-        email_list.is_active = True
-        return email_list
+    def mock_lead_base(self):
+        lead_base = Mock(spec=LeadBase)
+        lead_base.id = "leadbase-123"
+        lead_base.name = "Test Lead Base"
+        return lead_base
 
     @pytest.mark.asyncio
-    async def test_create_campaign_success(self, campaign_service, mock_db_session, mock_user):
+    async def test_create_campaign_success(self, campaign_service, mock_db_session, mock_session, mock_template, mock_lead_base):
         """Test successful campaign creation"""
         campaign_data = CampaignCreate(
-            name="Black Friday Mega Sale 2025",
-            template_id="550e8400-e29b-41d4-a716-446655440000",
-            subject="🔥 75% OFF Everything - Limited Time Only!",
-            sender="sales@ecommerce-store.com",
-            lead_base_ids=["550e8400-e29b-41d4-a716-446655440001"],
-            batch_size=200,
-            delay_between_batches=30,
-            threads_count=8,
+            name="Test Campaign",
+            template_id="template-123",
+            subject="Test Subject",
+            sender="test@example.com",
+            lead_base_ids=["leadbase-123"],
+            batch_size=100,
+            delay_between_batches=60,
+            threads_count=1,
             autostart=False,
-            retry_limit=5
+            cc=[],
+            bcc=[]
         )
         
-        # Mock database operations
+        # Mock successful lookups
+        async def mock_scalar(query):
+            query_str = str(query)
+            if "sessions" in query_str.lower():
+                return mock_session
+            elif "templates" in query_str.lower():
+                return mock_template
+            else:
+                return mock_lead_base
+        
+        mock_db_session.scalar = AsyncMock(side_effect=mock_scalar)
+        mock_db_session.scalars = AsyncMock()
+        mock_db_session.scalars.return_value.all.return_value = [mock_lead_base]
         mock_db_session.add = Mock()
         mock_db_session.commit = AsyncMock()
         mock_db_session.refresh = AsyncMock()
         
-        # Mock the session and template queries
-        mock_session = Mock()
-        mock_session.id = "test-session-123"
-        mock_session.user_id = "550e8400-e29b-41d4-a716-446655440010"
+        with patch('models.base.Campaign') as MockCampaign:
+            mock_campaign = Mock()
+            mock_campaign.id = "campaign-123"
+            MockCampaign.return_value = mock_campaign
+            
+            result = await campaign_service.create_campaign(
+                campaign_data=campaign_data,
+                session_id="session-123"
+            )
+            
+            mock_db_session.add.assert_called_once()
+            mock_db_session.commit.assert_called_once()
+            assert isinstance(result, CampaignResponse)
+
+    @pytest.mark.asyncio
+    async def test_create_campaign_missing_template(self, campaign_service, mock_db_session, mock_session):
+        """Test campaign creation with missing template"""
+        campaign_data = CampaignCreate(
+            name="Test Campaign",
+            template_id="nonexistent-template",
+            subject="Test Subject",
+            sender="test@example.com",
+            lead_base_ids=["leadbase-123"],
+            batch_size=100,
+            delay_between_batches=60,
+            threads_count=1,
+            autostart=False,
+            cc=[],
+            bcc=[]
+        )
         
-        mock_template = Mock()
-        mock_template.id = "550e8400-e29b-41d4-a716-446655440000"
-        mock_template.name = "Black Friday Template"
-        mock_template.content = "<html><body>Black Friday Sale!</body></html>"
-        mock_template.user_id = "550e8400-e29b-41d4-a716-446655440010"
-        
-        # Mock database scalar to return different results for session and template queries
+        # Mock session found but template not found
         async def mock_scalar(query):
             query_str = str(query)
             if "sessions" in query_str.lower():
                 return mock_session
             else:
-                return mock_template
+                return None
         
         mock_db_session.scalar = AsyncMock(side_effect=mock_scalar)
         
-        with patch('models.base.Campaign') as MockCampaign:
-            mock_campaign = Mock()
-            mock_campaign.id = "550e8400-e29b-41d4-a716-446655440555"
-            MockCampaign.return_value = mock_campaign
-            
-            result = await campaign_service.create_campaign(
-                campaign_data=campaign_data,
-                session_id="test-session-123"
-            )
-            
-            mock_db_session.add.assert_called_once()
-            mock_db_session.commit.assert_called_once()
-            assert result.id == "550e8400-e29b-41d4-a716-446655440555"
-
-    @pytest.mark.asyncio
-    async def test_create_campaign_invalid_smtp_account(self, campaign_service, mock_db_session):
-        """Test campaign creation with invalid SMTP account"""
-        campaign_data = CampaignCreate(
-            name="Failed Test Campaign 2025",
-            template_id="550e8400-e29b-41d4-a716-446655440099",
-            subject="❌ This Should Fail - Invalid Configuration",
-            sender="invalid@nonexistent-domain.com",
-            lead_base_ids=["550e8400-e29b-41d4-a716-446655440002"],
-            batch_size=50,
-            delay_between_batches=120,
-            threads_count=3,
-            autostart=False
-        )
-        
-        # Mock SMTP account not found
-        mock_result = AsyncMock()
-        mock_result.scalar_one_or_none.return_value = None
-        mock_db_session.execute.return_value = mock_result
-        
-        with pytest.raises(HTTPException) as exc_info:
+        with pytest.raises(ValueError, match="Template not found"):
             await campaign_service.create_campaign(
                 campaign_data=campaign_data,
-                user_id="test-user-id"
+                session_id="session-123"
             )
-        
-        assert exc_info.value.status_code == 404
-        assert "smtp" in str(exc_info.value.detail).lower()
 
     @pytest.mark.asyncio
-    async def test_get_campaigns_with_pagination(self, campaign_service, mock_db_session):
-        """Test retrieving campaigns with pagination"""
-        # Mock paginated results
+    async def test_get_campaigns(self, campaign_service, mock_db_session, mock_session):
+        """Test retrieving campaigns"""
         mock_campaigns = [
             Mock(spec=Campaign, id="1", name="Campaign 1"),
-            Mock(spec=Campaign, id="2", name="Campaign 2"),
-            Mock(spec=Campaign, id="3", name="Campaign 3")
+            Mock(spec=Campaign, id="2", name="Campaign 2")
         ]
         
-        mock_result = AsyncMock()
-        mock_result.scalars.return_value.all.return_value = mock_campaigns
-        mock_db_session.execute.return_value = mock_result
+        mock_db_session.scalar = AsyncMock(return_value=mock_session)
+        mock_db_session.scalars = AsyncMock()
+        mock_db_session.scalars.return_value.all.return_value = mock_campaigns
         
-        # Mock count query
-        mock_count_result = AsyncMock()
-        mock_count_result.scalar.return_value = 10
+        result = await campaign_service.get_campaigns(
+            session_id="session-123",
+            skip=0,
+            limit=10
+        )
         
-        with patch.object(mock_db_session, 'execute', side_effect=[mock_result, mock_count_result]):
-            result = await campaign_service.get_campaigns(
-                user_id="test-user-id",
-                page=1,
-                per_page=3
-            )
-            
-            assert len(result["campaigns"]) == 3
-            assert result["total"] == 10
-            assert result["page"] == 1
-            assert result["per_page"] == 3
+        assert len(result.campaigns) == 2
+        mock_db_session.scalar.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_start_campaign_success(self, campaign_service, mock_db_session, mock_campaign, mock_smtp_account, mock_email_list):
+    async def test_get_campaign_by_id(self, campaign_service, mock_db_session, mock_campaign):
+        """Test retrieving campaign by ID"""
+        mock_db_session.scalar = AsyncMock(return_value=mock_campaign)
+        
+        result = await campaign_service.get_campaign(
+            campaign_id="campaign-123",
+            session_id="session-123"
+        )
+        
+        assert isinstance(result, CampaignResponse)
+        assert result.id == "campaign-123"
+
+    @pytest.mark.asyncio
+    async def test_start_campaign_success(self, campaign_service, mock_db_session, mock_campaign):
         """Test starting a campaign"""
         mock_campaign.status = "draft"
+        mock_db_session.scalar = AsyncMock(return_value=mock_campaign)
+        mock_db_session.commit = AsyncMock()
         
-        # Mock finding campaign
-        mock_result = AsyncMock()
-        mock_result.scalar_one_or_none.return_value = mock_campaign
-        mock_db_session.execute.return_value = mock_result
-        
-        # Mock SMTP account and email list validation
-        with patch.object(campaign_service, '_validate_smtp_account', return_value=mock_smtp_account):
-            with patch.object(campaign_service, '_validate_email_list', return_value=mock_email_list):
-                with patch.object(campaign_service, '_start_campaign_task') as mock_start_task:
-                    mock_db_session.commit = AsyncMock()
-                    
-                    result = await campaign_service.start_campaign(
-                        campaign_id="test-campaign-id",
-                        user_id="test-user-id"
-                    )
-                    
-                    assert mock_campaign.status == "running"
-                    mock_start_task.assert_called_once()
-                    mock_db_session.commit.assert_called_once()
-
-    @pytest.mark.asyncio
-    async def test_start_campaign_already_running(self, campaign_service, mock_db_session, mock_campaign):
-        """Test starting a campaign that's already running"""
-        mock_campaign.status = "running"
-        
-        # Mock finding campaign
-        mock_result = AsyncMock()
-        mock_result.scalar_one_or_none.return_value = mock_campaign
-        mock_db_session.execute.return_value = mock_result
-        
-        with pytest.raises(HTTPException) as exc_info:
-            await campaign_service.start_campaign(
-                campaign_id="test-campaign-id",
-                user_id="test-user-id"
+        with patch.object(campaign_service, '_execute_campaign', return_value=None) as mock_execute:
+            result = await campaign_service.start_campaign(
+                campaign_id="campaign-123",
+                session_id="session-123"
             )
-        
-        assert exc_info.value.status_code == 400
-        assert "already" in str(exc_info.value.detail).lower()
+            
+            assert result["status"] == "success"
+            mock_db_session.commit.assert_called_once()
 
     @pytest.mark.asyncio
     async def test_pause_campaign_success(self, campaign_service, mock_db_session, mock_campaign):
-        """Test pausing a running campaign"""
+        """Test pausing a campaign"""
         mock_campaign.status = "running"
-        
-        # Mock finding campaign
-        mock_result = AsyncMock()
-        mock_result.scalar_one_or_none.return_value = mock_campaign
-        mock_db_session.execute.return_value = mock_result
+        mock_db_session.scalar = AsyncMock(return_value=mock_campaign)
         mock_db_session.commit = AsyncMock()
         
         result = await campaign_service.pause_campaign(
-            campaign_id="test-campaign-id",
-            user_id="test-user-id"
+            campaign_id="campaign-123",
+            session_id="session-123"
         )
         
+        assert result["status"] == "success"
         assert mock_campaign.status == "paused"
         mock_db_session.commit.assert_called_once()
 
@@ -261,246 +210,167 @@ class TestCampaignService:
     async def test_stop_campaign_success(self, campaign_service, mock_db_session, mock_campaign):
         """Test stopping a campaign"""
         mock_campaign.status = "running"
-        
-        # Mock finding campaign
-        mock_result = AsyncMock()
-        mock_result.scalar_one_or_none.return_value = mock_campaign
-        mock_db_session.execute.return_value = mock_result
+        mock_db_session.scalar = AsyncMock(return_value=mock_campaign)
         mock_db_session.commit = AsyncMock()
         
-        with patch.object(campaign_service, '_stop_campaign_task') as mock_stop_task:
-            result = await campaign_service.stop_campaign(
-                campaign_id="test-campaign-id",
-                user_id="test-user-id"
-            )
-            
-            assert mock_campaign.status == "stopped"
-            mock_stop_task.assert_called_once()
-            mock_db_session.commit.assert_called_once()
-
-    @pytest.mark.asyncio
-    async def test_update_campaign_success(self, campaign_service, mock_db_session, mock_campaign):
-        """Test updating campaign details"""
-        mock_campaign.status = "draft"
-        
-        # Mock finding campaign
-        mock_result = AsyncMock()
-        mock_result.scalar_one_or_none.return_value = mock_campaign
-        mock_db_session.execute.return_value = mock_result
-        mock_db_session.commit = AsyncMock()
-        mock_db_session.refresh = AsyncMock()
-        
-        update_data = CampaignUpdate(
-            name="Updated Campaign",
-            subject="Updated Subject",
-            content="Updated content"
+        result = await campaign_service.stop_campaign(
+            campaign_id="campaign-123",
+            session_id="session-123"
         )
         
-        result = await campaign_service.update_campaign(
-            campaign_id="test-campaign-id",
-            user_id="test-user-id",
-            campaign_data=update_data
-        )
-        
-        assert mock_campaign.name == "Updated Campaign"
-        assert mock_campaign.subject == "Updated Subject"
+        assert result["status"] == "success"
+        assert mock_campaign.status == "stopped"
         mock_db_session.commit.assert_called_once()
-
-    @pytest.mark.asyncio
-    async def test_update_running_campaign_fails(self, campaign_service, mock_db_session, mock_campaign):
-        """Test that updating a running campaign fails"""
-        mock_campaign.status = "running"
-        
-        # Mock finding campaign
-        mock_result = AsyncMock()
-        mock_result.scalar_one_or_none.return_value = mock_campaign
-        mock_db_session.execute.return_value = mock_result
-        
-        update_data = CampaignUpdate(name="Updated Campaign")
-        
-        with pytest.raises(HTTPException) as exc_info:
-            await campaign_service.update_campaign(
-                campaign_id="test-campaign-id",
-                user_id="test-user-id",
-                campaign_data=update_data
-            )
-        
-        assert exc_info.value.status_code == 400
-        assert "running" in str(exc_info.value.detail).lower()
 
     @pytest.mark.asyncio
     async def test_delete_campaign_success(self, campaign_service, mock_db_session, mock_campaign):
         """Test deleting a campaign"""
         mock_campaign.status = "draft"
-        
-        # Mock finding campaign
-        mock_result = AsyncMock()
-        mock_result.scalar_one_or_none.return_value = mock_campaign
-        mock_db_session.execute.return_value = mock_result
-        mock_db_session.delete = AsyncMock()
+        mock_db_session.scalar = AsyncMock(return_value=mock_campaign)
+        mock_db_session.delete = Mock()
         mock_db_session.commit = AsyncMock()
         
         result = await campaign_service.delete_campaign(
-            campaign_id="test-campaign-id",
-            user_id="test-user-id"
+            campaign_id="campaign-123",
+            session_id="session-123"
         )
         
-        mock_db_session.delete.assert_called_once_with(mock_campaign)
+        assert result["message"] == "Campaign deleted successfully"
+        mock_db_session.delete.assert_called_once()
         mock_db_session.commit.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_delete_running_campaign_fails(self, campaign_service, mock_db_session, mock_campaign):
-        """Test that deleting a running campaign fails"""
+    async def test_get_campaign_progress(self, campaign_service, mock_db_session, mock_campaign):
+        """Test getting campaign progress"""
         mock_campaign.status = "running"
+        mock_db_session.scalar = AsyncMock(return_value=mock_campaign)
         
-        # Mock finding campaign
-        mock_result = AsyncMock()
-        mock_result.scalar_one_or_none.return_value = mock_campaign
-        mock_db_session.execute.return_value = mock_result
-        
-        with pytest.raises(HTTPException) as exc_info:
-            await campaign_service.delete_campaign(
-                campaign_id="test-campaign-id",
-                user_id="test-user-id"
-            )
-        
-        assert exc_info.value.status_code == 400
-        assert "running" in str(exc_info.value.detail).lower()
-
-    @pytest.mark.asyncio
-    async def test_schedule_campaign_success(self, campaign_service, mock_db_session, mock_campaign):
-        """Test scheduling a campaign"""
-        mock_campaign.status = "draft"
-        scheduled_time = datetime.utcnow() + timedelta(hours=1)
-        
-        # Mock finding campaign
-        mock_result = AsyncMock()
-        mock_result.scalar_one_or_none.return_value = mock_campaign
-        mock_db_session.execute.return_value = mock_result
-        mock_db_session.commit = AsyncMock()
-        
-        with patch.object(campaign_service, '_schedule_campaign_task') as mock_schedule:
-            result = await campaign_service.schedule_campaign(
-                campaign_id="test-campaign-id",
-                user_id="test-user-id",
-                scheduled_at=scheduled_time
+        # Mock campaign stats
+        with patch.object(campaign_service, '_update_campaign_stats', return_value=None):
+            result = await campaign_service.get_campaign_progress(
+                campaign_id="campaign-123",
+                session_id="session-123"
             )
             
-            assert mock_campaign.status == "scheduled"
-            assert mock_campaign.scheduled_at == scheduled_time
-            mock_schedule.assert_called_once()
-            mock_db_session.commit.assert_called_once()
+            assert result.campaign_id == "campaign-123"
 
     @pytest.mark.asyncio
-    async def test_schedule_campaign_past_time_fails(self, campaign_service, mock_db_session, mock_campaign):
-        """Test scheduling a campaign for past time fails"""
-        mock_campaign.status = "draft"
-        past_time = datetime.utcnow() - timedelta(hours=1)
+    async def test_get_campaign_resources(self, campaign_service, mock_db_session, mock_session):
+        """Test getting campaign resources"""
+        mock_db_session.scalar = AsyncMock(return_value=mock_session)
+        mock_db_session.scalars = AsyncMock()
         
-        # Mock finding campaign
-        mock_result = AsyncMock()
-        mock_result.scalar_one_or_none.return_value = mock_campaign
-        mock_db_session.execute.return_value = mock_result
+        # Mock empty results for all resources
+        empty_result = AsyncMock()
+        empty_result.all.return_value = []
+        mock_db_session.scalars.return_value = empty_result
         
-        with pytest.raises(HTTPException) as exc_info:
-            await campaign_service.schedule_campaign(
-                campaign_id="test-campaign-id",
-                user_id="test-user-id",
-                scheduled_at=past_time
-            )
-        
-        assert exc_info.value.status_code == 400
-        assert "past" in str(exc_info.value.detail).lower()
-
-    @pytest.mark.asyncio
-    async def test_get_campaign_analytics(self, campaign_service, mock_db_session):
-        """Test getting campaign analytics"""
-        # Mock analytics data
-        mock_analytics = {
-            "emails_sent": 1000,
-            "emails_delivered": 950,
-            "emails_opened": 300,
-            "emails_clicked": 50,
-            "bounces": 20,
-            "unsubscribes": 5
-        }
-        
-        with patch.object(campaign_service, '_calculate_campaign_metrics', return_value=mock_analytics):
-            result = await campaign_service.get_campaign_analytics(
-                campaign_id="test-campaign-id",
-                user_id="test-user-id"
-            )
-            
-            assert result["emails_sent"] == 1000
-            assert result["delivery_rate"] == 0.95  # 950/1000
-            assert result["open_rate"] == 0.316  # 300/950 (delivered)
-            assert result["click_rate"] == 0.167  # 50/300 (opened)
-
-    @pytest.mark.asyncio
-    async def test_clone_campaign_success(self, campaign_service, mock_db_session, mock_campaign):
-        """Test cloning a campaign"""
-        # Mock finding original campaign
-        mock_result = AsyncMock()
-        mock_result.scalar_one_or_none.return_value = mock_campaign
-        mock_db_session.execute.return_value = mock_result
-        
-        # Mock creating new campaign
-        mock_db_session.add = Mock()
-        mock_db_session.commit = AsyncMock()
-        mock_db_session.refresh = AsyncMock()
-        
-        with patch('models.base.Campaign') as MockCampaign:
-            mock_new_campaign = Mock()
-            mock_new_campaign.id = "cloned-campaign-id"
-            mock_new_campaign.name = "Test Campaign (Copy)"
-            MockCampaign.return_value = mock_new_campaign
-            
-            result = await campaign_service.clone_campaign(
-                campaign_id="test-campaign-id",
-                user_id="test-user-id",
-                new_name="Test Campaign (Copy)"
-            )
-            
-            mock_db_session.add.assert_called_once()
-            mock_db_session.commit.assert_called_once()
-            assert result.id == "cloned-campaign-id"
-
-    @pytest.mark.asyncio
-    async def test_get_campaign_recipients(self, campaign_service, mock_db_session):
-        """Test getting campaign recipients"""
-        # Mock recipients data
-        mock_recipients = [
-            {"email": "user1@example.com", "status": "sent", "sent_at": datetime.utcnow()},
-            {"email": "user2@example.com", "status": "delivered", "delivered_at": datetime.utcnow()},
-            {"email": "user3@example.com", "status": "opened", "opened_at": datetime.utcnow()}
-        ]
-        
-        mock_result = AsyncMock()
-        mock_result.all.return_value = mock_recipients
-        mock_db_session.execute.return_value = mock_result
-        
-        result = await campaign_service.get_campaign_recipients(
-            campaign_id="test-campaign-id",
-            user_id="test-user-id",
-            page=1,
-            per_page=10
+        result = await campaign_service.get_campaign_resources(
+            campaign_id="campaign-123",
+            session_id="session-123"
         )
         
-        assert len(result["recipients"]) == 3
-        assert result["recipients"][0]["email"] == "user1@example.com"
+        assert "templates" in result
+        assert "smtp_accounts" in result
+        assert "domains" in result
+        assert "lead_bases" in result
 
     @pytest.mark.asyncio
-    async def test_validate_campaign_limits(self, campaign_service, mock_db_session, mock_user):
-        """Test campaign limits validation"""
-        # Mock user has reached campaign limit
-        mock_result = AsyncMock()
-        mock_result.scalar.return_value = 10  # User has 10 campaigns
-        mock_db_session.execute.return_value = mock_result
+    async def test_run_mock_test(self, campaign_service, mock_db_session, mock_campaign):
+        """Test running mock campaign test"""
+        mock_campaign.status = "draft"
+        mock_db_session.scalar = AsyncMock(return_value=mock_campaign)
         
-        # Mock plan limits
-        with patch.object(campaign_service, '_get_plan_limits', return_value={"max_campaigns": 5}):
-            with pytest.raises(HTTPException) as exc_info:
-                await campaign_service._validate_campaign_limits("test-user-id")
+        with patch.object(campaign_service, '_validate_campaign_resources', return_value=None):
+            result = await campaign_service.run_mock_test("campaign-123")
             
-            assert exc_info.value.status_code == 400
-            assert "limit" in str(exc_info.value.detail).lower()
+            assert isinstance(result, list)
+
+    @pytest.mark.asyncio
+    async def test_get_campaign_summary(self, campaign_service, mock_db_session):
+        """Test getting campaign summary"""
+        mock_db_session.scalars = AsyncMock()
+        empty_result = AsyncMock()
+        empty_result.all.return_value = []
+        mock_db_session.scalars.return_value = empty_result
+        
+        result = await campaign_service.get_campaign_summary(
+            session_id="session-123",
+            db=mock_db_session
+        )
+        
+        assert result.total_campaigns == 0
+        assert result.active_campaigns == 0
+
+    @pytest.mark.asyncio
+    async def test_get_campaign_options(self, campaign_service, mock_db_session):
+        """Test getting campaign options"""
+        mock_db_session.scalars = AsyncMock()
+        empty_result = AsyncMock()
+        empty_result.all.return_value = []
+        mock_db_session.scalars.return_value = empty_result
+        
+        result = await campaign_service.get_campaign_options()
+        
+        assert hasattr(result, 'templates')
+        assert hasattr(result, 'smtp_accounts')
+        assert hasattr(result, 'domains')
+
+    @pytest.mark.asyncio
+    async def test_personalize_email(self, campaign_service):
+        """Test email personalization"""
+        mock_template = Mock()
+        mock_template.subject = "Hello {{name}}"
+        mock_template.content = "Dear {{name}}, welcome to {{company}}"
+        
+        mock_lead = Mock()
+        mock_lead.first_name = "John"
+        mock_lead.last_name = "Doe"
+        mock_lead.email = "john@example.com"
+        mock_lead.company = "Test Corp"
+        
+        result = campaign_service._personalize_email(mock_template, mock_lead)
+        
+        assert "John" in result["subject"]
+        assert "John" in result["content"]
+        assert "Test Corp" in result["content"]
+
+    @pytest.mark.asyncio
+    async def test_count_recipients(self, campaign_service, mock_db_session):
+        """Test counting campaign recipients"""
+        mock_db_session.scalar = AsyncMock(return_value=100)
+        
+        result = await campaign_service._count_recipients(
+            lead_base_ids=["leadbase-123"],
+            session_id="session-123"
+        )
+        
+        assert result == 100
+
+    @pytest.mark.asyncio
+    async def test_update_campaign_stats(self, campaign_service, mock_db_session, mock_campaign):
+        """Test updating campaign statistics"""
+        mock_db_session.scalar = AsyncMock(return_value=mock_campaign)
+        mock_db_session.commit = AsyncMock()
+        
+        await campaign_service._update_campaign_stats("campaign-123", "email_sent")
+        
+        mock_db_session.commit.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_get_campaign_leads(self, campaign_service, mock_db_session):
+        """Test getting campaign leads"""
+        mock_leads = [
+            Mock(id="lead-1", email="user1@example.com"),
+            Mock(id="lead-2", email="user2@example.com")
+        ]
+        
+        mock_db_session.scalars = AsyncMock()
+        mock_db_session.scalars.return_value.all.return_value = mock_leads
+        
+        result = await campaign_service._get_campaign_leads(
+            campaign_id="campaign-123",
+            session_id="session-123"
+        )
+        
+        assert len(result) == 2

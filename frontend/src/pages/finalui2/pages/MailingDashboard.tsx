@@ -141,7 +141,7 @@ const MailingDashboard: React.FC = () => {
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Mailing' }]}
         toolbar={
           <div className="flex items-center gap-2">
-            <Select value={filter} onValueChange={(v: any) => setFilter(v)}>
+            <Select value={filter} onValueChange={(v: unknown) => setFilter(v)}>
               <SelectTrigger className="w-[160px]"><SelectValue placeholder="Filter" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Pools</SelectItem>

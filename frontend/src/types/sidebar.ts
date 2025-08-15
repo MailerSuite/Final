@@ -5,7 +5,7 @@ export interface SidebarBadge {
 
 export interface SidebarItem {
   label: string
-  icon: any
+  icon: unknown
   url?: string
   badge?: string | number
   badges?: SidebarBadge[]

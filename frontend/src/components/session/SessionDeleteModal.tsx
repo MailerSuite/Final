@@ -27,7 +27,7 @@ export default function SessionDeleteModal({
     try {
       await sessionService.deleteSession(sessionId)
       onConfirm?.(true)
-    } catch (err: any) {
+    } catch (err: unknown) {
       toast({
         severity: 'critical',
         description: err?.response?.data?.detail || 'Failed to delete session',

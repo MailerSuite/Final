@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom'
 export default function IMAPListPage() {
   const navigate = useNavigate()
   const sessionId = getSessionId() || ''
-  const [items, setItems] = React.useState<any[]>([])
+  const [items, setItems] = React.useState<unknown[]>([])
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState<string | null>(null)
   const [quickEmail, setQuickEmail] = React.useState('')
@@ -38,7 +38,7 @@ export default function IMAPListPage() {
       const data = await listImap(sessionId)
       setItems(data || [])
       setError(null)
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e?.message || 'Failed to load IMAP accounts')
       toast.error?.(e?.message || 'Failed to load IMAP accounts')
     } finally {
@@ -104,7 +104,7 @@ export default function IMAPListPage() {
                   }
                   setModalOpen(false)
                   await refresh()
-                } catch (e: any) {
+                } catch (e: unknown) {
                   toast.error?.(e?.message || 'Save failed')
                 }
               }}>{editing ? 'Save' : 'Create'}</Button>
@@ -171,7 +171,7 @@ export default function IMAPListPage() {
                     <TableCell className="text-muted-foreground">{it.server}:{it.port}</TableCell>
                     <TableCell className="text-right">
                       <Button size="sm" variant="outline" className="mr-2" onClick={() => { setEditing(it); setForm({ email: it.email, password: '', server: it.server || it.imap_server, port: it.port || it.imap_port || 993, ssl: 'ssl', use_oauth: false }); setModalOpen(true) }}>Edit</Button>
-                      <Button size="sm" variant="outline" className="mr-2" onClick={async () => { try { await testImapAccount(it.id); toast.success?.('IMAP test triggered') } catch (e: any) { toast.error?.(e?.message || 'Test failed') } }}>Test</Button>
+                      <Button size="sm" variant="outline" className="mr-2" onClick={async () => { try { await testImapAccount(it.id); toast.success?.('IMAP test triggered') } catch (e: unknown) { toast.error?.(e?.message || 'Test failed') } }}>Test</Button>
                       <Button size="sm" variant="destructive" onClick={async () => { await deleteImap(sessionId, it.id); refresh() }}>Delete</Button>
                     </TableCell>
                   </TableRow>

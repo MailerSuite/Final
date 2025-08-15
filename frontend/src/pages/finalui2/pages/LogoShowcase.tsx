@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Logo, LogoVariants, BrandColors } from '@/components/branding/Logo';
+import { Logo, LogoVariants } from '@/components/branding/Logo';
 import PageShell from '@/pages/finalui2/components/PageShell';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui';
 import { Badge } from '@/components/ui/badge';

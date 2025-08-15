@@ -6,7 +6,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Shield, CheckCircle, AlertTriangle, XCircle, RefreshCw, Mail } from 'lucide-react';
-import { securityApi, type SPFValidationRequest, type SPFValidationResponse } from '@/api/security-api';
+import { securityApi } from '@/api/security-api';
 import { toast } from '@/hooks/smtp-checker/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -84,7 +84,7 @@ export const SMTPSecurityValidation: React.FC<SMTPSecurityValidationProps> = ({
           severity: 'warning'
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       const message = err.response?.data?.detail || 'SPF validation failed';
       setError(message);
       toast({

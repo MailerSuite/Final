@@ -11,8 +11,8 @@ export type MessageHandler = (data: ProxyTestData) => void
 export class ProxyTester {
   private connId: string | null = null
   private reconnectTimer: number | null = null
-  private msgHandler: ((ev: any) => void) | null = null
-  private closeHandler: ((ev: any) => void) | null = null
+  private msgHandler: ((ev: unknown) => void) | null = null
+  private closeHandler: ((ev: unknown) => void) | null = null
 
   constructor(private onMessage: MessageHandler) { }
 
@@ -27,7 +27,7 @@ export class ProxyTester {
       const id = await defaultWebSocketPool.connect('proxy-test', url)
       this.connId = id
 
-      this.msgHandler = (ev: any) => {
+      this.msgHandler = (ev: unknown) => {
         try {
           this.onMessage(JSON.parse(ev.data))
         } catch {
@@ -35,7 +35,7 @@ export class ProxyTester {
         }
       }
 
-      this.closeHandler = (ev: any) => {
+      this.closeHandler = (ev: unknown) => {
         // clear conn id so future connect() will attempt again
         this.connId = null
         // schedule reconnect for abnormal closes

@@ -184,7 +184,7 @@ const AdminPerformance = () => {
 
       // Update optimization suggestions from API
       if (performanceData.optimization && performanceData.optimization.suggestions) {
-        const transformedSuggestions = performanceData.optimization.suggestions.map((suggestion: any, index: number) => ({
+        const transformedSuggestions = performanceData.optimization.suggestions.map((suggestion: unknown, index: number) => ({
           type: suggestion.priority === 'high' ? 'warning' : suggestion.priority === 'medium' ? 'info' : 'success',
           category: suggestion.category,
           title: `${suggestion.category} Optimization`,
@@ -222,7 +222,7 @@ const AdminPerformance = () => {
         loadPerformanceData();
       }, 3000);
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'System optimization failed';
       toast.error(errorMessage);
       console.error('Error optimizing system:', error);

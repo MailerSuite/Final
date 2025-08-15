@@ -5,7 +5,6 @@ import axiosInstance from '@/http/axios';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import PageWrapper from '@/components/layout/PageWrapper';
@@ -87,7 +86,7 @@ const PerformancePage: React.FC = () => {
       setData(response.data.data || []);
       setTotal(response.data.total || 0);
       setSkip(offset);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error fetching performance data:', err);
       setError(err.response?.data?.message || 'Failed to fetch performance data');
       toast.error('Failed to fetch performance data');

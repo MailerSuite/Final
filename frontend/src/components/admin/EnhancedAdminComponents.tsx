@@ -9,8 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AdminAPI, SystemHealth, SystemMetrics, SystemAlert } from '@/api/admin-services';
+import { Alert } from '@/components/ui/alert';
+import { AdminAPI, SystemHealth, SystemAlert } from '@/api/admin-services';
 import { 
   Activity, 
   AlertTriangle, 

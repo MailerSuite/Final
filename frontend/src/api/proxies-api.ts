@@ -20,9 +20,9 @@ import type { AxiosInstance } from 'axios'
 const globalAxios: AxiosInstance = axiosInstance;
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import { DUMMY_BASE_URL, assertParamExists, setBearerAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 // @ts-ignore
 import type { HTTPValidationError } from './models';
 // @ts-ignore
@@ -554,7 +554,7 @@ export const ProxiesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getCheckProgressApiV1ProxiesSessionIdCheckProgressGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async getCheckProgressApiV1ProxiesSessionIdCheckProgressGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getCheckProgressApiV1ProxiesSessionIdCheckProgressGet(sessionId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProxiesApi.getCheckProgressApiV1ProxiesSessionIdCheckProgressGet']?.[localVarOperationServerIndex]?.url;
@@ -692,7 +692,7 @@ export const ProxiesApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCheckProgressApiV1ProxiesSessionIdCheckProgressGet(sessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        getCheckProgressApiV1ProxiesSessionIdCheckProgressGet(sessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.getCheckProgressApiV1ProxiesSessionIdCheckProgressGet(sessionId, options).then((request) => request(axios, basePath));
         },
         /**

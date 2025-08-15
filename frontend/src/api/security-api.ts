@@ -82,7 +82,7 @@ export interface CampaignValidationResponse {
 export interface SecurityStats {
   success: boolean
   statistics?: {
-    blacklist: any
+    blacklist: unknown
     security_features: {
       spf_validation_enabled: boolean
       content_scanning_enabled: boolean
@@ -100,7 +100,7 @@ export const securityApi = {
     try {
       const res = await apiClient.get<SecurityStatus>('/security/status')
       return res.data as SecurityStatus
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Fallback mock data when endpoint doesn't exist
       if (error.response?.status === 404) {
         return {

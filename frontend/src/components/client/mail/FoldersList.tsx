@@ -23,7 +23,7 @@ export default function FoldersList({ accountId }: Props) {
     )
   }
 
-  if ((folders as any[]).length === 0) {
+  if ((folders as unknown[]).length === 0) {
     return (
       <div className="flex flex-col items-center gap-2 p-4 text-center text-muted-foreground">
         <p>No folders found. Click 'Refresh' or check your account settings.</p>
@@ -46,7 +46,7 @@ export default function FoldersList({ accountId }: Props) {
 
   return (
     <ul className="space-y-1">
-      {(folders as any[]).map((folder: any) => (
+      {(folders as unknown[]).map((folder: unknown) => (
         <li key={folder.name} className="px-2 py-1 rounded hover:bg-accent">
           {folder.name}
         </li>

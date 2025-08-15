@@ -61,12 +61,12 @@ export const adminApi = {
     return data
   },
 
-  createPlan: async (planData: any) => {
+  createPlan: async (planData: unknown) => {
     const { data } = await axios.post<PlanDetails>('/api/v1/admin/plans', planData)
     return data
   },
 
-  updatePlan: async (planId: string, planData: any) => {
+  updatePlan: async (planId: string, planData: unknown) => {
     const { data } = await axios.put<PlanDetails>(`/api/v1/admin/plans/${planId}`, planData)
     return data
   },
@@ -85,7 +85,7 @@ export const adminApi = {
     return data
   },
 
-  updateTicketStatus: async (ticketId: string, statusUpdate: any) => {
+  updateTicketStatus: async (ticketId: string, statusUpdate: unknown) => {
     const { data } = await axios.put(`/api/v1/admin/support-tickets/${ticketId}/status`, statusUpdate)
     return data
   },

@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { 
@@ -91,7 +90,7 @@ export default function CreateTenant() {
 
       // Navigate to the new tenant's detail page
       navigate(`/admin/tenants/${response.data.id}`);
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: 'Error',
         description: error.response?.data?.detail || 'Failed to create tenant',

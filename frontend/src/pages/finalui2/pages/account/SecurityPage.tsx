@@ -24,7 +24,7 @@ export default function SecurityPage() {
     try {
       await axios.put('/api/v1/auth/me/password', vals)
       toast.success('Password updated')
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e?.response?.data?.detail ?? 'Failed to update password')
     }
   }

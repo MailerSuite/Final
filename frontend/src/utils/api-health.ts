@@ -54,7 +54,7 @@ export async function checkBackendHealth(): Promise<HealthCheckResult> {
         ]
       };
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     const responseTime = Date.now() - startTime;
 
     let errorMessage = 'Unknown error';

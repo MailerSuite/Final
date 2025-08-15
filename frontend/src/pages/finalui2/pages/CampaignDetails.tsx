@@ -39,14 +39,14 @@ const CampaignDetails: React.FC = () => {
   const sid = getSessionId()
   const [loading, setLoading] = React.useState(true)
   const [saving, setSaving] = React.useState(false)
-  const [campaign, setCampaign] = React.useState<any>(null)
+  const [campaign, setCampaign] = React.useState<unknown>(null)
   const [batchSize, setBatchSize] = React.useState<number>(100)
   const [delayMs, setDelayMs] = React.useState<number>(1000)
   const [threads, setThreads] = React.useState<number>(1)
   const [recipientInput, setRecipientInput] = React.useState<string>('')
-  const [threadPools, setThreadPools] = React.useState<any[]>([])
+  const [threadPools, setThreadPools] = React.useState<unknown[]>([])
   const [selectedThreadPool, setSelectedThreadPool] = React.useState<string>('')
-  const [leadBases, setLeadBases] = React.useState<any[]>([])
+  const [leadBases, setLeadBases] = React.useState<unknown[]>([])
   const [leadBasePick, setLeadBasePick] = React.useState<string>('')
   const [selectedLeadBaseIds, setSelectedLeadBaseIds] = React.useState<string[]>([])
   const [logs, setLogs] = React.useState<string[]>([])
@@ -58,7 +58,7 @@ const CampaignDetails: React.FC = () => {
     try {
       setLoading(true)
       const c = await getCampaign(sid, id)
-      const data: any = (c as any)?.data ?? c
+      const data: unknown = (c as any)?.data ?? c
       setCampaign(data)
       try {
         const thr = await getCampaignThrottle(id)
@@ -69,7 +69,7 @@ const CampaignDetails: React.FC = () => {
           if (t.threads_count != null) setThreads(Number(t.threads_count))
         }
       } catch { /* optional */ }
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error?.(e?.message || 'Failed to load campaign')
     } finally {
       setLoading(false)
@@ -81,12 +81,12 @@ const CampaignDetails: React.FC = () => {
     (async () => {
       try {
         const res = await listThreadPools()
-        const items: any[] = (res as any)?.data ?? (res as any)
+        const items: unknown[] = (res as any)?.data ?? (res as any)
         setThreadPools(Array.isArray(items) ? items : [])
       } catch { /* optional */ }
       try {
         const l = await listLeadBases()
-        const rows: any[] = (l as any)?.data ?? (l as any)
+        const rows: unknown[] = (l as any)?.data ?? (l as any)
         setLeadBases(Array.isArray(rows) ? rows : [])
       } catch { /* optional */ }
     })()
@@ -122,7 +122,7 @@ const CampaignDetails: React.FC = () => {
           await deleteCampaign(sid, id); toast.success?.('Deleted'); navigate('/campaigns'); return
       }
       void refresh()
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error?.(e?.message || 'Action failed')
     }
   }
@@ -140,7 +140,7 @@ const CampaignDetails: React.FC = () => {
         } catch { /* optional */ }
       }
       toast.success?.('Throttle updated')
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error?.(e?.message || 'Failed to update throttle')
     } finally { setSaving(false) }
   }
@@ -153,7 +153,7 @@ const CampaignDetails: React.FC = () => {
       await addCampaignRecipients(id, { recipients: lines })
       toast.success?.('Recipients queued')
       setRecipientInput('')
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error?.(e?.message || 'Failed to add recipients')
     }
   }
@@ -163,7 +163,7 @@ const CampaignDetails: React.FC = () => {
     try {
       await exportCampaignEmails(id, 'csv')
       toast.success?.('Export requested')
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error?.(e?.message || 'Export failed')
     }
   }
@@ -238,7 +238,7 @@ const CampaignDetails: React.FC = () => {
                       <SelectValue placeholder="Select lead base" />
                     </SelectTrigger>
                     <SelectContent>
-                      {leadBases.map((b: any) => (
+                      {leadBases.map((b: unknown) => (
                         <SelectItem key={b.id} value={b.id}>{b.name} ({b.leads_count ?? 0})</SelectItem>
                       ))}
                     </SelectContent>
@@ -254,7 +254,7 @@ const CampaignDetails: React.FC = () => {
                       await addCampaignRecipients(id, { lead_base_ids: selectedLeadBaseIds })
                       toast.success?.('Lead bases attached')
                       setSelectedLeadBaseIds([])
-                    } catch (e: any) { toast.error?.(e?.message || 'Failed to attach') }
+                    } catch (e: unknown) { toast.error?.(e?.message || 'Failed to attach') }
                   }}>Attach Selected</Button>
                 </div>
                 {selectedLeadBaseIds.length > 0 && (
@@ -295,7 +295,7 @@ const CampaignDetails: React.FC = () => {
                   <Select value={selectedThreadPool} onValueChange={setSelectedThreadPool}>
                     <SelectTrigger><SelectValue placeholder="Select pool" /></SelectTrigger>
                     <SelectContent>
-                      {threadPools.map((p: any) => (
+                      {threadPools.map((p: unknown) => (
                         <SelectItem key={p.id} value={p.id}>{p.name || p.id}</SelectItem>
                       ))}
                     </SelectContent>

@@ -94,7 +94,7 @@ const PlansTrialConfigPage = () => {
       const response = await axios.get('/api/v1/admin/plans/trial-configs/detailed');
       setConfigs(response.data.configs || []);
       toast.success('⚙️ Trial configs loaded - LIVE DATA!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to load trial configurations';
       toast.error(errorMessage);
       console.error('Error loading trial configs:', error);
@@ -130,7 +130,7 @@ const PlansTrialConfigPage = () => {
       setCreateDialogOpen(false);
       await loadConfigs();
       toast.success('Trial configuration created successfully!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to create trial configuration';
       toast.error(errorMessage);
       console.error('Error creating trial config:', error);
@@ -146,7 +146,7 @@ const PlansTrialConfigPage = () => {
       await axios.delete(`/api/v1/admin/trial-configs/${configId}`);
       await loadConfigs();
       toast.success('Trial configuration deleted successfully!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to delete trial configuration';
       toast.error(errorMessage);
       console.error('Error deleting trial config:', error);
@@ -285,7 +285,7 @@ const PlansTrialConfigPage = () => {
                     
                     <div className="space-y-2">
                       <Label className="text-muted-foreground">Trial Type</Label>
-                      <Select value={formData.trial_type} onValueChange={(value: any) => setFormData({...formData, trial_type: value})}>
+                      <Select value={formData.trial_type} onValueChange={(value: unknown) => setFormData({...formData, trial_type: value})}>
                         <SelectTrigger className="bg-card/50 border-border text-white">
                           <SelectValue />
                         </SelectTrigger>

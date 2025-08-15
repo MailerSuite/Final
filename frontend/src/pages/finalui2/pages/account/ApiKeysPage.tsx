@@ -19,7 +19,7 @@ export default function ApiKeysPage() {
       setNewSecret(res.data?.secret)
       setName('')
       mutate()
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e?.response?.data?.detail ?? 'Failed to create API key')
     }
   }
@@ -29,7 +29,7 @@ export default function ApiKeysPage() {
       await axios.delete(`/api/v1/api-keys/${id}`)
       toast.success('API key deleted')
       mutate()
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e?.response?.data?.detail ?? 'Failed to delete API key')
     }
   }
@@ -56,7 +56,7 @@ export default function ApiKeysPage() {
           )}
           <div className="space-y-2">
             {keys.length === 0 && <div className="text-sm text-muted-foreground">No API keys</div>}
-            {keys.map((k: any) => (
+            {keys.map((k: unknown) => (
               <div key={k.id} className="flex items-center justify-between rounded border p-3">
                 <div>
                   <div className="font-medium">{k.name || 'Personal Token'}</div>

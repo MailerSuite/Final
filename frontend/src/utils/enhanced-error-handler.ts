@@ -17,7 +17,7 @@ export interface ErrorHandlerConfig {
 export interface APIErrorResponse {
   message?: string;
   detail?: string;
-  errors?: any[];
+  errors?: unknown[];
   code?: string;
   status?: number;
 }
@@ -42,7 +42,7 @@ class EnhancedErrorHandler {
   /**
    * Handle API errors with intelligent responses
    */
-  async handleError(error: any, requestConfig?: any, retryFn?: () => Promise<any>): Promise<any> {
+  async handleError(error: unknown, requestConfig?: any, retryFn?: () => Promise<unknown>): Promise<unknown> {
     const startTime = Date.now();
     
     if (this.config.logErrors) {
@@ -68,7 +68,7 @@ class EnhancedErrorHandler {
   /**
    * Parse error response into standardized format
    */
-  private parseErrorResponse(error: any): APIErrorResponse {
+  private parseErrorResponse(error: unknown): APIErrorResponse {
     const response = error.response?.data || {};
     
     return {
@@ -181,7 +181,7 @@ class EnhancedErrorHandler {
   /**
    * Determine if error should trigger retry
    */
-  private shouldRetry(error: any): boolean {
+  private shouldRetry(error: unknown): boolean {
     if (!this.config.autoRetry) return false;
 
     const status = error.response?.status;
@@ -199,10 +199,10 @@ class EnhancedErrorHandler {
    * Handle retry logic with exponential backoff
    */
   private async handleRetry(
-    error: any, 
-    retryFn: () => Promise<any>, 
+    error: unknown, 
+    retryFn: () => Promise<unknown>, 
     requestConfig?: any
-  ): Promise<any> {
+  ): Promise<unknown> {
     const requestKey = `${requestConfig?.method}-${requestConfig?.url}`;
     const attempts = this.retryAttempts.get(requestKey) || 0;
 

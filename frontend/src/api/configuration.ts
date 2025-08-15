@@ -20,7 +20,7 @@ export interface ConfigurationParameters {
     accessToken?: string | Promise<string> | ((name?: string, scopes?: string[]) => string) | ((name?: string, scopes?: string[]) => Promise<string>);
     basePath?: string;
     serverIndex?: number;
-    baseOptions?: any;
+    baseOptions?: unknown;
     formDataCtor?: new () => any;
 }
 
@@ -72,7 +72,7 @@ export class Configuration {
      * @type {any}
      * @memberof Configuration
      */
-    baseOptions?: any;
+    baseOptions?: unknown;
     /**
      * The FormData constructor that will be used to create multipart form data
      * requests. You can inject this here so that execution environments that

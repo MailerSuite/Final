@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderWithRouter as render, screen } from '@/test-utils'
 import UnifiedFunctionsDashboard from '@/pages/finalui2/pages/UnifiedFunctionsDashboard'
 
-const ok = (data: any) => ({ ok: true, json: async () => data }) as any
+const ok = (data: unknown) => ({ ok: true, json: async () => data }) as any
 
 describe('UnifiedFunctionsDashboard', () => {
   const realFetch = globalThis.fetch

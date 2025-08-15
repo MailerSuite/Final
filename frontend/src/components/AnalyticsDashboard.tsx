@@ -28,7 +28,7 @@ function ProgressBar({ percent, testId }: { percent: number; testId?: string }) 
   )
 }
 
-function SidebarItem({ icon: Icon, label, active }: { icon: React.ComponentType<any>; label: string; active?: boolean }) {
+function SidebarItem({ icon: Icon, label, active }: { icon: React.ComponentType<unknown>; label: string; active?: boolean }) {
   return (
     <div
       className="flex items-center gap-3 px-4 py-2.5 rounded-md cursor-pointer select-none"

@@ -20,9 +20,9 @@ import type { AxiosInstance } from 'axios'
 const globalAxios: AxiosInstance = axiosInstance;
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import { DUMMY_BASE_URL, assertParamExists, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 // @ts-ignore
 import type { HTTPValidationError } from './models';
 // @ts-ignore
@@ -207,7 +207,7 @@ export const ThreadsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deletePoolApiV1ThreadsPoolIdDelete(poolId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async deletePoolApiV1ThreadsPoolIdDelete(poolId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deletePoolApiV1ThreadsPoolIdDelete(poolId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ThreadsApi.deletePoolApiV1ThreadsPoolIdDelete']?.[localVarOperationServerIndex]?.url;
@@ -266,7 +266,7 @@ export const ThreadsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deletePoolApiV1ThreadsPoolIdDelete(poolId: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        deletePoolApiV1ThreadsPoolIdDelete(poolId: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.deletePoolApiV1ThreadsPoolIdDelete(poolId, options).then((request) => request(axios, basePath));
         },
         /**

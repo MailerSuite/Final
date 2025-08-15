@@ -19,13 +19,13 @@ import { toast } from '@/hooks/useToast'
 
 export default function DomainsPage() {
   const [initialLoading, setInitialLoading] = React.useState(true)
-  const [rows, setRows] = React.useState<any[]>([])
+  const [rows, setRows] = React.useState<unknown[]>([])
   const [modalOpen, setModalOpen] = React.useState(false)
   const [form, setForm] = React.useState({ url: '', domain_type: 'website' as 'website' | 'api' | 'other' })
   const [uploadOpen, setUploadOpen] = React.useState(false)
   const [uploadFile, setUploadFile] = React.useState<File | null>(null)
   const [verificationOpen, setVerificationOpen] = React.useState(false)
-  const [selectedDomain, setSelectedDomain] = React.useState<any>(null)
+  const [selectedDomain, setSelectedDomain] = React.useState<unknown>(null)
   const [importMapping, setImportMapping] = React.useState({ domain: 0, type: 1 })
   const sid = Number(getSessionId() || 0)
 
@@ -34,7 +34,7 @@ export default function DomainsPage() {
       setInitialLoading(true)
       const { data } = await domainApi.list(sid)
       setRows(Array.isArray(data) ? data : (data?.items || []))
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error?.(e?.message || 'Failed to load domains')
     } finally { setInitialLoading(false) }
   }
@@ -98,7 +98,7 @@ export default function DomainsPage() {
                       await domainApi.create(sid, { url: form.url.trim(), domain_type: form.domain_type } as any)
                       setModalOpen(false)
                       await load()
-                    } catch (e: any) {
+                    } catch (e: unknown) {
                       toast.error?.(e?.message || 'Create failed')
                     }
                   }}>Create</Button>
@@ -152,7 +152,7 @@ export default function DomainsPage() {
                         setUploadOpen(false)
                         await load()
                         toast.success?.('Import started')
-                      } catch (e: any) {
+                      } catch (e: unknown) {
                         toast.error?.(e?.message || 'Import failed')
                       }
                     }}>Upload</Button>
@@ -277,7 +277,7 @@ export default function DomainsPage() {
                     <tbody>
                       {rows.length === 0 ? (
                         <tr><td className="px-4 py-6 text-center text-sm text-muted-foreground" colSpan={5}>No domains</td></tr>
-                      ) : rows.map((d: any) => (
+                      ) : rows.map((d: unknown) => (
                         <tr key={d.id} className="hover:bg-white/5">
                           <td className="px-4 py-2 text-sm text-white">{d.url || d.domain || '-'}</td>
                           <td className="px-4 py-2 text-sm"><Badge variant="outline" className="capitalize">{d.status || 'unknown'}</Badge></td>
@@ -285,8 +285,8 @@ export default function DomainsPage() {
                           <td className="px-4 py-2 text-sm text-muted-foreground">{d.last_checked ? new Date(d.last_checked).toLocaleString() : '-'}</td>
                           <td className="px-4 py-2 text-right">
                             <Button size="sm" variant="outline" className="mr-2" onClick={() => { setSelectedDomain(d); setVerificationOpen(true) }}><ShieldCheckIcon className="w-4 h-4 mr-1" />Verify</Button>
-                            <Button size="sm" variant="outline" className="mr-2" onClick={async () => { try { await (domainApi as any).check ? await (domainApi as any).check(sid, d.id) : await (await import('@/http/axios')).default.post(`/api/v1/domains/${sid}/domains/${d.id}/check`); toast.success?.('Check scheduled') } catch (e: any) { toast.error?.(e?.message || 'Check failed') } }}><CheckBadgeIcon className="w-4 h-4 mr-1" />Check</Button>
-                            <Button size="sm" variant="destructive" onClick={async () => { try { await domainApi.remove(sid, d.id); await load() } catch (e: any) { toast.error?.(e?.message || 'Delete failed') } }}><TrashIcon className="w-4 h-4 mr-1" />Delete</Button>
+                            <Button size="sm" variant="outline" className="mr-2" onClick={async () => { try { await (domainApi as any).check ? await (domainApi as any).check(sid, d.id) : await (await import('@/http/axios')).default.post(`/api/v1/domains/${sid}/domains/${d.id}/check`); toast.success?.('Check scheduled') } catch (e: unknown) { toast.error?.(e?.message || 'Check failed') } }}><CheckBadgeIcon className="w-4 h-4 mr-1" />Check</Button>
+                            <Button size="sm" variant="destructive" onClick={async () => { try { await domainApi.remove(sid, d.id); await load() } catch (e: unknown) { toast.error?.(e?.message || 'Delete failed') } }}><TrashIcon className="w-4 h-4 mr-1" />Delete</Button>
                           </td>
                         </tr>
                       ))}

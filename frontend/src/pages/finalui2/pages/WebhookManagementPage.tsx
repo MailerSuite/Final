@@ -117,7 +117,7 @@ export default function WebhookManagementPage() {
     return matchesSearch && matchesStatus
   })
 
-  const handleCreateWebhook = async (data: any) => {
+  const handleCreateWebhook = async (data: unknown) => {
     setLoading(true)
     try {
       // Mock API call - replace with actual implementation
@@ -144,7 +144,7 @@ export default function WebhookManagementPage() {
     }
   }
 
-  const handleUpdateWebhook = async (data: any) => {
+  const handleUpdateWebhook = async (data: unknown) => {
     if (!editingWebhook) return
     
     setLoading(true)

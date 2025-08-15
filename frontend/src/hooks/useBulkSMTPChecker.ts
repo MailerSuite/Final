@@ -53,7 +53,7 @@ export const useBulkSMTPChecker = () => {
     try {
       const response = await bulkCheckerApi.startSMTPBulkCheck(sessionId, request);
       return response;
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage = err.message || 'Failed to start bulk check';
       setError(errorMessage);
       throw new Error(errorMessage);
@@ -79,7 +79,7 @@ export const useBulkSMTPChecker = () => {
 
       const response = await bulkCheckerApi.startSMTPFileCheck(sessionId, formData);
       return response;
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage = err.message || 'Failed to start file check';
       setError(errorMessage);
       throw new Error(errorMessage);
@@ -95,7 +95,7 @@ export const useBulkSMTPChecker = () => {
     try {
       const response = await bulkCheckerApi.getSMTPProgress(sessionId, jobId);
       return response;
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage = err.message || 'Failed to get progress';
       setError(errorMessage);
       throw new Error(errorMessage);
@@ -111,7 +111,7 @@ export const useBulkSMTPChecker = () => {
 
     try {
       await bulkCheckerApi.stopSMTPCheck(sessionId, jobId);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage = err.message || 'Failed to stop check';
       setError(errorMessage);
       throw new Error(errorMessage);
@@ -123,11 +123,11 @@ export const useBulkSMTPChecker = () => {
   const getResults = useCallback(async (
     sessionId: string,
     jobId: string
-  ): Promise<any> => {
+  ): Promise<unknown> => {
     try {
       const response = await bulkCheckerApi.getSMTPResults(sessionId, jobId);
       return response;
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage = err.message || 'Failed to get results';
       setError(errorMessage);
       throw new Error(errorMessage);

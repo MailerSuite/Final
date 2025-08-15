@@ -16,7 +16,7 @@ export function useActivateProxy() {
         `/sessions/${sessionId}/active`,
       )
       setResults(data)
-    } catch (err: any) {
+    } catch (err: unknown) {
       const msg = err?.response?.data?.detail || err?.message || 'Activation failed'
       setError(msg)
     } finally {

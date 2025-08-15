@@ -39,8 +39,8 @@ import {
   FolderIcon,
   PlusIcon
 } from '@heroicons/react/24/outline';
-import { Bot, Brain, Zap, MessageSquare, Target, Users, FileText, Settings } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Bot, Brain, MessageSquare, Target, Settings } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -48,7 +48,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -57,9 +57,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Slider } from '@/components/ui/slider';
-import { Checkbox } from '@/components/ui/checkbox';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import ProBadge from '@/components/ui/ProBadge';
@@ -388,7 +386,7 @@ export const AIAssistant: React.FC = () => {
     }, Math.random() * 2000 + 1000); // Variable response time
   }, [input, attachedFiles, currentPersona, conversationId, personas]);
 
-  const generatePersonaResponse = (userInput: string, persona?: Persona, attachments?: any[]) => {
+  const generatePersonaResponse = (userInput: string, persona?: Persona, attachments?: unknown[]) => {
     const hasAttachments = attachments && attachments.length > 0;
     const attachmentText = hasAttachments ? `\n\n📁 **File Analysis:** I can see you've uploaded ${attachments!.length} file(s). ` : '';
     

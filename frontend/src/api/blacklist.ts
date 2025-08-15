@@ -79,7 +79,7 @@ export const blacklistApi = {
           ? await blacklistApi.checkIp(trimmed, providers)
           : await blacklistApi.checkDomain(trimmed, providers)
         results.push({ value: trimmed, data })
-      } catch (err: any) {
+      } catch (err: unknown) {
         const message = err?.response?.data?.detail || 'check failed'
         results.push({ value: trimmed, error: message })
       }

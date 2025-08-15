@@ -3,9 +3,9 @@ import { apiClient } from '@/http/stable-api-client'
 import { toast as showToast } from 'sonner'
 
 export default function useApi(method: string, url: string, body?: any) {
-  const [data, setData] = useState<any>(null)
+  const [data, setData] = useState<unknown>(null)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<any>(null)
+  const [error, setError] = useState<unknown>(null)
 
   const call = async () => {
     setLoading(true)
@@ -18,7 +18,7 @@ export default function useApi(method: string, url: string, body?: any) {
         })
       }
       return res
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e)
       showToast(e.response?.data?.message || e.message)
       throw e

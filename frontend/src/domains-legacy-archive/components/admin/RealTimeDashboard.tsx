@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { cn } from '@/lib/utils';
 import {
   Activity,
@@ -47,7 +47,7 @@ interface MetricCardProps {
   change?: number;
   changeType?: 'increase' | 'decrease' | 'stable';
   icon: React.ReactNode;
-  data: any[];
+  data: unknown[];
   color?: string;
   target?: number;
 }
@@ -241,11 +241,11 @@ const SystemAlert: React.FC<SystemAlertProps> = ({
 
 export const RealTimeDashboard: React.FC = () => {
   const [metrics, setMetrics] = useState({
-    users: [] as any[],
-    emails: [] as any[],
-    servers: [] as any[],
-    database: [] as any[],
-    revenue: [] as any[]
+    users: [] as unknown[],
+    emails: [] as unknown[],
+    servers: [] as unknown[],
+    database: [] as unknown[],
+    revenue: [] as unknown[]
   });
 
   const [alerts, setAlerts] = useState<SystemAlertProps[]>([]);

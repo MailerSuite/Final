@@ -206,13 +206,13 @@ export interface AuthActions {
 export interface SessionActions {
   // Session management
   setCurrentSession: (session: { id: string; name: string }) => void
-  setSessions: (sessions: Array<any>) => void
+  setSessions: (sessions: Array<unknown>) => void
   addSession: (name: string) => Promise<void>
   removeSession: (id: string) => Promise<void>
   setIsLoadingSessions: (loading: boolean) => void
   
   // Proxy management
-  setActiveProxy: (proxy: any) => void
+  setActiveProxy: (proxy: unknown) => void
   loadActiveProxy: (sessionId: string) => Promise<void>
   updateActiveProxy: (sessionId: string, proxyId: string) => Promise<void>
 }
@@ -241,7 +241,7 @@ export interface UIActions {
   
   // Page state
   setCurrentPage: (page: string, data?: any) => void
-  setPageData: (page: string, data: any) => void
+  setPageData: (page: string, data: unknown) => void
 }
 
 export interface CampaignActions {
@@ -252,9 +252,9 @@ export interface CampaignActions {
   loadDraft: () => Promise<void>
   
   // Campaign management
-  setCampaigns: (campaigns: Array<any>) => void
-  addCampaign: (campaign: any) => void
-  updateCampaign: (id: string, updates: any) => void
+  setCampaigns: (campaigns: Array<unknown>) => void
+  addCampaign: (campaign: unknown) => void
+  updateCampaign: (id: string, updates: unknown) => void
   removeCampaign: (id: string) => void
   
   // Loading states
@@ -264,27 +264,27 @@ export interface CampaignActions {
 
 export interface ResourceActions {
   // SMTP accounts
-  setSmtpAccounts: (accounts: Array<any>) => void
-  addSmtpAccount: (account: any) => void
-  updateSmtpAccount: (id: string, updates: any) => void
+  setSmtpAccounts: (accounts: Array<unknown>) => void
+  addSmtpAccount: (account: unknown) => void
+  updateSmtpAccount: (id: string, updates: unknown) => void
   removeSmtpAccount: (id: string) => void
   
   // Proxy servers
-  setProxyServers: (proxies: Array<any>) => void
-  addProxyServer: (proxy: any) => void
-  updateProxyServer: (id: string, updates: any) => void
+  setProxyServers: (proxies: Array<unknown>) => void
+  addProxyServer: (proxy: unknown) => void
+  updateProxyServer: (id: string, updates: unknown) => void
   removeProxyServer: (id: string) => void
   
   // Templates
-  setTemplates: (templates: Array<any>) => void
-  addTemplate: (template: any) => void
-  updateTemplate: (id: string, updates: any) => void
+  setTemplates: (templates: Array<unknown>) => void
+  addTemplate: (template: unknown) => void
+  updateTemplate: (id: string, updates: unknown) => void
   removeTemplate: (id: string) => void
   
   // Lead databases
-  setLeadDatabases: (databases: Array<any>) => void
-  addLeadDatabase: (database: any) => void
-  updateLeadDatabase: (id: string, updates: any) => void
+  setLeadDatabases: (databases: Array<unknown>) => void
+  addLeadDatabase: (database: unknown) => void
+  updateLeadDatabase: (id: string, updates: unknown) => void
   removeLeadDatabase: (id: string) => void
   
   // Counts

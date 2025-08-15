@@ -29,7 +29,7 @@ import {
   HeartIcon,
   ChatBubbleLeftRightIcon
 } from '@heroicons/react/24/outline';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -41,9 +41,7 @@ import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -52,7 +50,6 @@ import {
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 // Removed legacy design-system.css; relying on Tailwind/shadcn styles
@@ -61,8 +58,8 @@ import { cn } from '@/lib/utils';
 interface TemplateBlock {
   id: string;
   type: 'text' | 'image' | 'button' | 'divider' | 'video' | 'social' | 'spacer' | 'columns';
-  content: any;
-  styles: any;
+  content: unknown;
+  styles: unknown;
 }
 
 interface Template {

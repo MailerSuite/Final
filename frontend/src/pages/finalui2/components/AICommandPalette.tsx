@@ -16,7 +16,7 @@ interface Command {
   id: string;
   title: string;
   description: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<unknown>;
   action: () => void;
   category: string;
   shortcut?: string;

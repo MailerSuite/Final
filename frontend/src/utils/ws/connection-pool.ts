@@ -141,7 +141,7 @@ export class WebSocketPool {
         return id
     }
 
-    send(id: string, data: any): boolean {
+    send(id: string, data: unknown): boolean {
         const rec = this.connections.get(id)
         if (!rec) return false
         if (!rec.rateLimiter.tryRemove(1)) return false
@@ -161,13 +161,13 @@ export class WebSocketPool {
         // onClose handler will cleanup
     }
 
-    on(id: string, event: 'message' | 'open' | 'close' | 'error', handler: (ev: any) => void) {
+    on(id: string, event: 'message' | 'open' | 'close' | 'error', handler: (ev: unknown) => void) {
         const rec = this.connections.get(id)
         if (!rec) return
         rec.handlers[event].add(handler as any)
     }
 
-    off(id: string, event: 'message' | 'open' | 'close' | 'error', handler: (ev: any) => void) {
+    off(id: string, event: 'message' | 'open' | 'close' | 'error', handler: (ev: unknown) => void) {
         const rec = this.connections.get(id)
         if (!rec) return
         rec.handlers[event].delete(handler as any)

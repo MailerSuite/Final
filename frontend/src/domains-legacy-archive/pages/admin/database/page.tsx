@@ -100,7 +100,7 @@ const AdminDatabase = () => {
       setTables(tablesResponse.data.tables || []);
 
       // Update recent queries with real data
-      const formattedQueries = (queriesResponse.data.queries || []).map((query: any) => ({
+      const formattedQueries = (queriesResponse.data.queries || []).map((query: unknown) => ({
         id: query.id,
         query: query.query,
         duration: query.duration_ms / 1000, // Convert ms to seconds
@@ -147,7 +147,7 @@ const AdminDatabase = () => {
         loadDatabaseStats();
       }, 2000);
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to create database backup';
       toast.error(errorMessage);
       console.error('Error creating database backup:', error);

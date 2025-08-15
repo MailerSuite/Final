@@ -1,6 +1,4 @@
-import React from 'react';
 import Shell from '@/components/layouts/Shell';
-import PageHeader from '@/components/ui/page-header';
 import { Card, CardContent } from '@/components/ui/card';
 
 export default function ContactPage() {

@@ -74,7 +74,7 @@ export default function ProxySelectModal({
       } else {
         setLogs((l) => [...l, res.error_message || 'Proxy test failed'])
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setLogs((l) => [...l, 'Proxy test error'])
     } finally {
       setTestingId(null)

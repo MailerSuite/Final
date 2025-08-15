@@ -72,7 +72,7 @@ export default function WorkspaceTestPage() {
     }
   }
 
-  const startEditing = (workspace: any) => {
+  const startEditing = (workspace: unknown) => {
     setEditingId(workspace.id)
     setEditName(workspace.name)
   }

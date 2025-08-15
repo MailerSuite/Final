@@ -20,9 +20,9 @@ import type { AxiosInstance } from 'axios'
 const globalAxios: AxiosInstance = axiosInstance;
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import { DUMMY_BASE_URL, setSearchParams, toPathString, createRequestFunction } from './common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 /**
  * DefaultApi - axios parameter creator
  * @export
@@ -135,7 +135,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiRootApiInfoGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async apiRootApiInfoGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiRootApiInfoGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.apiRootApiInfoGet']?.[localVarOperationServerIndex]?.url;
@@ -147,7 +147,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiStatusApiV1StatusGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async apiStatusApiV1StatusGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiStatusApiV1StatusGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.apiStatusApiV1StatusGet']?.[localVarOperationServerIndex]?.url;
@@ -159,7 +159,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async rootGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async rootGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.rootGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.rootGet']?.[localVarOperationServerIndex]?.url;
@@ -181,7 +181,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiRootApiInfoGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        apiRootApiInfoGet(options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.apiRootApiInfoGet(options).then((request) => request(axios, basePath));
         },
         /**
@@ -190,7 +190,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiStatusApiV1StatusGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        apiStatusApiV1StatusGet(options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.apiStatusApiV1StatusGet(options).then((request) => request(axios, basePath));
         },
         /**
@@ -199,7 +199,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        rootGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        rootGet(options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.rootGet(options).then((request) => request(axios, basePath));
         },
     };

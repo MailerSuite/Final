@@ -48,7 +48,7 @@ class PooledWebSocket implements WebSocket {
         }
       })
 
-      defaultWebSocketPool.on(this._id, 'message', (msg: any) => {
+      defaultWebSocketPool.on(this._id, 'message', (msg: unknown) => {
         try {
           const ev = new MessageEvent('message', { data: msg })
           this.onmessage && this.onmessage(ev)
@@ -58,7 +58,7 @@ class PooledWebSocket implements WebSocket {
         }
       })
 
-      defaultWebSocketPool.on(this._id, 'close', (closeInfo: any) => {
+      defaultWebSocketPool.on(this._id, 'close', (closeInfo: unknown) => {
         try {
           this.readyState = this.CLOSED
           const ev = new CloseEvent('close', closeInfo || {})
@@ -69,7 +69,7 @@ class PooledWebSocket implements WebSocket {
         }
       })
 
-      defaultWebSocketPool.on(this._id, 'error', (err: any) => {
+      defaultWebSocketPool.on(this._id, 'error', (err: unknown) => {
         try {
           const ev = new Event('error')
           this.onerror && this.onerror(ev)
@@ -79,7 +79,7 @@ class PooledWebSocket implements WebSocket {
         }
       })
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       this.readyState = this.CLOSED
       console.error('PooledWebSocket: failed to connect', err)
 

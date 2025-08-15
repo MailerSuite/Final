@@ -3,7 +3,6 @@ import PageWrapper from '@/components/layout/PageWrapper';
 import ResponsiveGrid from '@/components/layout/ResponsiveGrid';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
@@ -15,7 +14,6 @@ import {
   AlertTriangle,
   Info
 } from 'lucide-react';
-import { toast } from 'sonner';
 
 /**
  * Standard Page Template for SGPT Application

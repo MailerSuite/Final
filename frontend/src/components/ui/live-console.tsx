@@ -12,7 +12,6 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Terminal,
@@ -40,7 +39,7 @@ export interface LogEntry {
   level: 'debug' | 'info' | 'warn' | 'error' | 'success';
   component: string;
   message: string;
-  data?: any;
+  data?: unknown;
 }
 
 interface LiveConsoleProps {
@@ -155,7 +154,7 @@ export const LiveConsole: React.FC<LiveConsoleProps> = ({
           onConnectionChange?.(true)
         }
 
-        const handleMessage = (ev: any) => {
+        const handleMessage = (ev: unknown) => {
           try {
             const parsed = JSON.parse(ev.data)
             if (pausedRef.current) {
@@ -172,7 +171,7 @@ export const LiveConsole: React.FC<LiveConsoleProps> = ({
           }
         }
 
-        const handleClose = (ev: any) => {
+        const handleClose = (ev: unknown) => {
           setConnected(false)
           onConnectionChange?.(false)
           currentConnRef.current = null

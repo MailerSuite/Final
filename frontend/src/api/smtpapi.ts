@@ -18,9 +18,9 @@ import type { AxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import { DUMMY_BASE_URL, assertParamExists, setBearerAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 // @ts-ignore
 import type { BodyCheckSmtpAccountsApiV1SmtpSessionIdCheckPost } from './models';
 // @ts-ignore
@@ -618,7 +618,7 @@ export const SMTPApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getCheckProgressApiV1SmtpSessionIdCheckProgressGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async getCheckProgressApiV1SmtpSessionIdCheckProgressGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getCheckProgressApiV1SmtpSessionIdCheckProgressGet(sessionId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SMTPApi.getCheckProgressApiV1SmtpSessionIdCheckProgressGet']?.[localVarOperationServerIndex]?.url;
@@ -767,7 +767,7 @@ export const SMTPApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCheckProgressApiV1SmtpSessionIdCheckProgressGet(sessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        getCheckProgressApiV1SmtpSessionIdCheckProgressGet(sessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.getCheckProgressApiV1SmtpSessionIdCheckProgressGet(sessionId, options).then((request) => request(axios, basePath));
         },
         /**
