@@ -41,30 +41,15 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Checkbox } from '@/components/ui/checkbox'
 
-import { Separator } from '@/components/ui/separator';
-
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/components/ui/hover-card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TableSkeletonRow } from '@/components/table-skeleton';
 import { toast } from 'sonner';
 // Removed legacy ui-kit ActionButton; using shadcn Button variants exclusively
 import {
-  AreaChart,
-  Area,
   BarChart,
   Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
   Tooltip as RechartsTooltip,
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
 } from 'recharts';
 import {
   RocketLaunchIcon,
@@ -88,17 +73,11 @@ import {
   CpuChipIcon,
   CursorArrowRaysIcon,
   DocumentTextIcon,
-  WifiIcon,
-  PaintBrushIcon,
   LightBulbIcon
 } from '@heroicons/react/24/outline';
 import { Download, Sparkles, Mail, Send, XCircle as XCircleLucide, RefreshCcw, Server, Eye, MousePointerClick, AlertOctagon } from 'lucide-react'
 import AnalyticsAPI, { type BusinessMetrics } from '@/api/analytics-api'
 import { getSessionStats, type SessionStats } from '@/api/sessionStats'
-import {
-  StarIcon as StarIconSolid,
-  HeartIcon as HeartIconSolid
-} from '@heroicons/react/24/solid';
 
 // Local Campaign interface for the UI - extends the API type with UI-specific properties
 interface Campaign extends ApiCampaign {

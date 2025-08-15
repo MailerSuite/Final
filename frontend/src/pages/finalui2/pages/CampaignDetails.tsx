@@ -6,8 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Separator } from '@/components/ui/separator'
+
 import { toast } from 'sonner'
 import { createWebSocket } from '@/utils/websocket'
 import { getSessionId } from '@/utils/getSessionId'
@@ -58,11 +57,11 @@ const CampaignDetails: React.FC = () => {
     try {
       setLoading(true)
       const c = await getCampaign(sid, id)
-      const data: unknown = (c as any)?.data ?? c
+      const data: unknown = (c as { data?: unknown })?.data ?? c
       setCampaign(data)
       try {
         const thr = await getCampaignThrottle(id)
-        const t = (thr as any)?.data ?? thr
+        const t = (thr as { data?: unknown })?.data ?? thr
         if (t) {
           if (t.batch_size != null) setBatchSize(Number(t.batch_size))
           if (t.delay_between_batches != null) setDelayMs(Number(t.delay_between_batches))
@@ -81,12 +80,12 @@ const CampaignDetails: React.FC = () => {
     (async () => {
       try {
         const res = await listThreadPools()
-        const items: unknown[] = (res as any)?.data ?? (res as any)
+        const items: unknown[] = (res as { data?: unknown[] })?.data ?? (res as unknown[])
         setThreadPools(Array.isArray(items) ? items : [])
       } catch { /* optional */ }
       try {
         const l = await listLeadBases()
-        const rows: unknown[] = (l as any)?.data ?? (l as any)
+        const rows: unknown[] = (l as { data?: unknown[] })?.data ?? (l as unknown[])
         setLeadBases(Array.isArray(rows) ? rows : [])
       } catch { /* optional */ }
     })()
