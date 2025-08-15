@@ -510,9 +510,6 @@ const router = createBrowserRouter([
     )
   },
   {
-<<<<<<< Current (Your changes)
-    path: '/imap/*',
-=======
     path: '/smtp/*',
     element: (
       <Suspense fallback={<Loading />}>
@@ -525,7 +522,6 @@ const router = createBrowserRouter([
   },
   {
     path: '/imap-inbox/*',
->>>>>>> Incoming (Background Agent changes)
     element: (
       <Suspense fallback={<Loading />}>
         <MainLayout>

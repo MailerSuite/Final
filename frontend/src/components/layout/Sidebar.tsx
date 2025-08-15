@@ -7,11 +7,8 @@ import { SparkleEffect } from '@/components/ui/sparkle-effect'
 import { Icon } from '@/components/ui/icon'
 import { AnimatedLogo } from '@/components/ui/animated-logo'
 import { motion } from 'framer-motion'
-<<<<<<< Current (Your changes)
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-=======
 import { useAuthStore } from '@/store/auth'
->>>>>>> Incoming (Background Agent changes)
 
 interface SidebarProps {
   collapsed?: boolean
@@ -265,35 +262,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     "flex-shrink-0",
                     active ? "text-sidebar-primary" : "text-sidebar-foreground/70"
                   )}
-<<<<<<< Current (Your changes)
                   ariaLabel={item.label}
                 />
                 {!collapsed && (
                   <span className="ml-3">{item.label}</span>
                 )}
               </Link>
-=======
-                  data-active={active ? 'true' : undefined}
-                  aria-current={active ? 'page' : undefined}
-                >
-                  <Icon
-                    name={item.icon as any}
-                    size="base"
-                    className={cn(
-                      "flex-shrink-0 transition-colors",
-                      active ? "text-accent" : "text-tertiary group-hover:text-primary",
-                      !collapsed && "mr-3"
-                    )}
-                    ariaLabel={item.label}
-                  />
-                  {!collapsed && (
-                    <span className="flex-1 text-sm font-medium">
-                      {item.label}
-                    </span>
-                  )}
-                </Link>
-              </div>
->>>>>>> Incoming (Background Agent changes)
             )
           })}
         </nav>
