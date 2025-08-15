@@ -3,6 +3,7 @@ import type { IUser } from "@/types"
 import { toast } from "sonner"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
+import { isAuthBypassed, getMockUser } from "@/utils/devMode"
 
 interface AuthState {
   token: string | null
@@ -49,14 +50,9 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      token: "dev-bypass-token", // TEMP: Bypass auth for development
-      refreshToken: "dev-bypass-refresh-token", // TEMP: Bypass auth for development
-      userData: { // TEMP: Mock user data for development
-        id: 1,
-        email: "dev@mailersuite.com",
-        username: "developer",
-        name: "Developer"
-      } as IUser,
+      token: (isAuthBypassed() ? "dev-bypass-token" : null) as string | null,
+      refreshToken: (isAuthBypassed() ? "dev-bypass-refresh-token" : null) as string | null,
+      userData: (isAuthBypassed() ? (getMockUser() as IUser) : null),
       isLoading: false,
       loginAttempts: 0,
       lastLoginAttempt: null,
@@ -208,9 +204,12 @@ export const useAuthStore = create<AuthState>()(
 
       // Add function to validate token presence
       validateTokens: () => {
-        // TEMP: Always return true to bypass auth for development
-        console.log('🚀 DEV MODE: Authentication bypassed')
-        return true
+        if (isAuthBypassed()) {
+          console.log('🚀 DEV MODE: Authentication bypassed')
+          return true
+        }
+        const hasToken = Boolean(get().token || localStorage.getItem('token'))
+        return hasToken
       },
 
       login: async (identifier, password, _type, fingerprint) => {
@@ -490,18 +489,23 @@ export const useAuthStore = create<AuthState>()(
   ),
 )
 
+// Seed dev tokens into localStorage in dev bypass mode so requests carry Authorization header
 if (typeof window !== "undefined") {
-  const storedToken = localStorage.getItem("token")
-  const storedRefreshToken = localStorage.getItem("refresh_token")
-  
-  if (storedToken) {
-    useAuthStore.getState().setToken(storedToken)
-  }
-  if (storedRefreshToken) {
-    useAuthStore.getState().setRefreshToken(storedRefreshToken)
-  }
-  
-  // Remove the problematic event listener that causes infinite loops
-  // The token update should not automatically trigger getMe() calls
-  // This was causing cascading API calls and infinite loops
+	if (isAuthBypassed()) {
+		localStorage.setItem("token", "dev-bypass-token")
+		localStorage.setItem("refresh_token", "dev-bypass-refresh-token")
+	}
+	const storedToken = localStorage.getItem("token")
+	const storedRefreshToken = localStorage.getItem("refresh_token")
+	
+	if (storedToken) {
+		useAuthStore.getState().setToken(storedToken)
+	}
+	if (storedRefreshToken) {
+		useAuthStore.getState().setRefreshToken(storedRefreshToken)
+	}
+	
+	// Remove the problematic event listener that causes infinite loops
+	// The token update should not automatically trigger getMe() calls
+	// This was causing cascading API calls and infinite loops
 }
