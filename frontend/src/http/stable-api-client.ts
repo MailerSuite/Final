@@ -206,17 +206,36 @@ class StableAPIClient {
   // ==================== UTILITY METHODS ====================
 
   private normalizeEndpoint(endpoint: string): string {
-    // Remove leading slash if present
-    if (endpoint.startsWith('/')) {
-      endpoint = endpoint.substring(1);
+    let e = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+
+    // Strip leading 'api/' to avoid double prefixing
+    if (e.startsWith('api/')) {
+      e = e.slice(4);
     }
-    
-    // Add /api prefix if not present
-    if (!endpoint.startsWith('api/')) {
-      endpoint = `api/${endpoint}`;
+
+    // Map legacy health paths to unified health router
+    if (e === 'health' || e === 'health/') {
+      e = 'api/v1/health';
+    } else if (e.startsWith('health/live')) {
+      e = 'api/v1/health/extra/live';
+    } else if (e.startsWith('health/ready')) {
+      e = 'api/v1/health/extra/ready';
     }
-    
-    return endpoint;
+
+    const baseHasApi = typeof this.baseURL === 'string' && this.baseURL.includes('/api');
+
+    // Ensure v1 namespace for API calls when missing
+    const hasVersionPrefix = e.startsWith('v1/') || e.startsWith('api/v1/');
+    if (!hasVersionPrefix) {
+      e = `api/v1/${e}`;
+    }
+
+    // If baseURL already includes '/api', drop the extra 'api/' from start to avoid '/api/api/*'
+    if (baseHasApi && e.startsWith('api/')) {
+      e = e.slice(4);
+    }
+
+    return e;
   }
 
   private normalizeResponse<T>(response: AxiosResponse): StandardAPIResponse<T> {
