@@ -1,0 +1,378 @@
+# ========================================
+# 🔒 PRIVACY-FOCUSED .GITIGNORE
+# ========================================
+# Protects your development PC information
+# Prevents personal data from being transferred
+# ========================================
+
+# ========================================
+# 🖥️ SYSTEM & DEVELOPMENT ENVIRONMENT
+# ========================================
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+*.lnk
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# ========================================
+# 🔐 AUTHENTICATION & SECURITY
+# ========================================
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*.local
+.envrc
+.env.local.*
+*.env
+
+# API Keys & Tokens
+secrets/
+secrets.json
+secrets.yaml
+secrets.yml
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.csr
+
+# Database Credentials
+database.yml
+db.yml
+*.db
+*.sqlite
+*.sqlite3
+
+# ========================================
+# 👤 PERSONAL & USER DATA
+# ========================================
+
+# User-specific files
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Personal workspace files
+workspace.code-workspace
+*.code-workspace
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+
+# ========================================
+# 🚀 NODE.JS & FRONTEND
+# ========================================
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.vuepress/dist
+.serverless/
+.fusebox/
+.dynamodb/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# ========================================
+# 🐍 PYTHON & BACKEND
+# ========================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+.python-version
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# ========================================
+# 🗄️ DATABASE & STORAGE
+# ========================================
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+*.mdb
+*.accdb
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+*.tmp
+*.temp
+
+# ========================================
+# 📱 MOBILE & DESKTOP APPS
+# ========================================
+
+# React Native
+.expo/
+dist/
+web-build/
+
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# Flipper
+ios/Pods/
+
+# ========================================
+# 🐳 DOCKER & CONTAINERS
+# ========================================
+
+# Docker
+.dockerignore
+Dockerfile
+docker-compose.yml
+docker-compose.yaml
+.docker/
+
+# ========================================
+# ☁️ CLOUD & DEPLOYMENT
+# ========================================
+
+# AWS
+.aws/
+aws.json
+aws.yml
+
+# Google Cloud
+.gcloud/
+gcloud.json
+
+# Azure
+.azure/
+azure.json
+
+# ========================================
+# 🔍 DEBUGGING & MONITORING
+# ========================================
+
+# Debug files
+.debug/
+debug.log
+debug-*.log
+
+# Performance monitoring
+.perf/
+performance.log
+
+# ========================================
+# 📊 ANALYTICS & TRACKING
+# ========================================
+
+# Analytics data
+analytics/
+stats/
+metrics/
+*.analytics
+*.stats
+
+# ========================================
+# 🧪 TESTING & QUALITY
+# ========================================
+
+# Test files
+test-results/
+test-output/
+coverage/
+.nyc_output/
+.jest/
+
+# ========================================
+# 📦 PACKAGE MANAGERS
+# ========================================
+
+# npm
+package-lock.json
+npm-shrinkwrap.json
+
+# Yarn
+yarn.lock
+.yarn-integrity
+
+# pnpm
+pnpm-lock.yaml
+
+# ========================================
+# 🚫 TEMPORARY & CACHE FILES
+# ========================================
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Cache directories
+.cache/
+cache/
+.temp/
+temp/
+
+# ========================================
+# 🔒 ADDITIONAL PRIVACY PROTECTIONS
+# ========================================
+
+# Local configuration
+config.local.js
+config.local.ts
+config.local.json
+*.local.*
+
+# Personal notes
+notes/
+*.md
+!README.md
+!CHANGELOG.md
+!CONTRIBUTING.md
+
+# Screenshots & media
+screenshots/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.mov
+*.avi
+
+# ========================================
+# 📁 PROJECT-SPECIFIC EXCLUSIONS
+# ========================================
+
+# MailerSuite specific
+pids/
+*.pid
+logs/
+*.log
+.env.local
+.env.production
+.env.staging
+
+# ========================================
+# ✅ ALLOWED FILES (OVERRIDE IGNORES)
+# ========================================
+
+# Force include important files
+!README.md
+!CHANGELOG.md
+!CONTRIBUTING.md
+!LICENSE
+!package.json
+!tsconfig.json
+!vite.config.ts
+!tailwind.config.js
+!postcss.config.js
+!eslint.config.js
+!.eslintrc.js
+!.prettierrc
+!.prettierrc.js
+!.prettierrc.json
+
