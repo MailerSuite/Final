@@ -7,6 +7,34 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { toast } from 'sonner';
 
+// ==================== DEMO MODE HELPERS ====================
+const isDemoMode = () => {
+  try {
+    // @ts-expect-error DEMO_MODE may be set globally by demo pages
+    if (typeof window !== 'undefined' && window.DEMO_MODE) return true;
+    if (typeof window !== 'undefined' && localStorage.getItem('demo_mode') === '1') return true;
+  } catch (_) {}
+  return false;
+};
+
+// A small guard to prevent mutating requests in demo mode
+const shouldBlockInDemo = (config: InternalAxiosRequestConfig) => {
+  if (!isDemoMode()) return false;
+  const method = (config.method || 'get').toLowerCase();
+  if (method === 'post' || method === 'put' || method === 'patch' || method === 'delete') {
+    // Allow a safe-list of endpoints if needed
+    const url = (config.url || '').toLowerCase();
+    const safelist = [
+      '/landing/newsletter',
+      '/landing/contact'
+    ];
+    if (!safelist.some(safe => url.includes(safe))) {
+      return true;
+    }
+  }
+  return false;
+};
+
 // ==================== STANDARDIZED TYPES ====================
 
 export interface StandardAPIResponse<T = any> {
@@ -74,6 +102,17 @@ class StableAPIClient {
     // Request interceptor for auth and logging
     this.axios.interceptors.request.use(
       (config) => {
+        // Demo mode guard
+        if (shouldBlockInDemo(config)) {
+          toast.warning('Demo mode: write actions are disabled.');
+          // Throw a controlled error to prevent the request
+          return Promise.reject({
+            isDemoBlocked: true,
+            config,
+            message: 'Blocked by demo mode',
+          });
+        }
+
         // Add auth token if available
         const token = this.getAuthToken();
         if (token) {

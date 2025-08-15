@@ -113,6 +113,20 @@ const demoCards = [
         color: 'from-purple-500 to-cyan-600',
         icon: <SparklesIcon className="w-5 h-5" />,
     },
+    {
+        title: 'Template Builder (Demo)',
+        description: 'Build and preview email templates using our drag-and-drop editor.',
+        path: '/landing/spamgpt/demo/template-builder',
+        color: 'from-amber-500 to-yellow-600',
+        icon: <EnvelopeIcon className="w-5 h-5" />,
+    },
+    {
+        title: 'Proxy Manager (Demo)',
+        description: 'Configure and test proxies safely with read-only demo settings.',
+        path: '/landing/spamgpt/demo/proxy-manager',
+        color: 'from-lime-500 to-green-600',
+        icon: <CpuChipIcon className="w-5 h-5" />,
+    },
 ];
 
 const SpamGPTLandingPage: React.FC = () => {
@@ -162,7 +176,7 @@ const SpamGPTLandingPage: React.FC = () => {
                                 You focus on your product—we handle the complex parts: server health, content optimization, reputation, and analytics. Start sending confident, high-performing campaigns today.
                             </p>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                             <Card className="bg-card/60 backdrop-blur border border-border/60">
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2"><CheckCircleIcon className="w-5 h-5 text-green-400" /> No Experience Required</CardTitle>
@@ -201,7 +215,7 @@ const SpamGPTLandingPage: React.FC = () => {
                             <p className="text-muted-foreground mt-2">Launch fully interactive demos—no signup required.</p>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                             {demoCards.map((demo) => (
                                 <Card key={demo.path} className="bg-card/60 backdrop-blur border border-border/60">
                                     <CardHeader>

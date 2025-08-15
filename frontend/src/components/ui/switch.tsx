@@ -5,7 +5,7 @@ import * as SwitchPrimitive from "@radix-ui/react-switch"
 import { motion } from "framer-motion"
 import { Check, X } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/utils/cn"
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { generateTooltipText } from "@/utils/tooltip"
 
