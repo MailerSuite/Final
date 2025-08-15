@@ -13,6 +13,9 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    
     <!-- Styles -->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/animations.css">
@@ -207,7 +210,23 @@
                         </div>
                         <div class="terminal-body" id="smtp-terminal">
                             <div class="terminal-line">
-                                <span class="prompt">$</span> spamgpt pool status
+                                <span class="prompt">$</span> <span class="terminal-output">spamgpt pool status</span>
+                            </div>
+                            <!-- Terminal output will be populated by JS -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Real SMTP Pool Preview -->
+                <div class="demo-card">
+                    <div class="smtp-pool-demo">
+                        <div class="smtp-pool-header">
+                            <h4>Live SMTP Pool</h4>
+                            <span class="live-badge"><span class="live-dot"></span> Real-time</span>
+                        </div>
+                        <div class="smtp-pool-body">
+                            <div class="smtp-list" id="smtp-list">
+                                <!-- SMTP items will be populated by JS -->
                             </div>
                         </div>
                     </div>
@@ -237,6 +256,26 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Blacklist Checker Demo -->
+                <div class="demo-card">
+                    <div class="terminal">
+                        <div class="terminal-header">
+                            <div class="terminal-buttons">
+                                <span class="terminal-btn red"></span>
+                                <span class="terminal-btn yellow"></span>
+                                <span class="terminal-btn green"></span>
+                            </div>
+                            <span class="terminal-title">Blacklist Checker</span>
+                        </div>
+                        <div class="terminal-body" id="blacklist-terminal">
+                            <div class="terminal-line">
+                                <span class="prompt">$</span> <span class="terminal-output">spamgpt check 192.168.1.100</span>
+                            </div>
+                            <!-- Blacklist check output will be populated by JS -->
                         </div>
                     </div>
                 </div>
@@ -281,6 +320,43 @@
                                 <i class="fas fa-check-circle"></i>
                                 <span id="flow-success">99.8%</span> success rate
                             </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Campaign Manager Preview -->
+                <div class="demo-card full-width">
+                    <div class="dashboard-preview">
+                        <div class="dashboard-header">
+                            <h4>AI Campaign Manager</h4>
+                            <span class="live-badge"><span class="live-dot"></span> Demo Mode</span>
+                        </div>
+                        <div class="dashboard-content">
+                            <div class="campaign-stats">
+                                <div class="campaign-row">
+                                    <div class="campaign-info">
+                                        <h5>Black Friday Sale 2024</h5>
+                                        <p class="campaign-details">
+                                            <span><i class="fas fa-users"></i> 50,000 recipients</span>
+                                            <span><i class="fas fa-clock"></i> Scheduled: Nov 24, 2024</span>
+                                        </p>
+                                    </div>
+                                    <div class="campaign-metrics">
+                                        <div class="mini-metric">
+                                            <span class="mini-value">45.2%</span>
+                                            <span class="mini-label">Open Rate</span>
+                                        </div>
+                                        <div class="mini-metric">
+                                            <span class="mini-value">12.8%</span>
+                                            <span class="mini-label">Click Rate</span>
+                                        </div>
+                                        <div class="mini-metric">
+                                            <span class="mini-value">$24,560</span>
+                                            <span class="mini-label">Revenue</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
