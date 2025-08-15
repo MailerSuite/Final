@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import KitIdentificationBanner from "@/components/KitIdentificationBanner";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -28,19 +27,9 @@ import {
   Play,
   Pause
 } from "lucide-react";
-// import AdminMonitoringDashboard from "@/components/admin/AdminMonitoringDashboard";
-// import { useSystemHealth } from "@/hooks/useMetricsData";
-// import { useAdminDashboard } from "@/hooks/useAdminDashboard";
-import Shell from "@/components/layouts/Shell";
-import PageHeader from "@/components/ui/page-header";
-import { useBreadcrumbs } from "@/hooks/useBreadcrumbs";
 import {
-  AdminPageHeader,
-  AdminStatsCard,
   AdminGrid,
-  AdminSection,
-  AdminStatus,
-  adminAnimations
+  AdminSection
 } from "@/components/admin/AdminUIKit";
 import {
   RealTimeStatsCard,
@@ -54,12 +43,9 @@ import {
   BulkOperationsPanel,
   MonitoringControlsPanel
 } from "@/components/admin/AdminActionPanels";
-// import { RealTimeDashboard } from "@/components/admin/RealTimeDashboard";
-// import { AdminMonitoringDashboard } from "@/components/admin/AdminMonitoringDashboard";
 
 // Mock functions for missing hooks
 const useSystemHealth = () => ({ isHealthy: true, loading: false });
-const useAdminDashboard = () => ({ metrics: {}, loading: false });
 
 const Admin = () => {
   console.log('🏠 Admin page component rendering');
@@ -101,85 +87,73 @@ const Admin = () => {
     console.log('🔄 Refreshing admin dashboard...');
   };
 
-  const breadcrumbs = useBreadcrumbs("/")
+
 
   return (
-    <Shell title="Admin Command Center" breadcrumbs={breadcrumbs}>
-      <KitIdentificationBanner
-        kitName="Admin UI Kit"
-        componentCount={8}
-        migrationPath="Evaluate custom admin components vs shadcn/ui"
-      />
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="space-y-1 min-w-0 flex-1">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+            Admin Command Center
+          </h1>
+          <p className="text-muted-foreground">
+            Real-time system administration and monitoring dashboard
+          </p>
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+          <div className="flex items-center gap-1 px-2 py-1 bg-muted rounded-md">
+            <div className={cn(
+              "w-2 h-2 rounded-full",
+              isLive ? "bg-green-500 animate-pulse" : "bg-gray-400"
+            )} />
+            <span className="text-xs text-muted-foreground">
+              {isLive ? "Live" : "Paused"}
+            </span>
+          </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={toggleLive}
+            className="hover:bg-accent"
+          >
+            {isLive ? <Pause className="h-4 w-4 mr-2" /> : <Play className="h-4 w-4 mr-2" />}
+            {isLive ? "Pause" : "Resume"}
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={metricsLoading || healthLoading}
+            className="hover:bg-accent"
+          >
+            <RefreshCw className={cn("h-4 w-4 mr-2", (metricsLoading || healthLoading) && "animate-spin")} />
+            Refresh
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate('/dashboard')}
+            className="hover:bg-accent"
+          >
+            <Activity className="h-4 w-4 mr-2" />
+            Main Dashboard
+          </Button>
+        </div>
+      </div>
+
       <motion.div
         variants={enhancedAnimations.pageContainer}
         initial="initial"
         animate="animate"
         key={refreshKey}
-        className="pt-16" // Add padding to account for banner
       >
-        {/* Enhanced Header with Real-time Controls */}
-        <AdminPageHeader
-          title="Admin Command Center"
-          description={`Real-time system administration and monitoring dashboard ${systemAlerts.length ? `• ${systemAlerts.length} active alerts` : ''}`}
-          badge={{
-            text: isLive ? "LIVE MONITORING" : "MONITORING PAUSED",
-            variant: isLive ? "default" : "secondary"
-          }}
-          actions={
-            <div className="flex items-center gap-2 flex-wrap">
-              <div className="flex items-center gap-1 px-2 py-1 bg-muted rounded-md">
-                <div className={cn(
-                  "w-2 h-2 rounded-full",
-                  isLive ? "bg-green-500 animate-pulse" : "bg-gray-400"
-                )} />
-                <span className="text-xs text-muted-foreground">
-                  {isLive ? "Live" : "Paused"}
-                </span>
-              </div>
 
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={toggleLive}
-                className="hover:bg-accent"
-              >
-                {isLive ? <Pause className="h-4 w-4 mr-2" /> : <Play className="h-4 w-4 mr-2" />}
-                {isLive ? "Pause" : "Resume"}
-              </Button>
-
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleRefresh}
-                disabled={metricsLoading || healthLoading}
-                className="hover:bg-accent"
-              >
-                <RefreshCw className={cn("h-4 w-4 mr-2", (metricsLoading || healthLoading) && "animate-spin")} />
-                Refresh
-              </Button>
-
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate('/client/dashboard')}
-                className="hover:bg-accent"
-              >
-                <Activity className="h-4 w-4 mr-2" />
-                Main Dashboard
-              </Button>
-
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => window.location.href = '/performance-testing'}
-                className="hover:bg-accent"
-              >
-                <BarChart3 className="h-4 w-4 mr-2" />
-                Performance
-              </Button>
-            </div>
-          }
-        />
 
         {/* Real-time Statistics Grid */}
         <AdminSection
@@ -811,7 +785,7 @@ const Admin = () => {
           </motion.div>
         </AdminSection>
       </motion.div>
-    </Shell>
+    </div>
   );
 };
 

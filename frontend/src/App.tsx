@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import PremiumMailLoader from '@/components/ui/PremiumMailLoader'
@@ -13,6 +13,14 @@ import { AnimatePresence } from 'framer-motion'
 // Centralized routes moved from ./router
 import { CommandLineIcon, ArrowUpIcon } from '@heroicons/react/24/outline'
 import { RouteGuard } from '@/components/security/route-guard'
+import { SecurityProvider } from '@/components/security/security-provider'
+import { AuthProvider } from '@/context/AuthProvider'
+import { AppProvider } from '@/context/AppProvider'
+import RouteErrorBoundary from '@/components/routing/RouteErrorBoundary'
+import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
+import { Home, ArrowLeft, RefreshCw } from 'lucide-react'
+import { initDevConsole } from '@/utils/dev-console'
 // Remove sample Vite styles to avoid conflicts
 
 // Create a query client
@@ -87,6 +95,11 @@ const Loading = () => (
 const AppWrapper: React.FC = () => {
   const commandPalette = useCommandPalette()
 
+  // Initialize development console utilities
+  useEffect(() => {
+    initDevConsole();
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -125,8 +138,6 @@ const AppWrapper: React.FC = () => {
     </>
   )
 }
-
-const ErrorPage = lazy(() => import('@/pages/error/page'))
 
 const router = createBrowserRouter([
   {
@@ -199,14 +210,20 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: (
-      <RouteGuard requiredAuth={true} adminOnly={true}>
-        <Suspense fallback={<Loading />}>
-          <MainLayout>
-            <Outlet />
-          </MainLayout>
-          <AppWrapper />
-        </Suspense>
-      </RouteGuard>
+      <AppProvider>
+        <AuthProvider>
+          <SecurityProvider>
+            <RouteGuard requiredAuth={true} adminOnly={true}>
+              <Suspense fallback={<Loading />}>
+                <MainLayout>
+                  <Outlet />
+                </MainLayout>
+                <AppWrapper />
+              </Suspense>
+            </RouteGuard>
+          </SecurityProvider>
+        </AuthProvider>
+      </AppProvider>
     ),
     children: [
       {
@@ -355,6 +372,43 @@ const router = createBrowserRouter([
     )
   },
 
+  // 404 Error Page - must come before the catch-all route
+  {
+    path: '/404',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <RouteErrorBoundary>
+          <div className="min-h-screen grid place-items-center bg-background text-foreground p-4">
+            <div className="w-full max-w-2xl mx-auto text-center">
+              <h1 className="text-4xl font-bold text-foreground mb-4">404 - Page Not Found</h1>
+              <p className="text-xl text-muted-foreground mb-8">
+                The page you're looking for doesn't exist or has been moved.
+              </p>
+              <div className="space-y-4">
+                <Link to="/dashboard" className="inline-block">
+                  <Button size="lg">
+                    <Home className="h-4 w-4 mr-2" />
+                    Go to Dashboard
+                  </Button>
+                </Link>
+                <div className="flex justify-center gap-4">
+                  <Button variant="outline" onClick={() => window.history.back()}>
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Go Back
+                  </Button>
+                  <Button variant="outline" onClick={() => window.location.reload()}>
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Refresh
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </RouteErrorBoundary>
+      </Suspense>
+    )
+  },
+
   // Main app routes - everything handled by FinalUI2
   {
     path: '/*',
@@ -368,7 +422,7 @@ const router = createBrowserRouter([
     ),
     errorElement: (
       <Suspense fallback={<Loading />}>
-        <ErrorPage />
+        <SkeletonAI />
       </Suspense>
     ),
   },
@@ -404,4 +458,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

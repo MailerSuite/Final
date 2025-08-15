@@ -6,11 +6,23 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
-import { Activity, Cpu, Database, Globe, Mail, Network, Server, Shield, Sparkles, TrendingUp, RefreshCcw, Rocket, CheckCircle, XCircle, Clock, Send } from 'lucide-react'
+import {
+  Activity, Cpu, Database, Globe, Mail, Network, Server, Shield, Sparkles, TrendingUp,
+  RefreshCw, Rocket, CheckCircle, XCircle, Clock, Send, Bug, X, ChevronRight, ChevronLeft,
+  ChevronUp, ChevronDown, ArrowRight, ArrowLeft, ArrowUp, ArrowDown, ExternalLink, Download,
+  Upload, Copy, Edit, Trash, Save, ZoomIn, ZoomOut, Maximize, Minimize, Move, GripVertical,
+  GripHorizontal, Crop, Scissors, Type, Bold, Italic, Underline, Strikethrough, AlignLeft,
+  AlignCenter, AlignRight, AlignJustify, BarChart, PieChart, LineChart, TrendingDown,
+  Minus, Plus, Eye, EyeOff, Settings, HelpCircle, Info, AlertCircle, Star, Heart, Target,
+  Lightbulb, Puzzle, Layers, Grid, List, Calendar, BarChart3, PieChart as PieChartIcon,
+  LineChart as LineChartIcon, Activity as ActivityIcon, Brain, Zap, Search, Key, Lock
+} from 'lucide-react'
 import PageShell from '../components/PageShell'
 import { generateDashboardData } from '@/services/mockData'
 import { useAuthStore } from '@/store/auth'
 import axiosInstance from '@/http/axios'
+import { APIDebugger } from '@/components/debug';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type HealthState = 'healthy' | 'warning' | 'critical' | 'down' | 'unknown'
 
@@ -87,6 +99,7 @@ export default function UnifiedFunctionsDashboard() {
   const [smtpAccounts, setSmtpAccounts] = useState<SmtpAccount[]>([])
   const [proxyAccounts, setProxyAccounts] = useState<ProxyAccount[]>([])
   const [activeTab, setActiveTab] = useState<'overview' | 'system' | 'functions'>('overview')
+  const [debuggerOpen, setDebuggerOpen] = useState(false);
 
   const { token, userData } = useAuthStore()
 
@@ -110,11 +123,11 @@ export default function UnifiedFunctionsDashboard() {
           smtpAccounts: 8,
           imapAccounts: 6,
         })
-        
+
         // Mock SMTP and Proxy accounts
         setSmtpAccounts(generateMockSmtpAccounts())
         setProxyAccounts(generateMockProxyAccounts())
-        
+
         setLoading(false)
         return
       }
@@ -282,9 +295,9 @@ export default function UnifiedFunctionsDashboard() {
       titleIcon={<Rocket className="w-4 h-4 text-primary" />}
       actions={(
         <>
-          <Button 
-            size="sm" 
-            variant="default" 
+          <Button
+            size="sm"
+            variant="default"
             className="rounded-full bg-primary hover:bg-primary/90"
             onClick={() => navigate('/campaigns/create')}
           >
@@ -292,7 +305,7 @@ export default function UnifiedFunctionsDashboard() {
             Quick Send
           </Button>
           <Button size="sm" variant="outline" className="rounded-full" onClick={fetchAll} disabled={loading}>
-            <RefreshCcw className={cn('w-4 h-4 mr-2', loading ? 'animate-spin' : '')} />
+            <RefreshCw className={cn('w-4 h-4 mr-2', loading ? 'animate-spin' : '')} />
             Refresh
           </Button>
           <Button size="sm" className="rounded-full"><Sparkles className="w-4 h-4 mr-2" />Open Assistant</Button>
@@ -417,8 +430,8 @@ export default function UnifiedFunctionsDashboard() {
                       <TableCell>
                         <Badge className={cn(
                           account.status === 'active' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20' :
-                          account.status === 'inactive' ? 'bg-gray-500/15 text-gray-400 border-gray-500/20' :
-                          'bg-rose-500/15 text-rose-400 border-rose-500/20'
+                            account.status === 'inactive' ? 'bg-gray-500/15 text-gray-400 border-gray-500/20' :
+                              'bg-rose-500/15 text-rose-400 border-rose-500/20'
                         )}>
                           {account.status === 'active' && <CheckCircle className="w-3 h-3 mr-1" />}
                           {account.status === 'inactive' && <Clock className="w-3 h-3 mr-1" />}
@@ -431,12 +444,12 @@ export default function UnifiedFunctionsDashboard() {
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <div className="w-16 bg-muted rounded-full h-2">
-                            <div 
+                            <div
                               className={cn(
                                 "h-2 rounded-full transition-all",
                                 usagePercent > 80 ? "bg-red-500" :
-                                usagePercent > 60 ? "bg-yellow-500" :
-                                "bg-emerald-500"
+                                  usagePercent > 60 ? "bg-yellow-500" :
+                                    "bg-emerald-500"
                               )}
                               style={{ width: `${Math.min(usagePercent, 100)}%` }}
                             />
@@ -483,8 +496,8 @@ export default function UnifiedFunctionsDashboard() {
                     <TableCell>
                       <Badge className={cn(
                         proxy.status === 'active' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20' :
-                        proxy.status === 'inactive' ? 'bg-gray-500/15 text-gray-400 border-gray-500/20' :
-                        'bg-rose-500/15 text-rose-400 border-rose-500/20'
+                          proxy.status === 'inactive' ? 'bg-gray-500/15 text-gray-400 border-gray-500/20' :
+                            'bg-rose-500/15 text-rose-400 border-rose-500/20'
                       )}>
                         {proxy.status === 'active' && <CheckCircle className="w-3 h-3 mr-1" />}
                         {proxy.status === 'inactive' && <Clock className="w-3 h-3 mr-1" />}
@@ -507,6 +520,46 @@ export default function UnifiedFunctionsDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Floating API Debugger Toggle Button */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <Button
+          onClick={() => setDebuggerOpen(!debuggerOpen)}
+          size="lg"
+          className="rounded-full shadow-lg bg-blue-600 hover:bg-blue-700 text-white"
+          title="Toggle API Debugger"
+        >
+          <Bug className="w-5 h-5" />
+        </Button>
+      </div>
+
+      {/* API Debugger Panel */}
+      <AnimatePresence>
+        {debuggerOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: 400 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 400 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="fixed right-6 bottom-20 z-50 w-96 max-h-[80vh] bg-background border rounded-lg shadow-2xl overflow-hidden"
+          >
+            <div className="flex items-center justify-between p-4 border-b bg-muted/50">
+              <h3 className="font-semibold text-lg">API Debugger</h3>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setDebuggerOpen(false)}
+                className="h-8 w-8 p-0"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+            <div className="overflow-auto max-h-[calc(80vh-4rem)]">
+              <APIDebugger />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </PageShell>
   )
 }

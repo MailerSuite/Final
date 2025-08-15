@@ -4,7 +4,7 @@
  * Provides graceful fallbacks and recovery options
  */
 
-import React, { Component, ErrorInfo, ReactNode } from 'react'
+import React, { Component, ErrorInfo, ReactNode, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   StreamlinedCard,
@@ -69,7 +69,7 @@ class RouteErrorBoundary extends Component<Props, State> {
 
     // Log error for debugging
     console.error('Route Error Boundary caught an error:', error, errorInfo)
-    
+
     // Send error to monitoring service (if available)
     this.logErrorToService(error, errorInfo)
   }
@@ -92,7 +92,7 @@ class RouteErrorBoundary extends Component<Props, State> {
         timestamp: new Date().toISOString(),
         retryCount: this.state.retryCount
       }
-      
+
       // Example: Send to error tracking service
       // errorTrackingService.captureException(errorData)
       console.warn('Error logged:', errorData)
@@ -113,7 +113,7 @@ class RouteErrorBoundary extends Component<Props, State> {
   private handleAutoRetry = () => {
     // Auto-retry with exponential backoff
     const delay = Math.min(1000 * Math.pow(2, this.state.retryCount), 10000)
-    
+
     this.retryTimeoutId = setTimeout(() => {
       this.handleRetry()
     }, delay)
@@ -141,19 +141,19 @@ class RouteErrorBoundary extends Component<Props, State> {
 
   private getErrorType = (error: Error | null): string => {
     if (!error) return 'Unknown Error'
-    
+
     if (error.message.includes('ChunkLoadError')) return 'Code Loading Error'
     if (error.message.includes('Loading chunk')) return 'Resource Loading Error'
     if (error.message.includes('NetworkError')) return 'Network Error'
     if (error.message.includes('TypeError')) return 'Component Error'
     if (error.message.includes('ReferenceError')) return 'Reference Error'
-    
+
     return 'Application Error'
   }
 
   private getErrorSolution = (error: Error | null): string => {
     if (!error) return 'Please try refreshing the page'
-    
+
     if (error.message.includes('ChunkLoadError') || error.message.includes('Loading chunk')) {
       return 'This usually happens after an app update. Please refresh the page to load the latest version.'
     }
@@ -163,7 +163,7 @@ class RouteErrorBoundary extends Component<Props, State> {
     if (error.message.includes('TypeError')) {
       return 'There was an issue with the page component. Please try navigating to a different page.'
     }
-    
+
     return 'Please try refreshing the page or contact support if the issue persists.'
   }
 
@@ -276,9 +276,8 @@ class RouteErrorBoundary extends Component<Props, State> {
                     <Bug className="w-4 h-4" />
                     Technical Details
                     <ChevronDown
-                      className={`w-4 h-4 transition-transform ${
-                        this.state.showDetails ? 'rotate-180' : ''
-                      }`}
+                      className={`w-4 h-4 transition-transform ${this.state.showDetails ? 'rotate-180' : ''
+                        }`}
                     />
                   </StreamlinedButton>
 
@@ -371,12 +370,12 @@ class RouteErrorBoundary extends Component<Props, State> {
 }
 
 // Quick Error Fallback Component
-export function QuickErrorFallback({ 
-  error, 
-  resetError 
-}: { 
-  error: Error; 
-  resetError: () => void 
+export function QuickErrorFallback({
+  error,
+  resetError
+}: {
+  error: Error;
+  resetError: () => void
 }) {
   return (
     <StreamlinedCard variant="minimal" padding="md" className="m-4">
@@ -436,7 +435,7 @@ export function NetworkErrorFallback() {
             {isOnline ? 'Connection Restored' : 'No Internet Connection'}
           </h3>
           <p className="text-sm text-muted-foreground">
-            {isOnline 
+            {isOnline
               ? 'Your connection has been restored. Please try again.'
               : 'Please check your internet connection and try again.'
             }
@@ -458,4 +457,4 @@ export function NetworkErrorFallback() {
   )
 }
 
-export default RouteErrorBoundary
+export default RouteErrorBoundary;
