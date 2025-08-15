@@ -21,6 +21,7 @@ import {
     CheckCircleIcon,
     CursorArrowRaysIcon,
     SparklesIcon,
+    RectangleGroupIcon,
 } from '@heroicons/react/24/outline';
 
 const features = [
@@ -113,6 +114,20 @@ const demoCards = [
         color: 'from-purple-500 to-cyan-600',
         icon: <SparklesIcon className="w-5 h-5" />,
     },
+    {
+        title: 'Live Console (Demo)',
+        description: 'Watch simulated logs and system events streaming in real-time.',
+        path: '/landing/spamgpt/demo/live-console',
+        color: 'from-amber-500 to-yellow-600',
+        icon: <BoltIcon className="w-5 h-5" />,
+    },
+    {
+        title: 'Template Builder (Demo)',
+        description: 'Drag-and-drop email builder with AI blocks and responsive preview.',
+        path: '/landing/spamgpt/demo/template-builder',
+        color: 'from-indigo-600 to-sky-600',
+        icon: <RectangleGroupIcon className="w-5 h-5" />,
+    },
 ];
 
 const SpamGPTLandingPage: React.FC = () => {
@@ -201,7 +216,19 @@ const SpamGPTLandingPage: React.FC = () => {
                             <p className="text-muted-foreground mt-2">Launch fully interactive demos—no signup required.</p>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        {/* Demo Controls */}
+                        <div className="mb-6 flex flex-col md:flex-row items-center justify-between gap-3 rounded-xl border border-border/60 bg-card/40 p-3">
+                            <div className="text-sm text-muted-foreground">Live demo instances run in read-only mode. Actions that send, delete, or purchase are disabled.</div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-xs text-muted-foreground">Preview density</span>
+                                <div className="inline-flex items-center gap-2">
+                                    <Button size="sm" variant="outline" data-demo-allow="true">Compact</Button>
+                                    <Button size="sm" variant="outline" data-demo-allow="true">Comfortable</Button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             {demoCards.map((demo) => (
                                 <Card key={demo.path} className="bg-card/60 backdrop-blur border border-border/60">
                                     <CardHeader>
@@ -212,10 +239,12 @@ const SpamGPTLandingPage: React.FC = () => {
                                         <CardDescription>{demo.description}</CardDescription>
                                     </CardHeader>
                                     <CardContent className="flex items-center justify-between">
-                                        <Link to={demo.path}>
+                                        <Link to={demo.path} aria-label={`${demo.title} – Launch`}>
                                             <Button className={`bg-gradient-to-r ${demo.color} text-white`}>Launch Demo</Button>
                                         </Link>
-                                        <Link to={demo.path} className="text-sm text-muted-foreground hover:text-foreground">Learn more →</Link>
+                                        <Link to={demo.path} className="text-sm text-muted-foreground hover:text-foreground" aria-label={`${demo.title} – Learn more`}>
+                                            Learn more →
+                                        </Link>
                                     </CardContent>
                                 </Card>
                             ))}

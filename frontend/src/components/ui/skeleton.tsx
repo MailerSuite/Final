@@ -3,7 +3,7 @@
 import type React from 'react'
 import SkeletonLib from 'react-loading-skeleton'
 // Use only global styles; avoid importing third-party CSS that overrides tokens
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 
 interface SkeletonProps extends React.ComponentProps<typeof SkeletonLib> {
   containerClassName?: string

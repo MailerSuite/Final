@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation, Link } from 'react-router-dom'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { SparkleEffect } from '@/components/ui/sparkle-effect'

@@ -71,6 +71,8 @@ const ContentGeneratorDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo
 const SMTPDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/SMTPDemoPage'))
 const DeliverabilityDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/DeliverabilityDemoPage'))
 const AssistantDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/AssistantDemoPage'))
+const LiveConsoleDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/LiveConsoleDemoPage'))
+const TemplateBuilderDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/TemplateBuilderDemoPage'))
 const LandingPageIndex = lazy(() => import('@/pages/landing'))
 const AILandingPlaceholder = lazy(() => import('@/pages/landing/ai/page'))
 const AIOpenAIPlaceholder = lazy(() => import('@/pages/landing/ai-openai/page'))
@@ -759,6 +761,24 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <AssistantDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/live-console',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <LiveConsoleDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/template-builder',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <TemplateBuilderDemoPage />
         <AppWrapper />
       </Suspense>
     )

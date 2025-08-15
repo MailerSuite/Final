@@ -2,6 +2,7 @@ import React from 'react';
 import { LandingHeader, LandingFooter } from '@/components/landing';
 import { BackgroundEffects } from '@/components/ui/BackgroundEffects';
 import SpamTutorPage from '@/pages/ai-tutor/SpamTutorPage';
+import DemoModeGuard from '@/components/landing/DemoModeGuard';
 
 const TutorDemoPage: React.FC = () => {
     return (
@@ -10,7 +11,9 @@ const TutorDemoPage: React.FC = () => {
             <div className="relative z-10 flex flex-col min-h-screen">
                 <LandingHeader />
                 <main className="flex-1">
-                    <SpamTutorPage />
+                    <DemoModeGuard>
+                        <SpamTutorPage />
+                    </DemoModeGuard>
                 </main>
                 <LandingFooter />
             </div>
