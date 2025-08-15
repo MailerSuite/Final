@@ -6,6 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 
 import { Icon } from '@/components/ui/icon'
 import { motion } from 'framer-motion'
+import { useAuthStore } from '@/store/auth'
 
 interface SidebarProps {
   collapsed?: boolean
@@ -13,7 +14,7 @@ interface SidebarProps {
   className?: string
 }
 
-const navigation = [
+const baseNavigation = [
   {
     title: 'Main',
     items: [
@@ -69,6 +70,37 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const location = useLocation()
   const [shouldAnimate, setShouldAnimate] = useState(true)
   const [animationKey, setAnimationKey] = useState(0)
+  const { userData } = useAuthStore()
+  const isAdmin = userData?.is_admin === true
+
+  const sections = React.useMemo(() => {
+    const sectionsList = [...baseNavigation]
+
+    // Account section (always visible)
+    sectionsList.push({
+      title: 'Account',
+      items: [
+        { to: '/account/profile', label: 'Profile', icon: 'User' },
+        { to: '/account/subscription', label: 'Subscription', icon: 'CreditCard' },
+        { to: '/account/billing', label: 'Billing', icon: 'FileText' },
+      ]
+    })
+
+    // Admin section (admins only; shown in dev for easy access)
+    if (isAdmin || import.meta.env.DEV) {
+      sectionsList.push({
+        title: 'Admin',
+        items: [
+          { to: '/admin', label: 'Admin Dashboard', icon: 'Shield' },
+          { to: '/admin/users', label: 'Users', icon: 'Users' },
+          { to: '/admin/analytics', label: 'Analytics', icon: 'BarChart3' },
+          { to: '/admin/settings', label: 'Settings', icon: 'Settings' },
+        ]
+      })
+    }
+
+    return sectionsList
+  }, [isAdmin])
 
   const isActive = (path: string) => {
     return location.pathname === path || location.pathname.startsWith(path + '/')
@@ -105,7 +137,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Navigation */}
       <ScrollArea className="flex-1 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
         <div className="px-3 py-4 space-y-6">
-          {navigation.map((section) => (
+          {sections.map((section) => (
             <div key={section.title}>
               {!collapsed && (
                 <h2 className="px-3 mb-2 text-xs font-semibold tracking-wider text-sidebar-foreground/60 uppercase">
