@@ -3,15 +3,13 @@ import PageShell from '../components/PageShell'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import { toast } from '@/hooks/useToast'
 import bounceManagementApi, { DeliverabilityStats, SuppressionListEntry } from '@/api/bounce-management-api'
-import { ShieldCheckIcon, ExclamationTriangleIcon, TrashIcon, MagnifyingGlassIcon, PlusIcon, ChartBarIcon } from '@heroicons/react/24/outline'
+import { ShieldCheckIcon, TrashIcon, MagnifyingGlassIcon, ChartBarIcon } from '@heroicons/react/24/outline'
 
 const BounceManagementPage: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'suppression' | 'rules' | 'deliverability'>('suppression')

@@ -5,8 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Separator } from '@/components/ui/separator'
+
 import { toast } from 'sonner'
 import { getSessionId } from '@/utils/getSessionId'
 import { createCampaign } from '@/api/campaigns'
@@ -153,10 +152,10 @@ const CampaignCreateWizard: React.FC = () => {
         subjects: [subject],
         templates: [],
         content_blocks: [],
-      } as any)
+      })
       if (scheduledAt) {
         try {
-          const id = (created as any)?.id || (created as any)?.data?.id
+          const id = (created as { id?: string; data?: { id?: string } })?.id || (created as { id?: string; data?: { id?: string } })?.data?.id
           if (id) await campaignService.scheduleCampaign(String(id), new Date(scheduledAt).toISOString())
         } catch { /* non-fatal */ }
       }
@@ -232,8 +231,8 @@ const CampaignCreateWizard: React.FC = () => {
                   <Button variant="outline" size="sm" onClick={async () => {
                     try {
                       if (!newListName.trim() || !newListFile) return
-                      const created = await leadBaseApi.create({ name: newListName.trim(), country: 'N/A', comment: '', status: 'active' } as any)
-                      const id = (created as any)?.data?.id || (created as any)?.id
+                      const created = await leadBaseApi.create({ name: newListName.trim(), country: 'N/A', comment: '', status: 'active' })
+                      const id = (created as { data?: { id?: number }; id?: number })?.data?.id || (created as { data?: { id?: number }; id?: number })?.id
                       if (id) {
                         await leadBaseApi.upload(id, newListFile)
                         setSelectedLeadBases(prev => [...prev, Number(id)])
@@ -589,7 +588,7 @@ const CampaignCreateWizard: React.FC = () => {
                               const updated = [...prev, newVariant]
                               // Redistribute percentages
                               const total = updated.length
-                              return updated.map((v, i) => ({ ...v, percentage: Math.floor(100 / total) }))
+                              return updated.map((v) => ({ ...v, percentage: Math.floor(100 / total) }))
                             })
                           }}
                         >
@@ -615,7 +614,7 @@ const CampaignCreateWizard: React.FC = () => {
                                   setAbVariants(prev => {
                                     const filtered = prev.filter(v => v.id !== variant.id)
                                     const total = filtered.length
-                                    return filtered.map((v, i) => ({ ...v, percentage: Math.floor(100 / total) }))
+                                    return filtered.map((v) => ({ ...v, percentage: Math.floor(100 / total) }))
                                   })
                                 }}
                               >
