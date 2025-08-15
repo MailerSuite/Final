@@ -42,6 +42,7 @@ const MailboxSettingsPage = lazy(() => import('./pages/MailboxSettingsPage'));
 const InboxCheckPage = lazy(() => import('./pages/InboxCheckPage'));
 const PerformanceTestingPage = lazy(() => import('./pages/PerformanceTestingPage'));
 const MailingDashboard = lazy(() => import('./pages/MailingDashboard'));
+const EmailManagementPage = lazy(() => import('./pages/EmailManagementPage'));
 const NavigationHub = lazy(() => import('./pages/NavigationHub'));
 // Deprecated marketing dashboard removed
 const AccountRouter = lazy(() => import('./pages/AccountRouter'));
@@ -142,6 +143,7 @@ export const FinalUI2: React.FC = () => {
         <Route path="/inbox-check" element={<InboxCheckPage />} />
         <Route path="/performance" element={<PerformanceTestingPage />} />
         <Route path="/mailing-dashboard" element={<MailingDashboard />} />
+        <Route path="/email-management" element={<EmailManagementPage />} />
         <Route path="/template-builder" element={<TemplateBuilderEnhanced />} />
         {/* Legacy dashboard removed */}
         {/* Campaign parity */}
