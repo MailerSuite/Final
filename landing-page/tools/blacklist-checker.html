@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blacklist Checker - SpamGPT Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" class="nav-link" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+                    <i class="fas fa-envelope logo-envelope"></i>
+                    <span class="logo-text">SpamGPT</span>
+                    <span class="logo-ai-badge">Mail</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="../index.html#demo" class="nav-link">Live Demo</a></li>
+                <li><a href="../index.html#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="../index.html#about" class="nav-link">About</a></li>
+            </ul>
+            <button class="nav-cta" onclick="location.href='../index.html#pricing'">Get Started</button>
+            <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="../index.html#features" class="nav-link">Features</a>
+            <a href="../index.html#demo" class="nav-link">Live Demo</a>
+            <a href="../index.html#pricing" class="nav-link">Pricing</a>
+            <a href="../index.html#about" class="nav-link">About</a>
+        </div>
+    </nav>
+
+    <section class="page">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-ban"></i> Blacklist Checker</h1>
+                <p class="page-subtitle">Fast simulated blacklist lookup for an IP or domain</p>
+            </div>
+            <div class="card">
+                <div class="form-grid">
+                    <div>
+                        <label class="label">IP Address or Domain</label>
+                        <input id="target" class="input" placeholder="203.0.113.42 or mail.example.com">
+                    </div>
+                </div>
+                <div style="margin-top:1rem;display:flex;gap:0.5rem;">
+                    <button class="btn-primary" id="btnCheck"><i class="fas fa-search"></i> Check</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:1rem;">
+                <h3 style="margin-bottom:0.75rem;">Results</h3>
+                <table class="table">
+                    <thead>
+                        <tr><th>List</th><th>Status</th><th>Details</th></tr>
+                    </thead>
+                    <tbody id="rows">
+                        <tr><td colspan="3" style="text-align:center;color:var(--text-muted);">No results yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    const rows = document.getElementById('rows');
+    document.getElementById('btnCheck').addEventListener('click', () => {
+        rows.innerHTML = '';
+        const lists = ['Spamhaus ZEN','Barracuda','Proofpoint','SORBS','Spamcop'];
+        lists.forEach((list, idx) => {
+            const listed = Math.random() < 0.18 && idx % 2 === 0;
+            const status = listed ? '<span class="badge error">Listed</span>' : '<span class="badge success">Clear</span>';
+            const detail = listed ? 'Temporary reputation issue (sim) — recommend delist' : 'No record';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${list}</td><td>${status}</td><td>${detail}</td>`;
+            rows.appendChild(tr);
+        });
+    });
+    </script>
+</body>
+</html>

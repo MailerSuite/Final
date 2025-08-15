@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMTP Checker - SpamGPT Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" class="nav-link" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+                    <i class="fas fa-envelope logo-envelope"></i>
+                    <span class="logo-text">SpamGPT</span>
+                    <span class="logo-ai-badge">Mail</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="../index.html#demo" class="nav-link">Live Demo</a></li>
+                <li><a href="../index.html#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="../index.html#about" class="nav-link">About</a></li>
+            </ul>
+            <button class="nav-cta" onclick="location.href='../index.html#pricing'">Get Started</button>
+            <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="../index.html#features" class="nav-link">Features</a>
+            <a href="../index.html#demo" class="nav-link">Live Demo</a>
+            <a href="../index.html#pricing" class="nav-link">Pricing</a>
+            <a href="../index.html#about" class="nav-link">About</a>
+        </div>
+    </nav>
+
+    <section class="page">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-screwdriver-wrench"></i> SMTP Checker</h1>
+                <p class="page-subtitle">Validate SMTP host/port, TLS, and credentials (simulated)</p>
+            </div>
+            <div class="card">
+                <div class="form-grid">
+                    <div>
+                        <label class="label">SMTP Host</label>
+                        <input id="host" class="input" placeholder="smtp.example.com">
+                    </div>
+                    <div>
+                        <label class="label">Port</label>
+                        <input id="port" class="input" placeholder="587" value="587">
+                    </div>
+                    <div>
+                        <label class="label">Username</label>
+                        <input id="username" class="input" placeholder="user@example.com">
+                    </div>
+                    <div>
+                        <label class="label">Password</label>
+                        <input id="password" class="input" type="password" placeholder="••••••••">
+                    </div>
+                    <div>
+                        <label class="label">TLS</label>
+                        <select id="tls" class="input">
+                            <option value="starttls">STARTTLS</option>
+                            <option value="ssl">SSL/TLS</option>
+                            <option value="none">None</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                    <button class="btn-primary" id="btnCheck"><i class="fas fa-plug"></i> Check Connection</button>
+                    <button class="btn-secondary" id="btnAuth"><i class="fas fa-key"></i> Test Auth</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:1rem;">
+                <h3 style="margin-bottom:0.5rem;">Result</h3>
+                <pre id="result" class="textarea" style="white-space:pre-wrap;"></pre>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    const resultEl = document.getElementById('result');
+    function log(line){ resultEl.textContent += (resultEl.textContent? '\n':'') + line; }
+    document.getElementById('btnCheck').addEventListener('click', () => {
+        resultEl.textContent='';
+        const host = document.getElementById('host').value || 'smtp.example.com';
+        const port = document.getElementById('port').value || '587';
+        const tls = document.getElementById('tls').value;
+        log(`Resolving ${host} ...`);
+        setTimeout(()=>{ log(`Connecting to ${host}:${port} ...`); }, 300);
+        setTimeout(()=>{ log(`TLS: ${tls.toUpperCase()} negotiated`); }, 800);
+        setTimeout(()=>{ log('220 Service ready'); }, 1200);
+    });
+    document.getElementById('btnAuth').addEventListener('click', () => {
+        const username = document.getElementById('username').value || 'user@example.com';
+        const strong = username.length % 2 === 0;
+        log('AUTH LOGIN ...');
+        setTimeout(()=>{ log(strong ? '235 Authentication successful' : '535 Authentication failed (simulated)'); }, 600);
+    });
+    </script>
+</body>
+</html>

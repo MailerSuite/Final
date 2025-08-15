@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Tester - SpamGPT Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" class="nav-link" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+                    <i class="fas fa-envelope logo-envelope"></i>
+                    <span class="logo-text">SpamGPT</span>
+                    <span class="logo-ai-badge">Mail</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="../index.html#demo" class="nav-link">Live Demo</a></li>
+                <li><a href="../index.html#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="../index.html#about" class="nav-link">About</a></li>
+            </ul>
+            <button class="nav-cta" onclick="location.href='../index.html#pricing'">Get Started</button>
+            <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="../index.html#features" class="nav-link">Features</a>
+            <a href="../index.html#demo" class="nav-link">Live Demo</a>
+            <a href="../index.html#pricing" class="nav-link">Pricing</a>
+            <a href="../index.html#about" class="nav-link">About</a>
+        </div>
+    </nav>
+
+    <section class="page">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-envelope-open-text"></i> Email Tester</h1>
+                <p class="page-subtitle">Compose a test email and preview</p>
+            </div>
+            <div class="card">
+                <div class="form-grid">
+                    <div>
+                        <label class="label">To</label>
+                        <input id="to" class="input" placeholder="test@inbox.dev">
+                    </div>
+                    <div>
+                        <label class="label">Subject</label>
+                        <input id="subject" class="input" placeholder="Hello from SpamGPT">
+                    </div>
+                </div>
+                <div style="margin-top:1rem;">
+                    <label class="label">HTML Content</label>
+                    <textarea id="html" class="textarea" placeholder="<h1>Welcome</h1><p>Your trial is live.</p>"></textarea>
+                </div>
+                <div style="margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                    <button class="btn-primary" id="btnPreview"><i class="fas fa-eye"></i> Preview</button>
+                    <button class="btn-secondary" id="btnSend"><i class="fas fa-paper-plane"></i> Send (Mock)</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:1rem;">
+                <h3 style="margin-bottom:0.5rem;">Preview</h3>
+                <iframe id="preview" style="width:100%;min-height:300px;background:white;border-radius:8px;"></iframe>
+                <p id="sendStatus" class="helper" style="margin-top:0.5rem;"></p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    const iframe = document.getElementById('preview');
+    document.getElementById('btnPreview').addEventListener('click', () => {
+        const html = document.getElementById('html').value || '<h1>Welcome</h1><p>Your trial is live.</p>';
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        doc.open();
+        doc.write(`<html><head><meta charset='utf-8'><style>body{font-family:Inter,system-ui,sans-serif;padding:16px;color:#111} h1{color:#111} p{color:#333}</style></head><body>${html}</body></html>`);
+        doc.close();
+    });
+    document.getElementById('btnSend').addEventListener('click', () => {
+        const to = document.getElementById('to').value || 'test@inbox.dev';
+        const subject = document.getElementById('subject').value || 'Hello from SpamGPT';
+        const status = document.getElementById('sendStatus');
+        status.textContent = 'Sending...';
+        setTimeout(()=>{ status.textContent = `Queued mock send to ${to} with subject "${subject}".`; }, 600);
+    });
+    </script>
+</body>
+</html>

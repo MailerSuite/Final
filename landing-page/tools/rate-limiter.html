@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Limiter - SpamGPT Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" class="nav-link" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+                    <i class="fas fa-envelope logo-envelope"></i>
+                    <span class="logo-text">SpamGPT</span>
+                    <span class="logo-ai-badge">Mail</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="../index.html#demo" class="nav-link">Live Demo</a></li>
+                <li><a href="../index.html#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="../index.html#about" class="nav-link">About</a></li>
+            </ul>
+            <button class="nav-cta" onclick="location.href='../index.html#pricing'">Get Started</button>
+            <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="../index.html#features" class="nav-link">Features</a>
+            <a href="../index.html#demo" class="nav-link">Live Demo</a>
+            <a href="../index.html#pricing" class="nav-link">Pricing</a>
+            <a href="../index.html#about" class="nav-link">About</a>
+        </div>
+    </nav>
+
+    <section class="page">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-gauge-high"></i> Rate Limiter</h1>
+                <p class="page-subtitle">Estimate safe send rate per pool (demo)</p>
+            </div>
+            <div class="card">
+                <div class="form-grid">
+                    <div>
+                        <label class="label">Pool Size (SMTPs)</label>
+                        <input id="pool" class="input" type="number" value="50">
+                    </div>
+                    <div>
+                        <label class="label">Warmup Level</label>
+                        <select id="warm" class="input">
+                            <option value="low">Low</option>
+                            <option value="med" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label">Reputation</label>
+                        <select id="rep" class="input">
+                            <option value="fragile">Fragile</option>
+                            <option value="normal" selected>Normal</option>
+                            <option value="strong">Strong</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top:1rem;">
+                    <button class="btn-primary" id="btnEstimate"><i class="fas fa-calculator"></i> Estimate</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:1rem;">
+                <h3 style="margin-bottom:0.5rem;">Recommendation</h3>
+                <p id="rec" class="helper">No estimate yet</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    document.getElementById('btnEstimate').addEventListener('click', () => {
+        const pool = Math.max(1, Number(document.getElementById('pool').value || '1'));
+        const warm = document.getElementById('warm').value;
+        const rep = document.getElementById('rep').value;
+        let base = pool * 800; // emails/hour per smtp baseline
+        if (warm === 'low') base *= 0.4; else if (warm === 'med') base *= 0.7; else base *= 1.0;
+        if (rep === 'fragile') base *= 0.6; else if (rep === 'normal') base *= 0.85; else base *= 1.1;
+        const perHour = Math.max(1000, Math.round(base));
+        const perMin = Math.round(perHour / 60);
+        const text = `~${perHour.toLocaleString()} emails/hour (~${perMin.toLocaleString()} / min).`;
+        document.getElementById('rec').textContent = text;
+    });
+    </script>
+</body>
+</html>

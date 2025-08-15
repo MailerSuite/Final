@@ -12,7 +12,7 @@ function scrollToSection(sectionId) {
 function animateStats() {
     const stats = document.querySelectorAll('.stat-number');
     stats.forEach(stat => {
-        const target = parseInt(stat.getAttribute('data-count'));
+        const target = parseFloat(stat.getAttribute('data-count'));
         const duration = 2000;
         const increment = target / (duration / 16);
         let current = 0;
@@ -23,7 +23,8 @@ function animateStats() {
                 current = target;
                 clearInterval(timer);
             }
-            stat.textContent = Math.floor(current);
+            const value = target % 1 !== 0 ? current.toFixed(1) : Math.floor(current);
+            stat.textContent = value;
         }, 16);
     });
 }
@@ -43,14 +44,14 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Observe elements for animation
-document.addEventListener('DOMContentLoaded', () => {
+function initPage() {
     // Animate stats when they come into view
     const statsSection = document.querySelector('.hero-stats');
     if (statsSection) {
         observer.observe(statsSection);
     }
     
-    // Add click event listeners
+    // Smooth scroll for buttons with inline handler
     document.querySelectorAll('[onclick^="scrollToSection"]').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
@@ -61,7 +62,110 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize animations
     setTimeout(animateStats, 1000);
-});
+    
+    // Mobile nav toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (navToggle && mobileMenu) {
+        navToggle.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('show');
+            navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+        mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+            mobileMenu.classList.remove('show');
+            navToggle.setAttribute('aria-expanded', 'false');
+        }));
+    }
+    
+    // Demo: Terminal controls
+    const runBtn = document.getElementById('terminal-run');
+    if (runBtn) {
+        runBtn.addEventListener('click', () => {
+            const campaign = /** @type {HTMLSelectElement} */(document.getElementById('terminal-campaign')).value;
+            const region = /** @type {HTMLSelectElement} */(document.getElementById('terminal-region')).value;
+            const output = document.getElementById('terminal-output');
+            if (!output) return;
+            output.innerHTML = '';
+            const lines = [
+                `<div class="terminal-line"><span class="prompt">$</span><span class="command">spamgpt --send --campaign=${campaign.toLowerCase()}</span></div>`,
+                `<div class="terminal-line"><span class="output">✓ AI analyzing recipient patterns...</span></div>`,
+                `<div class="terminal-line"><span class="output">✓ Optimal routing selected (Server: ${region})</span></div>`,
+                `<div class="terminal-line"><span class="output">✓ Campaign sent successfully!</span></div>`,
+                `<div class="terminal-line"><span class="output">📊 Delivery Rate: ${Math.max(97.5, Math.min(99.9, (97 + Math.random()*3).toFixed(1)))}% | Latency: ${200 + Math.floor(Math.random()*120)}ms</span></div>`
+            ];
+            let i = 0;
+            const addLine = () => {
+                if (i < lines.length) {
+                    output.insertAdjacentHTML('beforeend', lines[i]);
+                    output.scrollTop = output.scrollHeight;
+                    i++;
+                    setTimeout(addLine, i === 1 ? 150 : 400);
+                }
+            };
+            addLine();
+        });
+    }
+    
+    // Demo: Metrics controls
+    let metricsTimer = null;
+    const deliveryEl = document.getElementById('metric-delivery');
+    const serversEl = document.getElementById('metric-servers');
+    const emailsEl = document.getElementById('metric-emails');
+    const latencyEl = document.getElementById('metric-latency');
+    const autoEl = /** @type {HTMLInputElement} */(document.getElementById('metrics-autorefresh'));
+    const speedEl = /** @type {HTMLInputElement} */(document.getElementById('metrics-speed'));
+    const stepBtn = document.getElementById('metrics-step');
+    
+    function stepMetrics() {
+        if (deliveryEl) {
+            const base = 97.5 + Math.random() * 2.2;
+            deliveryEl.textContent = `${base.toFixed(1)}%`;
+        }
+        if (serversEl) {
+            const base = 1100 + Math.floor(Math.random() * 800);
+            serversEl.textContent = base.toLocaleString();
+        }
+        if (emailsEl) {
+            const base = 1.8 + Math.random() * 2.2;
+            emailsEl.textContent = `${base.toFixed(1)}M`;
+        }
+        if (latencyEl) {
+            const base = 180 + Math.floor(Math.random() * 140);
+            latencyEl.textContent = `${base}ms`;
+        }
+    }
+    
+    function startMetrics() {
+        stopMetrics();
+        const speed = speedEl ? Number(speedEl.value) : 3;
+        const interval = 2000 - (speed - 1) * 350; // 1..5 -> 2000..800ms
+        metricsTimer = setInterval(stepMetrics, Math.max(600, interval));
+    }
+    
+    function stopMetrics() {
+        if (metricsTimer) {
+            clearInterval(metricsTimer);
+            metricsTimer = null;
+        }
+    }
+    
+    if (autoEl) {
+        autoEl.addEventListener('change', () => {
+            if (autoEl.checked) startMetrics(); else stopMetrics();
+        });
+    }
+    if (speedEl) {
+        speedEl.addEventListener('input', () => {
+            if (autoEl && autoEl.checked) startMetrics();
+        });
+    }
+    if (stepBtn) {
+        stepBtn.addEventListener('click', stepMetrics);
+    }
+    if (autoEl && autoEl.checked) startMetrics();
+}
+
+document.addEventListener('DOMContentLoaded', initPage);
 
 // Particle background effect
 function initParticles() {

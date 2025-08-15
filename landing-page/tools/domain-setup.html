@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Setup - SpamGPT Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" class="nav-link" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+                    <i class="fas fa-envelope logo-envelope"></i>
+                    <span class="logo-text">SpamGPT</span>
+                    <span class="logo-ai-badge">Mail</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="../index.html#demo" class="nav-link">Live Demo</a></li>
+                <li><a href="../index.html#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="../index.html#about" class="nav-link">About</a></li>
+            </ul>
+            <button class="nav-cta" onclick="location.href='../index.html#pricing'">Get Started</button>
+            <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="../index.html#features" class="nav-link">Features</a>
+            <a href="../index.html#demo" class="nav-link">Live Demo</a>
+            <a href="../index.html#pricing" class="nav-link">Pricing</a>
+            <a href="../index.html#about" class="nav-link">About</a>
+        </div>
+    </nav>
+
+    <section class="page">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-globe"></i> Domain Setup</h1>
+                <p class="page-subtitle">Guided SPF/DKIM/DMARC checklist (informational)</p>
+            </div>
+            <div class="card">
+                <div class="form-grid">
+                    <div>
+                        <label class="label">Domain</label>
+                        <input id="domain" class="input" placeholder="example.com">
+                    </div>
+                </div>
+                <div style="margin-top:1rem;">
+                    <ol style="padding-left:1.25rem;">
+                        <li style="margin-bottom:0.5rem;">Create SPF TXT: <code>v=spf1 include:spf.mailgpt.example ~all</code></li>
+                        <li style="margin-bottom:0.5rem;">Add DKIM TXT for selector <code>mailgpt</code>: <code>v=DKIM1; k=rsa; p=MIIBIjANBgkqh... (short)</code></li>
+                        <li style="margin-bottom:0.5rem;">Set DMARC TXT: <code>v=DMARC1; p=none; rua=mailto:dmarc@example.com</code></li>
+                        <li style="margin-bottom:0.5rem;">Optional BIMI: host <code>default._bimi</code> with SVG URL</li>
+                    </ol>
+                </div>
+                <div style="margin-top:1rem;">
+                    <button class="btn-primary" id="btnCheck"><i class="fas fa-magnifying-glass"></i> Simulate Check</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:1rem;">
+                <h3 style="margin-bottom:0.5rem;">Status</h3>
+                <ul id="status" style="list-style:none;padding-left:0;">
+                    <li class="helper">No checks run yet</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    const status = document.getElementById('status');
+    document.getElementById('btnCheck').addEventListener('click', () => {
+        const domain = (document.getElementById('domain').value || 'example.com').toLowerCase();
+        status.innerHTML = '';
+        const items = [
+            {name: 'SPF', ok: domain.length % 2 === 0},
+            {name: 'DKIM', ok: domain.includes('.')},
+            {name: 'DMARC', ok: domain.endsWith('.com')},
+            {name: 'BIMI', ok: false}
+        ];
+        items.forEach(it => {
+            const li = document.createElement('li');
+            li.innerHTML = `${it.ok ? '<span class=\'badge success\'>OK</span>' : '<span class=\'badge error\'>Missing</span>'} ${it.name}`;
+            li.style.marginBottom = '0.35rem';
+            status.appendChild(li);
+        });
+    });
+    </script>
+</body>
+</html>
