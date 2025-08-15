@@ -3,10 +3,10 @@ import { cn } from '@/lib/utils'
 import { Sidebar } from './Sidebar'
 import { Navbar } from './Navbar'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { ApiHealthBanner } from '../ApiHealthBanner'
-import { TrialBanner } from '../TrialBanner'
-import { AIAssistantPanel } from '../AIAssistantPanel'
-import { SupportPanel } from '../SupportPanel'
+import { ApiHealthBanner } from '@/components/banners/ApiHealthBanner'
+import { TrialBanner } from '@/components/banners/TrialBanner'
+import { AIAssistantPanel } from '@/pages/finalui2/components/AIAssistantPanel'
+import { SupportPanel } from '@/pages/finalui2/components/SupportPanel'
 import { WorkspaceProvider } from '@/context/WorkspaceContext'
 
 interface AppLayoutProps {
@@ -35,7 +35,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, className }) => 
         setMobileMenuOpen(false)
       }
     }
-    
+
     if (mobileMenuOpen) {
       document.addEventListener('keydown', handleEscape)
       document.body.style.overflow = 'hidden' // Prevent background scroll
@@ -103,8 +103,8 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, className }) => 
           )}
         >
           {/* Navbar - Full Width within Content Area */}
-          <Navbar 
-            onMenuClick={toggleMobileMenu} 
+          <Navbar
+            onMenuClick={toggleMobileMenu}
             onAIAssistantClick={() => { setSupportOpen(false); setAIAssistantOpen(true) }}
             onSupportClick={() => { setAIAssistantOpen(false); setSupportOpen(true) }}
             className="sticky top-0 z-30"
