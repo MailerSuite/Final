@@ -5,9 +5,10 @@
  */
 
 // Re-export the stable API client's axios instance
-export { apiClient as default, getAxiosInstance } from './stable-api-client';
+export { apiClient as default } from './stable-api-client';
 
 // For backward compatibility, also export as axiosInstance
+import { apiClient } from './stable-api-client';
 export const axiosInstance = apiClient.getAxiosInstance();
 
 // Re-export types
