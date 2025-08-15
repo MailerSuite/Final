@@ -5,17 +5,21 @@ export const DEV_MODE = {
   
   // Mock user data for development
   MOCK_USER: {
-    id: 1,
+    id: "1",
     email: "dev@mailersuite.com",
     username: "developer", 
     name: "Developer",
-    is_admin: true
+    is_admin: true,
+    is_active: true,
+    created_at: new Date().toISOString(),
   }
 }
 
 // Helper to check if we're in dev mode with auth bypass
 export const isAuthBypassed = () => {
-  return process.env.NODE_ENV === 'development' && DEV_MODE.BYPASS_AUTH
+  // Allow explicit flag to force bypass in any mode
+  const flagBypass = import.meta.env.VITE_DEV_AUTH_BYPASS === 'true'
+  return (import.meta.env.DEV && DEV_MODE.BYPASS_AUTH) || flagBypass
 }
 
 // Helper to get mock user data

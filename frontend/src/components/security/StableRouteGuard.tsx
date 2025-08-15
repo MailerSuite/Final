@@ -13,6 +13,7 @@ import { clearSavedRoute } from "@/hooks/usePersistedRoute";
 import { useAuthStore } from "@/store/auth";
 import useAuth from "@/hooks/useAuth";
 import PageLoader from "@/components/PageLoader";
+import { isAuthBypassed } from "@/utils/devMode";
 
 interface StableRouteGuardProps {
   children: React.ReactNode;
@@ -40,6 +41,11 @@ export const StableRouteGuard = ({
   
   // Get user data from props or auth store
   const userData = propUserData || storeUserData;
+
+  // Dev bypass: allow unrestricted access in development or when explicitly enabled
+  if (import.meta.env.DEV || isAuthBypassed()) {
+    return <>{children}</>;
+  }
 
   // Effect for rate limiting check
   useEffect(() => {

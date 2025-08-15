@@ -8,6 +8,7 @@ import { clearSavedRoute } from "@/hooks/usePersistedRoute";
 import { useAuthStore } from "@/store/auth";
 import useAuth from "@/hooks/useAuth";
 import PageLoader from "@/components/PageLoader";
+import { isAuthBypassed } from "@/utils/devMode";
 
 interface RouteGuardProps {
   children?: React.ReactNode;
@@ -38,6 +39,11 @@ export const RouteGuard = ({
 
   // Use prop userData if provided, otherwise use store userData
   const userData = propUserData || storeUserData;
+
+  // Dev bypass: allow unrestricted access in development or when explicitly enabled
+  if (import.meta.env.DEV || isAuthBypassed()) {
+    return <Outlet />;
+  }
 
   // Navigation loop detection
   useEffect(() => {
@@ -71,7 +77,7 @@ export const RouteGuard = ({
 
       // Only redirect on SEVERE loops (15+ visits) and NOT on legitimate error pages
       if (!isLegitimateErrorPage && pathOccurrences >= 15) {
-        console.warn(`🔄 RouteGuard: Breaking SEVERE navigation loop for ${currentPath} (${pathOccurrences} times)`)
+        console.warn(`🔄 RouteGuard: Breaking SEVERE navigation loop for ${currentPath} (${pathOccurrences} times)`) 
         clearSavedRoute();
         window.location.href = '/client/dashboard'; // Go to enhanced dashboard
       } else if (isLegitimateErrorPage) {
@@ -142,10 +148,6 @@ export const RouteGuard = ({
   }
 
   // If auth is required but user is not authenticated
-  // Dev bypass: allow unrestricted access in development
-  if (import.meta.env.DEV) {
-    return <Outlet />;
-  }
   if (requiredAuth && !userData) {
     clearSavedRoute();
     return <Navigate to="/auth/login" state={{ from: location }} replace />;

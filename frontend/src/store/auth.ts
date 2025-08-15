@@ -3,6 +3,7 @@ import type { IUser } from "@/types"
 import { toast } from "sonner"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
+import { isAuthBypassed, getMockUser } from "@/utils/devMode"
 
 interface AuthState {
   token: string | null
@@ -49,14 +50,9 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      token: "dev-bypass-token", // TEMP: Bypass auth for development
-      refreshToken: "dev-bypass-refresh-token", // TEMP: Bypass auth for development
-      userData: { // TEMP: Mock user data for development
-        id: 1,
-        email: "dev@mailersuite.com",
-        username: "developer",
-        name: "Developer"
-      } as IUser,
+      token: isAuthBypassed() ? "dev-bypass-token" : null,
+      refreshToken: isAuthBypassed() ? "dev-bypass-refresh-token" : null,
+      userData: isAuthBypassed() ? (getMockUser() as unknown as IUser) : null,
       isLoading: false,
       loginAttempts: 0,
       lastLoginAttempt: null,
@@ -339,7 +335,7 @@ export const useAuthStore = create<AuthState>()(
         if (abortSignal?.aborted) {
           return;
         }
-
+        
         set({ isLoading: true });
         try {
           // Wait a small amount to ensure token is set in axios interceptor
