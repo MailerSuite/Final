@@ -18,6 +18,9 @@ import {
   EnvelopeIcon,
   ServerStackIcon,
   UsersIcon,
+  CheckCircleIcon,
+  CursorArrowRaysIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline';
 
 const features = [
@@ -75,6 +78,41 @@ const demoCards = [
     color: 'from-fuchsia-500 to-pink-600',
     icon: <RocketLaunchIcon className="w-5 h-5" />,
   },
+  {
+    title: 'Campaign Wizard (Demo)',
+    description: 'See how easy it is to plan and launch a campaign in minutes.',
+    path: '/landing/spamgpt/demo/campaign-wizard',
+    color: 'from-violet-500 to-purple-600',
+    icon: <CursorArrowRaysIcon className="w-5 h-5" />,
+  },
+  {
+    title: 'Content Generator (Demo)',
+    description: 'Generate high-converting subject lines and body copy on the fly.',
+    path: '/landing/spamgpt/demo/content-generator',
+    color: 'from-sky-500 to-indigo-600',
+    icon: <SparklesIcon className="w-5 h-5" />,
+  },
+  {
+    title: 'SMTP & Deliverability (Demo)',
+    description: 'Validate SMTP, test inbox placement, and monitor deliverability.',
+    path: '/landing/spamgpt/demo/smtp',
+    color: 'from-emerald-500 to-teal-600',
+    icon: <ShieldCheckIcon className="w-5 h-5" />,
+  },
+  {
+    title: 'Deliverability Dashboard (Demo)',
+    description: 'Understand reputation, spam triggers, and how to fix them.',
+    path: '/landing/spamgpt/demo/deliverability',
+    color: 'from-rose-500 to-orange-600',
+    icon: <CheckCircleIcon className="w-5 h-5" />,
+  },
+  {
+    title: 'AI Assistant (Demo)',
+    description: 'Chat with an AI assistant that helps you execute tasks end-to-end.',
+    path: '/landing/spamgpt/demo/assistant',
+    color: 'from-purple-500 to-cyan-600',
+    icon: <SparklesIcon className="w-5 h-5" />,
+  },
 ];
 
 const SpamGPTLandingPage: React.FC = () => {
@@ -115,6 +153,37 @@ const SpamGPTLandingPage: React.FC = () => {
             </div>
           </section>
 
+          {/* Benefits Section */}
+          <section className="container mx-auto px-4 py-12">
+            <div className="text-center mb-10">
+              <Badge variant="secondary" className="mb-3">Why SpamGPT</Badge>
+              <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">Don’t know how to inbox? We make it effortless.</h2>
+              <p className="text-muted-foreground mt-3 max-w-3xl mx-auto">
+                You focus on your product—we handle the complex parts: server health, content optimization, reputation, and analytics. Start sending confident, high-performing campaigns today.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="bg-card/60 backdrop-blur border border-border/60">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2"><CheckCircleIcon className="w-5 h-5 text-green-400" /> No Experience Required</CardTitle>
+                  <CardDescription>Guided wizards, best-practice templates, and AI prompts do the heavy lifting for you.</CardDescription>
+                </CardHeader>
+              </Card>
+              <Card className="bg-card/60 backdrop-blur border border-border/60">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2"><ShieldCheckIcon className="w-5 h-5 text-sky-400" /> Deliverability Built-In</CardTitle>
+                  <CardDescription>Reputation checks, spam trigger detection, and inbox testing baked into your workflow.</CardDescription>
+                </CardHeader>
+              </Card>
+              <Card className="bg-card/60 backdrop-blur border border-border/60">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2"><SparklesIcon className="w-5 h-5 text-purple-400" /> Function-Powered</CardTitle>
+                  <CardDescription>Composable functions automate setup, scoring, testing, and sending—so you move faster.</CardDescription>
+                </CardHeader>
+              </Card>
+            </div>
+          </section>
+
           {/* Features */}
           <section className="container mx-auto px-4 py-12">
             <div className="text-center mb-10">
@@ -132,7 +201,7 @@ const SpamGPTLandingPage: React.FC = () => {
               <p className="text-muted-foreground mt-2">Launch fully interactive demos—no signup required.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {demoCards.map((demo) => (
                 <Card key={demo.path} className="bg-card/60 backdrop-blur border border-border/60">
                   <CardHeader>

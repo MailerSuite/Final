@@ -66,6 +66,11 @@ const SpamGPTLandingPage = lazy(() => import('@/pages/landing/spamgpt/page'))
 const OptimizerDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/OptimizerDemoPage'))
 const AnalyticsDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/AnalyticsDemoPage'))
 const TutorDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/TutorDemoPage'))
+const CampaignWizardDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/CampaignWizardDemoPage'))
+const ContentGeneratorDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/ContentGeneratorDemoPage'))
+const SMTPDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/SMTPDemoPage'))
+const DeliverabilityDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/DeliverabilityDemoPage'))
+const AssistantDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/AssistantDemoPage'))
 const LandingPageIndex = lazy(() => import('@/pages/landing'))
 const AILandingPlaceholder = lazy(() => import('@/pages/landing/ai/page'))
 const AIOpenAIPlaceholder = lazy(() => import('@/pages/landing/ai-openai/page'))
@@ -709,6 +714,51 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <TutorDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/campaign-wizard',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <CampaignWizardDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/content-generator',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <ContentGeneratorDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/smtp',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <SMTPDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/deliverability',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <DeliverabilityDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/assistant',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AssistantDemoPage />
         <AppWrapper />
       </Suspense>
     )
