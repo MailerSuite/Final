@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blacklist Checker - SpamGPT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form');
+            const target = document.getElementById('target');
+            const result = document.getElementById('result');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const value = (target.value || '').trim();
+                if (!value) return;
+                const lists = ['Spamhaus', 'Barracuda', 'SORBS', 'Spamcop', 'Invaluement'];
+                let html = '<div class="demo-grid">';
+                lists.forEach(name => {
+                    const listed = Math.random() < 0.15;
+                    html += `
+                        <div class="demo-card">
+                            <h3>${name}</h3>
+                            <p class="section-description">Status: <strong style="color:${listed ? '#ef4444' : '#10b981'}">${listed ? 'LISTED' : 'OK'}</strong></p>
+                        </div>`;
+                });
+                html += '</div>';
+                result.innerHTML = html + `<p class="section-description" style="margin-top:1rem">Results for <strong>${value}</strong></p>`;
+            });
+        });
+    </script>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-envelope-open-text logo-icon"></i>
+                <span class="logo-text">SpamGPT</span>
+                <span class="logo-ai-badge">Mail</span>
+            </div>
+            <a class="nav-cta" href="index.html">All Tools</a>
+        </div>
+    </nav>
+
+    <section class="tools" style="padding-top: 8rem;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Tool</span>
+                <h2 class="section-title">Blacklist <span class="gradient-text">Checker</span></h2>
+                <p class="section-description">Simulated RBL lookups across major lists</p>
+            </div>
+            <div class="demo-card">
+                <form id="form" class="demo-controls">
+                    <div class="control-group">
+                        <label for="target">IP or Domain</label>
+                        <input type="text" id="target" placeholder="1.2.3.4 or example.com">
+                    </div>
+                    <button class="btn-primary" type="submit"><i class="fas fa-search"></i> Scan</button>
+                </form>
+                <div id="result" style="margin-top:1rem"></div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

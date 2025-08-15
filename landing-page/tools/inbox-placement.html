@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox Placement - SpamGPT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form');
+            const result = document.getElementById('result');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const isps = ['Gmail', 'Outlook', 'Yahoo', 'iCloud'];
+                let html = '<div class="demo-grid">';
+                isps.forEach(name => {
+                    const r = Math.random();
+                    const folder = r > 0.75 ? 'Spam' : r > 0.45 ? 'Promotions' : 'Inbox';
+                    html += `
+                        <div class=\"demo-card\">
+                            <h3>${name}</h3>
+                            <p class=\"section-description\">Placement: <strong>${folder}</strong></p>
+                        </div>`;
+                });
+                html += '</div>';
+                result.innerHTML = html;
+            });
+        });
+    </script>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-envelope-open-text logo-icon"></i>
+                <span class="logo-text">SpamGPT</span>
+                <span class="logo-ai-badge">Mail</span>
+            </div>
+            <a class="nav-cta" href="index.html">All Tools</a>
+        </div>
+    </nav>
+
+    <section class="tools" style="padding-top: 8rem;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Tool</span>
+                <h2 class="section-title">Inbox <span class="gradient-text">Placement</span></h2>
+                <p class="section-description">Simulate placement across major ISPs</p>
+            </div>
+            <div class="demo-card">
+                <form id="form" class="demo-controls">
+                    <div class="control-group">
+                        <label>Test Campaign</label>
+                        <input type="text" placeholder="welcome">
+                    </div>
+                    <button class="btn-primary" type="submit"><i class="fas fa-envelope-circle-check"></i> Simulate</button>
+                </form>
+                <div id="result" style="margin-top:1rem"></div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

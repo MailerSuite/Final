@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Warmup Planner - SpamGPT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form');
+            const volume = document.getElementById('volume');
+            const days = document.getElementById('days');
+            const result = document.getElementById('result');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const total = Math.max(1000, Number(volume.value || 50000));
+                const d = Math.max(7, Number(days.value || 14));
+                let remaining = total;
+                let html = '<div class="demo-card"><table style="width:100%; border-collapse:collapse">';
+                html += '<tr><th style="text-align:left">Day</th><th style="text-align:right">Volume</th></tr>';
+                for (let i=1;i<=d;i++) {
+                    const daily = Math.ceil(total * Math.pow(i/d, 2) / d);
+                    remaining -= daily;
+                    html += `<tr><td style="padding:6px 0">Day ${i}</td><td style="padding:6px 0; text-align:right">${daily.toLocaleString()}</td></tr>`;
+                }
+                html += '</table></div>';
+                result.innerHTML = html;
+            });
+        });
+    </script>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-envelope-open-text logo-icon"></i>
+                <span class="logo-text">SpamGPT</span>
+                <span class="logo-ai-badge">Mail</span>
+            </div>
+            <a class="nav-cta" href="index.html">All Tools</a>
+        </div>
+    </nav>
+
+    <section class="tools" style="padding-top: 8rem;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Tool</span>
+                <h2 class="section-title">IP Warmup <span class="gradient-text">Planner</span></h2>
+                <p class="section-description">Generate a ramp schedule (simulated)</p>
+            </div>
+            <div class="demo-card">
+                <form id="form" class="demo-controls">
+                    <div class="control-group">
+                        <label for="volume">Target Daily Volume</label>
+                        <input type="number" id="volume" value="50000" min="1000" step="1000">
+                    </div>
+                    <div class="control-group">
+                        <label for="days">Warmup Days</label>
+                        <input type="number" id="days" value="14" min="7" max="60">
+                    </div>
+                    <button class="btn-primary" type="submit"><i class="fas fa-temperature-low"></i> Plan</button>
+                </form>
+                <div id="result" style="margin-top:1rem"></div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

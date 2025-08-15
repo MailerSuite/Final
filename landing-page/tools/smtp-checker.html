@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMTP Checker - SpamGPT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form');
+            const host = document.getElementById('host');
+            const port = document.getElementById('port');
+            const tls = document.getElementById('tls');
+            const result = document.getElementById('result');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const ok = Math.random() > 0.15;
+                const latency = 80 + Math.floor(Math.random()*200);
+                const tlsOk = tls.checked ? (Math.random() > 0.05) : false;
+                result.innerHTML = `
+                    <div class="metrics-grid">
+                        <div class="metric"><span class="metric-label">Connectivity</span><span class="metric-value">${ok ? 'OK' : 'Failed'}</span></div>
+                        <div class="metric"><span class="metric-label">Latency</span><span class="metric-value">${latency}ms</span></div>
+                        <div class="metric"><span class="metric-label">TLS</span><span class="metric-value">${tlsOk ? 'TLS 1.2+' : (tls.checked ? 'Handshake Failed' : 'Not attempted')}</span></div>
+                    </div>
+                    <p class="section-description" style="margin-top:1rem">${host.value}:${port.value} tested.</p>
+                `;
+            });
+        });
+    </script>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-envelope-open-text logo-icon"></i>
+                <span class="logo-text">SpamGPT</span>
+                <span class="logo-ai-badge">Mail</span>
+            </div>
+            <a class="nav-cta" href="index.html">All Tools</a>
+        </div>
+    </nav>
+
+    <section class="tools" style="padding-top: 8rem;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Tool</span>
+                <h2 class="section-title">SMTP <span class="gradient-text">Checker</span></h2>
+                <p class="section-description">Simulated SMTP connectivity test</p>
+            </div>
+            <div class="demo-card">
+                <form id="form" class="demo-controls">
+                    <div class="control-group">
+                        <label for="host">Host</label>
+                        <input type="text" id="host" placeholder="smtp.example.com">
+                    </div>
+                    <div class="control-group">
+                        <label for="port">Port</label>
+                        <input type="number" id="port" min="1" max="65535" value="587">
+                    </div>
+                    <div class="control-group inline">
+                        <label class="checkbox"><input type="checkbox" id="tls" checked> Require TLS</label>
+                    </div>
+                    <button class="btn-primary" type="submit"><i class="fas fa-network-wired"></i> Test</button>
+                </form>
+                <div id="result" style="margin-top:1rem"></div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

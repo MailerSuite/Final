@@ -79,6 +79,12 @@ body {
     text-transform: uppercase;
 }
 
+/* New: mail-themed icon next to logo */
+.logo-icon {
+    color: var(--accent-color);
+    font-size: 1.25rem;
+}
+
 .nav-links {
     display: flex;
     list-style: none;
@@ -104,6 +110,17 @@ body {
     border-radius: 0.5rem;
     font-weight: 600;
     cursor: pointer;
+    text-decoration: none;
+}
+
+/* New: mobile menu toggle button */
+.mobile-menu-toggle {
+    display: none;
+    background: transparent;
+    color: var(--text-primary);
+    border: 0;
+    font-size: 1.25rem;
+    cursor: pointer;
 }
 
 /* Hero Section */
@@ -112,6 +129,18 @@ body {
     display: flex;
     align-items: center;
     padding: 8rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* New: hero canvas background layer */
+.hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
 }
 
 .hero-container {
@@ -121,6 +150,8 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
 .hero-badge {
@@ -366,6 +397,40 @@ body {
     color: var(--text-primary);
 }
 
+/* New: demo controls */
+.demo-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.control-group.inline {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.demo-controls input[type="text"],
+.demo-controls select,
+.demo-controls input[type="range"] {
+    background: var(--darker-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.checkbox input {
+    margin-right: 0.5rem;
+}
+
 /* Terminal */
 .terminal {
     background: var(--darker-bg);
@@ -397,6 +462,8 @@ body {
     padding: 1rem;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.875rem;
+    max-height: 260px;
+    overflow: auto;
 }
 
 .terminal-line {
@@ -447,6 +514,49 @@ body {
     font-size: 1.5rem;
     font-weight: 800;
     color: var(--accent-color);
+}
+
+/* Tools Section */
+.tools {
+    padding: 6rem 0;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.tool-card {
+    display: block;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.tool-card i {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    margin-bottom: 0.75rem;
+}
+
+.tool-card h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+}
+
+.tool-card p {
+    color: var(--text-secondary);
+}
+
+.tool-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-lg);
 }
 
 /* Pricing Section */
@@ -728,5 +838,33 @@ body {
     
     .metrics-grid {
         grid-template-columns: 1fr;
+    }
+    
+    /* New: mobile nav behavior */
+    .mobile-menu-toggle {
+        display: block;
+        margin-left: auto;
+        margin-right: 1rem;
+    }
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(15, 23, 42, 0.95);
+        border-bottom: 1px solid var(--border-color);
+        display: none;
+        flex-direction: column;
+        gap: 0;
+    }
+    .nav-links.open {
+        display: flex;
+    }
+    .nav-links li {
+        border-top: 1px solid var(--border-color);
+    }
+    .nav-links a {
+        display: block;
+        padding: 1rem 2rem;
     }
 }
