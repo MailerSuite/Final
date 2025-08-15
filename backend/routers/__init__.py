@@ -56,7 +56,7 @@ from . import sessions
 # from . import socks  # ARCHIVED - consolidated into unified_infrastructure_router
 from . import stop_conditions
 from . import system
-# from . import templates  # ARCHIVED - consolidated into unified_email_operations_router
+from . import templates  # Re-enabled for unit tests
 from . import thread_pools
 from . import upload
 from . import ws_compat
@@ -129,7 +129,7 @@ __all__ = [
     # "socks",  # ARCHIVED
     "stop_conditions",
     "system",
-    # "templates",  # ARCHIVED
+    "templates",
     "thread_pools",
     "upload",
     "ws_compat",
