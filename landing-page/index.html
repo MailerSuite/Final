@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpamGPT - AI-Powered Email Infrastructure</title>
+    <meta name="description" content="Revolutionary AI-powered email infrastructure for modern businesses. Smart SMTP management, intelligent routing, and advanced analytics.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Neural Network Background -->
+    <canvas id="neural-network"></canvas>
+    
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">SpamGPT</span>
+                <span class="logo-ai-badge">AI</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#demo" class="nav-link">Live Demo</a></li>
+                <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+            </ul>
+            <button class="nav-cta">Get Started</button>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="pulse"></span>
+                    <i class="fas fa-robot"></i>
+                    <span>AI-Powered Infrastructure</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="gradient-text">Next-Gen Email</span><br>
+                    <span class="typewriter">Intelligence Platform</span>
+                </h1>
+                <p class="hero-description">
+                    Harness the power of AI to revolutionize your email infrastructure. 
+                    Smart routing, intelligent analytics, and self-optimizing delivery systems.
+                </p>
+                <div class="hero-cta">
+                    <button class="btn-primary" onclick="scrollToSection('pricing')">
+                        <i class="fas fa-rocket"></i>
+                        Start Free Trial
+                    </button>
+                    <button class="btn-secondary" onclick="scrollToSection('demo')">
+                        <i class="fas fa-play"></i>
+                        Watch Demo
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number" data-count="99.9">0</span>%
+                        <span class="stat-label">Delivery Rate</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" data-count="1786">0</span>+
+                        <span class="stat-label">SMTP Servers</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" data-count="50">0</span>M+
+                        <span class="stat-label">Emails/Day</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="ai-brain">
+                    <div class="brain-core"></div>
+                    <div class="brain-ring ring-1"></div>
+                    <div class="brain-ring ring-2"></div>
+                    <div class="brain-ring ring-3"></div>
+                    <div class="data-points">
+                        <span class="data-point" style="--i: 1"></span>
+                        <span class="data-point" style="--i: 2"></span>
+                        <span class="data-point" style="--i: 3"></span>
+                        <span class="data-point" style="--i: 4"></span>
+                        <span class="data-point" style="--i: 5"></span>
+                        <span class="data-point" style="--i: 6"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Features</span>
+                <h2 class="section-title">Powered by <span class="gradient-text">Artificial Intelligence</span></h2>
+                <p class="section-description">Advanced capabilities that adapt and evolve with your needs</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Driven Routing</h3>
+                    <p>Intelligent algorithms optimize delivery paths in real-time for maximum inbox placement.</p>
+                    <div class="feature-stats">
+                        <span><i class="fas fa-chart-line"></i> 99.9% Success Rate</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3>Smart SMTP Pool</h3>
+                    <p>1,786+ verified SMTP servers with automatic health monitoring and rotation.</p>
+                    <div class="feature-stats">
+                        <span><i class="fas fa-globe"></i> 50+ Countries</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Reputation Guard</h3>
+                    <p>AI monitors and protects sender reputation with predictive blacklist prevention.</p>
+                    <div class="feature-stats">
+                        <span><i class="fas fa-lock"></i> Military-Grade Security</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Predictive Analytics</h3>
+                    <p>Machine learning models predict optimal send times and content strategies.</p>
+                    <div class="feature-stats">
+                        <span><i class="fas fa-clock"></i> Real-time Insights</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Auto-Scaling</h3>
+                    <p>Dynamically scales infrastructure based on AI-predicted demand patterns.</p>
+                    <div class="feature-stats">
+                        <span><i class="fas fa-bolt"></i> 50M+ Emails/Day</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>Smart Templates</h3>
+                    <p>AI-powered template optimization for maximum engagement and deliverability.</p>
+                    <div class="feature-stats">
+                        <span><i class="fas fa-eye"></i> A/B Testing Built-in</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Live Demo Section -->
+    <section id="demo" class="demo">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Live Demo</span>
+                <h2 class="section-title">See <span class="gradient-text">SpamGPT</span> in Action</h2>
+                <p class="section-description">Real-time demonstration of our AI-powered features</p>
+            </div>
+            
+            <div class="demo-grid">
+                <!-- SMTP Pool Terminal -->
+                <div class="demo-card">
+                    <div class="terminal">
+                        <div class="terminal-header">
+                            <div class="terminal-buttons">
+                                <span class="terminal-btn red"></span>
+                                <span class="terminal-btn yellow"></span>
+                                <span class="terminal-btn green"></span>
+                            </div>
+                            <span class="terminal-title">SMTP Pool Manager</span>
+                        </div>
+                        <div class="terminal-body" id="smtp-terminal">
+                            <div class="terminal-line">
+                                <span class="prompt">$</span> <span class="terminal-output">spamgpt pool status</span>
+                            </div>
+                            <!-- Terminal output will be populated by JS -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Real SMTP Pool Preview -->
+                <div class="demo-card">
+                    <div class="smtp-pool-demo">
+                        <div class="smtp-pool-header">
+                            <h4>Live SMTP Pool</h4>
+                            <span class="live-badge"><span class="live-dot"></span> Real-time</span>
+                        </div>
+                        <div class="smtp-pool-body">
+                            <div class="smtp-list" id="smtp-list">
+                                <!-- SMTP items will be populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AI Analytics Dashboard -->
+                <div class="demo-card">
+                    <div class="dashboard-preview">
+                        <div class="dashboard-header">
+                            <h4>AI Analytics Dashboard</h4>
+                            <span class="live-badge"><span class="live-dot"></span> Live</span>
+                        </div>
+                        <div class="dashboard-content">
+                            <div class="metric-grid">
+                                <div class="metric">
+                                    <span class="metric-value" id="delivery-rate">98.7%</span>
+                                    <span class="metric-label">Delivery Rate</span>
+                                    <div class="metric-chart">
+                                        <canvas id="delivery-chart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value" id="active-servers">1,234</span>
+                                    <span class="metric-label">Active Servers</span>
+                                    <div class="metric-chart">
+                                        <canvas id="servers-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Blacklist Checker Demo -->
+                <div class="demo-card">
+                    <div class="terminal">
+                        <div class="terminal-header">
+                            <div class="terminal-buttons">
+                                <span class="terminal-btn red"></span>
+                                <span class="terminal-btn yellow"></span>
+                                <span class="terminal-btn green"></span>
+                            </div>
+                            <span class="terminal-title">Blacklist Checker</span>
+                        </div>
+                        <div class="terminal-body" id="blacklist-terminal">
+                            <div class="terminal-line">
+                                <span class="prompt">$</span> <span class="terminal-output">spamgpt check 192.168.1.100</span>
+                            </div>
+                            <!-- Blacklist check output will be populated by JS -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Email Flow Visualization -->
+                <div class="demo-card full-width">
+                    <div class="flow-visualization">
+                        <h4>Real-time Email Flow</h4>
+                        <div class="flow-container" id="email-flow">
+                            <div class="flow-node sender">
+                                <i class="fas fa-user"></i>
+                                <span>Sender</span>
+                            </div>
+                            <div class="flow-path">
+                                <div class="flow-particle"></div>
+                            </div>
+                            <div class="flow-node ai">
+                                <i class="fas fa-brain"></i>
+                                <span>AI Router</span>
+                            </div>
+                            <div class="flow-path">
+                                <div class="flow-particle"></div>
+                            </div>
+                            <div class="flow-node smtp">
+                                <i class="fas fa-server"></i>
+                                <span>SMTP Pool</span>
+                            </div>
+                            <div class="flow-path">
+                                <div class="flow-particle"></div>
+                            </div>
+                            <div class="flow-node inbox">
+                                <i class="fas fa-inbox"></i>
+                                <span>Inbox</span>
+                            </div>
+                        </div>
+                        <div class="flow-stats">
+                            <span class="flow-stat">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span id="flow-speed">245ms</span> avg latency
+                            </span>
+                            <span class="flow-stat">
+                                <i class="fas fa-check-circle"></i>
+                                <span id="flow-success">99.8%</span> success rate
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Campaign Manager Preview -->
+                <div class="demo-card full-width">
+                    <div class="dashboard-preview">
+                        <div class="dashboard-header">
+                            <h4>AI Campaign Manager</h4>
+                            <span class="live-badge"><span class="live-dot"></span> Demo Mode</span>
+                        </div>
+                        <div class="dashboard-content">
+                            <div class="campaign-stats">
+                                <div class="campaign-row">
+                                    <div class="campaign-info">
+                                        <h5>Black Friday Sale 2024</h5>
+                                        <p class="campaign-details">
+                                            <span><i class="fas fa-users"></i> 50,000 recipients</span>
+                                            <span><i class="fas fa-clock"></i> Scheduled: Nov 24, 2024</span>
+                                        </p>
+                                    </div>
+                                    <div class="campaign-metrics">
+                                        <div class="mini-metric">
+                                            <span class="mini-value">45.2%</span>
+                                            <span class="mini-label">Open Rate</span>
+                                        </div>
+                                        <div class="mini-metric">
+                                            <span class="mini-value">12.8%</span>
+                                            <span class="mini-label">Click Rate</span>
+                                        </div>
+                                        <div class="mini-metric">
+                                            <span class="mini-value">$24,560</span>
+                                            <span class="mini-label">Revenue</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Pricing</span>
+                <h2 class="section-title">Choose Your <span class="gradient-text">AI Power</span></h2>
+                <p class="section-description">Flexible plans that scale with your business</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Starter</h3>
+                        <div class="pricing-price">
+                            <span class="currency">$</span>
+                            <span class="amount">99</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="pricing-description">Perfect for small businesses</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 100,000 emails/month</li>
+                        <li><i class="fas fa-check"></i> 10 SMTP servers</li>
+                        <li><i class="fas fa-check"></i> Basic AI routing</li>
+                        <li><i class="fas fa-check"></i> Email analytics</li>
+                        <li><i class="fas fa-check"></i> 24/7 support</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showPaymentModal('starter', 99)">
+                        Get Started
+                    </button>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Professional</h3>
+                        <div class="pricing-price">
+                            <span class="currency">$</span>
+                            <span class="amount">299</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="pricing-description">For growing companies</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 1,000,000 emails/month</li>
+                        <li><i class="fas fa-check"></i> 100 SMTP servers</li>
+                        <li><i class="fas fa-check"></i> Advanced AI routing</li>
+                        <li><i class="fas fa-check"></i> Predictive analytics</li>
+                        <li><i class="fas fa-check"></i> Priority support</li>
+                        <li><i class="fas fa-check"></i> Custom domains</li>
+                    </ul>
+                    <button class="pricing-btn featured" onclick="showPaymentModal('professional', 299)">
+                        Get Started
+                    </button>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <div class="pricing-price">
+                            <span class="currency">$</span>
+                            <span class="amount">999</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="pricing-description">Unlimited possibilities</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Unlimited emails</li>
+                        <li><i class="fas fa-check"></i> 1,786+ SMTP servers</li>
+                        <li><i class="fas fa-check"></i> Full AI suite</li>
+                        <li><i class="fas fa-check"></i> Custom ML models</li>
+                        <li><i class="fas fa-check"></i> Dedicated support</li>
+                        <li><i class="fas fa-check"></i> SLA guarantee</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showPaymentModal('enterprise', 999)">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Bitcoin Payment Modal -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Complete Your Purchase</h3>
+                <button class="modal-close" onclick="closePaymentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-info">
+                    <h4>Payment Details</h4>
+                    <div class="payment-plan">
+                        <span id="selected-plan">Professional Plan</span>
+                        <span id="plan-price">$299/month</span>
+                    </div>
+                </div>
+                
+                <div class="bitcoin-payment">
+                    <div class="btc-header">
+                        <i class="fab fa-bitcoin"></i>
+                        <h4>Pay with Bitcoin</h4>
+                    </div>
+                    
+                    <div class="btc-amount">
+                        <span class="btc-value" id="btc-amount">0.0089</span> BTC
+                        <span class="usd-equivalent">≈ <span id="usd-amount">$299</span> USD</span>
+                    </div>
+                    
+                    <div class="qr-container">
+                        <div id="qr-code"></div>
+                        <p class="qr-instruction">Scan QR code to pay</p>
+                    </div>
+                    
+                    <div class="btc-address">
+                        <label>Bitcoin Address:</label>
+                        <div class="address-input">
+                            <input type="text" id="btc-address" readonly value="bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh">
+                            <button onclick="copyAddress()" class="copy-btn">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-status">
+                        <div class="status-waiting" id="payment-waiting">
+                            <i class="fas fa-clock"></i>
+                            <span>Waiting for payment...</span>
+                        </div>
+                        <div class="status-confirmed" id="payment-confirmed" style="display: none;">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Payment confirmed!</span>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-timer">
+                        <i class="fas fa-hourglass-half"></i>
+                        <span>Time remaining: <span id="timer">15:00</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>SpamGPT</h3>
+                    <p>Next-generation AI-powered email infrastructure</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Product</h4>
+                    <a href="#features">Features</a>
+                    <a href="#pricing">Pricing</a>
+                    <a href="#demo">Demo</a>
+                    <a href="#">Documentation</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <a href="#">About</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Contact</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 SpamGPT. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/neural-network.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
