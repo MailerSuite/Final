@@ -71,6 +71,8 @@ const ContentGeneratorDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo
 const SMTPDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/SMTPDemoPage'))
 const DeliverabilityDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/DeliverabilityDemoPage'))
 const AssistantDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/AssistantDemoPage'))
+const BlacklistDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/BlacklistDemoPage'))
+const IMAPDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/IMAPDemoPage'))
 const LandingPageIndex = lazy(() => import('@/pages/landing'))
 const AILandingPlaceholder = lazy(() => import('@/pages/landing/ai/page'))
 const AIOpenAIPlaceholder = lazy(() => import('@/pages/landing/ai-openai/page'))
@@ -759,6 +761,24 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <AssistantDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/blacklist',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <BlacklistDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/imap',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <IMAPDemoPage />
         <AppWrapper />
       </Suspense>
     )

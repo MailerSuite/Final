@@ -21,6 +21,8 @@ import {
     CheckCircleIcon,
     CursorArrowRaysIcon,
     SparklesIcon,
+    ExclamationTriangleIcon,
+    InboxIcon,
 } from '@heroicons/react/24/outline';
 
 const features = [
@@ -113,6 +115,20 @@ const demoCards = [
         color: 'from-purple-500 to-cyan-600',
         icon: <SparklesIcon className="w-5 h-5" />,
     },
+    {
+        title: 'Blacklist Checker (Demo)',
+        description: 'Check domain/IP against major RBLs with simulated results.',
+        path: '/landing/spamgpt/demo/blacklist',
+        color: 'from-amber-500 to-red-600',
+        icon: <ExclamationTriangleIcon className="w-5 h-5" />,
+    },
+    {
+        title: 'IMAP Inbox (Demo)',
+        description: 'Preview a live-style inbox experience with sample data.',
+        path: '/landing/spamgpt/demo/imap',
+        color: 'from-emerald-500 to-teal-600',
+        icon: <InboxIcon className="w-5 h-5" />,
+    },
 ];
 
 const SpamGPTLandingPage: React.FC = () => {
@@ -201,7 +217,7 @@ const SpamGPTLandingPage: React.FC = () => {
                             <p className="text-muted-foreground mt-2">Launch fully interactive demos—no signup required.</p>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                             {demoCards.map((demo) => (
                                 <Card key={demo.path} className="bg-card/60 backdrop-blur border border-border/60">
                                     <CardHeader>
