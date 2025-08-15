@@ -1,6 +1,7 @@
 # 🚀 MailerSuite Deployment Automation Guide
 
 ## 📋 Table of Contents
+
 - [Overview](#overview)
 - [Quick Start](#quick-start)
 - [Deployment Scripts](#deployment-scripts)
@@ -49,6 +50,7 @@ MailerSuite now features a **fully automated deployment system** that handles ev
 **Purpose**: Centralized deployment management with multiple options
 
 **Features**:
+
 - Environment selection (dev/prod)
 - Status checking
 - Log viewing
@@ -56,6 +58,7 @@ MailerSuite now features a **fully automated deployment system** that handles ev
 - Help system
 
 **Usage**:
+
 ```bash
 ./scripts/deploy.sh [OPTIONS] [ENVIRONMENT]
 
@@ -78,6 +81,7 @@ Environments:
 **Purpose**: Complete development environment setup
 
 **Automated Tasks**:
+
 - ✅ Prerequisites checking (Python, Node.js, PostgreSQL, Redis)
 - ✅ Database setup and user creation
 - ✅ Environment file configuration
@@ -88,6 +92,7 @@ Environments:
 - ✅ Process tracking and PID management
 
 **Features**:
+
 - **Smart Database Setup**: Automatically creates database and user if PostgreSQL is available
 - **Environment Configuration**: Generates secure random keys and updates config files
 - **Health Monitoring**: Performs health checks on both backend and frontend
@@ -98,6 +103,7 @@ Environments:
 **Purpose**: Enterprise-grade production deployment
 
 **Automated Tasks**:
+
 - ✅ Production environment validation
 - ✅ Production database setup
 - ✅ Frontend production build
@@ -108,6 +114,7 @@ Environments:
 - ✅ Health monitoring and logging
 
 **Features**:
+
 - **PM2 Integration**: Professional process management with auto-restart
 - **Security Setup**: Firewall configuration and systemd service creation
 - **Production Builds**: Optimized frontend builds with dependency management
@@ -118,6 +125,7 @@ Environments:
 **Purpose**: Clean server shutdown and cleanup
 
 **Features**:
+
 - **Process Termination**: Graceful shutdown with force-kill fallback
 - **Port Verification**: Ensures ports are free after shutdown
 - **Cleanup**: Removes PID files and temporary data
@@ -128,6 +136,7 @@ Environments:
 ### **🔍 Intelligent Prerequisites Checking**
 
 The system automatically detects and validates:
+
 - Python 3.11+ installation
 - Node.js 18+ installation
 - PostgreSQL availability
@@ -137,12 +146,14 @@ The system automatically detects and validates:
 ### **🗄️ Database Automation**
 
 **Development**:
+
 - Creates `mailersuite2_dev` database
 - Creates `mailersuite` user with secure password
 - Grants necessary privileges
 - Runs database migrations
 
 **Production**:
+
 - Creates `mailersuite2_prod` database
 - Creates `mailersuite_prod` user with secure password
 - Configures production database settings
@@ -151,12 +162,14 @@ The system automatically detects and validates:
 ### **🔐 Security Automation**
 
 **Automatic Generation**:
+
 - Secure random secret keys
 - JWT secret keys
 - Database passwords
 - Production credentials
 
 **Security Features**:
+
 - Firewall configuration (UFW)
 - Systemd service files
 - Process isolation
@@ -165,12 +178,14 @@ The system automatically detects and validates:
 ### **📊 Process Management**
 
 **Development**:
+
 - PID file tracking
 - Health check monitoring
 - Graceful shutdown
 - Port verification
 
 **Production**:
+
 - PM2 process management
 - Auto-restart on failure
 - Load balancing
@@ -179,12 +194,14 @@ The system automatically detects and validates:
 ### **🔍 Health Monitoring**
 
 **Automatic Checks**:
+
 - Backend API health (`/health` endpoint)
 - Frontend availability
 - Database connectivity
 - Port availability
 
 **Health Metrics**:
+
 - Response time monitoring
 - Error rate tracking
 - Process status
@@ -263,6 +280,7 @@ pm2 logs
 The scripts automatically configure environment files:
 
 **Development**:
+
 ```bash
 # Backend
 DATABASE_URL=postgresql+asyncpg://mailersuite:password@localhost:5432/mailersuite2_dev
@@ -275,6 +293,7 @@ VITE_WS_URL=ws://localhost:8000/ws
 ```
 
 **Production**:
+
 ```bash
 # Backend
 DATABASE_URL=postgresql+asyncpg://mailersuite_prod:password@localhost:5432/mailersuite2_prod
@@ -287,6 +306,7 @@ ENVIRONMENT=production
 ### **Customization**
 
 **Script Configuration**:
+
 ```bash
 # Edit script variables
 nano scripts/deploy-dev.sh
@@ -299,6 +319,7 @@ VENV_DIR="$PROJECT_ROOT/venv"
 ```
 
 **Database Configuration**:
+
 ```bash
 # Custom database names
 DB_NAME="custom_db_name"
@@ -311,6 +332,7 @@ DB_PASSWORD="custom_password"
 ### **Common Issues**
 
 #### **1. Permission Denied**
+
 ```bash
 # Make scripts executable
 chmod +x scripts/*.sh
@@ -320,6 +342,7 @@ ls -la scripts/
 ```
 
 #### **2. Port Already in Use**
+
 ```bash
 # Check what's using the port
 lsof -i :8000
@@ -330,6 +353,7 @@ lsof -i :4000
 ```
 
 #### **3. Database Connection Failed**
+
 ```bash
 # Check PostgreSQL status
 sudo systemctl status postgresql
@@ -342,6 +366,7 @@ sudo -u postgres psql -c "\du"
 ```
 
 #### **4. PM2 Issues**
+
 ```bash
 # Reset PM2
 pm2 kill
@@ -372,6 +397,7 @@ bash -x scripts/deploy-dev.sh
 ### **Log Analysis**
 
 **Development Logs**:
+
 ```bash
 # Backend logs
 tail -f pids/backend.log
@@ -381,6 +407,7 @@ tail -f pids/frontend.log
 ```
 
 **Production Logs**:
+
 ```bash
 # PM2 logs
 pm2 logs
@@ -393,6 +420,7 @@ tail -f production/logs/frontend-pm2.log
 ## 📚 Integration with Existing Tools
 
 ### **Git Integration**
+
 ```bash
 # Pre-deployment
 git pull origin main
@@ -405,6 +433,7 @@ git push origin main
 ```
 
 ### **Docker Integration**
+
 ```bash
 # Build Docker images
 docker build -t mailersuite-backend ./backend
@@ -415,6 +444,7 @@ docker build -t mailersuite-frontend ./frontend
 ```
 
 ### **CI/CD Integration**
+
 ```bash
 # GitHub Actions example
 - name: Deploy to Production
@@ -426,18 +456,21 @@ docker build -t mailersuite-frontend ./frontend
 ## 🎯 Best Practices
 
 ### **Development Workflow**
+
 1. **Always check status** before deploying: `./scripts/deploy.sh status`
 2. **Use clean deployments** for fresh starts: `./scripts/deploy.sh -c dev`
 3. **Monitor logs** during development: `./scripts/deploy.sh logs`
 4. **Stop servers** when done: `./scripts/deploy.sh stop`
 
 ### **Production Workflow**
+
 1. **Test in development** first: `./scripts/deploy.sh dev`
 2. **Backup database** before production deployment
 3. **Monitor health** after deployment: `./scripts/deploy.sh status`
 4. **Check PM2 status** regularly: `pm2 status`
 
 ### **Security Considerations**
+
 1. **Never commit** `.env.production` files
 2. **Rotate credentials** regularly
 3. **Monitor logs** for security issues
@@ -446,6 +479,7 @@ docker build -t mailersuite-frontend ./frontend
 ## 🚀 Future Enhancements
 
 ### **Planned Features**
+
 - **Kubernetes Integration**: Container orchestration support
 - **Multi-Environment**: Staging, testing, and production
 - **Auto-Scaling**: Dynamic resource allocation
@@ -453,6 +487,7 @@ docker build -t mailersuite-frontend ./frontend
 - **Monitoring Dashboard**: Web-based monitoring interface
 
 ### **Customization Options**
+
 - **Plugin System**: Extensible deployment scripts
 - **Configuration Templates**: Environment-specific templates
 - **Integration APIs**: REST API for deployment management
@@ -463,6 +498,7 @@ docker build -t mailersuite-frontend ./frontend
 ## 📞 Support
 
 For deployment issues:
+
 1. Check the troubleshooting section
 2. Enable verbose mode: `./scripts/deploy.sh -v`
 3. Review logs: `./scripts/deploy.sh logs`
