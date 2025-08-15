@@ -72,8 +72,8 @@ function TableHead({ className, scope = "col", ...props }: React.ComponentProps<
       scope={scope}
       className={cn(
         "text-foreground h-10 px-4 py-3 text-left align-middle font-semibold sm:whitespace-nowrap bg-muted border border-border dark:border-border/40 dark:border-border dark:border-border/60 [&>[role=checkbox]]:translate-y-[2px]",
-      className
-    )}
+        className
+      )}
       {...props}
     />
   )
@@ -85,8 +85,8 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
       data-slot="table-cell"
       className={cn(
         "px-4 py-3 align-middle sm:whitespace-nowrap border border-border dark:border-border/40 dark:border-border dark:border-border/60 [&>[role=checkbox]]:translate-y-[2px]",
-      className
-    )}
+        className
+      )}
       {...props}
     />
   )

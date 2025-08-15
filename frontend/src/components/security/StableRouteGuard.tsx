@@ -3,16 +3,17 @@
  * Ensures all hooks are called consistently to prevent React hooks errors
  */
 
-import React, { useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { Navigate, useLocation, Outlet } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { UserX } from "lucide-react";
+import { Shield, AlertTriangle, Lock, UserX } from "lucide-react";
 import { useSecurityContext } from "./security-provider";
 import { IUser } from "../../types";
 import { clearSavedRoute } from "@/hooks/usePersistedRoute";
 import { useAuthStore } from "@/store/auth";
 import useAuth from "@/hooks/useAuth";
 import PageLoader from "@/components/PageLoader";
+import { isAuthBypassed } from "@/utils/devMode";
 
 interface StableRouteGuardProps {
   children: React.ReactNode;
@@ -23,28 +24,35 @@ interface StableRouteGuardProps {
   userData?: IUser | null;
 }
 
-export const StableRouteGuard = ({ 
-  children, 
+export const StableRouteGuard = ({
+  children,
   requiredAuth = true,
   requiredRole,
-  adminOnly = false, 
+  adminOnly = false,
   highSecurity = false,
-  userData: propUserData 
+  userData: propUserData
 }: StableRouteGuardProps) => {
-  // ALL HOOKS MUST BE CALLED AT THE TOP - NO CONDITIONAL HOOK CALLS
   const { isWithinRateLimit, getCurrentUsage } = useSecurityContext();
   const [isCheckingLimits, setIsCheckingLimits] = useState(true);
   const location = useLocation();
   const { userData: storeUserData, isLoading, token } = useAuthStore();
   const { isAdmin: isAdminFn } = useAuth();
-  
-  // Get user data from props or auth store
+  const lastPathRef = useRef<string>('');
+  const rateLimitTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Use prop userData if provided, otherwise use store userData
   const userData = propUserData || storeUserData;
+
+  // DEVELOPMENT MODE: Bypass all authentication checks
+  if (isAuthBypassed()) {
+    console.log('🔓 DEV MODE: Bypassing authentication - allowing access to all pages');
+    return <Outlet />;
+  }
 
   // Effect for rate limiting check
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
-    
+
     const checkLimits = async () => {
       try {
         if (!isWithinRateLimit(location.pathname)) {
@@ -69,10 +77,15 @@ export const StableRouteGuard = ({
   }, [location.pathname, isWithinRateLimit]);
 
   // Now we can safely use conditional logic since all hooks are called
-  
+
   // Rate limiting check
   if (isCheckingLimits || isLoading) {
     return <PageLoader />;
+  }
+
+  // Dev bypass: allow unrestricted access in development
+  if (import.meta.env.DEV) {
+    return <>{children}</>;
   }
 
   // If auth is required but user is not authenticated
@@ -80,32 +93,32 @@ export const StableRouteGuard = ({
     // 🛡️ ENHANCED LOGOUT PROTECTION: Check if logout is already in progress
     const logoutInProgress = sessionStorage.getItem('logout_in_progress')
     const lastLogout = sessionStorage.getItem('last_logout_time')
-    
+
     // Check if we're on an error page that shouldn't trigger auth redirects
     const currentPath = location.pathname;
     const errorPages = ['/404', '/403', '/500', '/error', '/not-found', '/unauthorized', '/maintenance'];
-    const isErrorPage = errorPages.some(page => 
+    const isErrorPage = errorPages.some(page =>
       currentPath === page || currentPath.startsWith(page + '/')
     );
-    
+
     // Don't redirect if we're on an error page (prevents logout on legitimate 404s)
     if (isErrorPage) {
       console.warn('🛡️ StableRouteGuard: Skipping auth redirect for error page:', currentPath)
       return <>{children}</> // Allow error page to render without auth
     }
-    
+
     // Don't redirect if logout happened recently (prevents redirect loops)
     if (lastLogout && (Date.now() - parseInt(lastLogout)) < 30000) {
       console.warn('🛡️ StableRouteGuard: Skipping redirect - recent logout detected')
       return <PageLoader />
     }
-    
+
     // Don't redirect if logout is in progress 
     if (logoutInProgress) {
       console.warn('🛡️ StableRouteGuard: Skipping redirect - logout in progress')
       return <PageLoader />
     }
-    
+
     clearSavedRoute();
     return <Navigate to="/auth/login" state={{ from: location }} replace />;
   }
@@ -122,17 +135,17 @@ export const StableRouteGuard = ({
       console.log('🔄 StableRouteGuard: Loading user data for admin route...');
       return <PageLoader />;
     }
-    
+
     if (!isAdminFn()) {
-      console.log('🔒 StableRouteGuard: Admin access denied', { 
-        adminOnly, 
-        requiredRole, 
+      console.log('🔒 StableRouteGuard: Admin access denied', {
+        adminOnly,
+        requiredRole,
         userData: userData ? { ...userData, is_admin: userData.is_admin } : 'null',
         isAdmin: isAdminFn(),
         isLoading,
         hasToken: !!token
       });
-      
+
       return (
         <div className="flex items-center justify-center min-h-screen bg-background">
           <Alert className="max-w-md">
@@ -150,7 +163,7 @@ export const StableRouteGuard = ({
   if (highSecurity) {
     const usage = getCurrentUsage();
     const isHighRisk = usage.requests > 100 || usage.errors > 10;
-    
+
     if (isHighRisk) {
       return (
         <div className="flex items-center justify-center min-h-screen bg-background">

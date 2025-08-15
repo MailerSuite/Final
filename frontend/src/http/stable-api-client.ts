@@ -54,7 +54,8 @@ class StableAPIClient {
 
   constructor() {
     // Use environment variables with fallbacks
-    this.baseURL = import.meta.env.VITE_API_BASE || import.meta.env.VITE_API_URL || '/api';
+    // Set baseURL to empty string since OpenAPI paths include /api prefix
+    this.baseURL = import.meta.env.VITE_API_BASE_URL || '';
     this.defaultHeaders = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -117,10 +118,13 @@ class StableAPIClient {
   private getAuthToken(): string | null {
     // Try to get token from localStorage or other sources
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('auth_token') || 
-             localStorage.getItem('token') || 
-             sessionStorage.getItem('auth_token') ||
-             null;
+      // Prefer explicit dev bypass token if present
+      const devBypass = localStorage.getItem('token') || sessionStorage.getItem('auth_token')
+      if (devBypass) return devBypass
+      return localStorage.getItem('auth_token') ||
+        localStorage.getItem('token') ||
+        sessionStorage.getItem('auth_token') ||
+        null;
     }
     return null;
   }
@@ -210,12 +214,9 @@ class StableAPIClient {
     if (endpoint.startsWith('/')) {
       endpoint = endpoint.substring(1);
     }
-    
-    // Add /api prefix if not present
-    if (!endpoint.startsWith('api/')) {
-      endpoint = `api/${endpoint}`;
-    }
-    
+
+    // Don't add api/ prefix if it's already present
+    // This was causing double-prefix issues like api/api/v1/health
     return endpoint;
   }
 
@@ -250,7 +251,7 @@ class StableAPIClient {
         details: error.response?.data,
       };
     }
-    
+
     return {
       message: error.message || 'Unknown error occurred',
       status: 0,
@@ -301,7 +302,7 @@ class StableAPIClient {
   // Health check method
   async healthCheck(): Promise<{ status: string; timestamp: string }> {
     try {
-      const response = await this.get('/health/live');
+      const response = await this.get('/api/v1/health/live');
       return {
         status: 'healthy',
         timestamp: new Date().toISOString(),
@@ -327,7 +328,7 @@ export default apiClient;
 
 // ==================== UTILITY FUNCTIONS ====================
 
-export const validateResponse = function<T>(
+export const validateResponse = function <T>(
   response: StandardAPIResponse<T>
 ): T {
   if (!response.success) {

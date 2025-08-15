@@ -6,11 +6,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  Mail, 
-  ArrowLeft, 
-  Home, 
-  Loader2, 
+import {
+  Mail,
+  ArrowLeft,
+  Home,
+  Loader2,
   CheckCircle,
   RefreshCw,
   Zap
@@ -20,14 +20,15 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/useToast';
-import { 
-  containerVariants, 
-  floatingVariants, 
-  pulseVariants, 
-  slideUpVariants, 
-  scaleVariants, 
-  fadeInVariants 
+import {
+  containerVariants,
+  floatingVariants,
+  pulseVariants,
+  slideUpVariants,
+  scaleVariants,
+  fadeInVariants
 } from '@/lib/animations';
+import StandardPageWrapper from '@/components/layout/StandardPageWrapper';
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
@@ -72,16 +73,16 @@ const ForgotPasswordPage = () => {
 
       if (response.ok) {
         setSubmitted(true);
-        toast({ 
-          description: 'Password reset instructions sent to your email', 
-          severity: 'success' 
+        toast({
+          description: 'Password reset instructions sent to your email',
+          severity: 'success'
         });
       } else {
         // Even on error, we don't reveal if email exists (security)
         setSubmitted(true);
-        toast({ 
-          description: 'If the email address is registered, you will receive password reset instructions', 
-          severity: 'info' 
+        toast({
+          description: 'If the email address is registered, you will receive password reset instructions',
+          severity: 'info'
         });
       }
     } catch (err: unknown) {
@@ -146,11 +147,11 @@ const ForgotPasswordPage = () => {
                   >
                     <CheckCircle className="w-8 h-8" />
                   </motion.div>
-                  
+
                   <h1 className="text-3xl font-bold text-foreground">
                     Check Your Email
                   </h1>
-                  
+
                   <p className="text-lg text-muted-foreground leading-relaxed">
                     Password reset instructions have been sent to
                     <br />
@@ -163,7 +164,7 @@ const ForgotPasswordPage = () => {
                   <p className="text-sm text-muted-foreground">
                     Didn't receive the email? Check your spam folder or try again.
                   </p>
-                  
+
                   <div className="flex flex-col gap-3">
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Button
@@ -179,7 +180,7 @@ const ForgotPasswordPage = () => {
                         Try Again
                       </Button>
                     </motion.div>
-                    
+
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Button
                         onClick={handleGoToLogin}
@@ -200,7 +201,7 @@ const ForgotPasswordPage = () => {
                 >
                   <p className="text-sm text-muted-foreground">
                     Need help?{' '}
-                    <button 
+                    <button
                       onClick={() => navigate('/contact')}
                       className="text-primary hover:text-primary/80 underline underline-offset-2 transition-colors"
                     >
@@ -241,7 +242,11 @@ const ForgotPasswordPage = () => {
 
   // Main forgot password form
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative">
+    <StandardPageWrapper
+      title="Reset Password"
+      subtitle="Enter your email to receive reset instructions"
+      className="min-h-screen flex items-center justify-center p-4 relative"
+    >
       {/* Background Elements */}
       <div className="absolute inset-0">
         <motion.div
@@ -321,7 +326,7 @@ const ForgotPasswordPage = () => {
                 >
                   <Mail className="w-8 h-8" />
                 </motion.div>
-                
+
                 <div className="space-y-2">
                   <h2 className="text-3xl font-bold text-foreground">
                     Forgot Password?
@@ -411,7 +416,7 @@ const ForgotPasswordPage = () => {
                     Back to Login
                   </Button>
                 </motion.div>
-                
+
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <Button
                     onClick={handleGoHome}
@@ -431,7 +436,7 @@ const ForgotPasswordPage = () => {
               >
                 <p className="text-sm text-muted-foreground">
                   Remember your password?{' '}
-                  <button 
+                  <button
                     onClick={handleGoToLogin}
                     className="text-primary hover:text-primary/80 underline underline-offset-2 transition-colors"
                   >
@@ -466,7 +471,7 @@ const ForgotPasswordPage = () => {
           ))}
         </motion.div>
       </motion.div>
-    </div>
+    </StandardPageWrapper>
   );
 };
 

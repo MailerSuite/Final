@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { 
+import {
   ServerIcon,
   GlobeAltIcon,
   BoltIcon,
@@ -37,16 +37,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Progress } from '@/components/ui/progress'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
+import StandardPageWrapper from '@/components/layout/StandardPageWrapper'
 
 // Mock data for thousands of SMTPs
 const generateMockSMTPs = (count: number) => {
@@ -64,16 +65,16 @@ const generateMockSMTPs = (count: number) => {
     { code: 'IN', name: 'India', flag: '🇮🇳' },
     { code: 'KR', name: 'South Korea', flag: '🇰🇷' },
   ]
-  
+
   const providers = ['SendGrid', 'AWS SES', 'Mailgun', 'SparkPost', 'Postmark', 'SMTP2GO', 'Elastic', 'Private']
   const statuses = ['clean', 'blacklisted', 'warming', 'suspended']
-  
+
   return Array.from({ length: count }, (_, i) => {
     const country = countries[Math.floor(Math.random() * countries.length)]
     const status = statuses[Math.floor(Math.random() * statuses.length)]
     const isBlacklisted = status === 'blacklisted'
     const reputation = isBlacklisted ? Math.random() * 30 : 70 + Math.random() * 30
-    
+
     return {
       id: `smtp-${i + 1}`,
       hostname: `smtp-${i + 1}.mailer-pool.com`,
@@ -127,14 +128,14 @@ const SmtpPoolPage: React.FC = () => {
         setSmtps(prev => {
           const rotatingSmtps = prev.filter(s => s.rotating)
           const nonRotatingSmtps = prev.filter(s => !s.rotating)
-          
+
           // Shuffle rotating SMTPs
           const shuffled = [...rotatingSmtps].sort(() => Math.random() - 0.5)
-          
+
           return [...shuffled, ...nonRotatingSmtps]
         })
       }, rotationInterval * 1000)
-      
+
       return () => clearInterval(interval)
     }
   }, [isAutoRotating, rotationInterval])
@@ -142,64 +143,64 @@ const SmtpPoolPage: React.FC = () => {
   // Filter and sort effect
   useEffect(() => {
     let filtered = [...smtps]
-    
+
     // Search filter
     if (searchQuery) {
-      filtered = filtered.filter(s => 
+      filtered = filtered.filter(s =>
         s.hostname.toLowerCase().includes(searchQuery.toLowerCase()) ||
         s.ip.includes(searchQuery) ||
         s.provider.toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
-    
+
     // Country filter
     if (countryFilter !== 'all') {
       filtered = filtered.filter(s => s.country.code === countryFilter)
     }
-    
+
     // Status filter
     if (statusFilter !== 'all') {
       filtered = filtered.filter(s => s.status === statusFilter)
     }
-    
+
     // Provider filter
     if (providerFilter !== 'all') {
       filtered = filtered.filter(s => s.provider === providerFilter)
     }
-    
+
     // Price range filter
-    filtered = filtered.filter(s => 
+    filtered = filtered.filter(s =>
       parseFloat(s.price) >= priceRange[0] && parseFloat(s.price) <= priceRange[1]
     )
-    
+
     // Speed range filter
     filtered = filtered.filter(s => s.speed >= speedRange[0] && s.speed <= speedRange[1])
-    
+
     // Rotating filter
     if (showRotatingOnly) {
       filtered = filtered.filter(s => s.rotating)
     }
-    
+
     // Dedicated filter
     if (showDedicatedOnly) {
       filtered = filtered.filter(s => s.dedicated)
     }
-    
+
     // Sorting
     filtered.sort((a, b) => {
       let aVal = a[sortBy as keyof typeof a]
       let bVal = b[sortBy as keyof typeof b]
-      
+
       if (typeof aVal === 'string') aVal = aVal.toLowerCase()
       if (typeof bVal === 'string') bVal = bVal.toLowerCase()
-      
+
       if (sortOrder === 'asc') {
         return aVal > bVal ? 1 : -1
       } else {
         return aVal < bVal ? 1 : -1
       }
     })
-    
+
     setFilteredSmtps(filtered)
   }, [smtps, searchQuery, countryFilter, statusFilter, providerFilter, priceRange, speedRange, showRotatingOnly, showDedicatedOnly, sortBy, sortOrder])
 
@@ -207,11 +208,11 @@ const SmtpPoolPage: React.FC = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   )
-  
+
   const totalPages = Math.ceil(filteredSmtps.length / itemsPerPage)
 
   const handleSelectSmtp = (id: string) => {
-    setSelectedSmtps(prev => 
+    setSelectedSmtps(prev =>
       prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
     )
   }
@@ -256,47 +257,32 @@ const SmtpPoolPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-full bg-gradient-dark relative">
-      {/* SOON Badge */}
-      <div className="absolute top-4 right-4 z-50">
-        <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-2 text-lg font-bold shadow-lg">
-          COMING SOON
-        </Badge>
-      </div>
-      
-      {/* Header */}
-      <div className="px-6 py-4 border-b border-border bg-background/50">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-transparent">
-              SMTP Pool Manager
-            </h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              {filteredSmtps.length.toLocaleString()} SMTPs available • {selectedSmtps.length} selected
-            </p>
-          </div>
-          
-          <div className="flex items-center gap-3">
-            <Badge variant="outline" className={cn(
-              "px-3 py-1",
-              isAutoRotating ? "border-emerald-500/50 text-emerald-400" : "border-border text-muted-foreground"
-            )}>
-              <ArrowsRightLeftIcon className="w-4 h-4 mr-2" />
-              {isAutoRotating ? 'Auto-Rotating' : 'Static'}
-            </Badge>
-            
-            <Button variant="outline" className="bg-card/50 border-border">
-              <ArrowDownTrayIcon className="w-4 h-4 mr-2" />
-              Export List
-            </Button>
-            
-            <Button className="bg-gradient-to-r from-sky-500 to-indigo-500">
-              <PlusIcon className="w-4 h-4 mr-2" />
-              Add SMTP
-            </Button>
-          </div>
-        </div>
-      </div>
+    <StandardPageWrapper
+      title="SMTP Pool Manager"
+      subtitle={`${filteredSmtps.length.toLocaleString()} SMTPs available • ${selectedSmtps.length} selected`}
+      showComingSoon={true}
+      actions={
+        <>
+          <Badge variant="outline" className={cn(
+            "px-3 py-1",
+            isAutoRotating ? "border-emerald-500/50 text-emerald-400" : "border-border text-muted-foreground"
+          )}>
+            <ArrowsRightLeftIcon className="w-4 h-4 mr-2" />
+            {isAutoRotating ? 'Auto-Rotating' : 'Static'}
+          </Badge>
+
+          <Button variant="outline" className="bg-card/50 border-border">
+            <ArrowDownTrayIcon className="w-4 h-4 mr-2" />
+            Export List
+          </Button>
+
+          <Button className="bg-gradient-to-r from-sky-500 to-indigo-500">
+            <PlusIcon className="w-4 h-4 mr-2" />
+            Add SMTP
+          </Button>
+        </>
+      }
+    >
 
       {/* Filters Bar */}
       <div className="px-6 py-4 border-b border-border bg-background/30">
@@ -312,7 +298,7 @@ const SmtpPoolPage: React.FC = () => {
               />
             </div>
           </div>
-          
+
           <Select value={countryFilter} onValueChange={setCountryFilter}>
             <SelectTrigger className="w-[150px] bg-card/50 border-border">
               <SelectValue placeholder="Country" />
@@ -326,7 +312,7 @@ const SmtpPoolPage: React.FC = () => {
               <SelectItem value="JP">🇯🇵 Japan</SelectItem>
             </SelectContent>
           </Select>
-          
+
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[150px] bg-card/50 border-border">
               <SelectValue placeholder="Status" />
@@ -339,7 +325,7 @@ const SmtpPoolPage: React.FC = () => {
               <SelectItem value="suspended">Suspended</SelectItem>
             </SelectContent>
           </Select>
-          
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="bg-card/50 border-border">
@@ -350,7 +336,7 @@ const SmtpPoolPage: React.FC = () => {
             <DropdownMenuContent className="w-72 bg-background border-border" align="end">
               <DropdownMenuLabel>Advanced Filters</DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-card" />
-              
+
               <div className="p-3 space-y-4">
                 <div>
                   <Label className="text-xs text-muted-foreground">Price Range ($/1000 emails)</Label>
@@ -366,7 +352,7 @@ const SmtpPoolPage: React.FC = () => {
                     <span className="text-sm">${priceRange[1]}</span>
                   </div>
                 </div>
-                
+
                 <div>
                   <Label className="text-xs text-muted-foreground">Speed Range (emails/hour)</Label>
                   <div className="flex items-center gap-2 mt-2">
@@ -381,7 +367,7 @@ const SmtpPoolPage: React.FC = () => {
                     <span className="text-sm">{speedRange[1]}</span>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <Label className="text-xs">Rotating Only</Label>
                   <Switch
@@ -389,7 +375,7 @@ const SmtpPoolPage: React.FC = () => {
                     onCheckedChange={setShowRotatingOnly}
                   />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <Label className="text-xs">Dedicated Only</Label>
                   <Switch
@@ -400,7 +386,7 @@ const SmtpPoolPage: React.FC = () => {
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
-          
+
           <div className="flex items-center gap-2 ml-auto">
             <Label className="text-xs text-muted-foreground">Auto-Rotate</Label>
             <Switch
@@ -436,7 +422,7 @@ const SmtpPoolPage: React.FC = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="glass-card border-border">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -450,7 +436,7 @@ const SmtpPoolPage: React.FC = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="glass-card border-border">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -464,7 +450,7 @@ const SmtpPoolPage: React.FC = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="glass-card border-border">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -478,7 +464,7 @@ const SmtpPoolPage: React.FC = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="glass-card border-border">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -492,7 +478,7 @@ const SmtpPoolPage: React.FC = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="glass-card border-border">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -520,7 +506,7 @@ const SmtpPoolPage: React.FC = () => {
                 onCheckedChange={handleSelectAll}
                 className="mr-4"
               />
-              
+
               <div className="flex items-center gap-4 flex-1">
                 <Button
                   variant="ghost"
@@ -534,7 +520,7 @@ const SmtpPoolPage: React.FC = () => {
                   Hostname
                   <ChevronUpDownIcon className="w-3 h-3 ml-1" />
                 </Button>
-                
+
                 <Button
                   variant="ghost"
                   size="sm"
@@ -547,7 +533,7 @@ const SmtpPoolPage: React.FC = () => {
                   Country
                   <ChevronUpDownIcon className="w-3 h-3 ml-1" />
                 </Button>
-                
+
                 <Button
                   variant="ghost"
                   size="sm"
@@ -560,7 +546,7 @@ const SmtpPoolPage: React.FC = () => {
                   Status
                   <ChevronUpDownIcon className="w-3 h-3 ml-1" />
                 </Button>
-                
+
                 <Button
                   variant="ghost"
                   size="sm"
@@ -573,7 +559,7 @@ const SmtpPoolPage: React.FC = () => {
                   Ping
                   <ChevronUpDownIcon className="w-3 h-3 ml-1" />
                 </Button>
-                
+
                 <Button
                   variant="ghost"
                   size="sm"
@@ -586,7 +572,7 @@ const SmtpPoolPage: React.FC = () => {
                   Speed
                   <ChevronUpDownIcon className="w-3 h-3 ml-1" />
                 </Button>
-                
+
                 <Button
                   variant="ghost"
                   size="sm"
@@ -601,7 +587,7 @@ const SmtpPoolPage: React.FC = () => {
                 </Button>
               </div>
             </div>
-            
+
             {/* Table Body */}
             <ScrollArea className="flex-1">
               <div className="space-y-1 p-4">
@@ -620,27 +606,27 @@ const SmtpPoolPage: React.FC = () => {
                       onCheckedChange={() => handleSelectSmtp(smtp.id)}
                       className="mr-4"
                     />
-                    
+
                     <div className="flex items-center gap-6 flex-1">
                       {/* Hostname & IP */}
                       <div className="min-w-[200px]">
                         <p className="text-sm font-medium text-white">{smtp.hostname}</p>
                         <p className="text-xs text-muted-foreground">{smtp.ip}:{smtp.port}</p>
                       </div>
-                      
+
                       {/* Country */}
                       <div className="min-w-[120px] flex items-center gap-2">
                         <span className="text-lg">{smtp.country.flag}</span>
                         <span className="text-sm text-muted-foreground">{smtp.country.name}</span>
                       </div>
-                      
+
                       {/* Provider */}
                       <div className="min-w-[100px]">
                         <Badge variant="outline" className="text-xs border-border">
                           {smtp.provider}
                         </Badge>
                       </div>
-                      
+
                       {/* Status */}
                       <div className="min-w-[100px]">
                         <Badge className={cn("text-xs", getStatusBadge(smtp.status))}>
@@ -651,7 +637,7 @@ const SmtpPoolPage: React.FC = () => {
                           {smtp.status}
                         </Badge>
                       </div>
-                      
+
                       {/* Ping */}
                       <div className="min-w-[80px]">
                         <div className="flex items-center gap-1">
@@ -661,7 +647,7 @@ const SmtpPoolPage: React.FC = () => {
                           </span>
                         </div>
                       </div>
-                      
+
                       {/* Speed */}
                       <div className="min-w-[100px]">
                         <div className="flex items-center gap-1">
@@ -669,25 +655,25 @@ const SmtpPoolPage: React.FC = () => {
                           <span className="text-sm text-white">{smtp.speed}/hr</span>
                         </div>
                       </div>
-                      
+
                       {/* Reputation */}
                       <div className="min-w-[120px]">
                         <div className="flex items-center gap-2">
-                          <Progress 
-                            value={smtp.reputation} 
+                          <Progress
+                            value={smtp.reputation}
                             className="h-2 flex-1"
                           />
                           <span className="text-xs text-muted-foreground">{Math.round(smtp.reputation)}%</span>
                         </div>
                       </div>
-                      
+
                       {/* Price */}
                       <div className="min-w-[80px]">
                         <span className="text-sm font-medium text-emerald-400">
                           ${smtp.price}/1k
                         </span>
                       </div>
-                      
+
                       {/* Features */}
                       <div className="flex items-center gap-2 min-w-[100px]">
                         {smtp.ssl && (
@@ -706,7 +692,7 @@ const SmtpPoolPage: React.FC = () => {
                           </Badge>
                         )}
                       </div>
-                      
+
                       {/* Actions */}
                       <div className="flex items-center gap-1 ml-auto">
                         <Button
@@ -721,7 +707,7 @@ const SmtpPoolPage: React.FC = () => {
                           <ShieldCheckIcon className="w-4 h-4 mr-1" />
                           Check
                         </Button>
-                        
+
                         <Button
                           variant="ghost"
                           size="sm"
@@ -730,7 +716,7 @@ const SmtpPoolPage: React.FC = () => {
                         >
                           <ShoppingCartIcon className="w-4 h-4" />
                         </Button>
-                        
+
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -759,13 +745,13 @@ const SmtpPoolPage: React.FC = () => {
                 ))}
               </div>
             </ScrollArea>
-            
+
             {/* Pagination */}
             <div className="flex items-center justify-between p-4 border-t border-border">
               <div className="text-sm text-muted-foreground">
                 Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, filteredSmtps.length)} of {filteredSmtps.length} SMTPs
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
@@ -776,12 +762,12 @@ const SmtpPoolPage: React.FC = () => {
                 >
                   Previous
                 </Button>
-                
+
                 <div className="flex items-center gap-1">
                   {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                     const page = currentPage - 2 + i
                     if (page < 1 || page > totalPages) return null
-                    
+
                     return (
                       <Button
                         key={page}
@@ -800,7 +786,7 @@ const SmtpPoolPage: React.FC = () => {
                     )
                   })}
                 </div>
-                
+
                 <Button
                   variant="outline"
                   size="sm"
@@ -825,7 +811,7 @@ const SmtpPoolPage: React.FC = () => {
               Configure your purchase for {selectedPurchaseSmtp?.hostname}
             </DialogDescription>
           </DialogHeader>
-          
+
           {selectedPurchaseSmtp && (
             <div className="space-y-4 py-4">
               <div className="flex items-center justify-between p-3 rounded-lg bg-card/50">
@@ -837,7 +823,7 @@ const SmtpPoolPage: React.FC = () => {
                   {selectedPurchaseSmtp.status}
                 </Badge>
               </div>
-              
+
               <div className="space-y-3">
                 <div>
                   <Label>Subscription Period</Label>
@@ -853,7 +839,7 @@ const SmtpPoolPage: React.FC = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div>
                   <Label>Email Volume</Label>
                   <Select defaultValue="10000">
@@ -869,7 +855,7 @@ const SmtpPoolPage: React.FC = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div className="flex items-center justify-between py-3 border-t border-border">
                   <span className="text-sm text-muted-foreground">Total Cost</span>
                   <span className="text-xl font-bold text-emerald-400">
@@ -877,7 +863,7 @@ const SmtpPoolPage: React.FC = () => {
                   </span>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-3">
                 <Button
                   variant="outline"
@@ -895,7 +881,7 @@ const SmtpPoolPage: React.FC = () => {
           )}
         </DialogContent>
       </Dialog>
-    </div>
+    </StandardPageWrapper>
   )
 }
 

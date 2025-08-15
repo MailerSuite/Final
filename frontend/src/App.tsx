@@ -5,7 +5,7 @@ import PremiumMailLoader from '@/components/ui/PremiumMailLoader'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ThemeProvider } from '@/components/providers/theme-provider'
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from 'sonner'
 import GlobalLoadingOverlay from '@/components/ui/GlobalLoadingOverlay'
 import CommandPalette, { useCommandPalette } from '@/components/ui/command-palette'
 import FloatingActionButton from '@/components/ui/floating-action-button'
@@ -64,6 +64,7 @@ const PrivacyPage = lazy(() => import('@/pages/legal/privacy'))
 // Landing Pages
 const SpamGPTHero = lazy(() => import('@/components/landing/spamgpt/SpamGPTHero'))
 const LandingPageIndex = lazy(() => import('@/pages/landing'))
+const OAuthCallbackPage = lazy(() => import('@/pages/OAuthCallbackPage'))
 
 import SkeletonAI from '@/components/ui/SkeletonAI'
 import MainLayout from '@/layouts/MainLayout'
@@ -364,74 +365,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // Specific routes for main navigation items
-  {
-    path: '/campaigns/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/templates/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/contacts/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/lead-bases/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/analytics/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  // AI Tools routes
-  {
-    path: '/ai-tutor/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
+  // Keep only the standalone pages that aren't handled by FinalUI2
   {
     path: '/workspace-test',
     element: (
@@ -454,200 +388,21 @@ const router = createBrowserRouter([
       </Suspense>
     )
   },
-  {
-    path: '/assistant/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/content-generator/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/email-optimizer/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/analytics-dashboard/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/lead-scorer/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/content-personalizer/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  // Tools routes
-  {
-    path: '/smtp-checker/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/smtp-pool/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/imap-inbox/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/live-console/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/blacklist-status/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/proxies/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/proxy-pool/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/domains/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/performance/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/playground/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/settings/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
   // Landing Pages
   {
     path: '/landing',
     element: (
       <Suspense fallback={<Loading />}>
         <LandingPageIndex />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/oauth/callback',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <OAuthCallbackPage />
         <AppWrapper />
       </Suspense>
     )
@@ -663,11 +418,15 @@ const router = createBrowserRouter([
     )
   },
   // Mount main app at root for any remaining routes
+  // This will handle all routes not explicitly defined above
   {
     path: '/*',
     element: (
       <Suspense fallback={<Loading />}>
         <MainLayout>
+          <div className="debug-info" style={{ position: 'fixed', top: '10px', right: '10px', background: 'red', color: 'white', padding: '5px', zIndex: 9999 }}>
+            App.tsx /* route - Path: {window.location.pathname}
+          </div>
           <FinalUI2 />
         </MainLayout>
         <AppWrapper />

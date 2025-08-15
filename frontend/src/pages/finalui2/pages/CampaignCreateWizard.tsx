@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Separator } from '@/components/ui/separator'
-import { toast } from '@/hooks/useToast'
+import { toast } from 'sonner'
 import { getSessionId } from '@/utils/getSessionId'
 import { createCampaign } from '@/api/campaigns'
 import { listTemplates } from '@/api/templates'
@@ -487,8 +487,8 @@ const CampaignCreateWizard: React.FC = () => {
                     {recurringType === 'monthly' && (
                       <div>
                         <Label>Day of Month</Label>
-                        <Select 
-                          value={recurringDays[0]?.toString() || '1'} 
+                        <Select
+                          value={recurringDays[0]?.toString() || '1'}
                           onValueChange={(value) => setRecurringDays([Number(value)])}
                         >
                           <SelectTrigger>
@@ -512,21 +512,21 @@ const CampaignCreateWizard: React.FC = () => {
                     <Switch checked={sendTimeOptimization} onCheckedChange={setSendTimeOptimization} />
                     <Label>Send Time Optimization</Label>
                   </div>
-                  
+
                   {sendTimeOptimization && (
                     <div className="p-3 border rounded-lg bg-muted/20">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label>Optimization Window (hours)</Label>
-                          <Input 
-                            type="number" 
-                            value={optimizationWindow} 
-                            onChange={(e) => setOptimizationWindow(Number(e.target.value))} 
-                            min="1" 
-                            max="24" 
+                          <Input
+                            type="number"
+                            value={optimizationWindow}
+                            onChange={(e) => setOptimizationWindow(Number(e.target.value))}
+                            min="1"
+                            max="24"
                           />
                           <div className="text-xs text-muted-foreground mt-1">
-                            Campaign will be sent within {optimizationWindow} hours of the scheduled time 
+                            Campaign will be sent within {optimizationWindow} hours of the scheduled time
                             based on recipient engagement patterns.
                           </div>
                         </div>
@@ -629,7 +629,7 @@ const CampaignCreateWizard: React.FC = () => {
                               <Label>Subject Line</Label>
                               <Input
                                 value={variant.subject}
-                                onChange={(e) => setAbVariants(prev => prev.map(v => 
+                                onChange={(e) => setAbVariants(prev => prev.map(v =>
                                   v.id === variant.id ? { ...v, subject: e.target.value } : v
                                 ))}
                                 placeholder={index === 0 ? "Control subject" : "Variant subject"}
@@ -644,7 +644,7 @@ const CampaignCreateWizard: React.FC = () => {
                                   const newPercentage = Number(e.target.value)
                                   if (newPercentage >= 0 && newPercentage <= 100) {
                                     setAbVariants(prev => {
-                                      const updated = prev.map(v => 
+                                      const updated = prev.map(v =>
                                         v.id === variant.id ? { ...v, percentage: newPercentage } : v
                                       )
                                       // Normalize percentages to sum to 100
@@ -668,7 +668,7 @@ const CampaignCreateWizard: React.FC = () => {
                               <Label>Content (optional)</Label>
                               <Textarea
                                 value={variant.content}
-                                onChange={(e) => setAbVariants(prev => prev.map(v => 
+                                onChange={(e) => setAbVariants(prev => prev.map(v =>
                                   v.id === variant.id ? { ...v, content: e.target.value } : v
                                 ))}
                                 placeholder="Leave empty to use control content"
@@ -680,7 +680,7 @@ const CampaignCreateWizard: React.FC = () => {
                       ))}
 
                       <div className="text-xs text-muted-foreground">
-                        A/B test will run for {abDuration} days with {abTestSize.toLocaleString()} recipients. 
+                        A/B test will run for {abDuration} days with {abTestSize.toLocaleString()} recipients.
                         Winner will be selected based on {abMetric.replace('_', ' ')} performance.
                       </div>
                     </div>
@@ -744,7 +744,7 @@ const CampaignCreateWizard: React.FC = () => {
                                   <Label>Step Name</Label>
                                   <Input
                                     value={step.name}
-                                    onChange={(e) => setDripSteps(prev => prev.map(s => 
+                                    onChange={(e) => setDripSteps(prev => prev.map(s =>
                                       s.id === step.id ? { ...s, name: e.target.value } : s
                                     ))}
                                     placeholder="e.g., Welcome, Follow-up, Reminder"
@@ -756,7 +756,7 @@ const CampaignCreateWizard: React.FC = () => {
                                     <Input
                                       type="number"
                                       value={step.delay}
-                                      onChange={(e) => setDripSteps(prev => prev.map(s => 
+                                      onChange={(e) => setDripSteps(prev => prev.map(s =>
                                         s.id === step.id ? { ...s, delay: Number(e.target.value) } : s
                                       ))}
                                       min="0"
@@ -777,7 +777,7 @@ const CampaignCreateWizard: React.FC = () => {
                                   <Label>Subject Line</Label>
                                   <Input
                                     value={step.subject}
-                                    onChange={(e) => setDripSteps(prev => prev.map(s => 
+                                    onChange={(e) => setDripSteps(prev => prev.map(s =>
                                       s.id === step.id ? { ...s, subject: e.target.value } : s
                                     ))}
                                     placeholder="Subject for this step"
@@ -789,7 +789,7 @@ const CampaignCreateWizard: React.FC = () => {
                                 <Label>Content (optional)</Label>
                                 <Textarea
                                   value={step.content}
-                                  onChange={(e) => setDripSteps(prev => prev.map(s => 
+                                  onChange={(e) => setDripSteps(prev => prev.map(s =>
                                     s.id === step.id ? { ...s, content: e.target.value } : s
                                   ))}
                                   placeholder="Leave empty to use main template content"
@@ -798,15 +798,15 @@ const CampaignCreateWizard: React.FC = () => {
                               </div>
 
                               <div className="text-xs text-muted-foreground">
-                                {step.delay === 0 ? 'This step will be sent immediately' : 
-                                 `This step will be sent ${step.delay} ${dripDelayUnit} after the previous step`}
+                                {step.delay === 0 ? 'This step will be sent immediately' :
+                                  `This step will be sent ${step.delay} ${dripDelayUnit} after the previous step`}
                               </div>
                             </div>
                           ))}
                         </div>
 
                         <div className="text-xs text-muted-foreground">
-                          Drip sequences automatically send follow-up emails based on timing and recipient behavior. 
+                          Drip sequences automatically send follow-up emails based on timing and recipient behavior.
                           Each step can have different content and delays.
                         </div>
                       </div>

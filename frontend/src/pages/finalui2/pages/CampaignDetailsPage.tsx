@@ -25,7 +25,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { toast } from '@/hooks/useToast';
+import { toast } from 'sonner';
 import PageConsole from '@/components/ui/PageConsole';
 import {
   Select,
@@ -198,7 +198,7 @@ const CampaignDetailsPage: React.FC = () => {
   // Real-time metrics updates for running campaigns
   useEffect(() => {
     if (!campaign || campaign.status !== 'running') return;
-    
+
     const interval = setInterval(async () => {
       try {
         const progress = await campaignProgress(id);
@@ -825,7 +825,7 @@ const CampaignDetailsPage: React.FC = () => {
               ) : (
                 <p className="text-sm text-muted-foreground">No thread pool assigned</p>
               )}
-              
+
               <div className="mt-4 space-y-3">
                 <Label>Assign Thread Pool</Label>
                 <div className="flex items-center gap-2">
@@ -868,9 +868,9 @@ const CampaignDetailsPage: React.FC = () => {
                     Remove
                   </Button>
                 </div>
-                
+
                 <div className="text-xs text-muted-foreground">
-                  Thread pools control how many emails can be sent simultaneously. 
+                  Thread pools control how many emails can be sent simultaneously.
                   Higher thread counts increase speed but may trigger rate limits.
                 </div>
               </div>

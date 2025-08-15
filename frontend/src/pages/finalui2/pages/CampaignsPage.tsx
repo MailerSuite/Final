@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getSessionId } from '@/utils/getSessionId';
 import { listCampaigns } from '@/api/campaigns';
+import type { Campaign as ApiCampaign } from '@/types/campaign';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { generateCampaignData } from '@/services/mockData';
 // Using MainLayout globally; no local layout wrapper
@@ -32,7 +33,7 @@ import {
   stopCampaign,
   deleteCampaign
 } from '@/api/campaigns';
-  import { apiClient } from '@/http/stable-api-client'
+import { apiClient } from '@/http/stable-api-client'
 // Error presentation moved to stable API client
 // For now, using simple error handling
 const presentErrorToUser = (error: unknown) => console.error('Error:', error);
@@ -49,7 +50,7 @@ import {
 } from '@/components/ui/hover-card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TableSkeletonRow } from '@/components/table-skeleton';
-import { toast } from '@/hooks/useToast';
+import { toast } from 'sonner';
 // Removed legacy ui-kit ActionButton; using shadcn Button variants exclusively
 import {
   AreaChart,
@@ -99,35 +100,31 @@ import {
   HeartIcon as HeartIconSolid
 } from '@heroicons/react/24/solid';
 
-interface Campaign {
-  id: string;
-  name: string;
-  status: 'draft' | 'scheduled' | 'running' | 'paused' | 'completed' | 'failed';
-  type: 'regular' | 'automated' | 'ab-test' | 'drip' | 'transactional';
-  subject: string;
-  fromName: string;
-  fromEmail: string;
-  replyTo: string;
-  lists: string[];
-  segments: string[];
-  totalRecipients: number;
-  sent: number;
-  delivered: number;
-  opened: number;
-  clicked: number;
-  bounced: number;
-  unsubscribed: number;
-  complained: number;
-  revenue: number;
+// Local Campaign interface for the UI - extends the API type with UI-specific properties
+interface Campaign extends ApiCampaign {
+  type?: 'regular' | 'automated' | 'ab-test' | 'drip' | 'transactional';
+  fromName?: string;
+  fromEmail?: string;
+  replyTo?: string;
+  lists?: string[];
+  segments?: string[];
+  totalRecipients?: number;
+  delivered?: number;
+  opened?: number;
+  clicked?: number;
+  bounced?: number;
+  unsubscribed?: number;
+  complained?: number;
+  revenue?: number;
   scheduledDate?: Date;
   sentDate?: Date;
   completedDate?: Date;
-  aiScore: number;
-  aiSuggestions: string[];
-  tags: string[];
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  progress: number;
-  template: string;
+  aiScore?: number;
+  aiSuggestions?: string[];
+  tags?: string[];
+  priority?: 'low' | 'medium' | 'high' | 'urgent';
+  progress?: number;
+  template?: string;
   abVariants?: {
     id: string;
     name: string;
@@ -488,7 +485,7 @@ const CampaignsPage: React.FC = () => {
     else setSelectedIds(prev => Array.from(new Set([...prev, ...ids])))
   }
 
-  const handleBulk = async (action: 'start'|'pause'|'stop'|'delete') => {
+  const handleBulk = async (action: 'start' | 'pause' | 'stop' | 'delete') => {
     const sid = getSessionId()
     if (!sid) { toast.error?.('No session'); return }
     if (selectedIds.length === 0) return
@@ -1098,7 +1095,7 @@ const CampaignsPage: React.FC = () => {
                                           <Download className="w-4 h-4 mr-2" /> Export Emails (CSV)
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem 
+                                        <DropdownMenuItem
                                           className="text-destructive hover:text-destructive"
                                           onClick={() => handleCampaignAction('delete', c)}
                                         >

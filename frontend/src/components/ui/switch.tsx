@@ -33,9 +33,9 @@ function Switch({
       : tooltip === false
         ? ""
         : generateTooltipText({
-            ariaLabel: (props as any)["aria-label"],
-            elementType: "switch",
-          })
+          ariaLabel: (props as any)["aria-label"],
+          elementType: "switch",
+        })
 
   const element = (
     <SwitchPrimitive.Root

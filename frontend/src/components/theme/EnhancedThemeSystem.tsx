@@ -284,6 +284,53 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     isDefault,
   } = useTheme();
 
+  const themes = [
+    {
+      id: 'blue',
+      name: 'Professional Blue',
+      description: 'Modern blue theme for professional applications',
+      colors: {
+        primary: '#3AAFFF',
+        secondary: '#1E40AF',
+        background: '#0A0F1C',
+        surface: '#111827'
+      }
+    },
+    {
+      id: 'blue-dark',
+      name: 'Deep Blue',
+      description: 'Dark blue theme for focused work',
+      colors: {
+        primary: '#3AAFFF',
+        secondary: '#1E40AF',
+        background: '#0A0F1C',
+        surface: '#111827'
+      }
+    },
+    {
+      id: 'blue-light',
+      name: 'Light Blue',
+      description: 'Light blue theme for daytime use',
+      colors: {
+        primary: '#3AAFFF',
+        secondary: '#1E40AF',
+        background: '#FFFFFF',
+        surface: '#F8FAFC'
+      }
+    },
+    {
+      id: 'black',
+      name: 'Classic Black',
+      description: 'Minimalist black theme',
+      colors: {
+        primary: '#FFFFFF',
+        secondary: '#9CA3AF',
+        background: '#000000',
+        surface: '#111111'
+      }
+    }
+  ];
+
   return (
     <Card className={cn("w-full max-w-2xl", className)}>
       <CardHeader>
@@ -314,13 +361,13 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {Object.entries(THEME_COLORS).map(([colorKey, config]) => {
-              const isSelected = theme.color === colorKey;
-              const isDefault = colorKey === 'red';
+            {themes.map((themeItem) => {
+              const isSelected = theme.color === themeItem.id;
+              const isDefault = themeItem.id === 'black';
 
               return (
                 <motion.div
-                  key={colorKey}
+                  key={themeItem.id}
                   layout
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -331,17 +378,17 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
                       "w-full h-auto p-3 flex flex-col gap-2 relative overflow-hidden",
                       isSelected && "ring-2 ring-primary ring-offset-2"
                     )}
-                    onClick={() => setThemeColor(colorKey as ThemeColor)}
+                    onClick={() => setThemeColor(themeItem.id as ThemeColor)}
                   >
                     {/* Color Preview */}
                     <div
                       className="w-8 h-8 rounded-full border-2 border-white shadow-sm"
-                      style={{ backgroundColor: config.primary }}
+                      style={{ backgroundColor: themeItem.colors.primary }}
                     />
 
                     {/* Theme Name */}
                     <div className="text-center">
-                      <div className="text-xs font-medium">{config.name}</div>
+                      <div className="text-xs font-medium">{themeItem.name}</div>
                       {isDefault && (
                         <Badge variant="secondary" className="text-[10px] mt-1">
                           Default

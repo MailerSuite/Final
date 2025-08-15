@@ -2,12 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  SparklesIcon, 
-  RocketLaunchIcon, 
+import {
+  SparklesIcon,
+  RocketLaunchIcon,
   CpuChipIcon,
-  ArrowRightIcon 
+  ArrowRightIcon
 } from '@heroicons/react/24/outline';
+import StandardPageWrapper from '@/components/layout/StandardPageWrapper';
 
 const LandingPageIndex: React.FC = () => {
   const landingPages = [
@@ -35,7 +36,11 @@ const LandingPageIndex: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
+    <StandardPageWrapper
+      title="Landing Pages"
+      subtitle="Explore all available landing page templates and components for the MailerSuite platform"
+      className="min-h-screen"
+    >
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
@@ -62,7 +67,7 @@ const LandingPageIndex: React.FC = () => {
               </CardHeader>
               <CardContent className="text-center">
                 <Link to={page.path}>
-                  <Button 
+                  <Button
                     className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
                     size="lg"
                   >
@@ -84,7 +89,7 @@ const LandingPageIndex: React.FC = () => {
           </Link>
         </div>
       </div>
-    </div>
+    </StandardPageWrapper>
   );
 };
 

@@ -8,17 +8,19 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
-import { 
-  Brain, 
-  Zap, 
-  TrendingUp, 
-  AlertTriangle, 
+import {
+  Brain,
+  Zap,
+  TrendingUp,
+  AlertTriangle,
   RefreshCw,
   Crown,
   Sparkles
 } from 'lucide-react'
 import { toast } from '@/hooks/use-toast'
 import { aiMailingApi, AIUsageStats } from '@/api/ai-mailing-api'
+import { MagicalBackground, GlowingIcon } from '@/components/ui/sparkle-effect'
+import { cn } from '@/lib/utils'
 
 interface AIUsageWidgetProps {
   className?: string
@@ -78,7 +80,7 @@ export const AIUsageWidget: React.FC<AIUsageWidgetProps> = ({
     switch (planName?.toLowerCase()) {
       case 'basic': return Brain
       case 'premium': return Sparkles
-      case 'deluxe': 
+      case 'deluxe':
       case 'team':
       case 'lifetime': return Crown
       default: return Brain
@@ -130,14 +132,14 @@ export const AIUsageWidget: React.FC<AIUsageWidgetProps> = ({
 
   const { plan, usage } = usageStats
   const PlanIcon = getPlanIcon(plan.name)
-  
+
   const dailyPercentage = calculateUsagePercentage(
-    usage.daily_calls, 
+    usage.daily_calls,
     plan.max_ai_calls_daily || "unlimited"
   )
-  
+
   const monthlyPercentage = calculateUsagePercentage(
-    usage.monthly_tokens, 
+    usage.monthly_tokens,
     plan.max_ai_tokens_monthly || "unlimited"
   )
 
@@ -172,12 +174,15 @@ export const AIUsageWidget: React.FC<AIUsageWidgetProps> = ({
   }
 
   return (
-    <Card className={className}>
-      <CardHeader className="pb-3">
+    <Card className={cn("ai-feature-card relative overflow-hidden", className)}>
+      <MagicalBackground showSparkles={true} showGradient={true} />
+      <CardHeader className="pb-3 relative z-10">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <PlanIcon className="h-5 w-5 text-purple-600" />
-            <span>AI Usage</span>
+            <GlowingIcon color="purple" size="sm">
+              <PlanIcon className="h-5 w-5 text-wizard-secondary-accent" />
+            </GlowingIcon>
+            <span className="text-wizard-gradient font-bold">AI Usage</span>
           </div>
           <div className="flex items-center gap-2">
             <Badge variant={getPlanBadgeVariant(plan.name)}>
@@ -204,8 +209,8 @@ export const AIUsageWidget: React.FC<AIUsageWidgetProps> = ({
             </span>
           </div>
           {plan.max_ai_calls_daily && (
-            <Progress 
-              value={dailyPercentage} 
+            <Progress
+              value={dailyPercentage}
               className="h-2"
             />
           )}
@@ -230,13 +235,13 @@ export const AIUsageWidget: React.FC<AIUsageWidgetProps> = ({
                 {usage.monthly_tokens.toLocaleString()} / {plan.max_ai_tokens_monthly?.toLocaleString() || '∞'}
               </span>
             </div>
-            <Progress 
-              value={monthlyPercentage} 
+            <Progress
+              value={monthlyPercentage}
               className="h-2"
             />
             <div className="flex justify-between items-center mt-1">
               <span className="text-xs text-muted-foreground">
-                {typeof usage.monthly_tokens_remaining === 'number' 
+                {typeof usage.monthly_tokens_remaining === 'number'
                   ? `${usage.monthly_tokens_remaining.toLocaleString()} remaining`
                   : "Unlimited"
                 }
@@ -277,7 +282,7 @@ export const AIUsageWidget: React.FC<AIUsageWidgetProps> = ({
               <span className="text-sm font-medium text-blue-900">AI Tips</span>
             </div>
             <p className="text-xs text-blue-700">
-              Use AI features strategically: Start with subject line generation, 
+              Use AI features strategically: Start with subject line generation,
               then optimize your best performing campaigns.
             </p>
           </div>

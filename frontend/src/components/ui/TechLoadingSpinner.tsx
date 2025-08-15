@@ -8,8 +8,8 @@ import { motion } from 'framer-motion';
 import { CpuChipIcon, BoltIcon, SparklesIcon } from '@heroicons/react/24/outline';
 
 interface TechLoadingSpinnerProps {
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-  variant?: 'primary' | 'cyan' | 'purple' | 'white';
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'cyan' | 'blue' | 'white';
   showText?: boolean;
   text?: string;
   className?: string;
@@ -44,12 +44,12 @@ const TechLoadingSpinner: React.FC<TechLoadingSpinnerProps> = ({
       icon: 'text-primary',
       particles: 'bg-primary/40'
     },
-    purple: {
-      outer: 'border-secondary/30',
-      inner: 'border-secondary/60',
-      glow: 'shadow-secondary/30',
-      icon: 'text-secondary-foreground',
-      particles: 'bg-secondary/40'
+    blue: {
+      outer: 'border-primary/30',
+      inner: 'border-primary/60',
+      glow: 'shadow-primary/30',
+      icon: 'text-primary',
+      particles: 'bg-primary/40'
     },
     white: {
       outer: 'border-white/30',
@@ -70,9 +70,9 @@ const TechLoadingSpinner: React.FC<TechLoadingSpinnerProps> = ({
         {/* Outer Rotating Ring */}
         <motion.div
           className={`${s.spinner} relative border-2 ${c.outer} rounded-full bg-gradient-to-br from-background/20 to-background/5 backdrop-blur-sm shadow-2xl ${c.glow}`}
-          animate={{ 
+          animate={{
             rotateY: 360,
-            rotateZ: 360 
+            rotateZ: 360
           }}
           transition={{
             duration: 3,
@@ -87,9 +87,9 @@ const TechLoadingSpinner: React.FC<TechLoadingSpinnerProps> = ({
           {/* Inner Rotating Ring */}
           <motion.div
             className={`absolute inset-2 ${s.inner} border-2 ${c.inner} rounded-full bg-gradient-to-tr from-background/30 to-background/10 backdrop-blur-md`}
-            animate={{ 
+            animate={{
               rotateX: -360,
-              rotateY: -360 
+              rotateY: -360
             }}
             transition={{
               duration: 2,
@@ -225,7 +225,7 @@ const TechLoadingSpinner: React.FC<TechLoadingSpinnerProps> = ({
           >
             {text}
           </motion.p>
-          
+
           {/* Animated Dots */}
           <motion.div className="flex justify-center space-x-1 mt-2">
             {[...Array(3)].map((_, i) => (

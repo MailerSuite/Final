@@ -4,9 +4,9 @@ import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "./button"
 import { type VariantProps } from "class-variance-authority"
 
-interface FloatingActionButtonProps 
+interface FloatingActionButtonProps
   extends React.ComponentProps<typeof Button>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   position?: "bottom-right" | "bottom-left" | "top-right" | "top-left"
   offset?: string
   tooltip?: string
@@ -42,7 +42,7 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
 
   const positionClasses = {
     "bottom-right": "bottom-6 right-6",
-    "bottom-left": "bottom-6 left-6", 
+    "bottom-left": "bottom-6 left-6",
     "top-right": "top-6 right-6",
     "top-left": "top-6 left-6",
   }
@@ -54,14 +54,14 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
         positionClasses[position]
       )}
       initial={{ opacity: 0, scale: 0 }}
-      animate={{ 
-        opacity: isVisible ? 1 : 0, 
+      animate={{
+        opacity: isVisible ? 1 : 0,
         scale: isVisible ? 1 : 0,
       }}
-      transition={{ 
+      transition={{
         type: "spring",
         stiffness: 260,
-        damping: 20 
+        damping: 20
       }}
       style={{
         [position.includes("bottom") ? "bottom" : "top"]: offset,

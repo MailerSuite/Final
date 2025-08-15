@@ -23,7 +23,9 @@ import {
   Menu
 } from 'lucide-react'
 import { WorkspaceSelector } from './WorkspaceSelector'
+import { AnimatedLogo } from '@/components/ui/animated-logo'
 import { motion } from 'framer-motion'
+import { SparkleEffect } from '@/components/ui/sparkle-effect'
 
 interface NavbarProps {
   onMenuClick?: () => void
@@ -49,8 +51,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
     >
       {/* Gradient Overlay */}
       <div className="absolute inset-0 opacity-40 pointer-events-none" style={{
-        background: 'linear-gradient(90deg, rgba(59,130,246,0.1) 0%, rgba(99,102,241,0.08) 50%, rgba(139,92,246,0.1) 100%)'
+        background: 'linear-gradient(90deg, rgba(59,130,246,0.08) 0%, rgba(99,102,241,0.06) 50%, rgba(139,92,246,0.08) 100%)'
       }} />
+      {/* Sparkle Effect */}
+      <div className="absolute inset-0 overflow-hidden">
+        <SparkleEffect intensity="subtle" className="mix-blend-screen" />
+      </div>
       <div className="relative flex h-full items-center px-4 md:px-6 gap-4">
         {/* Mobile Menu Button */}
         <motion.div
@@ -69,6 +75,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
             </Button>
           </motion.div>
         </motion.div>
+
+        {/* Logo for mobile */}
+        <div className="md:hidden">
+          <AnimatedLogo size="sm" showText={false} />
+        </div>
 
         {/* Workspace Selector */}
         <div className="hidden md:block">
@@ -135,8 +146,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
               <motion.div whileHover={hoverScale}>
                 <Button
                   variant="ghost"
-                  size="sm"
-                  className="h-8 px-2 text-xs flex items-center gap-1 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors"
+                  size="sm" className="h-8 px-2 text-xs flex items-center gap-1 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors"
                   onClick={onSupportClick}
                 >
                   <LifeBuoy className="h-4 w-4" />
@@ -152,7 +162,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
                   <Bell className="h-4 w-4" />
                   {notifications > 0 && (
                     <Badge
-                      className="absolute -top-1 -right-1 h-5 w-5 text-xs p-0 flex items-center justify-center bg-gradient-to-r from-sky-300 via-indigo-300 to-fuchsia-300 text-background border-0"
+                      className="absolute -top-1 -right-1 h-5 w-5 text-xs p-0 flex items-center justify-center bg-primary text-primary-foreground border-0 shadow-sm"
                     >
                       {notifications}
                     </Badge>
@@ -162,7 +172,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
               <DropdownMenuContent align="end" className="w-80 bg-sidebar-background/95 backdrop-blur-xl border-sidebar-border">
                 <DropdownMenuLabel className="flex items-center justify-between">
                   Notifications
-                  <Badge className="bg-gradient-to-r from-sky-300 via-indigo-300 to-fuchsia-300 text-background border-0">{notifications}</Badge>
+                  <Badge className="bg-primary text-primary-foreground border-0">{notifications}</Badge>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="p-3 hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
@@ -214,7 +224,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-8 px-2 gap-2 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
-                  <div className="w-6 h-6 rounded-full bg-sidebar-primary/10 border border-sidebar-primary/20 flex items-center justify-center shadow-[0_0_16px_rgba(59,130,246,0.25)]">
+                  <div className="w-6 h-6 rounded-full bg-sidebar-primary/10 border border-sidebar-primary/20 flex items-center justify-center">
                     <User className="h-3 w-3 text-sidebar-primary" />
                   </div>
                   <span className="hidden md:inline text-sm font-medium">Admin</span>

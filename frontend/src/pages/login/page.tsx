@@ -28,6 +28,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import Shell from '@/components/layouts/Shell';
 import { useBreadcrumbs } from '@/hooks/useBreadcrumbs';
+import StandardPageWrapper from '@/components/layout/StandardPageWrapper';
 
 // Simple animation variants
 const fadeInVariants = {
@@ -188,7 +189,11 @@ const Login = () => {
 
   return (
     <Shell title="Login" breadcrumbs={breadcrumbs}>
-      <div className="relative bg-background flex items-center justify-center p-4 overflow-hidden">
+      <StandardPageWrapper
+        title="Login"
+        subtitle="Access your SpamGPT account"
+        className="relative flex items-center justify-center p-4 overflow-hidden"
+      >
         {/* Enhanced Background Elements with additional orbs */}
         <div className="absolute inset-0">
           <motion.div
@@ -508,7 +513,7 @@ const Login = () => {
             ))}
           </motion.div>
         </motion.div>
-      </div>
+      </StandardPageWrapper>
     </Shell>
   );
 };

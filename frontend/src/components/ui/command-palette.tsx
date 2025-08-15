@@ -1,7 +1,7 @@
 import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useNavigate } from "react-router-dom"
-import { 
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -61,7 +61,7 @@ const defaultCommands: CommandItem[] = [
     title: "Dashboard",
     description: "View your marketing analytics and metrics",
     icon: ChartBarIcon,
-    action: () => {},
+    action: () => { },
     section: "Navigation",
     shortcut: ["⌘", "D"],
   },
@@ -70,7 +70,7 @@ const defaultCommands: CommandItem[] = [
     title: "Campaigns",
     description: "Create and manage email campaigns",
     icon: RocketLaunchIcon,
-    action: () => {},
+    action: () => { },
     section: "Navigation",
     shortcut: ["⌘", "C"],
   },
@@ -79,16 +79,16 @@ const defaultCommands: CommandItem[] = [
     title: "Templates",
     description: "Design email templates",
     icon: DocumentTextIcon,
-    action: () => {},
+    action: () => { },
     section: "Navigation",
     shortcut: ["⌘", "T"],
   },
   {
     id: "contacts",
-    title: "Contacts", 
+    title: "Contacts",
     description: "Manage your audience",
     icon: UserGroupIcon,
-    action: () => {},
+    action: () => { },
     section: "Navigation",
   },
   {
@@ -97,7 +97,7 @@ const defaultCommands: CommandItem[] = [
     description: "Get AI-powered marketing insights",
     icon: SparklesIcon,
     badge: { text: "AI", variant: "ai" },
-    action: () => {},
+    action: () => { },
     section: "AI Tools",
     shortcut: ["⌘", "A"],
   },
@@ -107,7 +107,7 @@ const defaultCommands: CommandItem[] = [
     description: "Test your email server configuration",
     icon: EnvelopeIcon,
     badge: { text: "Live", variant: "live" },
-    action: () => {},
+    action: () => { },
     section: "Tools",
   },
   {
@@ -116,7 +116,7 @@ const defaultCommands: CommandItem[] = [
     description: "Monitor email delivery rates",
     icon: InboxIcon,
     badge: { text: "Live", variant: "live" },
-    action: () => {},
+    action: () => { },
     section: "Tools",
   },
   {
@@ -125,7 +125,7 @@ const defaultCommands: CommandItem[] = [
     description: "Check sender reputation",
     icon: ShieldCheckIcon,
     badge: { text: "Pro", variant: "pro" },
-    action: () => {},
+    action: () => { },
     section: "Tools",
   },
 ]
@@ -141,7 +141,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   const navigate = useNavigate()
   const [query, setQuery] = React.useState("")
   const [selectedIndex, setSelectedIndex] = React.useState(0)
-  
+
   // Combine and filter items
   const filteredItems = React.useMemo(() => {
     if (!query.trim()) {
@@ -165,7 +165,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   // Group items by section
   const groupedItems = React.useMemo(() => {
     const groups: Record<string, CommandItem[]> = {}
-    
+
     filteredItems.forEach(item => {
       const section = item.section || "Commands"
       if (!groups[section]) {
@@ -219,7 +219,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
   const renderShortcut = (shortcut?: string[]) => {
     if (!shortcut) return null
-    
+
     return (
       <div className="flex items-center gap-0.5">
         {shortcut.map((key, i) => (
@@ -238,7 +238,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     <AnimatePresence>
       {isOpen && (
         <Dialog open={isOpen} onOpenChange={onClose}>
-          <DialogContent 
+          <DialogContent
             className={cn(
               "sm:max-w-2xl p-0 overflow-hidden",
               "bg-background/95 backdrop-blur-xl border-border/50",
@@ -284,7 +284,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                           {sectionItems.map((item, itemIndex) => {
                             const globalIndex = filteredItems.indexOf(item)
                             const isSelected = globalIndex === selectedIndex
-                            
+
                             return (
                               <motion.div
                                 key={item.id}
@@ -307,7 +307,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                                         <item.icon className="h-4 w-4 text-muted-foreground" />
                                       </div>
                                     )}
-                                    
+
                                     <div className="flex-1 text-left min-w-0">
                                       <div className="flex items-center gap-2 mb-1">
                                         <span className="font-medium text-sm truncate">
@@ -382,7 +382,7 @@ export const useCommandPalette = () => {
     },
     {
       id: "campaigns",
-      title: "Campaigns", 
+      title: "Campaigns",
       description: "Create and manage email campaigns",
       icon: RocketLaunchIcon,
       action: () => navigate("/campaigns"),

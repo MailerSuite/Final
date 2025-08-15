@@ -7,12 +7,12 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Mail, 
-  Target, 
-  BarChart3, 
-  Users, 
-  DollarSign, 
+import {
+  Mail,
+  Target,
+  BarChart3,
+  Users,
+  DollarSign,
   TrendingUp,
   Plus,
   Settings,
@@ -49,7 +49,7 @@ import {
 // ==================== MAIN EXAMPLES COMPONENT ====================
 
 export const ClientUIKitExamples: React.FC = () => {
-  const [currentTheme, setCurrentTheme] = useState<'red' | 'blue' | 'green' | 'purple' | 'black'>('red');
+  const [currentTheme, setCurrentTheme] = useState<'red' | 'blue' | 'green' | 'black'>('red');
   const [isLoading, setIsLoading] = useState(false);
 
   return (
@@ -64,7 +64,7 @@ export const ClientUIKitExamples: React.FC = () => {
         <div className="flex items-center gap-4 p-4 bg-card rounded-lg border">
           <span className="text-sm font-medium">Theme:</span>
           <div className="flex gap-2">
-            {['red', 'blue', 'green', 'purple', 'black'].map((theme) => (
+            {['red', 'blue', 'green', 'black'].map((theme) => (
               <Button
                 key={theme}
                 size="sm"
@@ -113,9 +113,9 @@ export const ClientUIKitExamples: React.FC = () => {
 
 // ==================== BASIC COMPONENTS EXAMPLES ====================
 
-const BasicComponentsExamples: React.FC<{ isLoading: boolean; setIsLoading: (loading: boolean) => void }> = ({ 
-  isLoading, 
-  setIsLoading 
+const BasicComponentsExamples: React.FC<{ isLoading: boolean; setIsLoading: (loading: boolean) => void }> = ({
+  isLoading,
+  setIsLoading
 }) => (
   <div className="space-y-8">
     {/* Page Header Examples */}

@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => ({
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
           const url = req.url || ''
+
           const respondJson = (payload: unknown, status = 200) => {
             res.statusCode = status
             res.setHeader('Content-Type', 'application/json')
@@ -90,6 +91,8 @@ export default defineConfig(({ mode }) => ({
       '@radix-ui/react-tabs',
       'class-variance-authority',
       'clsx',
+      'tailwind-merge',
+      'framer-motion',
     ],
   },
   envPrefix: ['VITE_'],
@@ -188,4 +191,5 @@ export default defineConfig(({ mode }) => ({
   define: {
     __DEV__: mode === 'development',
   },
+
 }))

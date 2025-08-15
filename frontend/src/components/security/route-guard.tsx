@@ -8,6 +8,7 @@ import { clearSavedRoute } from "@/hooks/usePersistedRoute";
 import { useAuthStore } from "@/store/auth";
 import useAuth from "@/hooks/useAuth";
 import PageLoader from "@/components/PageLoader";
+import { isAuthBypassed } from "@/utils/devMode";
 
 interface RouteGuardProps {
   children?: React.ReactNode;
@@ -38,6 +39,12 @@ export const RouteGuard = ({
 
   // Use prop userData if provided, otherwise use store userData
   const userData = propUserData || storeUserData;
+
+  // DEVELOPMENT MODE: Bypass all authentication checks
+  if (isAuthBypassed()) {
+    console.log('🔓 DEV MODE: Bypassing authentication - allowing access to all pages');
+    return <Outlet />;
+  }
 
   // Navigation loop detection
   useEffect(() => {

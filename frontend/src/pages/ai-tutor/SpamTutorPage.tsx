@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { 
+import {
   AcademicCapIcon,
   LockClosedIcon,
   LockOpenIcon,
@@ -39,6 +39,7 @@ import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
+import StandardPageWrapper from '@/components/layout/StandardPageWrapper'
 
 interface Module {
   id: string
@@ -237,7 +238,11 @@ const SpamTutorPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-dark">
+    <StandardPageWrapper
+      title="SpamGPT.io AI Tutor"
+      subtitle="Master email marketing with our comprehensive AI-powered training program"
+      className="min-h-screen"
+    >
       {/* Hero Section */}
       <div className="relative overflow-hidden border-b border-border bg-background/50">
         {/* Animated Background */}
@@ -245,7 +250,7 @@ const SpamTutorPage: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-sky-300/10 via-indigo-300/10 to-purple-400/10 animate-gradient-x" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/50 to-slate-900" />
         </div>
-        
+
         <div className="relative px-6 py-12">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-start justify-between">
@@ -258,16 +263,16 @@ const SpamTutorPage: React.FC = () => {
                     AI-POWERED LEARNING
                   </Badge>
                 </div>
-                
+
                 <h1 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-indigo-300 to-purple-400 mb-4">
                   SpamGPT.io AI Tutor
                 </h1>
-                
+
                 <p className="text-xl text-muted-foreground mb-6 max-w-3xl">
-                  Master email marketing with our comprehensive AI-powered training program. 
+                  Master email marketing with our comprehensive AI-powered training program.
                   Learn how to inbox, setup SMTP servers, find quality leads, and scale to millions.
                 </p>
-                
+
                 <div className="flex items-center gap-6 mb-8">
                   <div className="flex items-center gap-2">
                     <ClockIcon className="w-5 h-5 text-sky-400" />
@@ -282,29 +287,29 @@ const SpamTutorPage: React.FC = () => {
                     <span className="text-muted-foreground">Certificate on Completion</span>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-4">
-                  <Button 
-                    size="lg" 
+                  <Button
+                    size="lg"
                     className="bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600"
                     onClick={() => setShowPurchaseDialog(true)}
                   >
                     <LockOpenIcon className="w-5 h-5 mr-2" />
                     Unlock Full Course
                   </Button>
-                  
+
                   <div className="text-center">
                     <div className="text-3xl font-black text-white">$2,000</div>
                     <div className="text-xs text-muted-foreground">Lifetime Access</div>
                   </div>
-                  
+
                   <Badge variant="outline" className="px-3 py-1 border-emerald-500/50 text-emerald-400">
                     <CheckCircleIcon className="w-4 h-4 mr-1" />
                     30-Day Money Back
                   </Badge>
                 </div>
               </div>
-              
+
               {/* Progress Card */}
               <Card className="w-80 glass-card border-border hidden lg:block">
                 <CardHeader>
@@ -319,7 +324,7 @@ const SpamTutorPage: React.FC = () => {
                     </div>
                     <Progress value={overallProgress} className="h-2" />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-muted-foreground">Modules Completed</span>
@@ -334,9 +339,9 @@ const SpamTutorPage: React.FC = () => {
                       <span className="text-white">6.5 hours</span>
                     </div>
                   </div>
-                  
+
                   <Separator className="bg-muted" />
-                  
+
                   <div className="flex items-center gap-2">
                     <div className="flex -space-x-1">
                       {[...Array(5)].map((_, i) => (
@@ -365,7 +370,7 @@ const SpamTutorPage: React.FC = () => {
             <TabsTrigger value="testimonials">Success Stories</TabsTrigger>
             <TabsTrigger value="faq">FAQ</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="overview" className="space-y-6">
             {/* What You'll Learn */}
             <Card className="glass-card border-border">
@@ -402,7 +407,7 @@ const SpamTutorPage: React.FC = () => {
               <h2 className="text-2xl font-bold text-white">Course Modules</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {modules.map((module) => (
-                  <Card 
+                  <Card
                     key={module.id}
                     className={cn(
                       "glass-card border-border cursor-pointer transition-all hover:scale-[1.02]",
@@ -446,7 +451,7 @@ const SpamTutorPage: React.FC = () => {
                         <span className="text-muted-foreground">{module.duration}</span>
                         <span className="text-muted-foreground">{module.lessons} lessons</span>
                       </div>
-                      
+
                       {module.progress !== undefined && module.progress > 0 && (
                         <div>
                           <div className="flex items-center justify-between mb-1">
@@ -456,7 +461,7 @@ const SpamTutorPage: React.FC = () => {
                           <Progress value={module.progress} className="h-1" />
                         </div>
                       )}
-                      
+
                       <div className="flex flex-wrap gap-1">
                         {module.topics.slice(0, 3).map((topic, i) => (
                           <Badge key={i} variant="outline" className="text-xs border-border">
@@ -475,7 +480,7 @@ const SpamTutorPage: React.FC = () => {
               </div>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="demo" className="space-y-6">
             {/* Demo Video Section */}
             <Card className="glass-card border-border">
@@ -503,7 +508,7 @@ const SpamTutorPage: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  
+
                   {/* Video overlay with stats */}
                   <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-slate-900 to-transparent">
                     <div className="flex items-center justify-between">
@@ -518,7 +523,7 @@ const SpamTutorPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Demo Topics */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[
@@ -535,7 +540,7 @@ const SpamTutorPage: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                
+
                 {/* Interactive Demo */}
                 <Alert className="border-sky-500/50 bg-sky-500/10">
                   <SparklesIcon className="w-5 h-5 text-sky-400" />
@@ -553,7 +558,7 @@ const SpamTutorPage: React.FC = () => {
               </CardContent>
             </Card>
           </TabsContent>
-          
+
           <TabsContent value="testimonials" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
@@ -601,9 +606,9 @@ const SpamTutorPage: React.FC = () => {
                         {testimonial.revenue}
                       </Badge>
                     </div>
-                    
+
                     <p className="text-muted-foreground mb-4">"{testimonial.message}"</p>
-                    
+
                     <div className="flex items-center gap-1">
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <StarIcon key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
@@ -614,7 +619,7 @@ const SpamTutorPage: React.FC = () => {
               ))}
             </div>
           </TabsContent>
-          
+
           <TabsContent value="curriculum" className="space-y-6">
             <ScrollArea className="h-[600px] pr-4">
               <div className="space-y-6">
@@ -657,7 +662,7 @@ const SpamTutorPage: React.FC = () => {
               </div>
             </ScrollArea>
           </TabsContent>
-          
+
           <TabsContent value="faq" className="space-y-4">
             {[
               {
@@ -703,7 +708,7 @@ const SpamTutorPage: React.FC = () => {
               Get lifetime access to all premium modules and future updates
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-6 py-4">
             {/* Pricing */}
             <div className="text-center p-6 rounded-lg bg-gradient-to-br from-sky-500/10 to-indigo-500/10 border border-sky-500/20">
@@ -712,7 +717,7 @@ const SpamTutorPage: React.FC = () => {
               </div>
               <p className="text-muted-foreground mt-2">One-time payment • Lifetime access</p>
             </div>
-            
+
             {/* What's Included */}
             <div className="space-y-3">
               <h3 className="font-semibold text-white">Everything Included:</h3>
@@ -732,20 +737,20 @@ const SpamTutorPage: React.FC = () => {
                 </div>
               ))}
             </div>
-            
+
             {/* Payment Options */}
             <div className="space-y-3">
               <Button className="w-full bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600">
                 <CurrencyDollarIcon className="w-5 h-5 mr-2" />
                 Purchase Now - $2,000
               </Button>
-              
+
               <Button variant="outline" className="w-full bg-card/50 border-border">
                 <ClockIcon className="w-5 h-5 mr-2" />
                 Start 3-Month Payment Plan ($700/mo)
               </Button>
             </div>
-            
+
             {/* Trust Badges */}
             <div className="flex items-center justify-center gap-4 pt-4 border-t border-border">
               <Badge variant="outline" className="border-emerald-500/50 text-emerald-400">
@@ -764,7 +769,7 @@ const SpamTutorPage: React.FC = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </StandardPageWrapper>
   )
 }
 

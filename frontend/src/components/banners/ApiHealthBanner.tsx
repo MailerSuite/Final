@@ -3,6 +3,11 @@ import { checkBackendHealth, type HealthCheckResult } from '@/utils/api-health'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
 
 export default function ApiHealthBanner() {
+  // Disable in dev mode to avoid API calls
+  if (import.meta.env.DEV) {
+    return null;
+  }
+
   const [visible, setVisible] = React.useState(false)
   const [checking, setChecking] = React.useState(false)
   const [result, setResult] = React.useState<HealthCheckResult | null>(null)

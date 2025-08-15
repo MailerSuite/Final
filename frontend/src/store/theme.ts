@@ -6,17 +6,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type ColorScheme = 'blue' | 'black' | 'purple';
 export type ThemeMode = 'dark' | 'light';
 
 interface ThemeState {
   mode: ThemeMode;
-  colorScheme: ColorScheme;
   language: string;
 
   // Actions
   setMode: (mode: ThemeMode) => void;
-  setColorScheme: (scheme: ColorScheme) => void;
   setLanguage: (language: string) => void;
   toggleMode: () => void;
 }
@@ -25,7 +22,6 @@ export const useThemeStore = create<ThemeState>()(
   persist(
     (set, get) => ({
       mode: 'dark',
-      colorScheme: 'blue',
       language: 'en',
 
       setMode: (mode) => {
@@ -35,20 +31,10 @@ export const useThemeStore = create<ThemeState>()(
         document.documentElement.classList.add(mode);
         document.documentElement.setAttribute('data-theme', mode);
 
-        // Also sync with localStorage for the React ThemeProvider
+        // Sync with localStorage for all theme providers
+        localStorage.setItem('mailersuite-theme', mode);
         localStorage.setItem('sgpt-ui-theme', mode);
-      },
-
-      setColorScheme: (colorScheme) => {
-        set({ colorScheme });
-        // Remove existing color scheme classes
-        const schemes: ColorScheme[] = ['blue', 'black', 'purple'];
-        schemes.forEach(scheme => {
-          document.documentElement.classList.remove(`theme-${scheme}`);
-        });
-        // Add new color scheme class
-        document.documentElement.classList.add(`theme-${colorScheme}`);
-        document.documentElement.setAttribute('data-color-scheme', colorScheme);
+        localStorage.setItem('vite-ui-theme', mode);
       },
 
       setLanguage: (language) => {
@@ -63,27 +49,27 @@ export const useThemeStore = create<ThemeState>()(
       }
     }),
     {
-      name: 'sgpt-theme',
+      name: 'mailersuite-theme',
       onRehydrateStorage: () => (state) => {
         if (state) {
           // Apply theme on hydration
           document.documentElement.classList.remove('light', 'dark');
           document.documentElement.classList.add(state.mode);
           document.documentElement.setAttribute('data-theme', state.mode);
-          document.documentElement.classList.add(`theme-${state.colorScheme}`);
-          document.documentElement.setAttribute('data-color-scheme', state.colorScheme);
           document.documentElement.setAttribute('lang', state.language);
 
-          // Sync with React ThemeProvider
+          // Sync with all theme providers
+          localStorage.setItem('mailersuite-theme', state.mode);
           localStorage.setItem('sgpt-ui-theme', state.mode);
+          localStorage.setItem('vite-ui-theme', state.mode);
         } else {
           // Initialize default theme if no stored state
           document.documentElement.classList.add('dark');
           document.documentElement.setAttribute('data-theme', 'dark');
-          document.documentElement.classList.add('theme-blue');
-          document.documentElement.setAttribute('data-color-scheme', 'blue');
           document.documentElement.setAttribute('lang', 'en');
+          localStorage.setItem('mailersuite-theme', 'dark');
           localStorage.setItem('sgpt-ui-theme', 'dark');
+          localStorage.setItem('vite-ui-theme', 'dark');
         }
       }
     }
@@ -93,17 +79,18 @@ export const useThemeStore = create<ThemeState>()(
 // Initialize theme immediately to prevent flash
 const initializeTheme = () => {
   // Check if theme is already set
-  const storedTheme = localStorage.getItem('sgpt-theme');
-  const reactTheme = localStorage.getItem('sgpt-ui-theme');
+  const storedTheme = localStorage.getItem('mailersuite-theme') || 
+                      localStorage.getItem('sgpt-theme') || 
+                      localStorage.getItem('sgpt-ui-theme');
 
-  if (!storedTheme && !reactTheme) {
+  if (!storedTheme) {
     // Set default dark theme
     document.documentElement.classList.add('dark');
     document.documentElement.setAttribute('data-theme', 'dark');
-    document.documentElement.classList.add('theme-blue');
-    document.documentElement.setAttribute('data-color-scheme', 'blue');
     document.documentElement.setAttribute('lang', 'en');
+    localStorage.setItem('mailersuite-theme', 'dark');
     localStorage.setItem('sgpt-ui-theme', 'dark');
+    localStorage.setItem('vite-ui-theme', 'dark');
   }
 };
 
@@ -112,26 +99,24 @@ if (typeof window !== 'undefined') {
   initializeTheme();
 }
 
-// Theme configuration for shadcn-ui
+// Theme configuration unified with CSS variables
 export const themeConfig = {
   colors: {
-    blue: {
-      primary: 'hsl(217, 91%, 60%)',
-      primaryForeground: 'hsl(0, 0%, 98%)',
-      secondary: 'hsl(217, 91%, 60%)',
-      accent: 'hsl(217, 100%, 70%)',
+    dark: {
+      primary: 'hsl(213, 94%, 51%)', // Professional blue
+      primaryForeground: 'hsl(0, 0%, 100%)',
+      secondary: 'hsl(270, 60%, 55%)', // Subtle purple
+      accent: 'hsl(213, 80%, 45%)', // Deep blue accent
+      background: 'hsl(220, 30%, 8%)', // Dark blue-grey
+      foreground: 'hsl(0, 0%, 88%)',
     },
-    black: {
-      primary: 'hsl(0, 0%, 9%)',
-      primaryForeground: 'hsl(0, 0%, 98%)',
-      secondary: 'hsl(0, 0%, 14%)',
-      accent: 'hsl(0, 0%, 24%)',
-    },
-    purple: {
-      primary: 'hsl(262, 83%, 58%)',
-      primaryForeground: 'hsl(0, 0%, 98%)',
-      secondary: 'hsl(262, 83%, 58%)',
-      accent: 'hsl(262, 83%, 68%)',
+    light: {
+      primary: 'hsl(213, 90%, 45%)', // Professional blue
+      primaryForeground: 'hsl(0, 0%, 100%)',
+      secondary: 'hsl(270, 55%, 50%)', // Purple
+      accent: 'hsl(213, 75%, 50%)', // Blue accent
+      background: 'hsl(0, 0%, 98%)',
+      foreground: 'hsl(220, 30%, 12%)',
     }
   }
 };

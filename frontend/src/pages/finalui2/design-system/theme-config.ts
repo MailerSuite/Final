@@ -246,6 +246,57 @@ export const themePresets: ThemePreset[] = [
   },
 ];
 
+export const themeVariants = [
+  {
+    id: 'blue',
+    name: 'Professional Blue',
+    description: 'Modern blue theme for professional applications',
+    colors: {
+      primary: '#3AAFFF',
+      secondary: '#1E40AF',
+      background: '#0A0F1C',
+      surface: '#111827',
+      accent: '#60A5FA'
+    }
+  },
+  {
+    id: 'blue-dark',
+    name: 'Deep Blue',
+    description: 'Dark blue theme for focused work',
+    colors: {
+      primary: '#3AAFFF',
+      secondary: '#1E40AF',
+      background: '#0A0F1C',
+      surface: '#111827',
+      accent: '#60A5FA'
+    }
+  },
+  {
+    id: 'blue-light',
+    name: 'Light Blue',
+    description: 'Light blue theme for daytime use',
+    colors: {
+      primary: '#3AAFFF',
+      secondary: '#1E40AF',
+      background: '#FFFFFF',
+      surface: '#F8FAFC',
+      accent: '#60A5FA'
+    }
+  },
+  {
+    id: 'black',
+    name: 'Classic Black',
+    description: 'Minimalist black theme',
+    colors: {
+      primary: '#FFFFFF',
+      secondary: '#9CA3AF',
+      background: '#000000',
+      surface: '#111111',
+      accent: '#6B7280'
+    }
+  }
+];
+
 // Design tokens for consistent spacing, typography, etc.
 export const designTokens = {
   spacing: {

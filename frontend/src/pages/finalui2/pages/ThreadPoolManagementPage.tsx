@@ -9,14 +9,14 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { Progress } from '@/components/ui/progress'
-import { 
-  Cpu, 
-  Plus, 
-  Search, 
-  MoreVertical, 
-  Edit, 
-  Trash2, 
-  Activity, 
+import {
+  Cpu,
+  Plus,
+  Search,
+  MoreVertical,
+  Edit,
+  Trash2,
+  Activity,
   Zap,
   CheckCircle,
   XCircle,
@@ -33,6 +33,7 @@ import {
 import { toast } from '@/hooks/useToast'
 import PageShell from '../components/PageShell'
 import ThreadPoolForm from '@/components/thread-pools/ThreadPoolForm'
+import StandardPageWrapper from '@/components/layout/StandardPageWrapper'
 
 interface ThreadPool {
   id: string
@@ -131,9 +132,9 @@ export default function ThreadPoolManagementPage() {
   const filteredPools = threadPools.filter(pool => {
     const matchesSearch = pool.name.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesPriority = filterPriority === 'all' || pool.priority === filterPriority
-    const matchesStatus = filterStatus === 'all' || 
-                         (filterStatus === 'enabled' && pool.enabled) ||
-                         (filterStatus === 'disabled' && !pool.enabled)
+    const matchesStatus = filterStatus === 'all' ||
+      (filterStatus === 'enabled' && pool.enabled) ||
+      (filterStatus === 'disabled' && !pool.enabled)
     return matchesSearch && matchesPriority && matchesStatus
   })
 
@@ -142,7 +143,7 @@ export default function ThreadPoolManagementPage() {
     try {
       // Mock API call - replace with actual implementation
       await new Promise(resolve => setTimeout(resolve, 1000))
-      
+
       const newPool: ThreadPool = {
         id: Date.now().toString(),
         ...data,
@@ -158,7 +159,7 @@ export default function ThreadPoolManagementPage() {
         assigned_imap: 0,
         assigned_campaigns: 0
       }
-      
+
       setThreadPools(prev => [...prev, newPool])
       setShowCreateModal(false)
       toast.success?.('Thread pool created successfully')
@@ -172,14 +173,14 @@ export default function ThreadPoolManagementPage() {
 
   const handleUpdatePool = async (data: unknown) => {
     if (!editingPool) return
-    
+
     setLoading(true)
     try {
       // Mock API call - replace with actual implementation
       await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      setThreadPools(prev => prev.map(pool => 
-        pool.id === editingPool.id 
+
+      setThreadPools(prev => prev.map(pool =>
+        pool.id === editingPool.id
           ? { ...pool, ...data, updated_at: new Date().toISOString() }
           : pool
       ))
@@ -196,7 +197,7 @@ export default function ThreadPoolManagementPage() {
   const handleDeletePool = async (poolId: string) => {
     const pool = threadPools.find(p => p.id === poolId)
     const totalAssigned = (pool?.assigned_smtp || 0) + (pool?.assigned_imap || 0) + (pool?.assigned_campaigns || 0)
-    
+
     if (totalAssigned > 0) {
       toast.error?.(`Cannot delete pool with ${totalAssigned} active assignments`)
       return
@@ -209,7 +210,7 @@ export default function ThreadPoolManagementPage() {
     try {
       // Mock API call - replace with actual implementation
       await new Promise(resolve => setTimeout(resolve, 500))
-      
+
       setThreadPools(prev => prev.filter(pool => pool.id !== poolId))
       toast.success?.('Thread pool deleted successfully')
     } catch (error) {
@@ -221,9 +222,9 @@ export default function ThreadPoolManagementPage() {
     try {
       // Mock API call - replace with actual implementation
       await new Promise(resolve => setTimeout(resolve, 500))
-      
-      setThreadPools(prev => prev.map(pool => 
-        pool.id === poolId 
+
+      setThreadPools(prev => prev.map(pool =>
+        pool.id === poolId
           ? { ...pool, enabled: !pool.enabled, updated_at: new Date().toISOString() }
           : pool
       ))
@@ -250,11 +251,11 @@ export default function ThreadPoolManagementPage() {
     if (!pool.enabled) {
       return <Badge variant="secondary">Disabled</Badge>
     }
-    
+
     if (pool.active_connections === 0) {
       return <Badge variant="outline">Idle</Badge>
     }
-    
+
     const utilization = (pool.active_connections / pool.max_connections) * 100
     if (utilization > 80) {
       return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">High Load</Badge>
@@ -296,7 +297,11 @@ export default function ThreadPoolManagementPage() {
         </Button>
       }
     >
-      <div className="space-y-6">
+      <StandardPageWrapper
+        title="Thread Pool Management"
+        subtitle="Manage thread pools for optimized resource allocation and performance"
+        className="space-y-6"
+      >
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card>
@@ -312,7 +317,7 @@ export default function ThreadPoolManagementPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -326,7 +331,7 @@ export default function ThreadPoolManagementPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -340,7 +345,7 @@ export default function ThreadPoolManagementPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -457,9 +462,9 @@ export default function ThreadPoolManagementPage() {
                         <TableCell>
                           <div className="space-y-2">
                             <div className="flex items-center gap-2">
-                              <Progress 
-                                value={getUtilizationPercentage(pool)} 
-                                className="w-20 h-2" 
+                              <Progress
+                                value={getUtilizationPercentage(pool)}
+                                className="w-20 h-2"
                               />
                               <span className="text-sm text-muted-foreground">
                                 {Math.round(getUtilizationPercentage(pool))}%
@@ -560,7 +565,7 @@ export default function ThreadPoolManagementPage() {
             )}
           </CardContent>
         </Card>
-      </div>
+      </StandardPageWrapper>
 
       {/* Create Thread Pool Modal */}
       <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>

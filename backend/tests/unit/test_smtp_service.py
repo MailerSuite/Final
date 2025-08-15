@@ -1,124 +1,148 @@
 """
-Unit tests for SMTP service.
+Unit tests for SMTP Service
+Tests business logic, error handling, rate limiting, and proxy integration
 """
 
 import pytest
-import time
-from unittest.mock import Mock, AsyncMock, patch
-from sqlalchemy.ext.asyncio import AsyncSession
+import asyncio
+from unittest.mock import Mock, AsyncMock, patch, MagicMock
+from datetime import datetime, timedelta
+from fastapi import HTTPException
 
-from services.smtp_service import SMTPService, SMTPCheckService, RateLimiter
-from models.base import SMTPAccount, Campaign, ProxyServer
+from services.smtp_service import SMTPService, RateLimiter, SMTPCheckService
+from services.proxy_service import ProxyUnavailableError
+from models.base import SMTPAccount, ProxyServer, Campaign
 
 
 class TestRateLimiter:
     """Test rate limiter functionality"""
     
-    def test_rate_limiter_allows_within_limit(self):
-        """Test rate limiter allows requests within limit"""
+    @pytest.mark.asyncio
+    async def test_rate_limiter_allows_within_limit(self):
+        """Test that requests within limit are allowed"""
         limiter = RateLimiter(limit=5, interval=60.0)
-        key = "test_key"
         
-        # Should allow up to limit
-        for _ in range(5):
-            assert limiter.limit <= 5
+        # Should allow 5 requests without delay
+        for i in range(5):
+            await limiter.acquire("test_key")
+        
+        # This should work without timing out
+        assert True
 
-    def test_rate_limiter_blocks_over_limit(self):
-        """Test rate limiter blocks requests over limit"""
-        limiter = RateLimiter(limit=2, interval=60.0)
-        # Test basic functionality
-        assert limiter.limit == 2
-        assert limiter.interval == 60.0
+    @pytest.mark.asyncio
+    async def test_rate_limiter_blocks_over_limit(self):
+        """Test that requests over limit are delayed"""
+        limiter = RateLimiter(limit=2, interval=1.0)
+        
+        # First two requests should be immediate
+        await limiter.acquire("test_key")
+        await limiter.acquire("test_key")
+        
+        # Third request should be delayed
+        start_time = asyncio.get_event_loop().time()
+        await limiter.acquire("test_key")
+        end_time = asyncio.get_event_loop().time()
+        
+        # Should have been delayed by close to the interval
+        assert end_time - start_time >= 0.8  # Allow some timing variance
 
-    def test_rate_limiter_different_keys(self):
-        """Test rate limiter handles different keys separately"""
-        limiter = RateLimiter(limit=2, interval=60.0)
-        # Different keys should be independent
-        assert limiter.limit == 2
+    @pytest.mark.asyncio
+    async def test_rate_limiter_different_keys(self):
+        """Test that different keys have separate limits"""
+        limiter = RateLimiter(limit=1, interval=60.0)
+        
+        await limiter.acquire("key1")
+        await limiter.acquire("key2")  # Should not be blocked
+        
+        assert True
 
 
 class TestSMTPCheckService:
-    """Test SMTP check service functionality"""
+    """Test SMTP checking functionality"""
     
     @pytest.fixture
     def smtp_checker(self):
-        return SMTPCheckService()
+        return SMTPCheckService(ports=[25, 587, 465])
 
     @pytest.mark.asyncio
     async def test_smtp_check_success(self, smtp_checker):
-        """Test successful SMTP check"""
-        with patch('aiosmtplib.SMTP') as mock_smtp:
-            mock_smtp_instance = AsyncMock()
-            mock_smtp.return_value = mock_smtp_instance
-            mock_smtp_instance.connect = AsyncMock()
-            mock_smtp_instance.starttls = AsyncMock()
-            mock_smtp_instance.login = AsyncMock()
-            mock_smtp_instance.quit = AsyncMock()
-            
-            result = await smtp_checker.check(
-                host="smtp.example.com",
-                email="test@example.com",
-                password="password",
-                timeout=30
-            )
-            
-            assert isinstance(result, list)
+        """Test successful SMTP authentication check"""
+        results = await smtp_checker.check("smtp.gmail.com", "test@gmail.com", "good", timeout=30)
+        
+        assert len(results) == 3
+        for result in results:
+            assert result["success"] is True
+            assert "port" in result
+            assert "response_time" in result
 
     @pytest.mark.asyncio
     async def test_smtp_check_failure(self, smtp_checker):
-        """Test SMTP check with connection failure"""
-        with patch('aiosmtplib.SMTP') as mock_smtp:
-            mock_smtp_instance = AsyncMock()
-            mock_smtp.return_value = mock_smtp_instance
-            mock_smtp_instance.connect = AsyncMock(side_effect=Exception("Connection failed"))
-            
-            result = await smtp_checker.check(
-                host="smtp.example.com",
-                email="test@example.com",
-                password="password",
-                timeout=30
-            )
-            
-            assert isinstance(result, list)
+        """Test failed SMTP authentication check"""
+        results = await smtp_checker.check("smtp.gmail.com", "test@gmail.com", "bad", timeout=30)
+        
+        assert len(results) == 3
+        for result in results:
+            assert result["success"] is False
+            assert result["error"] == "AUTH_FAILED"
+            assert "port" in result
 
 
 class TestSMTPService:
-    """Test SMTP service functionality"""
+    """Test SMTP Service business logic"""
     
     @pytest.fixture
     def mock_db_session(self):
-        return AsyncMock(spec=AsyncSession)
+        return AsyncMock()
 
     @pytest.fixture
     def smtp_service(self, mock_db_session):
-        return SMTPService(mock_db_session)
+        with patch('services.smtp_service.ProxyService'):
+            with patch('services.smtp_service.OAuthService'):
+                return SMTPService(mock_db_session)
 
     @pytest.fixture
     def mock_smtp_account(self):
         account = Mock(spec=SMTPAccount)
-        account.id = "smtp-123"
+        account.id = "test-account-id"
         account.email = "test@example.com"
-        account.server = "smtp.example.com"
         account.host = "smtp.example.com"
         account.port = 587
-        account.username = "test@example.com"
-        account.password = "password"
         account.use_tls = True
+        account.username = "test@example.com"
+        account.password = "test_password"
         account.daily_limit = 1000
+        account.hourly_limit = 100
+        account.is_active = True
+        account.is_oauth = False
         return account
+
+    @pytest.fixture
+    def mock_proxy_server(self):
+        proxy = Mock(spec=ProxyServer)
+        proxy.id = "test-proxy-id"
+        proxy.host = "proxy.example.com"
+        proxy.port = 1080
+        proxy.username = "proxy_user"
+        proxy.password = "proxy_pass"
+        proxy.protocol = "SOCKS5"
+        proxy.is_active = True
+        return proxy
 
     @pytest.fixture
     def mock_campaign(self):
         campaign = Mock(spec=Campaign)
-        campaign.id = "campaign-123"
+        campaign.id = "test-campaign-id"
+        campaign.name = "Test Campaign"
         campaign.subject = "Test Subject"
-        campaign.content = "Test Content"
-        campaign.from_email = "sender@example.com"
+        campaign.content = "Test content"
+        campaign.status = "active"
+        campaign.user_id = "test-user-id"
         return campaign
 
     @pytest.mark.asyncio
     async def test_get_session_smtp_accounts_success(self, smtp_service, mock_db_session):
         """Test retrieving SMTP accounts for a session"""
+        # Mock database query
         mock_result = AsyncMock()
         mock_result.scalars.return_value.all.return_value = [
             Mock(spec=SMTPAccount, id="1", email="test1@example.com"),
@@ -132,22 +156,27 @@ class TestSMTPService:
         mock_db_session.execute.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_send_single_email_success(self, smtp_service, mock_smtp_account):
+    async def test_send_single_email_success(self, smtp_service, mock_db_session):
         """Test sending a single email"""
+        mock_smtp_account = Mock(spec=SMTPAccount)
+        mock_smtp_account.email = "test@example.com"
+        mock_smtp_account.server = "smtp.example.com"
+        mock_smtp_account.port = 587
+        mock_smtp_account.username = "test@example.com"
+        mock_smtp_account.password = "test_password"
+        mock_smtp_account.use_tls = True
+        mock_smtp_account.id = "smtp-123"
+        
         email_data = {
             "to_email": "recipient@example.com",
             "subject": "Test Subject",
             "content": "Test content"
         }
         
+        # Mock successful sending
         with patch('aiosmtplib.SMTP') as mock_smtp:
             mock_smtp_instance = AsyncMock()
             mock_smtp.return_value = mock_smtp_instance
-            mock_smtp_instance.connect = AsyncMock()
-            mock_smtp_instance.starttls = AsyncMock()
-            mock_smtp_instance.login = AsyncMock()
-            mock_smtp_instance.send_message = AsyncMock()
-            mock_smtp_instance.quit = AsyncMock()
             
             result = await smtp_service.send_single_email(
                 smtp_account=mock_smtp_account,
@@ -158,8 +187,10 @@ class TestSMTPService:
             assert mock_smtp.called
 
     @pytest.mark.asyncio
-    async def test_send_with_retry_success(self, smtp_service, mock_campaign):
+    async def test_send_with_retry_success(self, smtp_service, mock_smtp_account):
         """Test sending email with retry mechanism"""
+        mock_campaign = Mock()
+        mock_campaign.id = "campaign-123"
         mock_recipient = {
             "email": "recipient@example.com",
             "name": "Test User"
@@ -193,103 +224,146 @@ class TestSMTPService:
             assert result in smtp_accounts
 
     @pytest.mark.asyncio
-    async def test_update_rate_limit(self, smtp_service):
-        """Test updating rate limit for SMTP account"""
-        with patch.object(smtp_service, '_log_campaign_metric', return_value=None):
-            result = await smtp_service._update_rate_limit("smtp-123")
-            # Test passes if no exception is raised
-            assert True
+    async def test_send_email_rate_limit_exceeded(self, smtp_service, mock_smtp_account):
+        """Test sending email when rate limit is exceeded"""
+        # Mock rate limiter to simulate exceeded limit
+        with patch.object(smtp_service.account_limiter, 'acquire', 
+                         side_effect=asyncio.TimeoutError("Rate limit exceeded")):
+            
+            with pytest.raises(HTTPException) as exc_info:
+                await smtp_service.send_email(
+                    smtp_account=mock_smtp_account,
+                    to_email="recipient@example.com",
+                    subject="Test Subject",
+                    content="Test content",
+                    user_id="test-user"
+                )
+            
+            assert exc_info.value.status_code == 429
 
     @pytest.mark.asyncio
-    async def test_log_campaign_metric(self, smtp_service):
-        """Test logging campaign metrics"""
-        result = await smtp_service._log_campaign_metric(
-            campaign_id="campaign-123",
-            metric_type="email_sent",
-            value=1
-        )
-        # Test passes if no exception is raised
-        assert True
+    async def test_send_email_smtp_authentication_failed(self, smtp_service, mock_smtp_account, mock_proxy_server):
+        """Test sending email with SMTP authentication failure"""
+        with patch.object(smtp_service.proxy_service, 'get_proxy_for_user', return_value=mock_proxy_server):
+            with patch('aiosmtplib.SMTP') as mock_smtp:
+                mock_smtp_instance = AsyncMock()
+                mock_smtp.return_value = mock_smtp_instance
+                mock_smtp_instance.connect = AsyncMock()
+                mock_smtp_instance.starttls = AsyncMock()
+                mock_smtp_instance.login = AsyncMock(side_effect=Exception("Authentication failed"))
+                
+                result = await smtp_service.send_email(
+                    smtp_account=mock_smtp_account,
+                    to_email="recipient@example.com",
+                    subject="Test Subject",
+                    content="Test content",
+                    user_id="test-user"
+                )
+                
+                assert result["success"] is False
+                assert "error" in result
 
     @pytest.mark.asyncio
-    async def test_smtp_details_extraction(self, smtp_service):
-        """Test SMTP details extraction from account"""
-        mock_account = Mock(spec=SMTPAccount)
-        mock_account.server = "smtp.example.com"
-        mock_account.port = 587
-        
-        server, port = smtp_service._smtp_details(mock_account)
-        
-        assert server == "smtp.example.com"
-        assert port == 587
+    async def test_validate_smtp_account_success(self, smtp_service, mock_smtp_account, mock_proxy_server):
+        """Test SMTP account validation"""
+        with patch.object(smtp_service.proxy_service, 'get_proxy_for_user', return_value=mock_proxy_server):
+            with patch('aiosmtplib.SMTP') as mock_smtp:
+                mock_smtp_instance = AsyncMock()
+                mock_smtp.return_value = mock_smtp_instance
+                mock_smtp_instance.connect = AsyncMock()
+                mock_smtp_instance.starttls = AsyncMock()
+                mock_smtp_instance.login = AsyncMock()
+                mock_smtp_instance.quit = AsyncMock()
+                
+                result = await smtp_service.validate_smtp_account(mock_smtp_account, "test-user")
+                
+                assert result["valid"] is True
+                mock_smtp_instance.login.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_get_proxy_by_id(self, smtp_service, mock_db_session):
-        """Test getting proxy by ID"""
-        mock_proxy = Mock()
-        mock_proxy.id = "proxy-123"
-        mock_db_session.scalar.return_value = mock_proxy
+    async def test_get_account_statistics(self, smtp_service, mock_db_session):
+        """Test getting account statistics"""
+        # Mock database queries for statistics
+        mock_result = AsyncMock()
+        mock_result.scalar.return_value = 150  # emails sent today
+        mock_db_session.execute.return_value = mock_result
         
-        result = await smtp_service._get_proxy_by_id("proxy-123", "session-123")
-        
-        assert result.id == "proxy-123"
-
-    @pytest.mark.asyncio
-    async def test_save_failed_send(self, smtp_service, mock_db_session):
-        """Test saving failed send attempt"""
-        mock_db_session.add = Mock()
-        mock_db_session.commit = AsyncMock()
-        
-        await smtp_service._save_failed_send(
-            campaign_id="campaign-123",
-            to_email="test@example.com",
-            message="SMTP Error"
-        )
-        
-        mock_db_session.add.assert_called_once()
-        mock_db_session.commit.assert_called_once()
-
-    @pytest.mark.asyncio
-    async def test_prepare_single_message(self, smtp_service):
-        """Test preparing single email message"""
-        result = await smtp_service._prepare_single_message(
-            subject="Test Subject",
-            content="Test Content",
-            from_email="sender@example.com",
-            to_email="recipient@example.com"
-        )
-        
-        assert result is not None
-        # Test passes if message is created without error
-
-    @pytest.mark.asyncio
-    async def test_setup_smtp_warmup(self, smtp_service, mock_db_session):
-        """Test setting up SMTP warmup schedule"""
-        mock_db_session.add = Mock()
-        mock_db_session.commit = AsyncMock()
-        
-        await smtp_service.setup_smtp_warmup(
-            smtp_account_id="smtp-123",
-            start_day=1
+        stats = await smtp_service.get_account_statistics(
+            account_id="test-account-id",
+            user_id="test-user"
         )
         
-        # Test passes if warmup is configured without error
-        assert True
+        assert "emails_sent_today" in stats
+        assert "emails_sent_this_hour" in stats
+        assert "success_rate" in stats
+        mock_db_session.execute.assert_called()
 
     @pytest.mark.asyncio
-    async def test_send_campaign_functionality(self, smtp_service, mock_campaign):
-        """Test send campaign basic functionality"""
-        mock_recipients = [
+    async def test_bulk_send_emails(self, smtp_service, mock_smtp_account, mock_proxy_server):
+        """Test bulk email sending"""
+        recipients = [
             {"email": "user1@example.com", "name": "User 1"},
-            {"email": "user2@example.com", "name": "User 2"}
+            {"email": "user2@example.com", "name": "User 2"},
+            {"email": "user3@example.com", "name": "User 3"}
         ]
         
-        with patch.object(smtp_service, '_send_single_email', return_value=None) as mock_send:
-            await smtp_service.send_campaign(
-                campaign=mock_campaign,
-                recipients=mock_recipients,
-                session_id="session-123"
+        with patch.object(smtp_service.proxy_service, 'get_proxy_for_user', return_value=mock_proxy_server):
+            with patch.object(smtp_service, 'send_email', return_value={"success": True}) as mock_send:
+                
+                results = await smtp_service.bulk_send_emails(
+                    smtp_account=mock_smtp_account,
+                    recipients=recipients,
+                    subject="Bulk Test Subject",
+                    content="Bulk test content",
+                    user_id="test-user"
+                )
+                
+                assert len(results) == 3
+                assert mock_send.call_count == 3
+                assert all(result["success"] for result in results)
+
+    @pytest.mark.asyncio
+    async def test_delete_smtp_account_with_campaigns(self, smtp_service, mock_db_session):
+        """Test deleting SMTP account that has associated campaigns"""
+        # Mock finding campaigns using this account
+        mock_result = AsyncMock()
+        mock_result.scalar.return_value = 2  # 2 campaigns using this account
+        mock_db_session.execute.return_value = mock_result
+        
+        with pytest.raises(HTTPException) as exc_info:
+            await smtp_service.delete_smtp_account(
+                account_id="test-account-id",
+                user_id="test-user"
             )
-            
-            # Test passes if method executes without error
-            assert True
+        
+        assert exc_info.value.status_code == 400
+        assert "campaigns" in str(exc_info.value.detail).lower()
+
+    @pytest.mark.asyncio
+    async def test_update_smtp_account_success(self, smtp_service, mock_db_session):
+        """Test updating SMTP account"""
+        # Mock finding the account
+        mock_account = Mock(spec=SMTPAccount)
+        mock_account.user_id = "test-user"
+        mock_result = AsyncMock()
+        mock_result.scalar_one_or_none.return_value = mock_account
+        mock_db_session.execute.return_value = mock_result
+        
+        mock_db_session.commit = AsyncMock()
+        mock_db_session.refresh = AsyncMock()
+        
+        update_data = {
+            "host": "new-smtp.example.com",
+            "port": 465,
+            "use_tls": True
+        }
+        
+        result = await smtp_service.update_smtp_account(
+            account_id="test-account-id",
+            user_id="test-user",
+            **update_data
+        )
+        
+        assert mock_account.host == "new-smtp.example.com"
+        assert mock_account.port == 465
+        mock_db_session.commit.assert_called_once()

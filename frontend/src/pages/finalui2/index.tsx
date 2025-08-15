@@ -67,14 +67,18 @@ const AnalyticsDashboard = lazy(() => import('./pages/AnalyticsDashboard'));
 const TestPage = lazy(() => import('../TestPage'));
 
 export const FinalUI2: React.FC = () => {
+  console.log('🚀 FinalUI2 component rendered, current path:', window.location.pathname);
+  
   return (
     <Suspense fallback={<div className="p-10 flex items-center justify-center"><MailLoader icon="paper" size="xl" variant="ring" /></div>}>
       <Routes>
-        {/* Root routes - no default redirect to avoid hijacking nested mounts */}
+        {/* Root routes - handle both root and nested paths */}
         {/* Back-compat for old hub alias */}
         <Route path="/hub" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<UnifiedFunctionsDashboard />} />
         <Route path="/dashboard/unified" element={<UnifiedFunctionsDashboard />} />
+        {/* Handle root path when mounted at /* */}
+        <Route path="/" element={<UnifiedFunctionsDashboard />} />
         {/* Legacy routes kept for compatibility */}
         <Route path="/dashboard-ai" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard-enhanced" element={<Navigate to="/dashboard" replace />} />
@@ -167,6 +171,12 @@ export const FinalUI2: React.FC = () => {
         <Route path="/ai/lead-scorer" element={<Navigate to="/lead-scorer" replace />} />
         <Route path="/ai/personalizer" element={<Navigate to="/content-personalizer" replace />} />
 
+        {/* Debug route to verify component is working */}
+        <Route path="/debug" element={<div className="p-10 text-center"><h1>FinalUI2 Router Working!</h1><p>Path: {window.location.pathname}</p></div>} />
+        {/* Test route to verify basic rendering */}
+        <Route path="/test-page" element={<div className="p-10 text-center"><h1>Test Page</h1><p>This is a test page to verify routing works</p></div>} />
+        {/* Fallback route to catch unmatched paths */}
+        <Route path="*" element={<div className="p-10 text-center"><h1>Route Not Found in FinalUI2</h1><p>Path: {window.location.pathname}</p><p>This route is not defined in the FinalUI2 router</p></div>} />
         {/* No fallback redirect to avoid hijacking nested parents */}
       </Routes>
     </Suspense>

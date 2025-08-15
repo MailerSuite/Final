@@ -3,6 +3,7 @@ import type { IUser } from "@/types"
 import { toast } from "sonner"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
+import { isAuthBypassed, getMockUser } from "@/utils/devMode"
 
 interface AuthState {
   token: string | null
@@ -40,7 +41,7 @@ interface AuthState {
   isAccountLocked: () => boolean
   resetApiErrorState: () => void
   canMakeApiCall: () => boolean
-  
+
   // Token management helpers
   handleMissingTokens: () => void
   validateTokens: () => boolean
@@ -49,14 +50,9 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      token: "dev-bypass-token", // TEMP: Bypass auth for development
-      refreshToken: "dev-bypass-refresh-token", // TEMP: Bypass auth for development
-      userData: { // TEMP: Mock user data for development
-        id: 1,
-        email: "dev@mailersuite.com",
-        username: "developer",
-        name: "Developer"
-      } as IUser,
+      token: (isAuthBypassed() ? "dev-bypass-token" : null) as string | null,
+      refreshToken: (isAuthBypassed() ? "dev-bypass-refresh-token" : null) as string | null,
+      userData: (isAuthBypassed() ? (getMockUser() as IUser) : null),
       isLoading: false,
       loginAttempts: 0,
       lastLoginAttempt: null,
@@ -87,12 +83,12 @@ export const useAuthStore = create<AuthState>()(
         console.log('🔑 Setting tokens in auth store:')
         console.log('  Setting access_token:', accessToken ? 'exists' : 'null')
         console.log('  Setting refresh_token:', refreshToken ? 'exists' : 'null/undefined')
-        
+
         state.setToken(accessToken)
         if (refreshToken !== undefined) {
           state.setRefreshToken(refreshToken)
         }
-        
+
         // Verify tokens were stored
         setTimeout(() => {
           const storedAccess = localStorage.getItem('token')
@@ -157,26 +153,26 @@ export const useAuthStore = create<AuthState>()(
       },
 
       resetApiErrorState: () => {
-        set({ 
-          apiErrorCount: 0, 
-          lastApiError: null, 
-          isApiDown: false 
+        set({
+          apiErrorCount: 0,
+          lastApiError: null,
+          isApiDown: false
         })
       },
 
       canMakeApiCall: () => {
         const { apiErrorCount, lastApiError, isApiDown } = get()
-        
+
         // If API is marked as down, check if enough time has passed
         if (isApiDown && lastApiError) {
           const timeSinceError = Date.now() - lastApiError.getTime()
           const backoffTime = Math.min(30000 * Math.pow(2, apiErrorCount), 300000) // Max 5 minutes
-          
+
           if (timeSinceError < backoffTime) {
             return false
           }
         }
-        
+
         return true
       },
 
@@ -184,16 +180,16 @@ export const useAuthStore = create<AuthState>()(
       handleMissingTokens: () => {
         console.log('🔧 Handling missing tokens - clearing auth state')
         const state = get()
-        
+
         // Clear all authentication state
         state.setToken(null)
         state.setRefreshToken(null)
         state.setUserData(null)
-        
+
         // Clear localStorage
         localStorage.removeItem('token')
         localStorage.removeItem('refresh_token')
-        
+
         // Reset auth state
         set({
           token: null,
@@ -202,15 +198,18 @@ export const useAuthStore = create<AuthState>()(
           loginAttempts: 0,
           lastLoginAttempt: null,
         })
-        
+
         console.log('✅ Auth state cleared due to missing tokens')
       },
 
       // Add function to validate token presence
       validateTokens: () => {
-        // TEMP: Always return true to bypass auth for development
-        console.log('🚀 DEV MODE: Authentication bypassed')
-        return true
+        if (isAuthBypassed()) {
+          console.log('🚀 DEV MODE: Authentication bypassed')
+          return true
+        }
+        const hasToken = Boolean(get().token || localStorage.getItem('token'))
+        return hasToken
       },
 
       login: async (identifier, password, _type, fingerprint) => {
@@ -227,7 +226,7 @@ export const useAuthStore = create<AuthState>()(
             console.log('  access_token:', data.access_token ? 'received' : 'missing')
             console.log('  refresh_token:', data.refresh_token ? 'received' : 'missing')
             console.log('  user data:', data.user ? 'received' : 'missing')
-            
+
             const state = get()
             state.setTokens(data.access_token, data.refresh_token)
             set({
@@ -251,7 +250,7 @@ export const useAuthStore = create<AuthState>()(
           // Authentication error
 
           if (err.status === 429) {
-          const reason = err.response?.data?.reason as
+            const reason = err.response?.data?.reason as
               | "fingerprint_limit"
               | "login_limit"
               | undefined;
@@ -279,7 +278,7 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-              signUp: async (email, password) => {
+      signUp: async (email, password) => {
         set({ isLoading: true })
 
         try {
@@ -322,7 +321,7 @@ export const useAuthStore = create<AuthState>()(
 
       getMe: async (abortSignal?: AbortSignal) => {
         const token = get().token || localStorage.getItem("token");
-        
+
         if (!token) {
           console.warn("No token available for getMe request");
           set({ userData: null });
@@ -344,12 +343,12 @@ export const useAuthStore = create<AuthState>()(
         try {
           // Wait a small amount to ensure token is set in axios interceptor
           await new Promise(resolve => setTimeout(resolve, 100));
-          
+
           // Check abort signal before making request
           if (abortSignal?.aborted) {
             return;
           }
-          
+
           const { data } = await axiosInstance.get("/api/v1/auth/me", {
             signal: abortSignal
           });
@@ -367,26 +366,26 @@ export const useAuthStore = create<AuthState>()(
             console.debug("Auth request was aborted (intentional)");
             return;
           }
-          
+
           console.error("Failed to fetch user:", error);
-          
+
           // Handle API errors with exponential backoff
           const isNetworkError = !error.response || error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK';
           const isServerError = error.response?.status >= 500;
-          
+
           if (isNetworkError || isServerError) {
             const currentState = get();
             const newErrorCount = currentState.apiErrorCount + 1;
             const backoffTime = Math.min(30000 * Math.pow(2, newErrorCount), 300000); // Max 5 minutes
-            
-            set({ 
+
+            set({
               apiErrorCount: newErrorCount,
               lastApiError: new Date(),
               isApiDown: true
             });
-            
+
             console.warn(`API appears to be down. Will retry in ${backoffTime / 1000} seconds. Error count: ${newErrorCount}`);
-            
+
             // Show user-friendly message only on first few errors
             if (newErrorCount <= 3) {
               toast.error("Server is temporarily unavailable. Please try again later.");
@@ -490,17 +489,22 @@ export const useAuthStore = create<AuthState>()(
   ),
 )
 
+// Seed dev tokens into localStorage in dev bypass mode so requests carry Authorization header
 if (typeof window !== "undefined") {
+  if (isAuthBypassed()) {
+    localStorage.setItem("token", "dev-bypass-token")
+    localStorage.setItem("refresh_token", "dev-bypass-refresh-token")
+  }
   const storedToken = localStorage.getItem("token")
   const storedRefreshToken = localStorage.getItem("refresh_token")
-  
+
   if (storedToken) {
     useAuthStore.getState().setToken(storedToken)
   }
   if (storedRefreshToken) {
     useAuthStore.getState().setRefreshToken(storedRefreshToken)
   }
-  
+
   // Remove the problematic event listener that causes infinite loops
   // The token update should not automatically trigger getMe() calls
   // This was causing cascading API calls and infinite loops

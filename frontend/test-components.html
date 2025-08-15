@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component Test</title>
+</head>
+<body>
+    <h1>Vite Server Test</h1>
+    <p>If you can see this, the server is working.</p>
+    <script>
+        // Test if the server is responding
+        fetch('http://localhost:4000')
+            .then(response => {
+                console.log('Server response:', response.status);
+                document.body.innerHTML += '<p style="color: green;">✅ Server is responding!</p>';
+            })
+            .catch(error => {
+                console.error('Server error:', error);
+                document.body.innerHTML += '<p style="color: red;">❌ Server error: ' + error.message + '</p>';
+            });
+    </script>
+</body>
+</html>

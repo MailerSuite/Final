@@ -56,7 +56,7 @@ const toastState = {
 const addToast = (toast: ToastItem) => {
   toastState.toasts.push(toast);
   toastState.listeners.forEach(listener => listener());
-  
+
   // Auto remove after duration
   setTimeout(() => {
     removeToast(toast.id);
@@ -100,7 +100,7 @@ const shouldShowError = (message: string): boolean => {
     'network error',
     'failed to load'
   ];
-  
+
   const lowerMessage = message.toLowerCase();
   return !suppressedErrors.some(error => lowerMessage.includes(error));
 };
@@ -136,7 +136,7 @@ export const toast: Toast = Object.assign(
         severity: 'success',
         duration: options?.duration,
       });
-      
+
       return sonnerToast.success(message, {
         ...options,
         className: 'bg-zinc-900 border-zinc-800 text-white',
@@ -149,7 +149,7 @@ export const toast: Toast = Object.assign(
         console.error('Suppressed error toast:', message);
         return;
       }
-      
+
       const id = Math.random().toString(36);
       addToast({
         id,
@@ -158,7 +158,7 @@ export const toast: Toast = Object.assign(
         severity: 'critical',
         duration: options?.duration,
       });
-      
+
       return sonnerToast.error(message, {
         ...options,
         className: 'bg-red-950/50 border-red-900 text-red-400',
@@ -174,7 +174,7 @@ export const toast: Toast = Object.assign(
         severity: 'info',
         duration: options?.duration,
       });
-      
+
       return sonnerToast.info(message, {
         ...options,
         className: 'bg-zinc-900 border-zinc-800 text-white',
@@ -190,7 +190,7 @@ export const toast: Toast = Object.assign(
         severity: 'warning',
         duration: options?.duration,
       });
-      
+
       return sonnerToast.warning(message, {
         ...options,
         className: 'bg-yellow-950/50 border-yellow-900 text-yellow-400',
@@ -206,7 +206,7 @@ export const toast: Toast = Object.assign(
         severity: 'info',
         duration: options?.duration,
       });
-      
+
       return sonnerToast.loading(message, {
         ...options,
         className: 'bg-zinc-900 border-zinc-800 text-white',
@@ -228,13 +228,13 @@ export const toast: Toast = Object.assign(
           const errorMessage = typeof options.error === 'function'
             ? options.error(error)
             : options.error;
-          
+
           // Check if we should show this error
           if (!shouldShowError(errorMessage)) {
             console.error('Suppressed promise error toast:', errorMessage);
             return 'Operation failed';
           }
-          
+
           return errorMessage;
         }
       });
@@ -248,4 +248,4 @@ export const toast: Toast = Object.assign(
   }
 );
 
-export { toast as default };
+export default toast;

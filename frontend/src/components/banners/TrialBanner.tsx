@@ -13,11 +13,11 @@ function useDismissState(endsOnIso: string) {
       if (saved && saved === endsOnIso) {
         setDismissed(true);
       }
-    } catch {}
+    } catch { }
   }, [endsOnIso]);
 
   const dismiss = React.useCallback(() => {
-    try { localStorage.setItem(DISMISS_KEY, endsOnIso); } catch {}
+    try { localStorage.setItem(DISMISS_KEY, endsOnIso); } catch { }
     setDismissed(true);
   }, [endsOnIso]);
 
@@ -25,6 +25,11 @@ function useDismissState(endsOnIso: string) {
 }
 
 export const TrialBanner: React.FC = () => {
+  // Disable in dev mode to avoid any potential issues
+  if (import.meta.env.DEV) {
+    return null;
+  }
+
   const { isTrialActive, daysLeft, trialEndsOn } = useTrial();
   const endsOnIso = React.useMemo(() => trialEndsOn.toISOString(), [trialEndsOn]);
   const { dismissed, dismiss } = useDismissState(endsOnIso);

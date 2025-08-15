@@ -15,7 +15,7 @@ import { domainApi } from '@/http/api'
 import { getSessionId } from '@/utils/getSessionId'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
-import { toast } from '@/hooks/useToast'
+import { toast } from 'sonner'
 
 export default function DomainsPage() {
   const [initialLoading, setInitialLoading] = React.useState(true)
@@ -160,7 +160,7 @@ export default function DomainsPage() {
                 </div>
               </DialogContent>
             </Dialog>
-            
+
             {/* Domain Verification Records Dialog */}
             <Dialog open={verificationOpen} onOpenChange={(v) => { setVerificationOpen(v); if (!v) setSelectedDomain(null) }}>
               <DialogContent className="max-w-2xl">

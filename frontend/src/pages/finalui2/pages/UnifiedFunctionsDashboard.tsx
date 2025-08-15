@@ -246,13 +246,13 @@ export default function UnifiedFunctionsDashboard() {
       {/* Top stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
         {statCards.map((c) => (
-          <Card key={c.title} variant="elevated" className="rounded-2xl border-primary/10 bg-white">
+          <Card key={c.title} variant="elevated" className="rounded-2xl border-border/20 bg-card hover:bg-card/80 transition-colors">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-base font-semibold text-foreground">{c.title}</CardTitle>
+              <CardTitle className="text-base font-semibold text-card-foreground">{c.title}</CardTitle>
               <c.icon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-foreground">{c.value}</div>
+              <div className="text-2xl font-bold text-card-foreground">{c.value}</div>
               <p className="text-sm text-muted-foreground">{c.subtitle}</p>
               <Badge className={cn('mt-2', statusColor(c.badge))}>
                 {c.badge}

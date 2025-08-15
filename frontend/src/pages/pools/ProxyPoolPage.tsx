@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { 
+import {
   ServerStackIcon,
   GlobeAltIcon,
   BoltIcon,
@@ -40,18 +40,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Progress } from '@/components/ui/progress'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 import PageShell from '@/pages/finalui2/components/PageShell'
 import PageConsole from '@/components/ui/PageConsole'
+import StandardPageWrapper from '@/components/layout/StandardPageWrapper'
 import { motion } from 'framer-motion'
 
 // Mock data for thousands of proxies
@@ -73,17 +74,17 @@ const generateMockProxies = (count: number) => {
     { code: 'CN', name: 'China', flag: '🇨🇳' },
     { code: 'SE', name: 'Sweden', flag: '🇸🇪' },
   ]
-  
+
   const providers = ['Luminati', 'Oxylabs', 'SmartProxy', 'Residential', 'DataCenter', 'Mobile', 'Private', 'Storm']
   const types = ['HTTP', 'HTTPS', 'SOCKS4', 'SOCKS5']
   const statuses = ['online', 'offline', 'slow', 'blacklisted']
-  
+
   return Array.from({ length: count }, (_, i) => {
     const country = countries[Math.floor(Math.random() * countries.length)]
     const status = statuses[Math.floor(Math.random() * statuses.length)]
     const isBlacklisted = status === 'blacklisted'
     const speed = isBlacklisted ? Math.random() * 500 : 500 + Math.random() * 9500
-    
+
     return {
       id: `proxy-${i + 1}`,
       ip: `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`,
@@ -142,10 +143,10 @@ const ProxyPoolPage: React.FC = () => {
         setProxies(prev => {
           const rotatingProxies = prev.filter(p => p.rotating)
           const nonRotatingProxies = prev.filter(p => !p.rotating)
-          
+
           // Shuffle rotating proxies
           const shuffled = [...rotatingProxies].sort(() => Math.random() - 0.5)
-          
+
           // Update some statuses randomly
           shuffled.forEach(proxy => {
             if (Math.random() > 0.9) {
@@ -153,11 +154,11 @@ const ProxyPoolPage: React.FC = () => {
               proxy.ping = Math.floor(Math.random() * 300) + 10
             }
           })
-          
+
           return [...shuffled, ...nonRotatingProxies]
         })
       }, rotationInterval * 1000)
-      
+
       return () => clearInterval(interval)
     }
   }, [isAutoRotating, rotationInterval])
@@ -165,75 +166,75 @@ const ProxyPoolPage: React.FC = () => {
   // Filter and sort effect
   useEffect(() => {
     let filtered = [...proxies]
-    
+
     // Search filter
     if (searchQuery) {
-      filtered = filtered.filter(p => 
+      filtered = filtered.filter(p =>
         p.ip.includes(searchQuery) ||
         p.provider.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.isp.toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
-    
+
     // Country filter
     if (countryFilter !== 'all') {
       filtered = filtered.filter(p => p.country.code === countryFilter)
     }
-    
+
     // Status filter
     if (statusFilter !== 'all') {
       filtered = filtered.filter(p => p.status === statusFilter)
     }
-    
+
     // Type filter
     if (typeFilter !== 'all') {
       filtered = filtered.filter(p => p.type === typeFilter)
     }
-    
+
     // Provider filter
     if (providerFilter !== 'all') {
       filtered = filtered.filter(p => p.provider === providerFilter)
     }
-    
+
     // Anonymity filter
     if (anonymityFilter !== 'all') {
       filtered = filtered.filter(p => p.anonymity === anonymityFilter)
     }
-    
+
     // Price range filter
-    filtered = filtered.filter(p => 
+    filtered = filtered.filter(p =>
       parseFloat(p.price) >= priceRange[0] && parseFloat(p.price) <= priceRange[1]
     )
-    
+
     // Speed range filter
     filtered = filtered.filter(p => p.speed >= speedRange[0] && p.speed <= speedRange[1])
-    
+
     // Rotating filter
     if (showRotatingOnly) {
       filtered = filtered.filter(p => p.rotating)
     }
-    
+
     // Residential filter
     if (showResidentialOnly) {
       filtered = filtered.filter(p => p.residential)
     }
-    
+
     // Sorting
     filtered.sort((a, b) => {
       let aVal = a[sortBy as keyof typeof a]
       let bVal = b[sortBy as keyof typeof b]
-      
+
       if (typeof aVal === 'string') aVal = aVal.toLowerCase()
       if (typeof bVal === 'string') bVal = bVal.toLowerCase()
-      
+
       if (sortOrder === 'asc') {
         return aVal > bVal ? 1 : -1
       } else {
         return aVal < bVal ? 1 : -1
       }
     })
-    
+
     setFilteredProxies(filtered)
   }, [proxies, searchQuery, countryFilter, statusFilter, typeFilter, providerFilter, anonymityFilter, priceRange, speedRange, showRotatingOnly, showResidentialOnly, sortBy, sortOrder])
 
@@ -241,11 +242,11 @@ const ProxyPoolPage: React.FC = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   )
-  
+
   const totalPages = Math.ceil(filteredProxies.length / itemsPerPage)
 
   const handleSelectProxy = (id: string) => {
-    setSelectedProxies(prev => 
+    setSelectedProxies(prev =>
       prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
     )
   }
@@ -301,47 +302,32 @@ const ProxyPoolPage: React.FC = () => {
   return (
     <PageShell title="Proxy Pool Manager">
       <PageConsole>
-        <div className="flex flex-col h-full bg-gradient-dark relative">
-          {/* SOON Badge */}
-          <div className="absolute top-4 right-4 z-50">
-            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-2 text-lg font-bold shadow-lg">
-              COMING SOON
-            </Badge>
-          </div>
-          
-          {/* Header */}
-          <div className="px-6 py-4 border-b border-border bg-background/50">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">
-                  Proxy Pool Manager
-                </h1>
-                <p className="text-sm text-muted-foreground mt-1">
-                  {filteredProxies.length.toLocaleString()} proxies available • {selectedProxies.length} selected
-                </p>
-              </div>
-              
-              <div className="flex items-center gap-3">
-                <Badge variant="outline" className={cn(
-                  "px-3 py-1",
-                  isAutoRotating ? "border-emerald-500/50 text-emerald-400" : "border-border text-muted-foreground"
-                )}>
-                  <ArrowsRightLeftIcon className="w-4 h-4 mr-2" />
-                  {isAutoRotating ? 'Auto-Rotating' : 'Static'}
-                </Badge>
-                
-                <Button variant="outline" className="bg-card/50 border-border">
-                  <ArrowDownTrayIcon className="w-4 h-4 mr-2" />
-                  Export List
-                </Button>
-                
-                <Button className="bg-gradient-to-r from-purple-500 to-indigo-500">
-                  <PlusIcon className="w-4 h-4 mr-2" />
-                  Add Proxy
-                </Button>
-              </div>
-            </div>
-          </div>
+        <StandardPageWrapper
+          title="Proxy Pool Manager"
+          subtitle={`${filteredProxies.length.toLocaleString()} proxies available • ${selectedProxies.length} selected`}
+          showComingSoon={true}
+          actions={
+            <>
+              <Badge variant="outline" className={cn(
+                "px-3 py-1",
+                isAutoRotating ? "border-emerald-500/50 text-emerald-400" : "border-border text-muted-foreground"
+              )}>
+                <ArrowsRightLeftIcon className="w-4 h-4 mr-2" />
+                {isAutoRotating ? 'Auto-Rotating' : 'Static'}
+              </Badge>
+
+              <Button variant="outline" className="bg-card/50 border-border">
+                <ArrowDownTrayIcon className="w-4 h-4 mr-2" />
+                Export List
+              </Button>
+
+              <Button className="bg-gradient-to-r from-purple-500 to-indigo-500">
+                <PlusIcon className="w-4 h-4 mr-2" />
+                Add Proxy
+              </Button>
+            </>
+          }
+        >
 
           {/* Filters Bar */}
           <div className="px-6 py-4 border-b border-border bg-background/30">
@@ -357,7 +343,7 @@ const ProxyPoolPage: React.FC = () => {
                   />
                 </div>
               </div>
-              
+
               <Select value={countryFilter} onValueChange={setCountryFilter}>
                 <SelectTrigger className="w-[150px] bg-card/50 border-border">
                   <SelectValue placeholder="Country" />
@@ -373,7 +359,7 @@ const ProxyPoolPage: React.FC = () => {
                   <SelectItem value="RU">🇷🇺 Russia</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               <Select value={typeFilter} onValueChange={setTypeFilter}>
                 <SelectTrigger className="w-[120px] bg-card/50 border-border">
                   <SelectValue placeholder="Type" />
@@ -386,7 +372,7 @@ const ProxyPoolPage: React.FC = () => {
                   <SelectItem value="SOCKS5">SOCKS5</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               <Select value={anonymityFilter} onValueChange={setAnonymityFilter}>
                 <SelectTrigger className="w-[140px] bg-card/50 border-border">
                   <SelectValue placeholder="Anonymity" />
@@ -398,7 +384,7 @@ const ProxyPoolPage: React.FC = () => {
                   <SelectItem value="transparent">Transparent</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="bg-card/50 border-border">
@@ -409,7 +395,7 @@ const ProxyPoolPage: React.FC = () => {
                 <DropdownMenuContent className="w-72 bg-background border-border" align="end">
                   <DropdownMenuLabel>Advanced Filters</DropdownMenuLabel>
                   <DropdownMenuSeparator className="bg-card" />
-                  
+
                   <div className="p-3 space-y-4">
                     <div>
                       <Label className="text-xs text-muted-foreground">Price Range ($/GB)</Label>
@@ -425,7 +411,7 @@ const ProxyPoolPage: React.FC = () => {
                         <span className="text-sm">${priceRange[1]}</span>
                       </div>
                     </div>
-                    
+
                     <div>
                       <Label className="text-xs text-muted-foreground">Speed Range (KB/s)</Label>
                       <div className="flex items-center gap-2 mt-2">
@@ -440,7 +426,7 @@ const ProxyPoolPage: React.FC = () => {
                         <span className="text-sm">{speedRange[1]}</span>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <Label className="text-xs">Rotating Only</Label>
                       <Switch
@@ -448,7 +434,7 @@ const ProxyPoolPage: React.FC = () => {
                         onCheckedChange={setShowRotatingOnly}
                       />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <Label className="text-xs">Residential Only</Label>
                       <Switch
@@ -459,7 +445,7 @@ const ProxyPoolPage: React.FC = () => {
                   </div>
                 </DropdownMenuContent>
               </DropdownMenu>
-              
+
               <div className="flex items-center gap-2 ml-auto">
                 <Label className="text-xs text-muted-foreground">Auto-Rotate</Label>
                 <Switch
@@ -495,7 +481,7 @@ const ProxyPoolPage: React.FC = () => {
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card className="glass-card border-border">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
@@ -509,7 +495,7 @@ const ProxyPoolPage: React.FC = () => {
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card className="glass-card border-border">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
@@ -523,7 +509,7 @@ const ProxyPoolPage: React.FC = () => {
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card className="glass-card border-border">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
@@ -537,7 +523,7 @@ const ProxyPoolPage: React.FC = () => {
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card className="glass-card border-border">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
@@ -551,7 +537,7 @@ const ProxyPoolPage: React.FC = () => {
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card className="glass-card border-border">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
@@ -579,7 +565,7 @@ const ProxyPoolPage: React.FC = () => {
                     onCheckedChange={handleSelectAll}
                     className="mr-4"
                   />
-                  
+
                   <div className="flex items-center gap-4 flex-1">
                     <Button
                       variant="ghost"
@@ -593,7 +579,7 @@ const ProxyPoolPage: React.FC = () => {
                       IP Address
                       <ChevronUpDownIcon className="w-3 h-3 ml-1" />
                     </Button>
-                    
+
                     <Button
                       variant="ghost"
                       size="sm"
@@ -606,7 +592,7 @@ const ProxyPoolPage: React.FC = () => {
                       Location
                       <ChevronUpDownIcon className="w-3 h-3 ml-1" />
                     </Button>
-                    
+
                     <Button
                       variant="ghost"
                       size="sm"
@@ -619,7 +605,7 @@ const ProxyPoolPage: React.FC = () => {
                       Type
                       <ChevronUpDownIcon className="w-3 h-3 ml-1" />
                     </Button>
-                    
+
                     <Button
                       variant="ghost"
                       size="sm"
@@ -632,7 +618,7 @@ const ProxyPoolPage: React.FC = () => {
                       Status
                       <ChevronUpDownIcon className="w-3 h-3 ml-1" />
                     </Button>
-                    
+
                     <Button
                       variant="ghost"
                       size="sm"
@@ -645,7 +631,7 @@ const ProxyPoolPage: React.FC = () => {
                       Ping
                       <ChevronUpDownIcon className="w-3 h-3 ml-1" />
                     </Button>
-                    
+
                     <Button
                       variant="ghost"
                       size="sm"
@@ -658,7 +644,7 @@ const ProxyPoolPage: React.FC = () => {
                       Speed
                       <ChevronUpDownIcon className="w-3 h-3 ml-1" />
                     </Button>
-                    
+
                     <Button
                       variant="ghost"
                       size="sm"
@@ -673,7 +659,7 @@ const ProxyPoolPage: React.FC = () => {
                     </Button>
                   </div>
                 </div>
-                
+
                 {/* Table Body */}
                 <ScrollArea className="flex-1">
                   <div className="space-y-1 p-4">
@@ -692,14 +678,14 @@ const ProxyPoolPage: React.FC = () => {
                           onCheckedChange={() => handleSelectProxy(proxy.id)}
                           className="mr-4"
                         />
-                        
+
                         <div className="flex items-center gap-6 flex-1">
                           {/* IP & Port */}
                           <div className="min-w-[180px]">
                             <p className="text-sm font-medium text-white font-mono">{proxy.ip}:{proxy.port}</p>
                             <p className="text-xs text-muted-foreground">{proxy.isp}</p>
                           </div>
-                          
+
                           {/* Location */}
                           <div className="min-w-[150px]">
                             <div className="flex items-center gap-2">
@@ -710,7 +696,7 @@ const ProxyPoolPage: React.FC = () => {
                               </div>
                             </div>
                           </div>
-                          
+
                           {/* Type & Provider */}
                           <div className="min-w-[120px] space-y-1">
                             <Badge variant="outline" className="text-xs border-border">
@@ -720,7 +706,7 @@ const ProxyPoolPage: React.FC = () => {
                               {proxy.provider}
                             </Badge>
                           </div>
-                          
+
                           {/* Status */}
                           <div className="min-w-[100px]">
                             <Badge className={cn("text-xs", getStatusBadge(proxy.status))}>
@@ -731,7 +717,7 @@ const ProxyPoolPage: React.FC = () => {
                               {proxy.status}
                             </Badge>
                           </div>
-                          
+
                           {/* Anonymity */}
                           <div className="min-w-[100px]">
                             <Badge className={cn("text-xs", getAnonymityBadge(proxy.anonymity))}>
@@ -740,7 +726,7 @@ const ProxyPoolPage: React.FC = () => {
                               {proxy.anonymity}
                             </Badge>
                           </div>
-                          
+
                           {/* Ping */}
                           <div className="min-w-[80px]">
                             <div className="flex items-center gap-1">
@@ -750,7 +736,7 @@ const ProxyPoolPage: React.FC = () => {
                               </span>
                             </div>
                           </div>
-                          
+
                           {/* Speed */}
                           <div className="min-w-[100px]">
                             <div className="flex items-center gap-1">
@@ -758,25 +744,25 @@ const ProxyPoolPage: React.FC = () => {
                               <span className="text-sm text-white">{proxy.speed} KB/s</span>
                             </div>
                           </div>
-                          
+
                           {/* Bandwidth */}
                           <div className="min-w-[100px]">
                             <div className="flex items-center gap-2">
-                              <Progress 
-                                value={(proxy.currentConnections / proxy.connectionLimit) * 100} 
+                              <Progress
+                                value={(proxy.currentConnections / proxy.connectionLimit) * 100}
                                 className="h-2 flex-1"
                               />
                               <span className="text-xs text-muted-foreground">{proxy.bandwidth} Mbps</span>
                             </div>
                           </div>
-                          
+
                           {/* Price */}
                           <div className="min-w-[80px]">
                             <span className="text-sm font-medium text-purple-400">
                               ${proxy.price}/GB
                             </span>
                           </div>
-                          
+
                           {/* Features */}
                           <div className="flex items-center gap-1 min-w-[100px]">
                             {proxy.authentication && (
@@ -800,7 +786,7 @@ const ProxyPoolPage: React.FC = () => {
                               </Badge>
                             )}
                           </div>
-                          
+
                           {/* Actions */}
                           <div className="flex items-center gap-1 ml-auto">
                             <Button
@@ -815,7 +801,7 @@ const ProxyPoolPage: React.FC = () => {
                               <ShieldCheckIcon className="w-4 h-4 mr-1" />
                               Test
                             </Button>
-                            
+
                             <Button
                               variant="ghost"
                               size="sm"
@@ -824,7 +810,7 @@ const ProxyPoolPage: React.FC = () => {
                             >
                               <ShoppingCartIcon className="w-4 h-4" />
                             </Button>
-                            
+
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -853,13 +839,13 @@ const ProxyPoolPage: React.FC = () => {
                     ))}
                   </div>
                 </ScrollArea>
-                
+
                 {/* Pagination */}
                 <div className="flex items-center justify-between p-4 border-t border-border">
                   <div className="text-sm text-muted-foreground">
                     Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, filteredProxies.length)} of {filteredProxies.length} proxies
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     <Button
                       variant="outline"
@@ -870,12 +856,12 @@ const ProxyPoolPage: React.FC = () => {
                     >
                       Previous
                     </Button>
-                    
+
                     <div className="flex items-center gap-1">
                       {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                         const page = currentPage - 2 + i
                         if (page < 1 || page > totalPages) return null
-                        
+
                         return (
                           <Button
                             key={page}
@@ -894,7 +880,7 @@ const ProxyPoolPage: React.FC = () => {
                         )
                       })}
                     </div>
-                    
+
                     <Button
                       variant="outline"
                       size="sm"
@@ -919,7 +905,7 @@ const ProxyPoolPage: React.FC = () => {
                   Configure your purchase for {selectedPurchaseProxy?.ip}
                 </DialogDescription>
               </DialogHeader>
-              
+
               {selectedPurchaseProxy && (
                 <div className="space-y-4 py-4">
                   <div className="flex items-center justify-between p-3 rounded-lg bg-card/50">
@@ -936,7 +922,7 @@ const ProxyPoolPage: React.FC = () => {
                       </Badge>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-3">
                     <div>
                       <Label>Subscription Type</Label>
@@ -951,7 +937,7 @@ const ProxyPoolPage: React.FC = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                    
+
                     <div>
                       <Label>Data Package</Label>
                       <Select defaultValue="100gb">
@@ -967,7 +953,7 @@ const ProxyPoolPage: React.FC = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                    
+
                     <div>
                       <Label>Authentication</Label>
                       <Select defaultValue="ip">
@@ -981,7 +967,7 @@ const ProxyPoolPage: React.FC = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                    
+
                     <div className="flex items-center justify-between py-3 border-t border-border">
                       <span className="text-sm text-muted-foreground">Total Cost</span>
                       <span className="text-xl font-bold text-purple-400">
@@ -989,7 +975,7 @@ const ProxyPoolPage: React.FC = () => {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-3">
                     <Button
                       variant="outline"
@@ -1007,7 +993,7 @@ const ProxyPoolPage: React.FC = () => {
               )}
             </DialogContent>
           </Dialog>
-        </div>
+        </StandardPageWrapper>
       </PageConsole>
     </PageShell>
   )

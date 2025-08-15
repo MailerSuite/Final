@@ -3,9 +3,11 @@ import { useLocation, Link } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
-
+import { SparkleEffect } from '@/components/ui/sparkle-effect'
 import { Icon } from '@/components/ui/icon'
+import { AnimatedLogo } from '@/components/ui/animated-logo'
 import { motion } from 'framer-motion'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface SidebarProps {
   collapsed?: boolean
@@ -76,34 +78,46 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <div className={cn(
-      "flex flex-col h-full bg-sidebar-background border-r border-sidebar-border transition-all duration-300 ease-in-out",
+      "flex flex-col h-full bg-sidebar-background border-r border-sidebar-border relative transition-all duration-300 ease-in-out",
       collapsed ? "w-16" : "w-64",
       className
     )}>
+      {/* Magical sparkle effect */}
+      <SparkleEffect className="z-0" count={15} />
+
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-sidebar-border">
-        <div className="flex items-center space-x-3">
-          {!collapsed && (
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-sidebar-primary rounded-lg flex items-center justify-center">
-                <Icon name="Mail" size="sm" className="text-white" ariaLabel="MailerSuite" />
-              </div>
-              <span className="text-lg font-bold text-sidebar-primary">MailerSuite</span>
-            </div>
-          )}
-          {onToggle && !collapsed && (
-            <button
-              onClick={onToggle}
-              className="p-1.5 rounded-lg hover:bg-sidebar-accent transition-colors text-sidebar-foreground hover:text-sidebar-primary-foreground z-10"
-            >
-              <Icon name="ChevronLeft" size="sm" ariaLabel="Collapse sidebar" />
-            </button>
-          )}
-        </div>
+      <div className="flex items-center justify-between p-4 border-b border-sidebar-border relative z-10">
+        {!collapsed ? (
+          <div className="flex items-center justify-between w-full">
+            <AnimatedLogo 
+              size="md" 
+              showText={true} 
+              collapsed={false}
+            />
+            {onToggle && (
+              <motion.button
+                onClick={onToggle}
+                className="p-1.5 rounded-lg hover:bg-sidebar-accent transition-colors text-sidebar-foreground hover:text-sidebar-primary"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </motion.button>
+            )}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center w-full">
+            <AnimatedLogo 
+              size="sm" 
+              showText={false} 
+              collapsed={true}
+            />
+          </div>
+        )}
       </div>
 
       {/* Navigation */}
-      <ScrollArea className="flex-1 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
+      <ScrollArea className="flex-1 relative z-10">
         <div className="px-3 py-4 space-y-6">
           {navigation.map((section) => (
             <div key={section.title}>
@@ -113,15 +127,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </h2>
               )}
               <nav className="space-y-1">
-                {section.items.map((item, index) => {
+                {section.items.map((item) => {
                   const active = isActive(item.to)
                   return (
                     <motion.div
                       key={item.to}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
+                      initial={false}
+                      animate={{
+                        backgroundColor: active ? 'rgba(58, 175, 255, 0.1)' : 'transparent',
+                      }}
                       transition={{
-                        delay: index * 0.05,
                         duration: 0.25,
                         ease: [0.25, 0.46, 0.45, 0.94]
                       }}
@@ -129,48 +144,53 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     >
                       <Link
                         to={item.to}
-                        onClick={() => {
-                          // Trigger animation on navigation
-                          setShouldAnimate(true)
-                          setAnimationKey(prev => prev + 1)
-
-                          // Stop animation after completion
-                          setTimeout(() => setShouldAnimate(false), 3000)
-                        }}
                         className={cn(
-                          "sidebar-nav-item group flex items-center px-3 py-2 rounded-lg cursor-pointer transition-all",
-                          active && "active shadow-glow",
-                          !active && "text-sidebar-foreground",
+                          "sidebar-nav-item group flex items-center px-3 py-2 rounded-lg cursor-pointer transition-all relative",
+                          active && "bg-sidebar-accent/20 border-l-2 border-sidebar-primary shadow-sm shadow-sidebar-primary/10",
+                          !active && "text-sidebar-foreground hover:bg-sidebar-accent",
                           collapsed && "justify-center px-2"
                         )}
-                        data-active={active ? 'true' : undefined}
-                        aria-current={active ? 'page' : undefined}
                       >
-                        <Icon
-                          name={item.icon as any}
-                          size="base"
-                          className={cn(
-                            "flex-shrink-0 transition-colors",
-                            active ? "text-sidebar-primary" : "text-sidebar-foreground/70 group-hover:text-sidebar-primary",
-                            !collapsed && "mr-3"
-                          )}
-                          ariaLabel={item.label}
-                        />
-                        {!collapsed && (
-                          <span className="flex-1 text-sm font-medium text-sidebar-foreground">
-                            {item.label}
-                          </span>
-                        )}
-                        {!collapsed && item.badge && (
-                          <Badge
-                            variant="outline"
+                        <motion.div
+                          initial={false}
+                          animate={{ rotate: active ? 360 : 0 }}
+                          transition={{ duration: 0.5, ease: "easeInOut" }}
+                        >
+                          <Icon
+                            name={item.icon}
+                            size="sm"
                             className={cn(
-                              "ml-auto text-xs px-1.5 py-0",
-                              active ? "border-sidebar-primary text-sidebar-primary" : "border-sidebar-border text-sidebar-foreground/60"
+                              "flex-shrink-0",
+                              active ? "text-sidebar-primary" : "text-sidebar-foreground/70 group-hover:text-sidebar-primary",
+                              section.title === 'AI Tools' && "text-secondary"
                             )}
-                          >
-                            {item.badge}
-                          </Badge>
+                            ariaLabel={item.label}
+                          />
+                        </motion.div>
+                        {!collapsed && (
+                          <>
+                            <span className={cn(
+                              "ml-3 flex-1 text-sm font-medium",
+                              active ? "text-sidebar-foreground font-semibold" : "text-sidebar-foreground"
+                            )}>
+                              {item.label}
+                            </span>
+                            {item.badge && (
+                              <Badge
+                                variant="default"
+                                className={cn(
+                                  "ml-2 text-[10px] px-1.5 py-0.5",
+                                  item.badge === 'AI' && "bg-gradient-to-r from-primary to-secondary text-white border-0",
+                                  item.badge === 'NEW' && "bg-secondary text-white border-0",
+                                  item.badge === 'HOT' && "bg-primary text-white border-0",
+                                  item.badge === 'TEST' && "bg-accent/20 text-accent-foreground border-accent/50",
+                                  item.badge === '$2000' && "bg-green-500 text-white border-0"
+                                )}
+                              >
+                                {item.badge}
+                              </Badge>
+                            )}
+                          </>
                         )}
                       </Link>
                     </motion.div>
@@ -183,62 +203,51 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </ScrollArea>
 
       {/* Bottom Section */}
-      <div className="p-3 border-t border-sidebar-border">
+      <div className="p-3 border-t border-sidebar-border relative z-10">
         <nav className="space-y-1">
-          {bottomItems.map((item, index) => {
+          {bottomItems.map((item) => {
             const active = isActive(item.to)
             return (
-              <div key={item.to}>
-                <Link
-                  to={item.to}
-                  onClick={() => {
-                    // Trigger animation on navigation
-                    setShouldAnimate(true)
-                    setAnimationKey(prev => prev + 1)
-
-                    // Stop animation after completion
-                    setTimeout(() => setShouldAnimate(false), 3000)
-                  }}
+              <Link
+                key={item.to}
+                to={item.to}
+                className={cn(
+                  "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                  active
+                    ? "bg-sidebar-accent/20 text-sidebar-foreground font-semibold shadow-sm shadow-sidebar-primary/10"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-primary",
+                  collapsed && "justify-center px-2"
+                )}
+              >
+                <Icon
+                  name={item.icon}
+                  size="sm"
                   className={cn(
-                    "sidebar-nav-item group flex items-center px-3 py-2 rounded-lg cursor-pointer transition-all",
-                    active && "active shadow-glow",
-                    !active && "text-secondary",
-                    collapsed && "justify-center px-2"
+                    "flex-shrink-0",
+                    active ? "text-sidebar-primary" : "text-sidebar-foreground/70"
                   )}
-                  data-active={active ? 'true' : undefined}
-                  aria-current={active ? 'page' : undefined}
-                >
-                  <Icon
-                    name={item.icon as any}
-                    size="base"
-                    className={cn(
-                      "flex-shrink-0 transition-colors",
-                      active ? "text-accent" : "text-tertiary group-hover:text-primary",
-                      !collapsed && "mr-3"
-                    )}
-                    ariaLabel={item.label}
-                  />
-                  {!collapsed && (
-                    <span className="text-sm font-medium text-sidebar-foreground">{item.label}</span>
-                  )}
-                </Link>
-              </div>
+                  ariaLabel={item.label}
+                />
+                {!collapsed && (
+                  <span className="ml-3">{item.label}</span>
+                )}
+              </Link>
             )
           })}
         </nav>
-      </div>
 
-      {/* Mobile Toggle */}
-      {onToggle && collapsed && (
-        <button
-          onClick={onToggle}
-          className="absolute top-5 right-2 p-1.5 rounded-lg transition-colors text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 md:hidden"
-        >
-          <Icon name="Menu" size="base" ariaLabel="Toggle sidebar" />
-        </button>
-      )}
+        {/* Expand button when collapsed */}
+        {collapsed && onToggle && (
+          <motion.button
+            onClick={onToggle}
+            className="mt-2 p-1.5 rounded-lg transition-colors text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent mx-auto"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <ChevronRight className="w-4 h-4" />
+          </motion.button>
+        )}
+      </div>
     </div>
   )
 }
-
-export default Sidebar

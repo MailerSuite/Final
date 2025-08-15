@@ -47,6 +47,24 @@ export const WorkspaceProvider: React.FC<WorkspaceProviderProps> = ({ children }
       setIsLoading(true)
       setError(null)
       
+      // In dev mode, use mock data to avoid API calls
+      if (import.meta.env.DEV) {
+        console.log('🚀 Dev mode: Using mock workspace data');
+        const mockWorkspace: Workspace = {
+          id: 'dev-workspace',
+          name: 'Development Workspace',
+          description: 'Local development environment',
+          is_active: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        setWorkspaces([mockWorkspace]);
+        setActiveWorkspaceState(mockWorkspace);
+        localStorage.setItem('activeWorkspaceId', mockWorkspace.id);
+        setIsLoading(false);
+        return;
+      }
+      
       // Try to get workspaces from bootstrap endpoint first
       const bootstrapResponse = await axios.get('/api/v1/bootstrap?include=workspaces')
       if (bootstrapResponse.data.workspaces) {
