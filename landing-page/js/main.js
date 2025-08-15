@@ -125,6 +125,62 @@ function initDemoEmbed() {
     }
 }
 
+// Nav scroll state + scroll spy
+function initNavScroll() {
+    const nav = document.querySelector('.nav');
+    const links = document.querySelectorAll('.nav-link');
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+
+    function onScroll() {
+        if (window.scrollY > 10) {
+            nav?.classList.add('scrolled');
+        } else {
+            nav?.classList.remove('scrolled');
+        }
+
+        const pos = window.scrollY + 120;
+        let currentId = '';
+        for (const sec of sections) {
+            if (pos >= sec.offsetTop && pos < sec.offsetTop + sec.offsetHeight) {
+                currentId = sec.id;
+                break;
+            }
+        }
+        links.forEach(link => {
+            const href = link.getAttribute('href') || '';
+            if (href === `#${currentId}`) link.classList.add('active'); else link.classList.remove('active');
+        });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+}
+
+// Pointer tilt interactions
+function initTilt() {
+    const cards = document.querySelectorAll('.tilt');
+    cards.forEach(card => {
+        const el = card;
+        let raf = 0;
+        function onMove(e) {
+            if (raf) cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(() => {
+                const rect = el.getBoundingClientRect();
+                const px = (e.clientX - rect.left) / rect.width;
+                const py = (e.clientY - rect.top) / rect.height;
+                const rx = (py - 0.5) * -8;
+                const ry = (px - 0.5) * 8;
+                el.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+            });
+        }
+        function onLeave() {
+            el.style.transform = '';
+        }
+        el.addEventListener('mousemove', onMove);
+        el.addEventListener('mouseleave', onLeave);
+    });
+}
+
 // Observe elements for animation
 document.addEventListener('DOMContentLoaded', () => {
     // Animate stats when they come into view
@@ -142,10 +198,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Initialize animations
+    // Initialize animations/UI
     setTimeout(animateStats, 800);
     initTypewriterRotation();
     initDemoEmbed();
+    initNavScroll();
+    initTilt();
 });
 
 // Particle background effect
