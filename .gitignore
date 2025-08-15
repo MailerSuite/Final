@@ -47,6 +47,12 @@ desktop.ini
 .env.local.*
 *.env
 
+# Allow example environment files for deployment
+!.env.example
+!.env.sample
+!.env.template
+!.env.dist
+
 # API Keys & Tokens
 secrets/
 secrets.json
@@ -332,6 +338,7 @@ notes/
 !README.md
 !CHANGELOG.md
 !CONTRIBUTING.md
+!DEPLOYMENT.md
 
 # Screenshots & media
 screenshots/
