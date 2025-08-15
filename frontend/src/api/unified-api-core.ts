@@ -30,8 +30,8 @@ export interface RequestOptions extends InternalAxiosRequestConfig {
 
 export class UnifiedApiCore {
   protected client: AxiosInstance;
-  private cache: Map<string, { data: any; timestamp: number; ttl: number }> = new Map();
-  private pendingRequests: Map<string, Promise<any>> = new Map();
+  private cache: Map<string, { data: unknown; timestamp: number; ttl: number }> = new Map();
+  private pendingRequests: Map<string, Promise<unknown>> = new Map();
   private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
   constructor(baseURL = '/api/v1') {
@@ -88,7 +88,7 @@ export class UnifiedApiCore {
     return `${url}:${JSON.stringify(params || {})}`;
   }
 
-  private getFromCache(key: string): any | null {
+  private getFromCache(key: string): unknown | null {
     const cached = this.cache.get(key);
     if (cached && Date.now() - cached.timestamp < cached.ttl) {
       return cached.data;
@@ -97,7 +97,7 @@ export class UnifiedApiCore {
     return null;
   }
 
-  private setCache(key: string, data: any, ttl = this.CACHE_TTL): void {
+  private setCache(key: string, data: unknown, ttl = this.CACHE_TTL): void {
     this.cache.set(key, {
       data,
       timestamp: Date.now(),
@@ -153,7 +153,7 @@ export class UnifiedApiCore {
       }
 
       return result;
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (showErrorToast) {
         const message = error.response?.data?.message || error.message || 'An error occurred';
         toast.error(message);
@@ -198,7 +198,7 @@ export class UnifiedApiCore {
         }
 
         return response.data;
-      } catch (error: any) {
+      } catch (error: unknown) {
         if (attempt === retryCount) throw error;
         
         // Exponential backoff for retries

@@ -171,7 +171,7 @@ export function DataTable<T>({
     cols.push(...columns.map((col) => ({
       ...col,
       cell: col.render || col.cell
-        ? (ctx: any) =>
+        ? (ctx: unknown) =>
             col.render
               ? col.render(ctx.row.original)
               : flexRender(col.cell as any, ctx)

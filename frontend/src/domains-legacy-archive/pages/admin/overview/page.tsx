@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,6 @@ import {
   SystemHealthMonitor,
   enhancedAnimations
 } from '@/components/admin/EnhancedAdminComponents';
-import { adminAnimations } from '@/components/admin/AdminUIKit';
 import { toast } from 'sonner';
 import axios from '@/http/axios';
 import {

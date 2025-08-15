@@ -55,7 +55,7 @@ export const AIAnalytics: React.FC = () => {
     { name: 'Welcome Series', sent: 8500, open: 54, click: 17, revenue: 18450, status: 'active', aiScore: 87 },
     { name: 'AI Launch Campaign', sent: 75420, open: 72, click: 31, revenue: 458920, status: 'completed', aiScore: 96 },
     { name: 'Holiday Special', sent: 32100, open: 59, click: 19, revenue: 84200, status: 'active', aiScore: 82 },
-  ] as Array<any>);
+  ] as Array<unknown>);
 
   const [aiInsights, setAiInsights] = useState([
     {
@@ -82,7 +82,7 @@ export const AIAnalytics: React.FC = () => {
       confidence: 95,
       urgent: false,
     },
-  ] as Array<any>);
+  ] as Array<unknown>);
 
   const realtimeMetrics = [
     { label: 'Active Campaigns', value: '8', change: '+2', trend: 'up' },
@@ -112,7 +112,7 @@ export const AIAnalytics: React.FC = () => {
           growthRate: Number(data?.growth_rate ?? 0),
         });
         if (Array.isArray(data?.top_campaigns)) {
-          setTopCampaigns(data.top_campaigns.map((c: any) => ({
+          setTopCampaigns(data.top_campaigns.map((c: unknown) => ({
             name: c.name,
             sent: Number(c.sent ?? 0),
             open: Number(c.open_rate ?? 0),
@@ -122,7 +122,7 @@ export const AIAnalytics: React.FC = () => {
             aiScore: Number(c.ai_score ?? 80),
           })));
         }
-      } catch (e: any) {
+      } catch (e: unknown) {
         if (!cancelled) setError(e?.message || 'Failed to load analytics');
       } finally {
         if (!cancelled) setLoading(false);

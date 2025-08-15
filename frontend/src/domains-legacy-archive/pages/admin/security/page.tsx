@@ -156,7 +156,7 @@ const AdminSecurity = () => {
       await axios.put('/api/v1/admin/security/settings', apiSettings);
       
       toast.success('Security settings updated successfully');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to update security settings';
       toast.error(errorMessage);
       console.error('Error updating security settings:', error);

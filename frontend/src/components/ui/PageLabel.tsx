@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FileText, Copy, Check, X, Eye, EyeOff } from 'lucide-react';
-let routeRegistry: any = { routes: [] };
+let routeRegistry: unknown = { routes: [] };
 try {
   // Optional; only in dev projects that provide registry
    
@@ -31,7 +31,7 @@ export default function PageLabel() {
     if (!isDebugMode) return;
 
     // Find matching route in registry
-    const findRoute = (routes: any[], path: string): RouteInfo | null => {
+    const findRoute = (routes: unknown[], path: string): RouteInfo | null => {
       for (const route of routes) {
         if (route.path === path) {
           return route;

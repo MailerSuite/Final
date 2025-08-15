@@ -25,7 +25,7 @@ const queryClient = new QueryClient({
 })
 
 // Lazy with optional preview delay (?slow=1)
-const lazyWithDelay = (importer: () => Promise<any>, ms?: number) =>
+const lazyWithDelay = (importer: () => Promise<unknown>, ms?: number) =>
   lazy(() => {
     const params = new URLSearchParams(location.search)
     const delay = ms ?? (params.has('slow') ? 1500 : 0)

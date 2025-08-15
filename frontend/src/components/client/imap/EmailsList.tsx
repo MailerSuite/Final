@@ -37,7 +37,7 @@ export default function EmailsList({ accountId }: Props) {
       {messages.isLoading && <Loader />}
       {messages.error && <ErrorAlert message="Failed to load messages" />}
       <ul className="space-y-2">
-        {messages.data?.map((m: any) => (
+        {messages.data?.map((m: unknown) => (
           <li
             key={m.id}
             className="border p-2 rounded-md cursor-pointer"

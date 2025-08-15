@@ -93,7 +93,7 @@ export const AISubjectLineGenerator: React.FC<AISubjectLineGeneratorProps> = ({
       } else {
         throw new Error(response.error || 'Failed to generate subject lines')
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error generating subject lines:', error)
       
       if (error.response?.status === 429) {

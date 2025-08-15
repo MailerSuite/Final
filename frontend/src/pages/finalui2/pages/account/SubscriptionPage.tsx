@@ -21,7 +21,7 @@ export default function SubscriptionPage() {
       await axios.post('/api/v1/subscription/me/cancel')
       toast.success('Cancellation scheduled at period end')
       mutate()
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e?.response?.data?.detail ?? 'Failed to cancel')
     }
   }
@@ -31,7 +31,7 @@ export default function SubscriptionPage() {
       await axios.post('/api/v1/subscription/me/uncancel')
       toast.success('Cancellation removed')
       mutate()
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e?.response?.data?.detail ?? 'Failed to undo cancel')
     }
   }
@@ -41,7 +41,7 @@ export default function SubscriptionPage() {
       await axios.post('/api/v1/subscription/me/upgrade', { plan_code })
       toast.success('Plan updated')
       mutate()
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e?.response?.data?.detail ?? 'Failed to upgrade')
     }
   }
@@ -118,7 +118,7 @@ export default function SubscriptionPage() {
                       <Skeleton className="h-6 w-40" />
                     </div>
                   ) : (
-                    (plansData || []).map((p: any) => (
+                    (plansData || []).map((p: unknown) => (
                       <SelectItem value={p.code} key={p.code}>{p.name} - ${p.price_per_month ?? p.price}</SelectItem>
                     ))
                   )}

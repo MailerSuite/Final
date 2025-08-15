@@ -21,7 +21,7 @@ export default function ImapAccountsList({ sessionId, onSelect }: Props) {
     <div className="space-y-4">
       {editingId ? (
         <ImapAccountForm
-          initial={listQuery.data?.find((a: any) => a.id === editingId)}
+          initial={listQuery.data?.find((a: unknown) => a.id === editingId)}
                       onSubmit={(d) => { update.mutate({ id: editingId, data: d }); setEditingId(null); }}
           onCancel={() => setEditingId(null)}
           loading={update.isPending}
@@ -35,7 +35,7 @@ export default function ImapAccountsList({ sessionId, onSelect }: Props) {
       )}
 
       <ul className="space-y-2">
-        {listQuery.data?.map((acc: any) => (
+        {listQuery.data?.map((acc: unknown) => (
           <li key={acc.id} className="flex items-center justify-between border p-2 rounded-md">
             <span>{acc.email}</span>
             <div className="space-x-2">

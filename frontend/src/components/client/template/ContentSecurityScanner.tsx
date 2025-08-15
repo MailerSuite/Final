@@ -16,7 +16,7 @@ import {
   Zap,
   FileText
 } from 'lucide-react';
-import { securityApi, type ContentScanRequest, type ContentScanResponse } from '@/api/security-api';
+import { securityApi } from '@/api/security-api';
 import { toast } from '@/hooks/smtp-checker/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -97,7 +97,7 @@ export const ContentSecurityScanner: React.FC<ContentSecurityScannerProps> = ({
           });
         }
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       const message = err.response?.data?.detail || 'Content scanning failed';
       setError(message);
       toast({
@@ -131,7 +131,7 @@ export const ContentSecurityScanner: React.FC<ContentSecurityScannerProps> = ({
           severity: result.is_spam ? 'warning' : 'success'
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       const message = err.response?.data?.detail || 'Quick scan failed';
       setError(message);
       toast({

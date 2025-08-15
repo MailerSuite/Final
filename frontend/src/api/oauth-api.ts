@@ -21,9 +21,9 @@ import { apiClient } from '@/http/stable-api-client'
 const globalAxios: AxiosInstance = (apiClient as any).axiosInstance ?? axios.create();
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import { DUMMY_BASE_URL, assertParamExists, setBearerAuthToObject, setSearchParams, toPathString, createRequestFunction } from './common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 // @ts-ignore
 import type { HTTPValidationError } from './models';
 /**
@@ -134,7 +134,7 @@ export const OAuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async microsoftAuthorizeApiV1OauthOauthMicrosoftAuthorizeGet(email: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async microsoftAuthorizeApiV1OauthOauthMicrosoftAuthorizeGet(email: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.microsoftAuthorizeApiV1OauthOauthMicrosoftAuthorizeGet(email, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OAuthApi.microsoftAuthorizeApiV1OauthOauthMicrosoftAuthorizeGet']?.[localVarOperationServerIndex]?.url;
@@ -148,7 +148,7 @@ export const OAuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async microsoftCallbackApiV1OauthOauthMicrosoftCallbackGet(code: string, state: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async microsoftCallbackApiV1OauthOauthMicrosoftCallbackGet(code: string, state: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.microsoftCallbackApiV1OauthOauthMicrosoftCallbackGet(code, state, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OAuthApi.microsoftCallbackApiV1OauthOauthMicrosoftCallbackGet']?.[localVarOperationServerIndex]?.url;
@@ -171,7 +171,7 @@ export const OAuthApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        microsoftAuthorizeApiV1OauthOauthMicrosoftAuthorizeGet(email: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        microsoftAuthorizeApiV1OauthOauthMicrosoftAuthorizeGet(email: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.microsoftAuthorizeApiV1OauthOauthMicrosoftAuthorizeGet(email, options).then((request) => request(axios, basePath));
         },
         /**
@@ -182,7 +182,7 @@ export const OAuthApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        microsoftCallbackApiV1OauthOauthMicrosoftCallbackGet(code: string, state: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        microsoftCallbackApiV1OauthOauthMicrosoftCallbackGet(code: string, state: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.microsoftCallbackApiV1OauthOauthMicrosoftCallbackGet(code, state, options).then((request) => request(axios, basePath));
         },
     };

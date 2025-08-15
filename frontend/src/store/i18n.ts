@@ -29,7 +29,7 @@ const detectBrowserLanguage = (): SupportedLocale => {
 };
 
 // Utility function to get nested object value by dot notation
-const getNestedValue = (obj: any, path: string): string | undefined => {
+const getNestedValue = (obj: unknown, path: string): string | undefined => {
   return path.split('.').reduce((current, key) => current?.[key], obj);
 };
 

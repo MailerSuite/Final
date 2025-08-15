@@ -22,7 +22,7 @@ export function useImapTest(accountId: string) {
           { timestamp: new Date().toLocaleTimeString(), message: line },
         ])
       })
-    } catch (error: any) {
+    } catch (error: unknown) {
       const detail = error?.response?.data?.detail || error?.response?.data?.error
       console.error('Failed to start IMAP test:', detail || error)
     }
@@ -32,7 +32,7 @@ export function useImapTest(accountId: string) {
     if (!isRunning) return
     try {
       await stopImapTest()
-    } catch (error: any) {
+    } catch (error: unknown) {
       const detail = error?.response?.data?.detail || error?.response?.data?.error
       console.error('Failed to stop IMAP test:', detail || error)
     }

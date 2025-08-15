@@ -84,7 +84,7 @@ const ForgotPasswordPage = () => {
           severity: 'info' 
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage = 'Failed to send reset email. Please try again.';
       setError(errorMessage);
       toast({ description: errorMessage, severity: 'critical' });

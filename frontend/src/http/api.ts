@@ -82,7 +82,7 @@ export const imapApi = {
 export const proxyApi = {
   list: (sessionId: string) =>
     axios
-      .get<any[]>(`/proxies/${sessionId}/proxies`)
+      .get<unknown[]>(`/proxies/${sessionId}/proxies`)
       .then((res) => ({
         ...res,
         data: res.data.map((p) => ({
@@ -108,7 +108,7 @@ export const proxyApi = {
     }
   ) =>
     axios
-      .post<any>(`/proxies/${sessionId}/proxies`, {
+      .post<unknown>(`/proxies/${sessionId}/proxies`, {
         proxy_type: 'socks5',
         ...payload,
       })
@@ -134,7 +134,7 @@ export const proxyApi = {
     axios.delete(`/proxies/${sessionId}/proxies/${id}`),
   toggleFirewall: (sessionId: string, id: string, enabled: boolean) =>
     axios
-      .patch<any>(`/proxies/${sessionId}/proxies/${id}`, {
+      .patch<unknown>(`/proxies/${sessionId}/proxies/${id}`, {
         is_firewall_enabled: enabled,
       })
       .then((res) => ({
@@ -152,9 +152,9 @@ export const proxyApi = {
         } as ProxyServer,
       })),
   updateTags: (sessionId: string, id: string, tags: string[]) =>
-    axios.patch<any>(`/proxies/${sessionId}/proxies/${id}`, { tags }),
+    axios.patch<unknown>(`/proxies/${sessionId}/proxies/${id}`, { tags }),
   updatePool: (sessionId: string, id: string, pool: string) =>
-    axios.patch<any>(`/proxies/${sessionId}/proxies/${id}`, { pool }),
+    axios.patch<unknown>(`/proxies/${sessionId}/proxies/${id}`, { pool }),
   getTags: (sessionId: string) =>
     axios.get<string[]>(`/proxies/${sessionId}/tags`),
   getPools: (sessionId: string) =>

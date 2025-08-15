@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 // Application State Types
 interface AppState {
-  user: any;
+  user: unknown;
   theme: string;
   loading: boolean;
   errors: string[];
@@ -11,7 +11,7 @@ interface AppState {
 }
 
 type AppAction = 
-  | { type: 'SET_USER'; payload: any }
+  | { type: 'SET_USER'; payload: unknown }
   | { type: 'SET_THEME'; payload: string }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'ADD_ERROR'; payload: string }

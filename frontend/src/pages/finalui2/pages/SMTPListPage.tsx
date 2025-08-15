@@ -17,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { smtpTestBatch } from '@/api/smtp'
 // Error presentation moved to stable API client
 // For now, using simple error handling
-const presentErrorToUser = (error: any) => console.error('Error:', error);
+const presentErrorToUser = (error: unknown) => console.error('Error:', error);
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
@@ -123,7 +123,7 @@ const SMTPListPage: React.FC = () => {
         try {
           setOauthFlow('authenticating')
           await initiateOAuthFlow(oauthProvider)
-        } catch (error: any) {
+        } catch (error: unknown) {
           setOauthFlow('error')
           toast.error?.(error?.message || 'OAuth authentication failed')
         }
@@ -150,7 +150,7 @@ const SMTPListPage: React.FC = () => {
         setNewWarmup(false)
         setNewWarmupRate(10)
         toast.success?.('SMTP account created successfully')
-      } catch (error: any) {
+      } catch (error: unknown) {
         toast.error?.(error?.message || 'Failed to create SMTP account')
       }
     }
@@ -269,7 +269,7 @@ const SMTPListPage: React.FC = () => {
         setNewOAuth(false)
         setNewWarmup(false)
         setNewWarmupRate(10)
-      } catch (error: any) {
+      } catch (error: unknown) {
         setOauthFlow('error')
         toast.error?.(error?.message || 'Failed to complete OAuth flow')
       }
@@ -317,7 +317,7 @@ const SMTPListPage: React.FC = () => {
                             await smtpTestBatch(accounts, { timeout: Number(batchTimeout) || 30000, max_concurrent: Number(batchConcurrent) || 10 })
                             toast.success?.('Batch test started')
                             setBatchOpen(false)
-                          } catch (e: any) {
+                          } catch (e: unknown) {
                             presentErrorToUser(e, 'Batch start failed')
                           } finally { setBatchRunning(false) }
                         }} disabled={batchRunning}>{batchRunning ? 'Starting…' : 'Start'}</Button>
@@ -355,7 +355,7 @@ const SMTPListPage: React.FC = () => {
                       <Card variant="elevated" className="space-y-4">
                         <div>
                           <Label>OAuth Provider</Label>
-                          <Select value={oauthProvider} onValueChange={(value: any) => setOauthProvider(value)}>
+                          <Select value={oauthProvider} onValueChange={(value: unknown) => setOauthProvider(value)}>
                             <SelectTrigger>
                               <SelectValue />
                             </SelectTrigger>

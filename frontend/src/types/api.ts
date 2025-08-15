@@ -13,7 +13,7 @@ export interface ApiResponse<T = any> {
 export interface ApiError {
   message: string;
   status: number;
-  details?: any;
+  details?: unknown;
 }
 
 // Paginated response structure

@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Globe, ChevronDown, Check, Languages } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
-import { SUPPORTED_LOCALES, type SupportedLocale } from '@/types/i18n';
+import { SUPPORTED_LOCALES } from '@/types/i18n';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 

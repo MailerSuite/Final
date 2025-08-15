@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import PageShell from '../components/PageShell';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
@@ -105,7 +104,7 @@ const BlacklistCheckerEnhanced: React.FC = () => {
   const [reputation, setReputation] = useState<DomainReputation | null>(null);
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
   const [autoCheck, setAutoCheck] = useState(false);
-  const [checkHistory, setCheckHistory] = useState<any[]>([]);
+  const [checkHistory, setCheckHistory] = useState<unknown[]>([]);
   const [currentProgress, setCurrentProgress] = useState(0);
 
   // Major blacklist providers
@@ -593,7 +592,7 @@ const BlacklistCheckerEnhanced: React.FC = () => {
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div className="flex gap-4">
-                  <Select value={checkType} onValueChange={(value: any) => setCheckType(value)}>
+                  <Select value={checkType} onValueChange={(value: unknown) => setCheckType(value)}>
                     <SelectTrigger className="w-40 bg-black/40 border-white/10">
                       <SelectValue />
                     </SelectTrigger>

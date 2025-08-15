@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
-import { Check, X, AlertTriangle, RefreshCw, Activity, Server, Database, Zap, Wifi, Shield } from "lucide-react";
+import { Check, X, AlertTriangle, RefreshCw, Activity, Server, Database, Zap, Shield } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -33,7 +33,7 @@ const SystemStatusPage = () => {
         checkedAt: new Date().toISOString(),
       });
       toast.success('📊 System status updated - LIVE DATA!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to load system status';
       toast.error(errorMessage);
       console.error('Error loading system status:', error);

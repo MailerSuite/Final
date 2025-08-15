@@ -262,7 +262,7 @@ export default function ProfilePage() {
       await axios.put('/api/v1/auth/me/profile', vals)
       setProfile(prev => ({ ...prev, ...vals }))
       toast.success('Profile updated successfully')
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e?.response?.data?.detail ?? 'Failed to update profile')
     }
   }
@@ -275,7 +275,7 @@ export default function ProfilePage() {
       })
       securityForm.reset()
       toast.success('Password updated successfully')
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e?.response?.data?.detail ?? 'Failed to update password')
     }
   }
@@ -293,7 +293,7 @@ export default function ProfilePage() {
       })
       setProfile(prev => ({ ...prev, avatar: response.data.avatarUrl }))
       toast.success('Avatar updated successfully')
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error('Failed to update avatar')
     }
   }
@@ -303,7 +303,7 @@ export default function ProfilePage() {
       await axios.post('/api/v1/auth/me/2fa/toggle')
       setProfile(prev => ({ ...prev, twoFactorEnabled: !prev.twoFactorEnabled }))
       toast.success(`Two-factor authentication ${!profile.twoFactorEnabled ? 'enabled' : 'disabled'}`)
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error('Failed to update two-factor authentication')
     }
   }
@@ -313,7 +313,7 @@ export default function ProfilePage() {
       await axios.put('/api/v1/auth/me/notifications', { [key]: value })
       setNotifications(prev => ({ ...prev, [key]: value }))
       toast.success('Notification settings updated')
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error('Failed to update notification settings')
     }
   }
@@ -323,7 +323,7 @@ export default function ProfilePage() {
       await axios.delete('/api/v1/auth/me/account')
       toast.success('Account deletion initiated')
       // Redirect to login or home page
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error('Failed to delete account')
     }
   }

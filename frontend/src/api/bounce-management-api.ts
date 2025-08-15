@@ -91,7 +91,7 @@ export const bounceManagementApi = {
   },
 
   // Get bounce history for specific email
-  getBounceHistory: async (emailAddress: string): Promise<any[]> => {
+  getBounceHistory: async (emailAddress: string): Promise<unknown[]> => {
     const { data } = await axiosInstance.get(`/api/v1/bounce-management/bounce-history/${emailAddress}`);
     return data;
   },

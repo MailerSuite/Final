@@ -1,7 +1,7 @@
 // Deprecated in favor of components/ui/GlobalErrorBoundary. Keeping a lightweight wrapper
 // to avoid breaking imports during migration.
 import React from 'react';
-import { ErrorBoundary as ReactErrorBoundary, type FallbackProps } from 'react-error-boundary';
+import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
 
 interface ErrorFallbackProps extends FallbackProps {
   title?: string;

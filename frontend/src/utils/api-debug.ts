@@ -9,9 +9,9 @@ interface APIError {
   baseURL: string;
   status?: number;
   statusText?: string;
-  responseData?: any;
-  requestHeaders?: any;
-  responseHeaders?: any;
+  responseData?: unknown;
+  requestHeaders?: unknown;
+  responseHeaders?: unknown;
   errorMessage?: string;
   errorCode?: string;
   timestamp: string;
@@ -49,7 +49,7 @@ class APIDebugger {
   /**
    * Log an API error with enhanced details
    */
-  logError(error: any, requestConfig?: any, startTime?: number): void {
+  logError(error: unknown, requestConfig?: any, startTime?: number): void {
     if (!this.config.enabled) return;
 
     const duration = startTime ? Date.now() - startTime : undefined;
@@ -91,7 +91,7 @@ class APIDebugger {
   /**
    * Log successful API requests for performance monitoring
    */
-  logSuccess(response: any, requestConfig?: any, startTime?: number): void {
+  logSuccess(response: unknown, requestConfig?: any, startTime?: number): void {
     if (!this.config.enabled) return;
 
     const duration = startTime ? Date.now() - startTime : undefined;

@@ -11,7 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useNavigate } from 'react-router-dom';
 import PageShell from '../components/PageShell';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -21,7 +21,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 // Error presentation moved to stable API client
 // For now, using simple error handling
-const presentErrorToUser = (error: any) => console.error('Error:', error);
+const presentErrorToUser = (error: unknown) => console.error('Error:', error);
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import TemplateOptionsPanel, { TemplateOptions, defaultOptions } from '@/components/TemplateOptionsPanel';
 import { randomizeContent, validatePlaceholders } from '@/utils/htmlRandomizer';
@@ -140,7 +140,7 @@ export const AITemplates: React.FC = () => {
   const [templatesError, setTemplatesError] = useState<string | null>(null)
   const [loadingTemplates, setLoadingTemplates] = useState<boolean>(true)
 
-  const mapToMeta = (t: any): TemplateMeta => ({
+  const mapToMeta = (t: unknown): TemplateMeta => ({
     id: String(t.id),
     name: t.name || 'Untitled',
     category: 'marketing',
@@ -164,7 +164,7 @@ export const AITemplates: React.FC = () => {
       } else {
         setTemplates([])
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setTemplatesError(e?.message || 'Failed to load templates')
       setTemplates([])
     } finally {
@@ -213,7 +213,7 @@ export const AITemplates: React.FC = () => {
           await apiDuplicateTemplate(template.id, `${template.name} Copy`)
           toast.success?.('Template duplicated successfully')
           void refreshTemplates()
-        } catch (e: any) {
+        } catch (e: unknown) {
           toast.error?.(e?.message || 'Failed to duplicate template')
         }
         break;
@@ -223,7 +223,7 @@ export const AITemplates: React.FC = () => {
           await apiDeleteTemplate(template.id)
           toast.success?.('Template deleted successfully')
           void refreshTemplates()
-        } catch (e: any) {
+        } catch (e: unknown) {
           toast.error?.(e?.message || 'Failed to delete template')
         }
         break;
@@ -338,7 +338,7 @@ export const AITemplates: React.FC = () => {
       toast.success?.('Template saved successfully');
       setEditorOpen(false);
       void refreshTemplates()
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error?.(error?.message || 'Failed to save template');
     } finally {
       setSaveLoading(false);
@@ -427,7 +427,7 @@ export const AITemplates: React.FC = () => {
                 } as any)
                 toast.success?.('Template imported')
                 void refreshTemplates()
-              } catch (err: any) {
+              } catch (err: unknown) {
                 toast.error?.(err?.message || 'Import failed')
               } finally {
                 const input = document.getElementById('tpl-import') as HTMLInputElement | null
@@ -760,7 +760,7 @@ export const AITemplates: React.FC = () => {
                         const api = await import('@/api/templates')
                         for (const f of files) { await api.uploadAttachment(selectedTemplate.id, f) }
                         toast.success?.('Attachments uploaded')
-                      } catch (e: any) { presentErrorToUser(e, 'Attachment upload failed') }
+                      } catch (e: unknown) { presentErrorToUser(e, 'Attachment upload failed') }
                     }}>Upload</Button>
                   </div>
                 </TabsContent>
@@ -1086,7 +1086,7 @@ export const AITemplates: React.FC = () => {
                           const api = await import('@/api/templates')
                           await api.previewTemplate(selectedTemplate.id, macros)
                           toast.success?.('Preview requested (server)')
-                        } catch (e: any) { presentErrorToUser(e, 'Template preview failed') }
+                        } catch (e: unknown) { presentErrorToUser(e, 'Template preview failed') }
                       }}>Server Preview</Button>
                     </div>
                   </div>

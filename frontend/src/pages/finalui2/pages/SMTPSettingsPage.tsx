@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { getSmtpSettings, updateSmtpSettings, type SmtpSettingsResponse } from '@/api/smtp-settings';
+import { getSmtpSettings, updateSmtpSettings } from '@/api/smtp-settings';
 import PageShell from '../components/PageShell';
 import MailLoader from '@/components/ui/MailLoader';
 
@@ -17,7 +17,7 @@ const SMTPSettingsPage: React.FC = () => {
             try {
                 const data = await getSmtpSettings()
                 setSettings(data)
-            } catch (e: any) {
+            } catch (e: unknown) {
                 setError(e?.message || 'Failed to load settings')
             }
         })()
@@ -30,7 +30,7 @@ const SMTPSettingsPage: React.FC = () => {
         try {
             const updated = await updateSmtpSettings(settings)
             setSettings(updated)
-        } catch (e: any) {
+        } catch (e: unknown) {
             setError(e?.message || 'Failed to update settings')
         } finally {
             setSaving(false)

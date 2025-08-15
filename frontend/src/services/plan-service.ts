@@ -140,7 +140,7 @@ class PlanService {
   /**
    * Create campaign with automatic thread limit enforcement
    */
-  async createCampaignWithLimits(campaignData: any): Promise<ApiResponse<{
+  async createCampaignWithLimits(campaignData: unknown): Promise<ApiResponse<{
     success: boolean;
     campaign_id: string;
     threads_allocated: number;

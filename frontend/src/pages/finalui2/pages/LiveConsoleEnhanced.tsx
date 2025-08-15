@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageShell from '../components/PageShell';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { AnimatedCard } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -49,7 +49,6 @@ import {
 } from '@heroicons/react/24/outline';
 import { Badge } from '@/components/ui/badge';
 // Card already imported above; remove duplicate
-import { Progress } from '@/components/ui/progress';
 // ui-kit ActionButton used for control buttons
 // Removed legacy ui-kit ActionButton; using shadcn Button variants exclusively
 
@@ -59,7 +58,7 @@ interface LogEntry {
   level: 'debug' | 'info' | 'success' | 'warning' | 'error' | 'critical';
   source: string;
   message: string;
-  data?: any;
+  data?: unknown;
   tags?: string[];
 }
 

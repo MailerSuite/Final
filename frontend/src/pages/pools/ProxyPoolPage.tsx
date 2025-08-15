@@ -133,7 +133,7 @@ const ProxyPoolPage: React.FC = () => {
   const [isAutoRotating, setIsAutoRotating] = useState(true)
   const [rotationInterval, setRotationInterval] = useState(60) // seconds
   const [showPurchaseDialog, setShowPurchaseDialog] = useState(false)
-  const [selectedPurchaseProxy, setSelectedPurchaseProxy] = useState<any>(null)
+  const [selectedPurchaseProxy, setSelectedPurchaseProxy] = useState<unknown>(null)
 
   // Auto-rotation effect
   useEffect(() => {
@@ -258,7 +258,7 @@ const ProxyPoolPage: React.FC = () => {
     }
   }
 
-  const handlePurchase = (proxy: any) => {
+  const handlePurchase = (proxy: unknown) => {
     setSelectedPurchaseProxy(proxy)
     setShowPurchaseDialog(true)
   }

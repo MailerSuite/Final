@@ -38,7 +38,6 @@ import {
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 // Remove avatar usage to simplify list (no pictures)
-import { Progress } from '@/components/ui/progress';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -48,7 +47,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { motion } from 'framer-motion';
-import MailLoader from '@/components/ui/MailLoader';
 import PageShell from '../components/PageShell';
 // ui-kit FilterChips removed; lightweight inline chips used instead
 import {
@@ -184,7 +182,7 @@ export const AIContacts: React.FC = () => {
         },
         withCredentials: true,
       });
-      const mapped: Contact[] = (data.items || []).map((l: any) => ({
+      const mapped: Contact[] = (data.items || []).map((l: unknown) => ({
         id: l.id,
         name: [l.first_name, l.last_name].filter(Boolean).join(' ') || l.email,
         email: l.email,
@@ -283,7 +281,7 @@ export const AIContacts: React.FC = () => {
               await uploadLeads(DEFAULT_LEAD_BASE_ID, file)
               toast.success?.('Leads uploaded')
               void fetchContacts()
-            } catch (err: any) {
+            } catch (err: unknown) {
               toast.error?.(err?.message || 'Failed to upload leads')
             } finally {
               if (fileInputRef.current) fileInputRef.current.value = ''
@@ -530,7 +528,7 @@ export const AIContacts: React.FC = () => {
                                   try {
                                     await validateLead(item.id)
                                     toast.success?.('Validation requested')
-                                  } catch (e: any) {
+                                  } catch (e: unknown) {
                                     toast.error?.(e?.message || 'Validation failed')
                                   }
                                 }}>Validate Email</DropdownMenuItem>
@@ -541,7 +539,7 @@ export const AIContacts: React.FC = () => {
                                     await deleteLead(item.id)
                                     toast.success?.('Lead removed')
                                     void fetchContacts()
-                                  } catch (e: any) {
+                                  } catch (e: unknown) {
                                     toast.error?.(e?.message || 'Failed to remove lead')
                                   }
                                 }}>Remove</DropdownMenuItem>

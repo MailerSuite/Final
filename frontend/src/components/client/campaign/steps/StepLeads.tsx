@@ -21,7 +21,7 @@ export default function StepLeads() {
       const res = await leadBaseApi.list('')
       const bases = (res.data as any).leads || (res.data as any).data?.leads || res.data
       setOptions(
-        bases.map((d: any) => ({
+        bases.map((d: unknown) => ({
           value: String(d.id),
           label: d.name,
           count: d.leads_count ?? 0,

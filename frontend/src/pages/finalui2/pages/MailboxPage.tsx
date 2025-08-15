@@ -3,7 +3,6 @@ import PageShell from '../components/PageShell';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { Badge } from '@/components/ui/badge';
 
 const MailboxPage: React.FC = () => {
     const navigate = useNavigate();

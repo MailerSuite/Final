@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useMemo } from "react";
 import {
   Select,
   SelectContent,
@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Loader2, Search } from "lucide-react";
-import axios from "axios";
 import { countries } from "@/lib/countries";
 
 interface Country {

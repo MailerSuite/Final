@@ -10,8 +10,8 @@ describe('UnifiedAPIClient SSRF allowlist', () => {
       debug: false,
     })
     // @ts-expect-no-error private access in test
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const anyClient: any = client
+     
+    const anyClient: unknown = client
     expect(anyClient["isValidURL"]('/api/v1/health')).toBe(true)
     expect(anyClient["isValidURL"]('http://localhost:8000/api/v1/health')).toBe(true)
   })

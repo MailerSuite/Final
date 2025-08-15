@@ -7,7 +7,7 @@ import { stringify } from '@/utils/debug'
 export const listCampaigns = async (sessionId: string) => {
   // Prefer unified list which returns { items, total, ... }
   try {
-    const unified: any = await apiClient.get(`/api/v1/campaigns`)
+    const unified: unknown = await apiClient.get(`/api/v1/campaigns`)
     if (Array.isArray(unified)) return unified as EmailCampaign[]
     const items = (unified && (unified.items || unified.data)) || []
     return items as EmailCampaign[]

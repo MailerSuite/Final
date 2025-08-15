@@ -102,7 +102,7 @@ export const AIContentOptimizer: React.FC<AIContentOptimizerProps> = ({
       } else {
         throw new Error(response.error || 'Failed to optimize content')
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error optimizing content:', error)
       
       if (error.response?.status === 429) {

@@ -119,7 +119,7 @@ const ComplianceManagementPage: React.FC = () => {
       setNewSuppression({ email: '', type: 'manual', reason: '', expiresIn: 0 })
       toast.success?.('Suppression entry added successfully')
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast.error?.(error?.message || 'Failed to add suppression entry')
     }
   })
@@ -139,7 +139,7 @@ const ComplianceManagementPage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['suppression-list', sessionId] })
       toast.success?.('Suppression entry removed successfully')
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast.error?.(error?.message || 'Failed to remove suppression entry')
     }
   })
@@ -167,7 +167,7 @@ const ComplianceManagementPage: React.FC = () => {
       setGdprRequest({ email: '', type: 'access', notes: '' })
       toast.success?.('GDPR request created successfully')
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast.error?.(error?.message || 'Failed to create GDPR request')
     }
   })
@@ -557,7 +557,7 @@ const ComplianceManagementPage: React.FC = () => {
               
               <div>
                 <Label>Suppression Type</Label>
-                <Select value={newSuppression.type} onValueChange={(value: any) => setNewSuppression(prev => ({ ...prev, type: value }))}>
+                <Select value={newSuppression.type} onValueChange={(value: unknown) => setNewSuppression(prev => ({ ...prev, type: value }))}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -622,7 +622,7 @@ const ComplianceManagementPage: React.FC = () => {
               
               <div>
                 <Label>Request Type</Label>
-                <Select value={gdprRequest.type} onValueChange={(value: any) => setGdprRequest(prev => ({ ...prev, type: value }))}>
+                <Select value={gdprRequest.type} onValueChange={(value: unknown) => setGdprRequest(prev => ({ ...prev, type: value }))}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>

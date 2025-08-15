@@ -6,7 +6,7 @@ export type IMAPTestResult =
   | { status: 'success'; folders: string[]; message?: string }
   | { status: 'error'; folders: string[]; message: string }
 
-function parseError(error: any): string {
+function parseError(error: unknown): string {
   return (
     error?.response?.data?.message ||
     error?.response?.data?.detail ||

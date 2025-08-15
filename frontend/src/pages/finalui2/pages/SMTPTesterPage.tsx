@@ -15,7 +15,7 @@ export default function SMTPTesterPage() {
   const [password, setPassword] = useState('')
   const [useSsl, setUseSsl] = useState(true)
   const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<any>(null)
+  const [result, setResult] = useState<unknown>(null)
 
   const testSMTP = async () => {
     setLoading(true)
@@ -31,7 +31,7 @@ export default function SMTPTesterPage() {
       })
       setResult(resp.data)
       toast.success(resp.message || 'SMTP test completed')
-    } catch (e: any) {
+    } catch (e: unknown) {
       setResult({ error: e.message })
     } finally {
       setLoading(false)

@@ -16,7 +16,7 @@ interface MonitoringAgentAPI {
 
 let isInitialized = false
 let agentEnabled = false
-const originalConsole: Partial<Record<'error' | 'warn' | 'info' | 'debug', (...args: any[]) => void>> = {}
+const originalConsole: Partial<Record<'error' | 'warn' | 'info' | 'debug', (...args: unknown[]) => void>> = {}
 
 export function initMonitoringAgent(options: MonitoringAgentOptions = {}): MonitoringAgentAPI {
   if (isInitialized) return (window as any).MonitoringAgent
@@ -42,7 +42,7 @@ export function initMonitoringAgent(options: MonitoringAgentOptions = {}): Monit
   const wrapConsole = () => {
     ;(['error', 'warn', 'info', 'debug'] as const).forEach((level) => {
       originalConsole[level] = console[level]
-      console[level] = (...args: any[]) => {
+      console[level] = (...args: unknown[]) => {
         try {
           if (agentEnabled && captureLevels.includes(level)) {
             const message = args.map((a) => (typeof a === 'object' ? JSON.stringify(a) : String(a))).join(' ')
@@ -75,7 +75,7 @@ export function initMonitoringAgent(options: MonitoringAgentOptions = {}): Monit
 
   const onUnhandledRejection = (event: PromiseRejectionEvent) => {
     if (!agentEnabled) return
-    const reason: any = event.reason
+    const reason: unknown = event.reason
     const message = typeof reason === 'string' ? reason : reason?.message || 'Unhandled Promise Rejection'
     addLog('error', message, { reason })
   }

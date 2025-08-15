@@ -4,7 +4,7 @@ import { Shield, Users, BarChart3, Activity } from 'lucide-react';
 interface SidebarItem {
   label: string;
   url: string;
-  icon: any;
+  icon: unknown;
   badge?: number | string;
 }
 

@@ -143,7 +143,7 @@ export default function SecurityTestingForm({ onClose }: SecurityTestingFormProp
     },
   })
 
-  const runTest = async (testType: string, data: any) => {
+  const runTest = async (testType: string, data: unknown) => {
     setRunningTests(prev => ({ ...prev, [testType]: true }))
     
     try {
@@ -162,7 +162,7 @@ export default function SecurityTestingForm({ onClose }: SecurityTestingFormProp
     }
   }
 
-  const generateMockResult = (testType: string, data: any): TestResult => {
+  const generateMockResult = (testType: string, data: unknown): TestResult => {
     const baseScore = Math.random() * 40 + 60 // Score between 60-100
     const tests = []
 

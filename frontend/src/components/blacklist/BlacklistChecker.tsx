@@ -85,7 +85,7 @@ export default function BlacklistChecker() {
         ? await blacklistApi.checkIp(trimmed, providers)
         : await blacklistApi.checkDomain(trimmed, providers)
       setResult({ value: trimmed, ...data })
-    } catch (error: any) {
+    } catch (error: unknown) {
       const message = error.response.data.detail || "Blacklist check failed";
       setError("Unable to fetch blacklist status.");
       toast({ description: message, severity: 'critical' });
@@ -108,7 +108,7 @@ export default function BlacklistChecker() {
           ? await blacklistApi.checkIp(v, providers)
           : await blacklistApi.checkDomain(v, providers)
         results.push({ value: v, ...data })
-      } catch (err: any) {
+      } catch (err: unknown) {
         const message = err?.response?.data?.detail || 'check failed'
         results.push({ value: v, detected: 0, total: 0, results: [], error: message })
       }

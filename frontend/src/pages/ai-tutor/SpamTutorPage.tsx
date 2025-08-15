@@ -50,7 +50,7 @@ interface Module {
   isPremium: boolean
   isCompleted?: boolean
   progress?: number
-  icon: React.ComponentType<any>
+  icon: React.ComponentType<unknown>
   topics: string[]
 }
 

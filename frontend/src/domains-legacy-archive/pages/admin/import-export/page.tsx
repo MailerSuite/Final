@@ -721,7 +721,7 @@ const AdminImportExport: React.FC = () => {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="export-type">Data Type</Label>
-                        <Select value={exportFormData.type} onValueChange={(value: any) => setExportFormData(prev => ({ ...prev, type: value }))}>
+                        <Select value={exportFormData.type} onValueChange={(value: unknown) => setExportFormData(prev => ({ ...prev, type: value }))}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
@@ -737,7 +737,7 @@ const AdminImportExport: React.FC = () => {
                       </div>
                       <div>
                         <Label htmlFor="export-format">Format</Label>
-                        <Select value={exportFormData.format} onValueChange={(value: any) => setExportFormData(prev => ({ ...prev, format: value }))}>
+                        <Select value={exportFormData.format} onValueChange={(value: unknown) => setExportFormData(prev => ({ ...prev, format: value }))}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
@@ -852,7 +852,7 @@ const AdminImportExport: React.FC = () => {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="import-type">Data Type</Label>
-                        <Select value={importFormData.type} onValueChange={(value: any) => setImportFormData(prev => ({ ...prev, type: value }))}>
+                        <Select value={importFormData.type} onValueChange={(value: unknown) => setImportFormData(prev => ({ ...prev, type: value }))}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>

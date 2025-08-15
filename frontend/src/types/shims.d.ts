@@ -16,7 +16,7 @@ declare module 'react-select';
 declare module 'react-joyride';
 
 // Missing internal path fallbacks used across code (temporary)
-declare module '@/core/error-system' { const anyExport: any; export = anyExport }
+declare module '@/core/error-system' { const anyExport: unknown; export = anyExport }
 // Remove any-based shim for '@/http/axios' to allow real types to flow
 declare module '@/config/feature-flags'
 declare module '@/lib/constants/models'

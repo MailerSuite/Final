@@ -5,7 +5,6 @@
 
 import React, { ComponentType, useCallback, useEffect } from 'react';
 import { usePlan } from '../../hooks/usePlan';
-import { planService } from '../../services/plan-service';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { Button } from '../ui/button';
 import { ExternalLink, Shield } from 'lucide-react';

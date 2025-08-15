@@ -1,11 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Icon } from "@/components/ui/icon";
 import useSessionStore from "@/store/session";
-import { toast } from "sonner";
 import axiosInstance from "@/http/axios";
 import { cn } from "@/lib/utils";
 
@@ -52,7 +50,7 @@ export default function EmailStatsCard() {
         },
         last_updated: data.last_updated || new Date().toISOString()
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to fetch email stats:', err);
       setError('Failed to load email statistics');
       // Set fallback data for demo purposes

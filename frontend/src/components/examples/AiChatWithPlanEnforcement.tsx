@@ -72,7 +72,7 @@ const AiChatComponent: React.FC<AiChatProps> = ({
     return { allowed: true };
   }, [aiUsageInfo]);
 
-  const showUpgradePrompt = useCallback((quotaCheck: any) => {
+  const showUpgradePrompt = useCallback((quotaCheck: unknown) => {
     toast({ 
       description: quotaCheck.reason || 'Upgrade required for AI features', 
       severity: "warning" 

@@ -10,8 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert } from '@/components/ui/alert';
 import { 
   Activity, 
   AlertTriangle, 
@@ -46,8 +45,7 @@ import {
   Search,
   MoreHorizontal
 } from 'lucide-react';
-import { clientAnimations, clientColors } from './ClientUIKitEnhanced';
-import { toast } from 'sonner';
+import { clientAnimations } from './ClientUIKitEnhanced';
 
 // ==================== REAL-TIME CAMPAIGN CARD ====================
 

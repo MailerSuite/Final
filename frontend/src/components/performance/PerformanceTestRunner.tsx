@@ -263,7 +263,7 @@ export const PerformanceTestRunner: React.FC<PerformanceTestRunnerProps> = ({
 
                         <div className="space-y-2">
                             <Label htmlFor="testType">Test Type</Label>
-                            <Select value={config.type} onValueChange={(value: any) => setConfig(prev => ({ ...prev, type: value }))}>
+                            <Select value={config.type} onValueChange={(value: unknown) => setConfig(prev => ({ ...prev, type: value }))}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>

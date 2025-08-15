@@ -20,9 +20,9 @@ import type { AxiosInstance } from 'axios'
 const globalAxios: AxiosInstance = axiosInstance;
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import { DUMMY_BASE_URL, assertParamExists, setBearerAuthToObject, setSearchParams, toPathString, createRequestFunction } from './common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 // @ts-ignore
 import type { HTTPValidationError } from './models';
 /**
@@ -124,7 +124,7 @@ export const BlacklistApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkDomainBlacklistApiV1BlacklistBlacklistDomainDomainGet(domain: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async checkDomainBlacklistApiV1BlacklistBlacklistDomainDomainGet(domain: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkDomainBlacklistApiV1BlacklistBlacklistDomainDomainGet(domain, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['BlacklistApi.checkDomainBlacklistApiV1BlacklistBlacklistDomainDomainGet']?.[localVarOperationServerIndex]?.url;
@@ -137,7 +137,7 @@ export const BlacklistApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkIpBlacklistApiV1BlacklistBlacklistIpIpGet(ip: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async checkIpBlacklistApiV1BlacklistBlacklistIpIpGet(ip: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkIpBlacklistApiV1BlacklistBlacklistIpIpGet(ip, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['BlacklistApi.checkIpBlacklistApiV1BlacklistBlacklistIpIpGet']?.[localVarOperationServerIndex]?.url;
@@ -160,7 +160,7 @@ export const BlacklistApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkDomainBlacklistApiV1BlacklistBlacklistDomainDomainGet(domain: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        checkDomainBlacklistApiV1BlacklistBlacklistDomainDomainGet(domain: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.checkDomainBlacklistApiV1BlacklistBlacklistDomainDomainGet(domain, options).then((request) => request(axios, basePath));
         },
         /**
@@ -170,7 +170,7 @@ export const BlacklistApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkIpBlacklistApiV1BlacklistBlacklistIpIpGet(ip: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        checkIpBlacklistApiV1BlacklistBlacklistIpIpGet(ip: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.checkIpBlacklistApiV1BlacklistBlacklistIpIpGet(ip, options).then((request) => request(axios, basePath));
         },
     };

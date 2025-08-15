@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import axios from 'axios';
 import { 
@@ -81,7 +81,7 @@ const AdminChatPage = () => {
       const response = await axios.get(`/api/v1/admin/chat/conversations?${params}`);
       setConversations(response.data.conversations || []);
       toast.success('💬 Conversations loaded - LIVE DATA!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to load conversations';
       toast.error(errorMessage);
       console.error('Error loading conversations:', error);
@@ -95,7 +95,7 @@ const AdminChatPage = () => {
       const response = await axios.get('/api/v1/admin/chat/stats');
       setChatStats(response.data);
       toast.success('📊 Chat stats loaded - LIVE DATA!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to load chat stats';
       toast.error(errorMessage);
       console.error('Error loading chat stats:', error);
@@ -110,7 +110,7 @@ const AdminChatPage = () => {
       await loadConversations();
       toast.success('Conversation assigned successfully!');
       setAssignDialogOpen(false);
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to assign conversation';
       toast.error(errorMessage);
       console.error('Error assigning conversation:', error);

@@ -8,7 +8,7 @@ import ViolationService, { ViolationData } from './violation-service';
 
 export interface AuthResponse {
   success: boolean;
-  user?: any;
+  user?: unknown;
   violation?: {
     allowedDevices: number;
     detectedDevices: number;
@@ -55,7 +55,7 @@ export class AuthViolationIntegration {
    * Replace your current fingerprint_limit handling with this
    */
   static async handleAuthError(
-    error: any,
+    error: unknown,
     navigate: NavigateFunction
   ): Promise<boolean> {
     

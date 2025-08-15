@@ -4,7 +4,7 @@ interface LogEntry {
   level: LogLevel;
   message: string;
   timestamp: Date;
-  data?: any;
+  data?: unknown;
 }
 
 class Logger {
@@ -103,7 +103,7 @@ class Logger {
     }
   }
 
-  apiError(method: string, url: string, error: any) {
+  apiError(method: string, url: string, error: unknown) {
     this.error(`API ${method.toUpperCase()} ${url} failed`, error);
   }
 }

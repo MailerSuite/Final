@@ -39,7 +39,7 @@ export const AIPlayground: React.FC = () => {
     password: '',
     ssl: true
   });
-  const [testResults, setTestResults] = useState<any>(null);
+  const [testResults, setTestResults] = useState<unknown>(null);
   const [testing, setTesting] = useState(false);
 
   const handleSMTPTest = async () => {

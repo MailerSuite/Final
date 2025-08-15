@@ -24,9 +24,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import PageHeader from '@/components/ui/page-header';
 import UserForm from "@/components/admin/UserForm";
 import { adminApi, UserAdminView } from "@/api/admin";
 import axios from '@/http/axios';
@@ -45,7 +43,7 @@ const AdminUsers = () => {
   const loadUsers = async () => {
     try {
       setLoading(true);
-      const params: any = {};
+      const params: unknown = {};
       if (searchTerm) params.search = searchTerm;
       if (statusFilter && statusFilter !== "all") params.status_filter = statusFilter;
       if (roleFilter && roleFilter !== "all") params.role_filter = roleFilter;
@@ -64,21 +62,21 @@ const AdminUsers = () => {
     loadUsers();
   }, [searchTerm, statusFilter, roleFilter]);
 
-  const handleCreate = async (data: any) => {
+  const handleCreate = async (data: unknown) => {
     try {
       // Create user using the new backend API
       await axios.post('/api/v1/admin/users', data);
       toast.success("User created successfully");
       setCreateOpen(false);
       loadUsers();
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || "Failed to create user";
       toast.error(errorMessage);
       console.error("Error creating user:", error);
     }
   };
 
-  const handleUpdate = async (data: any) => {
+  const handleUpdate = async (data: unknown) => {
     if (!editingUser) return;
     
     try {

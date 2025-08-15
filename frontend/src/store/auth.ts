@@ -121,7 +121,7 @@ export const useAuthStore = create<AuthState>()(
             console.log("Token refreshed successfully")
             return true
           }
-        } catch (error: any) {
+        } catch (error: unknown) {
           console.error("Token refresh failed:", error)
           // Clear tokens on refresh failure
           const state = get()
@@ -246,7 +246,7 @@ export const useAuthStore = create<AuthState>()(
           } else {
             throw new Error("No access token received");
           }
-        } catch (error: any) {
+        } catch (error: unknown) {
           const err = error as { status?: number; response?: { data?: any } };
           // Authentication error
 
@@ -311,7 +311,7 @@ export const useAuthStore = create<AuthState>()(
           } else {
             throw new Error("No access token received")
           }
-        } catch (error: any) {
+        } catch (error: unknown) {
           const message = "Something went wrong. Please try again."
           toast.error(message)
           return null
@@ -361,7 +361,7 @@ export const useAuthStore = create<AuthState>()(
           } else {
             throw new Error("Invalid user data received");
           }
-        } catch (error: any) {
+        } catch (error: unknown) {
           // Ignore AbortError - it's intentional
           if (error.name === 'AbortError' || abortSignal?.aborted) {
             console.debug("Auth request was aborted (intentional)");
@@ -433,7 +433,7 @@ export const useAuthStore = create<AuthState>()(
           set({ userData: data })
           toast.success("Profile updated")
           return data
-        } catch (error: any) {
+        } catch (error: unknown) {
           const message = error?.response?.data?.detail ||
             "Failed to update profile"
           toast.error(message)
@@ -448,7 +448,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           await axiosInstance.put("/profile", { password })
           toast.success("Password changed")
-        } catch (error: any) {
+        } catch (error: unknown) {
           const message = error?.response?.data?.detail ||
             "Failed to change password"
           toast.error(message)

@@ -35,7 +35,7 @@ import {
   hslColor
 } from '../design-system/theme-config';
 import type { ThemePreset } from '../design-system/theme-config';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface ThemePickerProps {
   className?: string;

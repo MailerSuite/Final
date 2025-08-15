@@ -15,7 +15,7 @@ export default function EmailVerifyPage() {
     try {
       await axios.post('/api/v1/auth/verify-email', { code })
       toast.success('Email verified')
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error(e?.response?.data?.detail ?? 'Verification failed')
     } finally {
       setLoading(false)

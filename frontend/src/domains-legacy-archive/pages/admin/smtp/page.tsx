@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
@@ -94,7 +93,7 @@ const AdminSMTP = () => {
       const smtpConfigsResponse = await axios.get('/api/v1/admin/smtp/configs');
       
       // Transform backend data to frontend format
-      const transformedConfigs = (smtpConfigsResponse.data.configs || []).map((config: any) => ({
+      const transformedConfigs = (smtpConfigsResponse.data.configs || []).map((config: unknown) => ({
         id: config.id.toString(),
         name: config.name,
         host: config.host,
@@ -136,7 +135,7 @@ const AdminSMTP = () => {
       ));
       
       toast.success(`SMTP test successful: ${testResponse.data.message}`);
-    } catch (error: any) {
+    } catch (error: unknown) {
       setSMTPConfigs(prev => prev.map(c => 
         c.id === config.id ? { ...c, status: 'error' } : c
       ));
@@ -179,7 +178,7 @@ const AdminSMTP = () => {
       });
       setIsCreateOpen(false);
       toast.success(createResponse.data.message || 'SMTP configuration created successfully');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to create SMTP configuration';
       toast.error(errorMessage);
       console.error('Error creating SMTP configuration:', error);

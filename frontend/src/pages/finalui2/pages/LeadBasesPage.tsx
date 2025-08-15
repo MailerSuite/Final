@@ -42,9 +42,9 @@ const LeadBasesPage: React.FC = () => {
       setLoading(true)
       setError(null)
       const data = await listLeadBases()
-      const rows: any[] = Array.isArray((data as any)?.data) ? (data as any).data : (data as any)
+      const rows: unknown[] = Array.isArray((data as any)?.data) ? (data as any).data : (data as any)
       setItems(Array.isArray(rows) ? rows as any : [])
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e?.message || 'Failed to load lead bases')
     } finally { setLoading(false) }
   }, [])
@@ -58,7 +58,7 @@ const LeadBasesPage: React.FC = () => {
       setName(''); setCountry(''); setComment('')
       void refresh()
       toast.success?.('Lead base created')
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast.error?.(e?.message || 'Create failed')
     }
   }
@@ -68,12 +68,12 @@ const LeadBasesPage: React.FC = () => {
       await updateLeadBase(id, payload as any)
       void refresh()
       toast.success?.('Updated')
-    } catch (e: any) { toast.error?.(e?.message || 'Update failed') }
+    } catch (e: unknown) { toast.error?.(e?.message || 'Update failed') }
   }
 
   const onDelete = async (id: string) => {
     if (!window.confirm('Delete this lead base?')) return
-    try { await deleteLeadBase(id); void refresh(); toast.success?.('Deleted') } catch (e: any) { toast.error?.(e?.message || 'Delete failed') }
+    try { await deleteLeadBase(id); void refresh(); toast.success?.('Deleted') } catch (e: unknown) { toast.error?.(e?.message || 'Delete failed') }
   }
 
   return (
@@ -311,7 +311,7 @@ const LeadBasesPage: React.FC = () => {
                         void refresh()
                       }, 2000)
                     }
-                  } catch (e: any) {
+                  } catch (e: unknown) {
                     toast.error?.(e?.message || 'Import failed')
                     setImportProgress(0)
                     setImportStatus('')

@@ -78,7 +78,7 @@ export const getLandingTestimonials = async (): Promise<LandingTestimonials> => 
   return response.data;
 };
 
-export const getLandingPlans = async (): Promise<any[]> => {
+export const getLandingPlans = async (): Promise<unknown[]> => {
   const response = await axios.get('/landing/plans');
   return response.data;
 }; 

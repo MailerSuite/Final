@@ -16,7 +16,7 @@ export function useSendEmail() {
     onSuccess: () => {
       toast({ severity: 'success', description: 'Email sent' })
     },
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       toast({ severity: 'critical', description: err?.message ?? 'Failed to send' })
     },
   })

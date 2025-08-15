@@ -88,7 +88,7 @@ const MonitoringStatsPage = () => {
       const response = await axios.get(`/api/v1/admin/monitoring/stats/overview?timeframe=${selectedTimeframe}`);
       setStats(response.data);
       toast.success('📊 Monitoring stats loaded - LIVE DATA!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to load monitoring stats';
       toast.error(errorMessage);
       console.error('Error loading monitoring stats:', error);
@@ -113,7 +113,7 @@ const MonitoringStatsPage = () => {
       link.remove();
       
       toast.success('Stats exported successfully!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to export stats';
       toast.error(errorMessage);
       console.error('Error exporting stats:', error);

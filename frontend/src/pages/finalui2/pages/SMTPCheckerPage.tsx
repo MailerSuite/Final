@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import PageConsole from '@/components/ui/PageConsole';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -718,7 +718,7 @@ const SMTPCheckerPage: React.FC<{ initialTab?: string }> = ({ initialTab }) => {
                               <Label>Authentication Method</Label>
                               <Select
                                 value={config.authentication}
-                                onValueChange={(value: any) => setConfig({ ...config, authentication: value })}
+                                onValueChange={(value: unknown) => setConfig({ ...config, authentication: value })}
                               >
                                 <SelectTrigger>
                                   <SelectValue />

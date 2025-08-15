@@ -20,9 +20,9 @@ import type { AxiosInstance } from 'axios'
 const globalAxios: AxiosInstance = axiosInstance;
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import { DUMMY_BASE_URL, setSearchParams, toPathString, createRequestFunction } from './common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 // @ts-ignore
 import type { HealthResponse } from './models';
 /**
@@ -251,7 +251,7 @@ export const HealthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async livenessCheckApiV1HealthLiveGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async livenessCheckApiV1HealthLiveGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.livenessCheckApiV1HealthLiveGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['HealthApi.livenessCheckApiV1HealthLiveGet']?.[localVarOperationServerIndex]?.url;
@@ -263,7 +263,7 @@ export const HealthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async livenessCheckHealthLiveGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async livenessCheckHealthLiveGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.livenessCheckHealthLiveGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['HealthApi.livenessCheckHealthLiveGet']?.[localVarOperationServerIndex]?.url;
@@ -275,7 +275,7 @@ export const HealthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readinessCheckApiV1HealthReadyGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async readinessCheckApiV1HealthReadyGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.readinessCheckApiV1HealthReadyGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['HealthApi.readinessCheckApiV1HealthReadyGet']?.[localVarOperationServerIndex]?.url;
@@ -287,7 +287,7 @@ export const HealthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readinessCheckHealthReadyGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async readinessCheckHealthReadyGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.readinessCheckHealthReadyGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['HealthApi.readinessCheckHealthReadyGet']?.[localVarOperationServerIndex]?.url;
@@ -327,7 +327,7 @@ export const HealthApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        livenessCheckApiV1HealthLiveGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        livenessCheckApiV1HealthLiveGet(options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.livenessCheckApiV1HealthLiveGet(options).then((request) => request(axios, basePath));
         },
         /**
@@ -336,7 +336,7 @@ export const HealthApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        livenessCheckHealthLiveGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        livenessCheckHealthLiveGet(options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.livenessCheckHealthLiveGet(options).then((request) => request(axios, basePath));
         },
         /**
@@ -345,7 +345,7 @@ export const HealthApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readinessCheckApiV1HealthReadyGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        readinessCheckApiV1HealthReadyGet(options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.readinessCheckApiV1HealthReadyGet(options).then((request) => request(axios, basePath));
         },
         /**
@@ -354,7 +354,7 @@ export const HealthApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readinessCheckHealthReadyGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        readinessCheckHealthReadyGet(options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.readinessCheckHealthReadyGet(options).then((request) => request(axios, basePath));
         },
     };

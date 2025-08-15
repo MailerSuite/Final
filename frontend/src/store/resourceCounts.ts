@@ -36,7 +36,7 @@ const useResourceCountsStore = create<ResourceCountsState>((set) => ({
           leadBaseApi.list('').then((r) => r.data),
         ])
       const activeCount = smtpRes.filter(
-        (acc: any) => acc.status === 'checked'
+        (acc: unknown) => acc.status === 'checked'
       ).length
       set({
         smtp: activeCount,
@@ -44,7 +44,7 @@ const useResourceCountsStore = create<ResourceCountsState>((set) => ({
         proxies: proxyRes.length,
         templates: templateRes.length,
         leads: leadBases.reduce(
-          (acc: number, base: any) => acc + (base.leads_count ?? 0),
+          (acc: number, base: unknown) => acc + (base.leads_count ?? 0),
           0
         ),
       })

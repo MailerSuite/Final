@@ -13,7 +13,6 @@ import ProBadge from '@/components/ui/ProBadge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
@@ -24,7 +23,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { getSessionId as getSid } from '@/utils/getSessionId';
 import {
   createCampaign as apiCreateCampaign,
@@ -36,11 +35,7 @@ import {
   import { apiClient } from '@/http/stable-api-client'
 // Error presentation moved to stable API client
 // For now, using simple error handling
-const presentErrorToUser = (error: any) => console.error('Error:', error);
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
-import { Slider } from '@/components/ui/slider';
-import { ScrollArea } from '@/components/ui/scroll-area';
+const presentErrorToUser = (error: unknown) => console.error('Error:', error);
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Checkbox } from '@/components/ui/checkbox'
@@ -262,7 +257,7 @@ const CampaignsPage: React.FC = () => {
       const rows = Array.isArray((data as any)?.data) ? (data as any).data : data;
       if (Array.isArray(rows) && rows.length > 0) {
         setCampaigns(
-          rows.map((c: any) => ({
+          rows.map((c: unknown) => ({
             id: c.id,
             name: c.name || c.campaign_name || `Campaign ${c.id}`,
             status: c.status || 'draft',
@@ -331,7 +326,7 @@ const CampaignsPage: React.FC = () => {
         setCampaigns(fakerCampaigns);
         toast.info?.('No campaigns found, showing realistic demo data');
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError('Failed to load campaigns');
       // Use faker-generated campaigns on error
       const mockData = generateCampaignData();
@@ -476,7 +471,7 @@ const CampaignsPage: React.FC = () => {
         default:
           console.log(`Action ${action} not implemented yet`);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       presentErrorToUser(error, `Failed to ${action} campaign`)
     }
   };
@@ -507,7 +502,7 @@ const CampaignsPage: React.FC = () => {
           case 'delete': await deleteCampaign(sid, id); break
         }
         return { id, ok: true }
-      } catch (e: any) {
+      } catch (e: unknown) {
         presentErrorToUser(e, `Failed to ${action} campaign ${id}`)
         return { id, ok: false, error: e?.message || 'failed' }
       }
@@ -571,7 +566,7 @@ const CampaignsPage: React.FC = () => {
       ])
       setBusinessMetrics(bm.status === 'fulfilled' ? bm.value : null)
       setSessionStats(ss && (ss as any).status === 'fulfilled' ? (ss as any).value : null)
-    } catch (e: any) {
+    } catch (e: unknown) {
       setMetricsError(e?.message || 'Failed to load metrics')
     } finally {
       setMetricsLoading(false)

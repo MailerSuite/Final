@@ -206,7 +206,7 @@ const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({
   useEffect(() => {
     if (!chatSession) return
 
-    const handleMessage = (ev: any) => {
+    const handleMessage = (ev: unknown) => {
       try {
         const data = JSON.parse(ev.data)
         handleWebSocketMessage(data)
@@ -215,7 +215,7 @@ const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({
       }
     }
 
-    const handleClose = (ev: any) => {
+    const handleClose = (ev: unknown) => {
       console.log('Chat WebSocket disconnected (pooled)')
       // Attempt reconnect after 3s unless chat ended
       if (chatSession) {
@@ -243,7 +243,7 @@ const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({
   }, [chatSession, wsPool]);
 
   // Handle WebSocket messages
-  const handleWebSocketMessage = (data: any) => {
+  const handleWebSocketMessage = (data: unknown) => {
     switch (data.type) {
       case 'chat_message': {
         const newMessage: ChatMessage = {
@@ -289,7 +289,7 @@ const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({
 
       if (response.ok) {
         const messageData = await response.json();
-        const formattedMessages: ChatMessage[] = messageData.map((msg: any) => ({
+        const formattedMessages: ChatMessage[] = messageData.map((msg: unknown) => ({
           id: msg.id,
           content: msg.content,
           type: msg.message_type,

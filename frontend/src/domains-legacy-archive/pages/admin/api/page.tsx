@@ -81,7 +81,7 @@ const AdminAPI = () => {
       const response = await axios.get('/api/v1/admin/api/settings');
       setApiSettings(response.data);
       toast.success('⚙️ API settings loaded - LIVE DATA!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to load API settings';
       toast.error(errorMessage);
       console.error('Error loading API settings:', error);
@@ -95,33 +95,33 @@ const AdminAPI = () => {
       const response = await axios.get('/api/v1/admin/api/keys');
       setApiKeys(response.data);
       toast.success('🔑 API keys loaded - LIVE DATA!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to load API keys';
       toast.error(errorMessage);
       console.error('Error loading API keys:', error);
     }
   };
 
-  const handleCreateApiKey = async (keyData: any) => {
+  const handleCreateApiKey = async (keyData: unknown) => {
     try {
       const response = await axios.post('/api/v1/admin/api/keys', keyData);
       await loadApiKeys();
       toast.success('API key created successfully!');
       return response.data.api_key;
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to create API key';
       toast.error(errorMessage);
       throw error;
     }
   };
 
-  const handleUpdateSettings = async (newSettings: any) => {
+  const handleUpdateSettings = async (newSettings: unknown) => {
     try {
       setLoading(true);
       await axios.put('/api/v1/admin/api/settings', newSettings);
       setApiSettings(newSettings);
       toast.success('API settings updated successfully!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to update API settings';
       toast.error(errorMessage);
       console.error('Error updating API settings:', error);
@@ -135,7 +135,7 @@ const AdminAPI = () => {
     loadApiKeys();
   }, []);
 
-  const updateSetting = (section: string, key: string, value: any) => {
+  const updateSetting = (section: string, key: string, value: unknown) => {
     const newSettings = {
       ...apiSettings,
       [section]: {
@@ -401,7 +401,7 @@ const AdminAPI = () => {
                     </CardContent>
                   </Card>
                 ) : (
-                  apiKeys.map((key: any, index) => (
+                  apiKeys.map((key: unknown, index) => (
                     <Card key={key.id} className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-300">
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between">

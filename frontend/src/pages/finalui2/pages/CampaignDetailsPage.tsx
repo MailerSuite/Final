@@ -116,7 +116,7 @@ const CampaignDetailsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [throttle, setThrottle] = useState<{ batch_size: number; delay_between_batches: number } | null>(null);
-  const [progress, setProgress] = useState<any>(null);
+  const [progress, setProgress] = useState<unknown>(null);
   const [activeTab, setActiveTab] = useState('overview');
   const [wsConnected, setWsConnected] = useState(false);
 
@@ -183,7 +183,7 @@ const CampaignDetailsPage: React.FC = () => {
       if (progressData.status === 'fulfilled') {
         setProgress(progressData.value);
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e?.message || 'Failed to load campaign details');
       console.error('Failed to load campaign:', e);
     } finally {
@@ -273,7 +273,7 @@ const CampaignDetailsPage: React.FC = () => {
           toast.success?.('Exported to JSON');
           break;
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error?.(error?.message || `Failed to ${action} campaign`);
       console.error(`Failed to ${action} campaign:`, error);
     }
@@ -285,7 +285,7 @@ const CampaignDetailsPage: React.FC = () => {
     try {
       await setCampaignThrottle(id, throttle.batch_size, throttle.delay_between_batches);
       toast.success?.('Throttle settings updated');
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error?.(error?.message || 'Failed to update throttle');
     }
   };
@@ -620,7 +620,7 @@ const CampaignDetailsPage: React.FC = () => {
                         backgroundColor: '#0b1220',
                         border: '1px solid rgba(139,92,246,0.25)'
                       }}
-                      formatter={(value: any) => `${Number(value).toFixed(1)}%`}
+                      formatter={(value: unknown) => `${Number(value).toFixed(1)}%`}
                     />
                   </PieChart>
                 </ResponsiveContainer>
@@ -837,7 +837,7 @@ const CampaignDetailsPage: React.FC = () => {
                         toast.success?.('Thread pool assigned successfully')
                         // Refresh campaign data
                         await fetchCampaignDetails()
-                      } catch (error: any) {
+                      } catch (error: unknown) {
                         toast.error?.(error?.message || 'Failed to assign thread pool')
                       }
                     }}
@@ -860,7 +860,7 @@ const CampaignDetailsPage: React.FC = () => {
                         await assignCampaignThreadPool(id, '')
                         toast.success?.('Thread pool removed')
                         await fetchCampaignDetails()
-                      } catch (error: any) {
+                      } catch (error: unknown) {
                         toast.error?.(error?.message || 'Failed to remove thread pool')
                       }
                     }}

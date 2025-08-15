@@ -86,7 +86,7 @@ const PerformanceMonitoringCard: React.FC = () => {
     }
   };
 
-  const getPerformanceTier = (resources: any): string => {
+  const getPerformanceTier = (resources: unknown): string => {
     if (resources.cpu_cores >= 8 && resources.memory_gb >= 8) {
       return 'High-End';
     } else if (resources.cpu_cores >= 4 && resources.memory_gb >= 4) {

@@ -183,11 +183,11 @@ export const useRealtimeMetrics = (options: RealtimeMetricsOptions = {}) => {
 
 // Metrics data hook for dashboard components
 export const useMetricsData = () => {
-  const [healthData, setHealthData] = useState<any>(null);
-  const [systemData, setSystemData] = useState<any>(null);
-  const [performanceData, setPerformanceData] = useState<any>(null);
-  const [realtimeData, setRealtimeData] = useState<any>(null);
-  const [analyticsData, setAnalyticsData] = useState<any>(null);
+  const [healthData, setHealthData] = useState<unknown>(null);
+  const [systemData, setSystemData] = useState<unknown>(null);
+  const [performanceData, setPerformanceData] = useState<unknown>(null);
+  const [realtimeData, setRealtimeData] = useState<unknown>(null);
+  const [analyticsData, setAnalyticsData] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasMetrics, setHasMetrics] = useState(true);

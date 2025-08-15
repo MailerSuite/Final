@@ -21,9 +21,9 @@ import { apiClient } from '@/http/stable-api-client'
 const globalAxios: AxiosInstance = (apiClient as any).axiosInstance ?? axios.create();
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import { DUMMY_BASE_URL, assertParamExists, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 // @ts-ignore
 import type { HTTPValidationError } from './models';
 // @ts-ignore
@@ -518,7 +518,7 @@ export const LeadsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteLeadBaseApiV1LeadBasesBaseIdDelete(baseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async deleteLeadBaseApiV1LeadBasesBaseIdDelete(baseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteLeadBaseApiV1LeadBasesBaseIdDelete(baseId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['LeadsApi.deleteLeadBaseApiV1LeadBasesBaseIdDelete']?.[localVarOperationServerIndex]?.url;
@@ -531,7 +531,7 @@ export const LeadsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteLeadEntryApiV1LeadsLeadIdDelete(leadId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async deleteLeadEntryApiV1LeadsLeadIdDelete(leadId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteLeadEntryApiV1LeadsLeadIdDelete(leadId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['LeadsApi.deleteLeadEntryApiV1LeadsLeadIdDelete']?.[localVarOperationServerIndex]?.url;
@@ -646,7 +646,7 @@ export const LeadsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async validateSingleLeadEmailApiV1LeadsLeadIdValidateEmailPost(leadId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+        async validateSingleLeadEmailApiV1LeadsLeadIdValidateEmailPost(leadId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<unknown>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.validateSingleLeadEmailApiV1LeadsLeadIdValidateEmailPost(leadId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['LeadsApi.validateSingleLeadEmailApiV1LeadsLeadIdValidateEmailPost']?.[localVarOperationServerIndex]?.url;
@@ -679,7 +679,7 @@ export const LeadsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteLeadBaseApiV1LeadBasesBaseIdDelete(baseId: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        deleteLeadBaseApiV1LeadBasesBaseIdDelete(baseId: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.deleteLeadBaseApiV1LeadBasesBaseIdDelete(baseId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -689,7 +689,7 @@ export const LeadsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteLeadEntryApiV1LeadsLeadIdDelete(leadId: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        deleteLeadEntryApiV1LeadsLeadIdDelete(leadId: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.deleteLeadEntryApiV1LeadsLeadIdDelete(leadId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -780,7 +780,7 @@ export const LeadsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        validateSingleLeadEmailApiV1LeadsLeadIdValidateEmailPost(leadId: string, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+        validateSingleLeadEmailApiV1LeadsLeadIdValidateEmailPost(leadId: string, options?: RawAxiosRequestConfig): AxiosPromise<unknown> {
             return localVarFp.validateSingleLeadEmailApiV1LeadsLeadIdValidateEmailPost(leadId, options).then((request) => request(axios, basePath));
         },
     };

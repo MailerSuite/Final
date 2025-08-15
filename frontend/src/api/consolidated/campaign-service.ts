@@ -43,9 +43,9 @@ export interface UnifiedTemplate {
 }
 
 export interface CampaignAnalytics {
-  metrics: any;
-  trends: any;
-  timeline: any[];
+  metrics: unknown;
+  trends: unknown;
+  timeline: unknown[];
   performance: {
     openRate: number;
     clickRate: number;
@@ -58,8 +58,8 @@ export interface CampaignAnalytics {
 export interface AutomationWorkflow {
   id: string;
   name: string;
-  triggers: any[];
-  actions: any[];
+  triggers: unknown[];
+  actions: unknown[];
   status: 'active' | 'paused' | 'draft';
   createdAt: string;
 }
@@ -215,7 +215,7 @@ class ConsolidatedCampaignService extends UnifiedApiCore {
     totalSent: number;
     averageOpenRate: number;
     averageClickRate: number;
-    trends: any;
+    trends: unknown;
   }> {
     return this.makeRequest('get', '/analytics/overview', undefined, {
       params: { time_range: timeRange },
@@ -295,7 +295,7 @@ class ConsolidatedCampaignService extends UnifiedApiCore {
   }
 
   async getABTestResults(campaignId: string, testId: string): Promise<{
-    results: any[];
+    results: unknown[];
     winner?: string;
     confidence: number;
     status: 'running' | 'completed' | 'inconclusive';
@@ -343,7 +343,7 @@ class ConsolidatedCampaignService extends UnifiedApiCore {
   }
 
   // WebSocket-like polling for real-time updates
-  subscribeToRealtimeUpdates(campaignId: string, callback: (metrics: any) => void, interval = 10000): () => void {
+  subscribeToRealtimeUpdates(campaignId: string, callback: (metrics: unknown) => void, interval = 10000): () => void {
     const poll = async () => {
       try {
         const metrics = await this.getCampaignRealTimeMetrics(campaignId);

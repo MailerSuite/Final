@@ -154,7 +154,7 @@ export default function Verify2FAPage() {
       } else {
         setError(response.message || 'Invalid verification code');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.response?.data?.detail || 'Verification failed');
     } finally {
       setIsLoading(false);
@@ -178,7 +178,7 @@ export default function Verify2FAPage() {
       } else {
         setError(response.message || 'Failed to resend code');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.response?.data?.detail || 'Failed to resend code');
     } finally {
       setIsResending(false);

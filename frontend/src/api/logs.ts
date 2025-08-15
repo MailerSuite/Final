@@ -7,7 +7,7 @@ export const fetchSessionLogs = async (sessionId: string): Promise<SessionLog[]>
       params: { session_id: sessionId },
     })
     return data
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (error?.response?.status === 404) return []
     throw error
   }

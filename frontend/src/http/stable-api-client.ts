@@ -27,7 +27,7 @@ export interface APIError {
   message: string;
   status: number;
   code?: string;
-  details?: any;
+  details?: unknown;
 }
 
 export interface PaginationParams {
@@ -241,7 +241,7 @@ class StableAPIClient {
     };
   }
 
-  private normalizeError(error: any): APIError {
+  private normalizeError(error: unknown): APIError {
     if (axios.isAxiosError(error)) {
       return {
         message: error.response?.data?.message || error.message || 'API request failed',

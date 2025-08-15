@@ -17,7 +17,7 @@ export default function ImapAccountForm({ initial, onSubmit, onCancel, loading }
     setForm(initial || {})
   }, [initial])
 
-  const handleChange = (field: keyof IMAPAccount, value: any) => {
+  const handleChange = (field: keyof IMAPAccount, value: unknown) => {
     setForm((f) => ({ ...f, [field]: value }))
   }
 

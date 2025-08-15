@@ -16,7 +16,7 @@ export interface UsePlanReturn {
   upgradeInfo: UpgradeInfo | null
   usageWarnings: string[]
   isLoading: boolean
-  error: any
+  error: unknown
   refetch: () => void
   clearCache: () => void
 }
@@ -150,7 +150,7 @@ export function usePlanTier(minimumTier: string) {
  */
 export function usePlanErrorHandler() {
   return {
-    handlePlanError: (error: any): PlanError => {
+    handlePlanError: (error: unknown): PlanError => {
       return planService.handlePlanError(error)
     }
   }

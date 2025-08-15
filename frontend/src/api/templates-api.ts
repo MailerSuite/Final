@@ -22,9 +22,9 @@ import { apiClient } from '@/http/stable-api-client'
 const globalAxios: AxiosInstance = (apiClient as any).axiosInstance ?? axios.create();
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import { DUMMY_BASE_URL, assertParamExists, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 // @ts-ignore
 import type { EmailTemplateCreate } from './models';
 // @ts-ignore
@@ -656,7 +656,7 @@ export class TemplatesApi extends BaseAPI {
             return await TemplatesApiFp(this.configuration)
                 .listTemplatesApiV1TemplatesGet(sessionId, limit, offset, search, options)
                 .then((request) => request(this.axios, this.basePath))
-        } catch (err: any) {
+        } catch (err: unknown) {
             if (axios.isAxiosError(err) && err.response?.status === 404) {
                 return err.response
             }

@@ -107,7 +107,7 @@ export interface RealtimeMetrics {
     database_connections: number;
     queue_size: number;
   };
-  alerts: any[];
+  alerts: unknown[];
 }
 
 export interface AnalyticsMetrics {
@@ -160,7 +160,7 @@ export interface AdminOverview {
     failed_logins_24h: number;
     blocked_ips: number;
     active_sessions: number;
-    security_events: any[];
+    security_events: unknown[];
   };
   performance: {
     avg_response_time: number;

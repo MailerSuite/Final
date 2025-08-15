@@ -125,7 +125,7 @@ function DefaultUpgradePrompt({
 }: {
   featureDisplayName: string
   suggestedPlan: string
-  upgradeInfo: any
+  upgradeInfo: unknown
   className?: string
 }) {
   return (
@@ -162,7 +162,7 @@ function UpgradeCard({
 }: {
   featureDisplayName: string
   suggestedPlan: string
-  upgradeInfo: any
+  upgradeInfo: unknown
   className?: string
 }) {
   return (

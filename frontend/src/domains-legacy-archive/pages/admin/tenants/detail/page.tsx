@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { 
   ArrowLeft, Edit, Save, Users, Mail, Calendar, 
@@ -44,7 +43,7 @@ interface TenantUsage {
   metric_type: string;
   metric_value: number;
   metric_date: string;
-  usage_metadata?: any;
+  usage_metadata?: unknown;
 }
 
 export default function TenantDetail() {
@@ -55,7 +54,7 @@ export default function TenantDetail() {
   const [usage, setUsage] = useState<TenantUsage[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
-  const [formData, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState<unknown>({});
 
   useEffect(() => {
     if (id) {

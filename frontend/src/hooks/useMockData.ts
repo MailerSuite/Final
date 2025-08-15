@@ -95,7 +95,7 @@ export function usePaginatedMockData<T = any>(
   pageSize: number = 10
 ) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [data] = useState<any>(() => {
+  const [data] = useState<unknown>(() => {
     switch (dataType) {
       case 'campaigns':
         return generateCampaignData().campaigns;

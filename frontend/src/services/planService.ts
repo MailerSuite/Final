@@ -361,7 +361,7 @@ class PlanService {
   /**
    * Handle plan errors from API responses
    */
-  handlePlanError(error: any): PlanError {
+  handlePlanError(error: unknown): PlanError {
     if (error?.response?.status === 402) {
       const detail = error.response.data?.detail
       if (typeof detail === 'object') {

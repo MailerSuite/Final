@@ -19,7 +19,7 @@ export function useBlacklistCheck() {
         })
         return updated
       })
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err?.message || 'Failed to check blacklist')
       toast({ description: 'Blacklist check failed', severity: 'critical' })
     } finally {

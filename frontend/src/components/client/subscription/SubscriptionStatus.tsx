@@ -245,14 +245,14 @@ export function SubscriptionUsage({ className }: { className?: string }) {
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          {usage.metrics.map((metric: any) => (
+          {usage.metrics.map((metric: unknown) => (
             <UsageMetric key={metric.metric_id} metric={metric} />
           ))}
         </div>
 
         {usage.warnings && usage.warnings.length > 0 && (
           <div className="mt-6 space-y-2">
-            {usage.warnings.map((warning: any, idx: number) => (
+            {usage.warnings.map((warning: unknown, idx: number) => (
               <Alert key={idx} variant="warning">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>{warning}</AlertDescription>
@@ -266,7 +266,7 @@ export function SubscriptionUsage({ className }: { className?: string }) {
 }
 
 // Individual Usage Metric
-function UsageMetric({ metric }: { metric: any }) {
+function UsageMetric({ metric }: { metric: unknown }) {
   const percentage = metric.limit === null ? 0 : (metric.used / metric.limit) * 100
   const isNearLimit = percentage > 80
   const isOverLimit = percentage > 100
@@ -342,7 +342,7 @@ export function FeatureComparison({ currentPlanCode }: { currentPlanCode: string
   }
 
   const features = Array.from(
-    new Set(plans.flatMap((plan: any) => plan.features))
+    new Set(plans.flatMap((plan: unknown) => plan.features))
   ).sort()
 
   return (
@@ -351,7 +351,7 @@ export function FeatureComparison({ currentPlanCode }: { currentPlanCode: string
         <thead>
           <tr className="border-b">
             <th className="text-left p-4">Feature</th>
-            {plans.map((plan: any) => (
+            {plans.map((plan: unknown) => (
               <th key={plan.code} className="text-center p-4 min-w-[120px]">
                 <div className="flex flex-col items-center gap-1">
                   <span className={cn(
@@ -375,7 +375,7 @@ export function FeatureComparison({ currentPlanCode }: { currentPlanCode: string
               idx % 2 === 0 && "bg-muted"
             )}>
               <td className="p-4 text-sm">{feature}</td>
-              {plans.map((plan: any) => (
+              {plans.map((plan: unknown) => (
                 <td key={plan.code} className="text-center p-4">
                   {plan.features.includes(feature) ? (
                     <Check className="h-5 w-5 text-green-600 mx-auto" />
@@ -388,7 +388,7 @@ export function FeatureComparison({ currentPlanCode }: { currentPlanCode: string
           ))}
           <tr className="font-semibold">
             <td className="p-4">Price</td>
-            {plans.map((plan: any) => (
+            {plans.map((plan: unknown) => (
               <td key={plan.code} className="text-center p-4">
                 ${plan.price_monthly}/mo
               </td>
@@ -409,8 +409,8 @@ function UpgradeDialog({
 }: { 
   open: boolean
   onOpenChange: (open: boolean) => void
-  currentPlan: any
-  upgradeInfo: any
+  currentPlan: unknown
+  upgradeInfo: unknown
 }) {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
   const [isUpgrading, setIsUpgrading] = useState(false)
@@ -453,7 +453,7 @@ function UpgradeDialog({
 
           <TabsContent value="pricing" className="mt-6">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {upgradeInfo.available_plans.map((plan: any) => (
+              {upgradeInfo.available_plans.map((plan: unknown) => (
                 <Card 
                   key={plan.code}
                   className={cn(

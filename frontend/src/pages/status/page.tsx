@@ -1,4 +1,3 @@
-import React from 'react';
 import Shell from '@/components/layouts/Shell';
 import { Card, CardContent } from '@/components/ui/card';
 

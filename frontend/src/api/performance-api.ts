@@ -279,7 +279,7 @@ export const performanceApi = {
     test_id: string
     status: string
     progress_percentage: number
-    current_metrics: any
+    current_metrics: unknown
     estimated_completion: string
   }> => {
     const { data } = await axiosInstance.get(`/performance/test/${testId}/status`)
@@ -411,9 +411,9 @@ export class PerformanceLiveStream {
   private connId: string | null = null
   private listeners: ((data: LivePerformanceStream) => void)[] = []
   private reconnectTimer: number | null = null
-  private msgHandler: ((ev: any) => void) | null = null
-  private closeHandler: ((ev: any) => void) | null = null
-  private errorHandler: ((ev: any) => void) | null = null
+  private msgHandler: ((ev: unknown) => void) | null = null
+  private closeHandler: ((ev: unknown) => void) | null = null
+  private errorHandler: ((ev: unknown) => void) | null = null
 
   async connect(): Promise<void> {
     if (this.connId) return
@@ -425,7 +425,7 @@ export class PerformanceLiveStream {
       const id = await defaultWebSocketPool.connect('performance', wsUrl)
       this.connId = id
 
-      this.msgHandler = (ev: any) => {
+      this.msgHandler = (ev: unknown) => {
         try {
           const data: LivePerformanceStream = JSON.parse(ev.data)
           this.listeners.forEach(l => l(data))
@@ -434,14 +434,14 @@ export class PerformanceLiveStream {
         }
       }
 
-      this.closeHandler = (ev: any) => {
+      this.closeHandler = (ev: unknown) => {
         // Clear current connection id so subsequent connect attempts can run
         this.connId = null
         // schedule reconnect
         this.scheduleReconnect()
       }
 
-      this.errorHandler = (ev: any) => {
+      this.errorHandler = (ev: unknown) => {
         console.error('Performance WebSocket error:', ev)
       }
 

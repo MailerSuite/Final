@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -29,7 +29,7 @@ interface LogEntry {
   timestamp: string;
   level: 'info' | 'success' | 'warning' | 'error' | 'debug';
   message: string;
-  details?: any;
+  details?: unknown;
   category?: string;
 }
 

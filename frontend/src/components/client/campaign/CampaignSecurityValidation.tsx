@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Shield, CheckCircle, AlertTriangle, XCircle, RefreshCw } from 'lucide-react';
-import { securityApi, type CampaignValidationRequest, type CampaignValidationResponse } from '@/api/security-api';
+import { securityApi } from '@/api/security-api';
 import { toast } from '@/hooks/smtp-checker/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -62,7 +62,7 @@ export const CampaignSecurityValidation: React.FC<CampaignSecurityValidationProp
           });
         }
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       const message = err.response?.data?.detail || 'Security validation failed';
       setError(message);
       toast({

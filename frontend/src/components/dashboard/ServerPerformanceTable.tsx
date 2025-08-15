@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/table";
 import axiosInstance from "@/http/axios";
 import { ServerInfo } from "@/pages/analytics/components/table";
-import { useGetServerPerformanceQuery } from "@/services/api/dashboard";
 import {
   Cpu,
   HardDrive,
@@ -61,7 +60,7 @@ const ServerPerformanceTable = () => {
           }
         ]);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Failed to fetch server performance:", error);
       setError("Failed to load server data");
       

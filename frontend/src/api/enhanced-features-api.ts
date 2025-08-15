@@ -168,7 +168,7 @@ export const enhancedFeaturesApi = {
   syncIntegration: async (
     integration_id: string,
     sync_type: string = 'full'
-  ): Promise<any> => {
+  ): Promise<unknown> => {
     const { data } = await axiosInstance.post(`/api/v1v1/integrations/${integration_id}/sync`, {
       sync_type
     })
@@ -183,29 +183,29 @@ export const enhancedFeaturesApi = {
     return data
   },
 
-  getSDKConfig: async (language: string): Promise<any> => {
+  getSDKConfig: async (language: string): Promise<unknown> => {
     const { data } = await axiosInstance.get(`/api/v1v1/integrations/sdk/${language}`)
     return data
   },
 
-  getEcosystemStats: async (): Promise<any> => {
+  getEcosystemStats: async (): Promise<unknown> => {
     const { data } = await axiosInstance.get('/api/v1v1/integrations/stats')
     return data
   },
 
   // Business Metrics
-  getBusinessMetrics: async (): Promise<any> => {
+  getBusinessMetrics: async (): Promise<unknown> => {
     const { data } = await axiosInstance.get('/api/v1metrics/business')
     return data
   },
 
-  getBusinessMetricsSummary: async (): Promise<any> => {
+  getBusinessMetricsSummary: async (): Promise<unknown> => {
     const { data } = await axiosInstance.get('/api/v1metrics/business/summary')
     return data
   },
 
   // Security Features
-  getSecuritySummary: async (): Promise<any> => {
+  getSecuritySummary: async (): Promise<unknown> => {
     const { data } = await axiosInstance.get('/security/summary')
     return data
   }
@@ -340,7 +340,7 @@ export const automationApiCompat = {
     name: string
     description?: string
     trigger_type: string
-    trigger_config: any
+    trigger_config: unknown
     status?: string
   }) => {
     // Map old format to new format
@@ -405,7 +405,7 @@ export const handleEnhancedAPICall = async <T>(
 ): Promise<T> => {
   try {
     return await apiCall()
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Enhanced API call failed:', error)
     
     if (error.response?.status === 404 && fallbackData) {

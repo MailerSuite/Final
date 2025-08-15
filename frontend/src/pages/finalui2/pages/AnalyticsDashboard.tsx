@@ -227,7 +227,7 @@ const AnalyticsDashboard: React.FC = () => {
                             {selectedCampaigns.length === 0 && (
                                 <div className="flex items-center gap-2">
                                     <Label>Time Range:</Label>
-                                    <Select value={timeRange} onValueChange={(value: any) => setTimeRange(value)}>
+                                    <Select value={timeRange} onValueChange={(value: unknown) => setTimeRange(value)}>
                                         <SelectTrigger className="w-32">
                                             <SelectValue />
                                         </SelectTrigger>

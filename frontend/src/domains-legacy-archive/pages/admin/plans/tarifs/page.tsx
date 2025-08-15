@@ -65,7 +65,7 @@ const AdminTarifs = () => {
       const response = await axios.get('/api/v1/admin/tarifs');
       setTarifs(response.data);
       toast.success('💰 Tarifs loaded - LIVE DATA!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to load tarifs';
       toast.error(errorMessage);
       console.error('Error loading tarifs:', error);
@@ -102,7 +102,7 @@ const AdminTarifs = () => {
       setCreateDialogOpen(false);
       await loadTarifs();
       toast.success('Tarif created successfully!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response?.data?.detail || 'Failed to create tarif';
       toast.error(errorMessage);
       console.error('Error creating tarif:', error);

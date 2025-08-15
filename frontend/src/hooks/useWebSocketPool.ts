@@ -19,7 +19,7 @@ export function useWebSocketPool() {
         return id
     }, [])
 
-    const send = useCallback((data: any) => {
+    const send = useCallback((data: unknown) => {
         if (!connIdRef.current) return false
         return defaultWebSocketPool.send(connIdRef.current, data)
     }, [])
@@ -34,12 +34,12 @@ export function useWebSocketPool() {
         }
     }, [])
 
-    const on = useCallback((event: WSEvent, handler: (ev: any) => void) => {
+    const on = useCallback((event: WSEvent, handler: (ev: unknown) => void) => {
         if (!connIdRef.current) return
         defaultWebSocketPool.on(connIdRef.current, event, handler)
     }, [])
 
-    const off = useCallback((event: WSEvent, handler: (ev: any) => void) => {
+    const off = useCallback((event: WSEvent, handler: (ev: unknown) => void) => {
         if (!connIdRef.current) return
         defaultWebSocketPool.off(connIdRef.current, event, handler)
     }, [])

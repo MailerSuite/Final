@@ -42,7 +42,7 @@ interface ServiceStatus {
   uptime: string
   lastCheck: Date
   responseTime: number
-  icon: any
+  icon: unknown
 }
 
 const mockSystemMetrics: SystemMetric[] = [

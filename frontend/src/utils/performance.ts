@@ -113,7 +113,7 @@ export function useSafeTimeout(
 }
 
 // PERFORMANCE FIX: Memoized event handler to prevent unnecessary re-renders
-export function useMemoizedCallback<T extends (...args: any[]) => any>(
+export function useMemoizedCallback<T extends (...args: unknown[]) => any>(
   callback: T,
   dependencies: React.DependencyList
 ): T {
@@ -159,7 +159,7 @@ export function useDebounce<T>(value: T, delay: number): T {
 }
 
 // PERFORMANCE FIX: Throttled callback hook
-export function useThrottle<T extends (...args: any[]) => any>(
+export function useThrottle<T extends (...args: unknown[]) => any>(
   callback: T,
   delay: number
 ): T {

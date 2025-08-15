@@ -27,20 +27,19 @@ import {
   PlusIcon,
   Cog6ToothIcon
 } from '@heroicons/react/24/outline';
-import { EnvelopeIcon, CursorArrowRaysIcon } from '@heroicons/react/24/outline';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import SoonBadge from '@/components/ui/SoonBadge';
 
 // Campaign Card Component
-const CampaignCard: React.FC<{ campaign: any; index: number }> = ({ campaign, index }) => (
+const CampaignCard: React.FC<{ campaign: unknown; index: number }> = ({ campaign, index }) => (
   <motion.div
     initial={{ opacity: 0, x: -20 }}
     animate={{ opacity: 1, x: 0 }}
