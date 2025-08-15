@@ -633,6 +633,13 @@ else:
 #     "*.sgpt.dev",
 # ]
 # app.add_middleware(TrustedHostMiddleware, allowed_hosts=allowed_hosts)
+try:
+	# Only enable TrustedHostMiddleware if ALLOWED_HOSTS explicitly set to avoid dev friction
+	if getattr(settings, "ALLOWED_HOSTS", None):
+		app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
+		logger.info("✅ TrustedHostMiddleware enabled with ALLOWED_HOSTS")
+except Exception as e:
+	logger.warning(f"⚠️ Could not add TrustedHostMiddleware: {e}")
 
 # Minimal Security Headers middleware (enabled in all environments; tuned by reverse proxy in prod)
 try:
@@ -663,9 +670,9 @@ try:
                 response.headers["Content-Security-Policy"] = csp
             return response
 
-    # Temporarily disable to diagnose 500 errors in local dev
-    # app.add_middleware(SecurityHeadersMiddleware)
-    # logger.info("✅ Security headers middleware enabled")
+    # Enable security headers in dev as a safe default
+    app.add_middleware(SecurityHeadersMiddleware)
+    logger.info("✅ Security headers middleware enabled")
 except Exception as e:
     logger.warning(f"⚠️ Security headers middleware not enabled: {e}")
 

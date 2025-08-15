@@ -53,7 +53,13 @@ fi
 
 # Run database migrations (alembic)
 echo "Running Alembic migrations..."
-python3 -m alembic upgrade head
+# Prefer SYNC_DATABASE_URL if provided to avoid async driver issues with Alembic
+if [ -n "${SYNC_DATABASE_URL:-}" ]; then
+	extra_env="-x sqlalchemy.url=$SYNC_DATABASE_URL"
+else
+	extra_env=""
+fi
+python3 -m alembic upgrade head $extra_env
 
 echo "Starting Uvicorn..."
 exec python3 -m uvicorn app.main:app \
