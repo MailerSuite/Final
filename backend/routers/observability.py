@@ -64,7 +64,7 @@ async def get_metrics():
         # Update system metrics
         memory = psutil.virtual_memory()
         SYSTEM_MEMORY_USAGE.set(memory.used)
-        SYSTEM_CPU_USAGE.set(psutil.cpu_percent())
+        SYSTEM_CPU_USAGE.set(psutil.cpu_percent(interval=0.0))
 
         # Update database connection metrics
         try:

@@ -39,7 +39,7 @@ class TaskResourceMonitor:
         # Collect fresh metrics
         try:
             metrics = {
-                'cpu_percent': psutil.cpu_percent(interval=1),
+                'cpu_percent': psutil.cpu_percent(interval=0.0),
                 'memory_percent': psutil.virtual_memory().percent,
                 'disk_percent': psutil.disk_usage('/').percent,
                 'load_avg': psutil.getloadavg()[0] if hasattr(psutil, 'getloadavg') else 0,
