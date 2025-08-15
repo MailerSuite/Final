@@ -1,28 +1,31 @@
 # Compatibility shim for tests expecting `app.models.campaign`
 # Provide minimal enum and model alias to existing SQLAlchemy models
+from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
-from typing import Any
-
-from models.base import Campaign as _Campaign
+from typing import Any, Optional
 
 
 class CampaignStatus(str, Enum):
-    DRAFT = "draft"
-    SCHEDULED = "scheduled"
-    SENDING = "sending"
-    SENT = "sent"
-    PAUSED = "paused"
-    CANCELLED = "cancelled"
+	DRAFT = "draft"
+	SCHEDULED = "scheduled"
+	SENDING = "sending"
+	SENT = "sent"
+	PAUSED = "paused"
+	CANCELLED = "cancelled"
 
 
-class Campaign(_Campaign):
-    """Subclass ORM model to accept extra kwargs in tests (e.g., content, created_at).
-    Extra fields are ignored if not present in base mapping.
-    """
+@dataclass
+class Campaign:
+	"""Lightweight test-friendly Campaign model.
+	This avoids binding to SQLAlchemy mappers to prevent duplicate class
+	registration during unit tests. It mirrors the minimal fields used by tests.
+	"""
 
-    def __init__(self, *args: Any, **kwargs: Any):
-        # Drop unknown kwargs that tests may pass
-        safe_kwargs = dict(kwargs)
-        for extra in ["content"]:
-            safe_kwargs.pop(extra, None)
-        super().__init__(*args, **safe_kwargs)
+	id: Any
+	name: str
+	subject: str
+	status: CampaignStatus
+	created_at: datetime
+	user_id: Any
+	content: Optional[str] = None
