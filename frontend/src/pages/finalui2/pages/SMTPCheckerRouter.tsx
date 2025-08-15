@@ -13,6 +13,11 @@ const SMTPCheckerRouter: React.FC = () => {
         authentication: 'authentication',
         message: 'message',
         advanced: 'advanced',
+        // Added mappings for bulk routes
+        bulk: 'bulk',
+        mass: 'bulk',
+        batch: 'bulk',
+        'bulk-check': 'bulk'
     };
     const tab = map[raw] || 'connection';
     return <SMTPCheckerPage initialTab={tab as any} /> as any;

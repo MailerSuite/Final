@@ -544,7 +544,29 @@ const router = createBrowserRouter([
     )
   },
   {
+    path: '/smtp/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
     path: '/imap-inbox/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/imap/*',
     element: (
       <Suspense fallback={<Loading />}>
         <MainLayout>
