@@ -145,7 +145,12 @@ const router = createBrowserRouter([
         </MainLayout>
         <AppWrapper />
       </Suspense>
-    )
+    ),
+    errorElement: (
+      <Suspense fallback={<Loading />}>
+        <ErrorPage />
+      </Suspense>
+    ),
   },
   {
     path: '/hub',
@@ -773,7 +778,12 @@ const router = createBrowserRouter([
         </MainLayout>
         <AppWrapper />
       </Suspense>
-    )
+    ),
+    errorElement: (
+      <Suspense fallback={<Loading />}>
+        <ErrorPage />
+      </Suspense>
+    ),
   },
   // Backward compatibility: redirect legacy /finalui2/* to root equivalent
   {
