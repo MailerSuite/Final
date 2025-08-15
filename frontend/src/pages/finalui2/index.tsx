@@ -46,6 +46,10 @@ const NavigationHub = lazy(() => import('./pages/NavigationHub'));
 // Deprecated marketing dashboard removed
 const AccountRouter = lazy(() => import('./pages/AccountRouter'));
 
+// New UI Flow Pages
+const MarketplacePage = lazy(() => import('../integrations/MarketplacePage'))
+const DeliverabilityDashboard = lazy(() => import('../deliverability/DeliverabilityDashboard'))
+
 // Recent AI Pages
 const AIAnalyticsDashboard = lazy(() => import('./pages/AIAnalyticsDashboard'));
 const AIContentGenerator = lazy(() => import('./pages/AIContentGenerator'));
@@ -98,6 +102,10 @@ export const FinalUI2: React.FC = () => {
         <Route path="/settings/*" element={<AISettings />} />
         {/* Account management */}
         <Route path="/account/*" element={<AccountRouter />} />
+        
+        {/* New UI Flows */}
+        <Route path="/integrations" element={<MarketplacePage />} />
+        <Route path="/deliverability" element={<DeliverabilityDashboard />} />
 
         {/* Live Tools */}
         {/* Blacklist routes */}

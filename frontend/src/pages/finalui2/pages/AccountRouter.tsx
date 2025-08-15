@@ -9,6 +9,8 @@ const ApiKeysPage = lazy(() => import('./account/ApiKeysPage'))
 const NotificationsPage = lazy(() => import('./account/NotificationsPage'))
 const SubscriptionPage = lazy(() => import('./account/SubscriptionPage'))
 const EmailVerifyPage = lazy(() => import('./account/EmailVerifyPage'))
+const BillingPage = lazy(() => import('./account/BillingPage'))
+const PreferencesPage = lazy(() => import('./account/PreferencesPage'))
 
 export default function AccountRouter() {
   return (
@@ -21,6 +23,8 @@ export default function AccountRouter() {
         <Route path="api-keys" element={<ApiKeysPage />} />
         <Route path="notifications" element={<NotificationsPage />} />
         <Route path="subscription" element={<SubscriptionPage />} />
+        <Route path="billing" element={<BillingPage />} />
+        <Route path="preferences" element={<PreferencesPage />} />
         <Route path="verify-email" element={<EmailVerifyPage />} />
         <Route path="*" element={<Navigate to="profile" replace />} />
       </Routes>
