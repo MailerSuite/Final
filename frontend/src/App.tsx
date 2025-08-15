@@ -62,8 +62,13 @@ const TermsPage = lazy(() => import('@/pages/legal/terms'))
 const PrivacyPage = lazy(() => import('@/pages/legal/privacy'))
 
 // Landing Pages
-const SpamGPTHero = lazy(() => import('@/components/landing/spamgpt/SpamGPTHero'))
+const SpamGPTLandingPage = lazy(() => import('@/pages/landing/spamgpt/page'))
+const OptimizerDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/OptimizerDemoPage'))
+const AnalyticsDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/AnalyticsDemoPage'))
+const TutorDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/TutorDemoPage'))
 const LandingPageIndex = lazy(() => import('@/pages/landing'))
+const AILandingPlaceholder = lazy(() => import('@/pages/landing/ai/page'))
+const AIOpenAIPlaceholder = lazy(() => import('@/pages/landing/ai-openai/page'))
 
 import SkeletonAI from '@/components/ui/SkeletonAI'
 import MainLayout from '@/layouts/MainLayout'
@@ -652,12 +657,58 @@ const router = createBrowserRouter([
       </Suspense>
     )
   },
+  {
+    path: '/landing/ai',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AILandingPlaceholder />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/ai-openai',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AIOpenAIPlaceholder />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
 
+  // SpamGPT Landing
   {
     path: '/landing/spamgpt',
     element: (
       <Suspense fallback={<Loading />}>
-        <SpamGPTHero />
+        <SpamGPTLandingPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/optimizer',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <OptimizerDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/analytics',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AnalyticsDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/tutor',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <TutorDemoPage />
         <AppWrapper />
       </Suspense>
     )

@@ -10,4 +10,4 @@ export { HeroSection, HeroTitle, HeroSubtitle, HeroCTA, HeroFeatures } from './h
 export { LandingHeader, LandingFooter } from './navigation';
 
 // Layout Components
-export { LandingLayout, LandingSection } from './layout';
+// (no explicit layout module yet)
