@@ -20,6 +20,9 @@
     <script src="js/main.js" defer></script>
 </head>
 <body>
+    <!-- Background neural network canvas -->
+    <canvas id="neural-network" aria-hidden="true"></canvas>
+    
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav-container">
@@ -31,9 +34,11 @@
                 <li><a href="#features" class="nav-link">Features</a></li>
                 <li><a href="#demo" class="nav-link">Live Demo</a></li>
                 <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="#testimonials" class="nav-link">Customers</a></li>
+                <li><a href="#faq" class="nav-link">FAQ</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
             </ul>
-            <button class="nav-cta">Get Started</button>
+            <button class="nav-cta" onclick="scrollToSection('pricing')">Get Started</button>
         </div>
     </nav>
     
@@ -48,7 +53,7 @@
                 </div>
                 <h1 class="hero-title">
                     <span class="gradient-text">Next-Gen Email</span><br>
-                    <span class="typewriter">Intelligence Platform</span>
+                    <span class="typewriter" data-phrases='["Intelligence Platform","Deliverability Engine","Orchestrator for Scale"]'>Intelligence Platform</span>
                 </h1>
                 <p class="hero-description">
                     Harness the power of AI to revolutionize your email infrastructure. 
@@ -80,7 +85,7 @@
                 </div>
             </div>
             <div class="hero-visual">
-                <div class="ai-brain">
+                <div class="ai-brain float">
                     <div class="brain-core"></div>
                     <div class="brain-ring ring-1"></div>
                     <div class="brain-ring ring-2"></div>
@@ -95,6 +100,29 @@
                 </div>
             </div>
         </div>
+        <!-- Decorative gradient orbs -->
+        <div class="hero-orbs" aria-hidden="true">
+            <span class="orb orb-1"></span>
+            <span class="orb orb-2"></span>
+            <span class="orb orb-3"></span>
+        </div>
+        <div class="scroll-indicator" aria-hidden="true">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- Trust Logos Section -->
+    <section class="trust">
+        <div class="container">
+            <div class="brand-logos">
+                <div class="brand">HYPERMAIL</div>
+                <div class="brand">NOVA CLOUD</div>
+                <div class="brand">MAILFORGE</div>
+                <div class="brand">INTELLI ROUTE</div>
+                <div class="brand">AI METRICS</div>
+                <div class="brand">DELIVR</div>
+            </div>
+        </div>
     </section>
     
     <!-- Features Section -->
@@ -107,7 +135,7 @@
             </div>
             
             <div class="features-grid">
-                <div class="feature-card">
+                <div class="feature-card tilt">
                     <div class="feature-icon">
                         <i class="fas fa-brain"></i>
                     </div>
@@ -118,7 +146,7 @@
                     </div>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card tilt">
                     <div class="feature-icon">
                         <i class="fas fa-server"></i>
                     </div>
@@ -129,7 +157,7 @@
                     </div>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card tilt">
                     <div class="feature-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
@@ -140,7 +168,7 @@
                     </div>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card tilt">
                     <div class="feature-icon">
                         <i class="fas fa-chart-bar"></i>
                     </div>
@@ -151,7 +179,7 @@
                     </div>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card tilt">
                     <div class="feature-icon">
                         <i class="fas fa-rocket"></i>
                     </div>
@@ -162,7 +190,7 @@
                     </div>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card tilt">
                     <div class="feature-icon">
                         <i class="fas fa-magic"></i>
                     </div>
@@ -216,23 +244,66 @@
                 </div>
                 
                 <div class="demo-card">
-                    <h3>Real-time Metrics</h3>
-                    <div class="metrics-grid">
-                        <div class="metric">
-                            <span class="metric-label">Delivery Rate</span>
-                            <span class="metric-value">98.7%</span>
+                    <h3>Interactive App Demo</h3>
+                    <div class="demo-toolbar">
+                        <button class="demo-switch active" data-demo="animation">Animations</button>
+                        <button class="demo-switch" data-demo="optimizer">Optimizer</button>
+                        <button class="demo-switch" data-demo="analytics">Analytics</button>
+                    </div>
+                    <div class="demo-embed">
+                        <iframe id="demo-iframe" title="SpamGPT Demo" loading="lazy" referrerpolicy="no-referrer" allow="clipboard-read; clipboard-write; fullscreen;" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" src="about:blank"></iframe>
+                    </div>
+                    <p class="demo-note">Tip: Run the app at <code>http://localhost:4000</code> during development. The demo will auto-load.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Customers</span>
+                <h2 class="section-title">Loved by <span class="gradient-text">Teams at Scale</span></h2>
+                <p class="section-description">What our customers say about switching to SpamGPT</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card tilt">
+                    <div class="testimonial-stars" aria-hidden="true">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-quote">“We improved inbox placement by 34% in the first month. The AI routing is a game changer.”</p>
+                    <div class="testimonial-author">
+                        <div class="avatar">AK</div>
+                        <div>
+                            <div class="name">Alex Kim</div>
+                            <div class="role">VP Growth, HyperMail</div>
                         </div>
-                        <div class="metric">
-                            <span class="metric-label">Active Servers</span>
-                            <span class="metric-value">1,234</span>
+                    </div>
+                </div>
+                <div class="testimonial-card tilt">
+                    <div class="testimonial-stars" aria-hidden="true">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="testimonial-quote">“Our team sends millions of emails daily. SpamGPT keeps deliverability high without manual juggling.”</p>
+                    <div class="testimonial-author">
+                        <div class="avatar">JS</div>
+                        <div>
+                            <div class="name">Jordan Singh</div>
+                            <div class="role">Head of Ops, Nova Cloud</div>
                         </div>
-                        <div class="metric">
-                            <span class="metric-label">Emails Sent Today</span>
-                            <span class="metric-value">2.4M</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-label">Avg Response Time</span>
-                            <span class="metric-value">245ms</span>
+                    </div>
+                </div>
+                <div class="testimonial-card tilt">
+                    <div class="testimonial-stars" aria-hidden="true">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-quote">“Insights we couldn’t get anywhere else. The predictive analytics are spooky-good.”</p>
+                    <div class="testimonial-author">
+                        <div class="avatar">RL</div>
+                        <div>
+                            <div class="name">Riley Lopez</div>
+                            <div class="role">CTO, MailForge</div>
                         </div>
                     </div>
                 </div>
@@ -250,7 +321,7 @@
             </div>
             
             <div class="pricing-grid">
-                <div class="pricing-card">
+                <div class="pricing-card tilt">
                     <div class="pricing-header">
                         <h3>Starter</h3>
                         <div class="price">
@@ -268,7 +339,7 @@
                     <button class="pricing-cta">Get Started</button>
                 </div>
                 
-                <div class="pricing-card featured">
+                <div class="pricing-card featured tilt">
                     <div class="pricing-header">
                         <h3>Professional</h3>
                         <div class="price">
@@ -287,7 +358,7 @@
                     <button class="pricing-cta">Get Started</button>
                 </div>
                 
-                <div class="pricing-card">
+                <div class="pricing-card tilt">
                     <div class="pricing-header">
                         <h3>Enterprise</h3>
                         <div class="price">
@@ -305,6 +376,35 @@
                     </ul>
                     <button class="pricing-cta">Contact Sales</button>
                 </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">FAQ</span>
+                <h2 class="section-title">Questions <span class="gradient-text">Answered</span></h2>
+                <p class="section-description">Everything you need to know to get started with confidence</p>
+            </div>
+            <div class="faq-list">
+                <details>
+                    <summary>How does AI-driven routing work?</summary>
+                    <p>Our models learn from historical delivery data and real-time server health to select the best path for each recipient segment, improving inbox placement and throughput.</p>
+                </details>
+                <details>
+                    <summary>Can I bring my own SMTP servers?</summary>
+                    <p>Yes. Connect your own servers or use our curated pool. The system can manage health checks, rotation, and throttling for both.</p>
+                </details>
+                <details>
+                    <summary>Is my data secure?</summary>
+                    <p>We apply encryption in transit and at rest, strict RBAC, and continuous monitoring. Reputation Guard proactively prevents blacklisting.</p>
+                </details>
+                <details>
+                    <summary>Do you offer a free trial?</summary>
+                    <p>We offer a 14-day trial of the Professional plan. No credit card required.</p>
+                </details>
             </div>
         </div>
     </section>
@@ -328,7 +428,7 @@
                         <span class="stat-number">50+</span>
                         <span class="stat-label">Countries Served</span>
                     </div>
-                    <div class="stat>
+                    <div class="about-stat">
                         <span class="stat-number">99.9%</span>
                         <span class="stat-label">Uptime</span>
                     </div>
@@ -340,6 +440,24 @@
             </div>
         </div>
     </section>
+
+    <!-- Final CTA Section -->
+    <section class="cta-final">
+        <div class="container">
+            <div class="cta-card">
+                <div>
+                    <h3>Ready to upgrade your email infrastructure?</h3>
+                    <p>Start your 14‑day trial and experience AI‑powered deliverability today.</p>
+                </div>
+                <button class="btn-primary" onclick="scrollToSection('pricing')">Start Free Trial</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sticky Mobile CTA -->
+    <div class="sticky-cta">
+        <button class="btn-primary" onclick="scrollToSection('pricing')"><i class="fas fa-rocket"></i> Get Started</button>
+    </div>
     
     <!-- Footer -->
     <footer class="footer">
