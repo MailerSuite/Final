@@ -20,20 +20,39 @@
     <script src="js/main.js" defer></script>
 </head>
 <body>
+    <canvas id="neural-network" class="background-canvas"></canvas>
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav-container">
             <div class="nav-logo">
+                <i class="fas fa-envelope logo-envelope"></i>
                 <span class="logo-text">SpamGPT</span>
-                <span class="logo-ai-badge">AI</span>
+                <span class="logo-ai-badge">Mail</span>
             </div>
             <ul class="nav-links">
                 <li><a href="#features" class="nav-link">Features</a></li>
                 <li><a href="#demo" class="nav-link">Live Demo</a></li>
+                <li><a href="tools/index.html" class="nav-link">Tools</a></li>
                 <li><a href="#pricing" class="nav-link">Pricing</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
+                <li class="desktop-only"><a href="pages/docs.html" class="nav-link">Docs</a></li>
+                <li class="desktop-only"><a href="pages/blog.html" class="nav-link">Blog</a></li>
+                <li class="desktop-only"><a href="pages/careers.html" class="nav-link">Careers</a></li>
+                <li class="desktop-only"><a href="pages/contact.html" class="nav-link">Contact</a></li>
             </ul>
             <button class="nav-cta">Get Started</button>
+            <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#demo" class="nav-link">Live Demo</a>
+            <a href="tools/index.html" class="nav-link">Tools</a>
+            <a href="#pricing" class="nav-link">Pricing</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="pages/docs.html" class="nav-link">Docs</a>
+            <a href="pages/blog.html" class="nav-link">Blog</a>
+            <a href="pages/careers.html" class="nav-link">Careers</a>
+            <a href="pages/contact.html" class="nav-link">Contact</a>
         </div>
     </nav>
     
@@ -188,13 +207,32 @@
             <div class="demo-grid">
                 <div class="demo-card">
                     <h3>SMTP Terminal</h3>
+                    <div class="demo-controls" id="terminal-controls">
+                        <label>
+                            Campaign
+                            <select id="terminal-campaign">
+                                <option value="welcome">Welcome</option>
+                                <option value="promo">Promo</option>
+                                <option value="onboarding">Onboarding</option>
+                            </select>
+                        </label>
+                        <label>
+                            Region
+                            <select id="terminal-region">
+                                <option value="US-01">US</option>
+                                <option value="EU-01">EU</option>
+                                <option value="APAC-01">APAC</option>
+                            </select>
+                        </label>
+                        <button class="btn-secondary" id="terminal-run"><i class="fas fa-terminal"></i> Run</button>
+                    </div>
                     <div class="terminal">
                         <div class="terminal-header">
                             <span class="terminal-dot"></span>
                             <span class="terminal-dot"></span>
                             <span class="terminal-dot"></span>
                         </div>
-                        <div class="terminal-body">
+                        <div class="terminal-body" id="terminal-output">
                             <div class="terminal-line">
                                 <span class="prompt">$</span>
                                 <span class="command">spamgpt --send --campaign=welcome</span>
@@ -220,20 +258,25 @@
                     <div class="metrics-grid">
                         <div class="metric">
                             <span class="metric-label">Delivery Rate</span>
-                            <span class="metric-value">98.7%</span>
+                            <span class="metric-value" id="metric-delivery">98.7%</span>
                         </div>
                         <div class="metric">
                             <span class="metric-label">Active Servers</span>
-                            <span class="metric-value">1,234</span>
+                            <span class="metric-value" id="metric-servers">1,234</span>
                         </div>
                         <div class="metric">
                             <span class="metric-label">Emails Sent Today</span>
-                            <span class="metric-value">2.4M</span>
+                            <span class="metric-value" id="metric-emails">2.4M</span>
                         </div>
                         <div class="metric">
                             <span class="metric-label">Avg Response Time</span>
-                            <span class="metric-value">245ms</span>
+                            <span class="metric-value" id="metric-latency">245ms</span>
                         </div>
+                    </div>
+                    <div class="demo-controls" id="metrics-controls">
+                        <label class="toggle"><input type="checkbox" id="metrics-autorefresh" checked> Auto-refresh</label>
+                        <label>Speed <input type="range" id="metrics-speed" min="1" max="5" value="3"></label>
+                        <button class="btn-secondary" id="metrics-step"><i class="fas fa-sync"></i> Step once</button>
                     </div>
                 </div>
             </div>
@@ -328,7 +371,7 @@
                         <span class="stat-number">50+</span>
                         <span class="stat-label">Countries Served</span>
                     </div>
-                    <div class="stat>
+                    <div class="about-stat">
                         <span class="stat-number">99.9%</span>
                         <span class="stat-label">Uptime</span>
                     </div>
@@ -359,14 +402,14 @@
                     <a href="#features">Features</a>
                     <a href="#pricing">Pricing</a>
                     <a href="#demo">Demo</a>
-                    <a href="#">Documentation</a>
+                    <a href="pages/docs.html">Documentation</a>
                 </div>
                 <div class="footer-links">
                     <h4>Company</h4>
-                    <a href="#">About</a>
-                    <a href="#">Blog</a>
-                    <a href="#">Careers</a>
-                    <a href="#">Contact</a>
+                    <a href="pages/about.html">About</a>
+                    <a href="pages/blog.html">Blog</a>
+                    <a href="pages/careers.html">Careers</a>
+                    <a href="pages/contact.html">Contact</a>
                     </div>
                 <div class="footer-links">
                     <h4>Legal</h4>

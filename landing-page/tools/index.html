@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpamGPT Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../js/main.js" defer></script>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../index.html" class="nav-link" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+                    <i class="fas fa-envelope logo-envelope"></i>
+                    <span class="logo-text">SpamGPT</span>
+                    <span class="logo-ai-badge">Mail</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="../index.html#demo" class="nav-link">Live Demo</a></li>
+                <li><a href="../index.html#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="../index.html#about" class="nav-link">About</a></li>
+            </ul>
+            <button class="nav-cta" onclick="location.href='../index.html#pricing'">Get Started</button>
+            <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="../index.html#features" class="nav-link">Features</a>
+            <a href="../index.html#demo" class="nav-link">Live Demo</a>
+            <a href="../index.html#pricing" class="nav-link">Pricing</a>
+            <a href="../index.html#about" class="nav-link">About</a>
+        </div>
+    </nav>
+
+    <section class="page">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Tools</h1>
+                <p class="page-subtitle">Mail deliverability and infrastructure utilities</p>
+            </div>
+            <div class="tools-grid">
+                <a class="tool-card" href="smtp-checker.html">
+                    <h3><i class="fas fa-screwdriver-wrench"></i> SMTP Checker</h3>
+                    <p>Validate SMTP connection and basic auth.</p>
+                </a>
+                <a class="tool-card" href="blacklist-checker.html">
+                    <h3><i class="fas fa-ban"></i> Blacklist Checker</h3>
+                    <p>Simulated blacklist lookup for quick insights.</p>
+                </a>
+                <a class="tool-card" href="email-tester.html">
+                    <h3><i class="fas fa-envelope-open-text"></i> Email Tester</h3>
+                    <p>Draft and send a test message to preview.</p>
+                </a>
+                <a class="tool-card" href="domain-setup.html">
+                    <h3><i class="fas fa-globe"></i> Domain Setup</h3>
+                    <p>Guided SPF/DKIM/DMARC checklist.</p>
+                </a>
+                <a class="tool-card" href="rate-limiter.html">
+                    <h3><i class="fas fa-gauge-high"></i> Rate Limiter</h3>
+                    <p>Estimate safe send rates per pool.</p>
+                </a>
+                <a class="tool-card" href="content-score.html">
+                    <h3><i class="fas fa-file-lines"></i> Content Score</h3>
+                    <p>Simple rules-based spamminess score.</p>
+                </a>
+                <a class="tool-card" href="inbox-placement.html">
+                    <h3><i class="fas fa-inbox"></i> Inbox Placement</h3>
+                    <p>Predictor demo against providers.</p>
+                </a>
+                <a class="tool-card" href="bounce-simulator.html">
+                    <h3><i class="fas fa-arrow-rotate-left"></i> Bounce Simulator</h3>
+                    <p>Simulate bounces and categorize.</p>
+                </a>
+                <a class="tool-card" href="health-dashboard.html">
+                    <h3><i class="fas fa-heart-pulse"></i> Health Dashboard</h3>
+                    <p>Live-ish signals summary (demo).</p>
+                </a>
+                <a class="tool-card" href="ip-reputation.html">
+                    <h3><i class="fas fa-fingerprint"></i> IP Reputation</h3>
+                    <p>Simulated score by ASN/region.</p>
+                </a>
+                <a class="tool-card" href="template-linter.html">
+                    <h3><i class="fas fa-wand-magic-sparkles"></i> Template Linter</h3>
+                    <p>Basic HTML best-practice checks.</p>
+                </a>
+                <a class="tool-card" href="queue-visualizer.html">
+                    <h3><i class="fas fa-diagram-project"></i> Queue Visualizer</h3>
+                    <p>Animated queue processing demo.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 SpamGPT. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

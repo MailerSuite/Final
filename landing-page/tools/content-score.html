@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Score - SpamGPT Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" class="nav-link" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+                    <i class="fas fa-envelope logo-envelope"></i>
+                    <span class="logo-text">SpamGPT</span>
+                    <span class="logo-ai-badge">Mail</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="../index.html#demo" class="nav-link">Live Demo</a></li>
+                <li><a href="../index.html#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="../index.html#about" class="nav-link">About</a></li>
+            </ul>
+            <button class="nav-cta" onclick="location.href='../index.html#pricing'">Get Started</button>
+            <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="../index.html#features" class="nav-link">Features</a>
+            <a href="../index.html#demo" class="nav-link">Live Demo</a>
+            <a href="../index.html#pricing" class="nav-link">Pricing</a>
+            <a href="../index.html#about" class="nav-link">About</a>
+        </div>
+    </nav>
+
+    <section class="page">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-file-lines"></i> Content Score</h1>
+                <p class="page-subtitle">Rules-based spamminess score (demo)</p>
+            </div>
+            <div class="card">
+                <div class="form-grid">
+                    <div style="grid-column:1/-1;">
+                        <label class="label">HTML Content</label>
+                        <textarea id="html" class="textarea" placeholder="Paste your email HTML here"></textarea>
+                        <p class="helper">Checks for ALL CAPS, exclamation spam, and spammy words.</p>
+                    </div>
+                </div>
+                <div style="margin-top:1rem;">
+                    <button class="btn-primary" id="btnScore"><i class="fas fa-wand-magic-sparkles"></i> Score</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:1rem;">
+                <h3 style="margin-bottom:0.5rem;">Score</h3>
+                <p id="score" class="helper">No score yet</p>
+                <ul id="rules" style="margin-top:0.5rem;color:var(--text-secondary);"></ul>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    const spammy = ['free money','win big','click now','100% free','guaranteed'];
+    document.getElementById('btnScore').addEventListener('click', () => {
+        const html = (document.getElementById('html').value || '').toLowerCase();
+        let penalties = 0; const reasons = [];
+        if ((html.match(/!+/g)||[]).length > 5) { penalties += 10; reasons.push('Excessive exclamation marks'); }
+        if (/[A-Z]{8,}/.test(html)) { penalties += 10; reasons.push('Large ALL CAPS block'); }
+        spammy.forEach(w => { if (html.includes(w)) { penalties += 8; reasons.push(`Contains phrase: "${w}"`); } });
+        const lengthBonus = Math.min(10, Math.floor((html.length/1000)*10));
+        const score = Math.max(0, 100 - penalties + lengthBonus);
+        document.getElementById('score').textContent = `${score}/100 (higher is better)`;
+        const list = document.getElementById('rules');
+        list.innerHTML = reasons.length ? reasons.map(r=>`<li>− ${r}</li>`).join('') : '<li>No issues found</li>';
+    });
+    </script>
+</body>
+</html>
