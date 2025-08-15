@@ -1,153 +1,28 @@
 # ========================================
-# 🔒 PRIVACY-FOCUSED .GITIGNORE
+# 🚀 MAILERSUITE2 - CLEAN .GITIGNORE
 # ========================================
-# Protects your development PC information
-# Prevents personal data from being transferred
+# Production-ready email marketing platform
 # ========================================
-
-# ========================================
-# 🖥️ SYSTEM & DEVELOPMENT ENVIRONMENT
-# ========================================
-
-# Operating System Files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-desktop.ini
-*.lnk
-
-# IDE & Editor Files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.project
-.classpath
-.settings/
-*.sublime-project
-*.sublime-workspace
-
-# ========================================
-# 🔐 AUTHENTICATION & SECURITY
-# ========================================
-
-# Environment Variables & Secrets
-.env
-.env.local
-.env.development
-.env.test
-.env.production
-.env.*.local
-.envrc
-.env.local.*
-*.env
-
-# Allow example environment files for deployment
-!.env.example
-!.env.sample
-!.env.template
-!.env.dist
-
-# API Keys & Tokens
-secrets/
-secrets.json
-secrets.yaml
-secrets.yml
-*.key
-*.pem
-*.p12
-*.pfx
-*.crt
-*.csr
-
-# Database Credentials
-database.yml
-db.yml
-*.db
-*.sqlite
-*.sqlite3
-
-# ========================================
-# 👤 PERSONAL & USER DATA
-# ========================================
-
-# User-specific files
-*.log
-logs/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.pnpm-debug.log*
-
-# Personal workspace files
-workspace.code-workspace
-*.code-workspace
-.vscode/settings.json
-.vscode/launch.json
-.vscode/tasks.json
-
-# ========================================
-# 🚀 NODE.JS & FRONTEND
-# ========================================
-
-# Dependencies
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.pnpm-debug.log*
-
-# Build outputs
-dist/
-build/
-out/
-.next/
-.nuxt/
-.vuepress/dist
-.serverless/
-.fusebox/
-.dynamodb/
-
-# Runtime data
-pids/
-*.pid
-*.seed
-*.pid.lock
-
-# Coverage directory used by tools like istanbul
-coverage/
-*.lcov
-
-# nyc test coverage
-.nyc_output
 
 # ========================================
 # 🐍 PYTHON & BACKEND
 # ========================================
 
-# Python
+# Python bytecode
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
-env/
+
+# Virtual environments
 venv/
+env/
 ENV/
-env.bak/
-venv.bak/
 .venv/
-.python-version
+.env/
+.venv/
 
 # Distribution / packaging
-.Python
 build/
 develop-eggs/
 dist/
@@ -186,128 +61,108 @@ coverage.xml
 .pytest_cache/
 
 # ========================================
-# 🗄️ DATABASE & STORAGE
+# 🚀 NODE.JS & FRONTEND
 # ========================================
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.vuepress/dist
+.serverless/
+.fusebox/
+.dynamodb/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory
+coverage/
+*.lcov
+.nyc_output
+
+# ========================================
+# 🔐 ENVIRONMENT & SECURITY
+# ========================================
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*.local
+.envrc
+
+# Allow example files
+!.env.example
+!.env.sample
+!.env.template
+
+# Secrets and keys
+secrets/
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.csr
 
 # Database files
 *.db
 *.sqlite
 *.sqlite3
-*.mdb
-*.accdb
-
-# Backup files
-*.bak
-*.backup
-*.old
-*.orig
-*.tmp
-*.temp
 
 # ========================================
-# 📱 MOBILE & DESKTOP APPS
+# 🖥️ SYSTEM & DEVELOPMENT
 # ========================================
 
-# React Native
-.expo/
-dist/
-web-build/
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+*.lnk
 
-# Native
-*.orig.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-
-# Metro
-.metro-health-check*
-
-# Flipper
-ios/Pods/
-
-# ========================================
-# 🐳 DOCKER & CONTAINERS
-# ========================================
-
-# Docker
-.dockerignore
-Dockerfile
-docker-compose.yml
-docker-compose.yaml
-.docker/
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
 
 # ========================================
-# ☁️ CLOUD & DEPLOYMENT
+# 📁 PROJECT-SPECIFIC
 # ========================================
 
-# AWS
-.aws/
-aws.json
-aws.yml
-
-# Google Cloud
-.gcloud/
-gcloud.json
-
-# Azure
-.azure/
-azure.json
-
-# ========================================
-# 🔍 DEBUGGING & MONITORING
-# ========================================
-
-# Debug files
-.debug/
-debug.log
-debug-*.log
-
-# Performance monitoring
-.perf/
-performance.log
-
-# ========================================
-# 📊 ANALYTICS & TRACKING
-# ========================================
-
-# Analytics data
-analytics/
-stats/
-metrics/
-*.analytics
-*.stats
-
-# ========================================
-# 🧪 TESTING & QUALITY
-# ========================================
-
-# Test files
-test-results/
-test-output/
-coverage/
-.nyc_output/
-.jest/
-
-# ========================================
-# 📦 PACKAGE MANAGERS
-# ========================================
-
-# npm
-package-lock.json
-npm-shrinkwrap.json
-
-# Yarn
-yarn.lock
-.yarn-integrity
-
-# pnpm
-pnpm-lock.yaml
-
-# ========================================
-# 🚫 TEMPORARY & CACHE FILES
-# ========================================
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Temporary files
 *.tmp
@@ -322,49 +177,42 @@ cache/
 .temp/
 temp/
 
-# ========================================
-# 🔒 ADDITIONAL PRIVACY PROTECTIONS
-# ========================================
-
-# Local configuration
-config.local.js
-config.local.ts
-config.local.json
-*.local.*
-
-# Personal notes
-notes/
-*.md
-!README.md
-!CHANGELOG.md
-!CONTRIBUTING.md
-!DEPLOYMENT.md
-
-# Screenshots & media
-screenshots/
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.mp4
-*.mov
-*.avi
+# Personal workspace
+workspace.code-workspace
+*.code-workspace
 
 # ========================================
-# 📁 PROJECT-SPECIFIC EXCLUSIONS
+# 🗄️ DATABASE & STORAGE
 # ========================================
 
-# MailerSuite specific
-pids/
-*.pid
-logs/
-*.log
-.env.local
-.env.production
-.env.staging
+# Database backups
+*.bak
+*.backup
+*.old
+*.orig
 
 # ========================================
-# ✅ ALLOWED FILES (OVERRIDE IGNORES)
+# 🐳 DOCKER & DEPLOYMENT
+# ========================================
+
+# Docker
+.dockerignore
+Dockerfile
+docker-compose.yml
+docker-compose.yaml
+.docker/
+
+# ========================================
+# 📊 TESTING & QUALITY
+# ========================================
+
+# Test results
+test-results/
+test-output/
+.jest/
+
+# ========================================
+# ✅ ALLOWED FILES (OVERRIDE)
 # ========================================
 
 # Force include important files
@@ -382,4 +230,13 @@ logs/
 !.prettierrc
 !.prettierrc.js
 !.prettierrc.json
-
+!requirements.txt
+!requirements-production.txt
+!alembic.ini
+!pyproject.toml
+!setup.py
+!Makefile
+!Dockerfile
+!docker-compose.yml
+!docker-compose.yaml
+!.dockerignore

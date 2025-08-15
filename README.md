@@ -6,14 +6,14 @@ A comprehensive email marketing platform built with cutting-edge technology, fea
 
 ## 🚀 Current Status
 
-**✅ PRODUCTION READY** - Fully deployed and operational
-- **Backend**: Running on port 8000 with PostgreSQL database
-- **Frontend**: Running on port 4000 with Vite dev server
-- **Database**: 11 tables with complete schema and admin user
-- **Authentication**: JWT-based with role-based access control
-- **API**: 71+ consolidated endpoints across 8 logical groups
-- **Performance**: 28% faster response times, 66% fewer errors
-- **Code Quality**: 86% less duplication through smart consolidation
+**🔄 UNDER DEVELOPMENT** - Core infrastructure established, development in progress
+- **Backend**: FastAPI structure ready, needs environment configuration
+- **Frontend**: React + Vite setup complete, routing issues resolved
+- **Database**: PostgreSQL setup ready, needs environment configuration
+- **Authentication**: JWT-based system ready for configuration
+- **API**: Consolidated API structure implemented with stable client
+- **Privacy**: Comprehensive .gitignore protecting development PC information
+- **Deployment**: Environment templates and deployment scripts ready
 
 ## 🎯 Key Features
 
@@ -79,7 +79,15 @@ git clone <your-repo-url>
 cd clean-mailersuite
 ```
 
-### 2. Backend Setup
+### 2. Automated Setup (Recommended)
+```bash
+# Run the automated deployment setup script
+./deploy-setup.sh
+
+# This will create all necessary environment files and directories
+```
+
+### 3. Manual Backend Setup
 ```bash
 # Install system dependencies
 sudo apt-get update -y
@@ -87,9 +95,9 @@ sudo apt-get install -y python3-venv python3-pip postgresql postgresql-contrib r
 
 # Setup PostgreSQL
 sudo systemctl enable --now postgresql
-sudo -u postgres psql -c "CREATE DATABASE mailersuite2;"
-sudo -u postgres psql -c "CREATE USER mailersuite WITH PASSWORD 'mailersuite_secure_2024';"
-sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mailersuite2 TO mailersuite;"
+sudo -u postgres psql -c "CREATE DATABASE mailersuite2_dev;"
+sudo -u postgres psql -c "CREATE USER mailersuite WITH PASSWORD 'your_secure_password';"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mailersuite2_dev TO mailersuite;"
 
 # Setup Redis
 sudo systemctl enable --now redis-server
@@ -100,24 +108,26 @@ source venv/bin/activate
 pip install -r backend/requirements.txt
 
 # Environment setup
-cp backend/.env.example backend/.env
-# Edit backend/.env with your database credentials
+cp backend/.env.example backend/.env.local
+# Edit backend/.env.local with your database credentials
 
 # Database migrations
 cd backend
 alembic upgrade head
 
-# Create admin user
-python create_admin_user.py
-
 # Start backend
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### 3. Frontend Setup
+### 4. Manual Frontend Setup
 ```bash
 cd frontend
 npm install
+
+# Environment setup
+cp .env.example .env.local
+# Edit .env.local with your configuration
+
 npm run dev
 ```
 
@@ -134,13 +144,14 @@ clean-mailersuite/
 ├── backend/                    # FastAPI backend application
 │   ├── app/                   # Main application modules
 │   ├── models/                # SQLAlchemy database models
-│   ├── routers/               # API route definitions (71+ routers)
+│   ├── routers/               # API route definitions
 │   ├── services/              # Business logic services
 │   ├── migrations/            # Alembic database migrations
 │   ├── config/                # Configuration files
 │   ├── core/                  # Core utilities and middleware
 │   ├── security/              # Security and authentication
-│   └── tasks/                 # Background job processing
+│   ├── .env.example          # Development environment template
+│   └── .env.production.template  # Production environment template
 ├── frontend/                  # React frontend application
 │   ├── src/                   # Source code
 │   │   ├── components/        # React components
@@ -148,66 +159,115 @@ clean-mailersuite/
 │   │   ├── hooks/             # Custom React hooks
 │   │   ├── services/          # API services
 │   │   ├── store/             # State management
+│   │   ├── http/              # HTTP client and API utilities
 │   │   └── utils/             # Utility functions
-│   ├── public/                # Static assets
-│   └── docs/                  # Frontend documentation
+│   ├── .env.example          # Frontend environment template
+│   └── public/                # Static assets
 ├── venv/                      # Python virtual environment
-└── docs/                      # Project documentation
+├── .gitignore                 # Privacy-focused gitignore
+├── deploy-setup.sh            # Automated deployment setup script
+├── DEPLOYMENT.md              # Comprehensive deployment guide
+└── README.md                  # This file
 ```
 
 ## 🔧 Configuration
 
 ### Environment Variables
 
-#### Backend (.env)
+#### Backend (.env.local)
 ```bash
 # Database
-DATABASE_URL=postgresql+asyncpg://mailersuite:mailersuite_secure_2024@localhost:5432/mailersuite2
+DATABASE_URL=postgresql+asyncpg://mailersuite:your_password@localhost:5432/mailersuite2_dev
 
 # Security
-SECRET_KEY=your-secret-key-here
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-REFRESH_TOKEN_EXPIRE_DAYS=7
+SECRET_KEY=your-super-secret-key-here-change-in-production
+JWT_SECRET_KEY=your-jwt-secret-key-here
+JWT_ALGORITHM=HS256
+JWT_ACCESS_TOKEN_EXPIRE_MINUTES=30
+JWT_REFRESH_TOKEN_EXPIRE_DAYS=7
 
 # Redis
 REDIS_URL=redis://localhost:6379/0
 
 # Features
 DEBUG=True
-CONSOLIDATION_ENABLED=true
-RATE_LIMITING_ENABLED=true
-WEBSOCKET_ENABLED=true
+ENVIRONMENT=development
+LOG_LEVEL=INFO
 ```
 
-#### Frontend (.env)
+#### Frontend (.env.local)
 ```bash
-VITE_API_BASE_URL=http://localhost:8000
-VITE_APP_NAME=MailerSuite2
-VITE_APP_VERSION=2.1.0
+# API Configuration
+VITE_API_BASE=http://localhost:8000/api
+VITE_API_URL=http://localhost:8000/api
+VITE_WS_URL=ws://localhost:8000/ws
+
+# Development Server
+VITE_DEV_SERVER_PORT=4000
+VITE_DEV_SERVER_HOST=localhost
+
+# Debugging
+VITE_DEBUG=true
+VITE_LOG_LEVEL=info
 ```
 
 ## 🚀 Production Deployment
 
+### Quick Deployment Setup
+```bash
+# Run the automated setup script
+./deploy-setup.sh
+
+# This creates all necessary environment files and directories
+```
+
 ### Backend Production
 ```bash
-# Build and deploy
+# Environment setup
 cd backend
-pip install -r requirements-production.txt
-uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
+cp .env.production.template .env.production
+# Edit .env.production with your production values
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run migrations
+alembic upgrade head
+
+# Start production server
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
 
 # With Gunicorn (recommended)
 pip install gunicorn
-gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
-
-# Using production script
-./scripts/deploy-professional.sh
+gunicorn app.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
 ```
 
 ### Frontend Production
 ```bash
 cd frontend
+cp .env.example .env.production
+# Edit .env.production with your production values
+
 npm run build
 # Serve dist/ folder with Nginx or similar
+```
+
+### Process Management (PM2)
+```bash
+# Install PM2
+npm install -g pm2
+
+# Start backend
+cd backend
+pm2 start "python -m uvicorn app.main:app --host 0.0.0.0 --port 8000" --name "mailersuite-backend"
+
+# Start frontend (if serving with Node)
+cd frontend
+pm2 start "npm run preview" --name "mailersuite-frontend"
+
+# Save configuration
+pm2 save
+pm2 startup
 ```
 
 ### Docker Deployment
@@ -223,6 +283,9 @@ docker run -d -p 80:80 mailersuite-frontend
 # Or use Docker Compose
 docker-compose up -d
 ```
+
+### 📚 Detailed Deployment Guide
+See [DEPLOYMENT.md](DEPLOYMENT.md) for comprehensive deployment instructions, troubleshooting, and security considerations.
 
 ## 📊 API Endpoints
 
@@ -242,14 +305,15 @@ docker-compose up -d
 - `GET /api/v1/admin/system/health` - System health monitoring
 
 ### Consolidated API Structure
-- **71+ endpoints** organized into **8 logical groups**
-- **28% faster** response times through smart architecture
-- **66% fewer errors** with improved error handling
-- **86% less code duplication** through consolidation
-- **Smart routing** with automatic fallback mechanisms
+- **Stable API client** implemented with comprehensive error handling
+- **Unified HTTP client** consolidating all API functionality
+- **Type-safe API calls** with TypeScript integration
+- **Automatic retry logic** and error recovery
+- **Request/response logging** for development debugging
 
-## 🔒 Security Features
+## 🔒 Security & Privacy Features
 
+### Security
 - **JWT Authentication** - Secure token-based authentication with refresh tokens
 - **Role-based Access Control** - Granular permission system (Admin, User, Guest)
 - **2FA Support** - Enhanced security with two-factor authentication
@@ -258,6 +322,12 @@ docker-compose up -d
 - **Audit Logging** - Comprehensive activity tracking
 - **CORS Protection** - Cross-origin request security
 - **SQL Injection Protection** - SQLAlchemy ORM with parameterized queries
+
+### Privacy Protection
+- **Development PC Information Protected** - Comprehensive .gitignore prevents personal data exposure
+- **Environment Variables Secured** - Templates provided, personal configs automatically blocked
+- **API Client Consolidation** - Single, stable API client eliminates conflicts
+- **Secure Deployment** - Environment templates for safe deployment without exposing secrets
 
 ## 🧪 Testing
 
@@ -331,10 +401,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Advanced Deliverability** - AI-powered inbox placement optimization
 
 ### Current Development Focus
-- **Performance Optimization** - Further API response time improvements
-- **Security Enhancements** - Advanced threat detection and prevention
-- **Scalability** - Horizontal scaling and load balancing
-- **Monitoring** - Enhanced observability and alerting
+- **API Client Consolidation** - Single, stable API client for all endpoints
+- **Routing System** - Fixing and optimizing React Router implementation
+- **Environment Configuration** - Streamlining development and production setup
+- **Privacy Protection** - Comprehensive .gitignore and secure deployment
+- **Documentation** - Keeping all guides and examples up to date
 
 ---
 
@@ -342,4 +413,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 *Built with ❤️ using modern web technologies*
 
-*Last Updated: August 2025 | Version: 2.1.0*
+*Last Updated: August 2025 | Version: 2.1.0 | Status: Under Development*
