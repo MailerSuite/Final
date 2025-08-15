@@ -10,12 +10,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from 'sonner';
-import { 
-  Newspaper, 
-  Plus, 
-  Edit3, 
-  Trash2, 
-  Calendar, 
+import {
+  Newspaper,
+  Plus,
+  Edit3,
+  Trash2,
+  Calendar,
   User,
   Eye,
   RefreshCw,
@@ -42,7 +42,7 @@ const AdminNews = () => {
   const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
-  
+
   // Form state
   const [formData, setFormData] = useState({
     title: "",
@@ -76,7 +76,7 @@ const AdminNews = () => {
       toast.error('Title is required');
       return;
     }
-    
+
     try {
       setCreating(true);
       await axios.post('/api/v1/admin/news', formData);
@@ -95,7 +95,7 @@ const AdminNews = () => {
 
   const handleDelete = async (newsId: number) => {
     if (!confirm('Are you sure you want to delete this news item?')) return;
-    
+
     try {
       await axios.delete(`/api/v1/admin/news/${newsId}`);
       await loadNews();
@@ -138,16 +138,16 @@ const AdminNews = () => {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 p-6"
+      className="min-h-screen bg-gradient-to-br from-gray-900 via-muted/20 to-muted/30 p-6"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       {/* Floating Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-40 right-1/3 w-80 h-80 bg-pink-500/10 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute top-40 -left-40 w-80 h-80 bg-muted/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-40 right-1/3 w-80 h-80 bg-muted/10 rounded-full blur-3xl" />
       </div>
 
       <div className="relative max-w-7xl mx-auto space-y-8">
@@ -158,13 +158,13 @@ const AdminNews = () => {
         >
           <div className="flex items-center justify-center space-x-3 mb-4">
             <motion.div
-              className="p-3 bg-blue-500/20 rounded-xl backdrop-blur-sm border border-blue-500/30"
+              className="p-3 bg-primary/20 rounded-xl backdrop-blur-sm border border-primary/30"
               whileHover={{ scale: 1.05, rotate: 5 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <Newspaper className="w-8 h-8 text-blue-400" />
+              <Newspaper className="w-8 h-8 text-primary" />
             </motion.div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-muted bg-clip-text text-transparent">
               News Management
             </h1>
           </div>
@@ -179,14 +179,14 @@ const AdminNews = () => {
           variants={itemVariants}
         >
           <div className="flex items-center space-x-4">
-            <Badge variant="outline" className="px-3 py-1 bg-blue-500/20 border-blue-500/30 text-blue-300">
+            <Badge variant="outline" className="px-3 py-1 bg-primary/20 border-primary/30 text-primary-300">
               {news.length} News Items
             </Badge>
             <Badge variant="outline" className="px-3 py-1 bg-green-500/20 border-green-500/30 text-green-300">
               {news.filter(n => n.published).length} Published
             </Badge>
           </div>
-          
+
           <div className="flex space-x-3">
             <Button
               onClick={loadNews}
@@ -197,10 +197,10 @@ const AdminNews = () => {
               <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
               Refresh
             </Button>
-            
+
             <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white">
+                <Button className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white">
                   <Plus className="w-4 h-4 mr-2" />
                   Create News
                 </Button>
@@ -208,38 +208,38 @@ const AdminNews = () => {
               <DialogContent className="bg-background/95 border-border max-w-2xl">
                 <DialogHeader>
                   <DialogTitle className="text-white flex items-center space-x-2">
-                    <Newspaper className="w-5 h-5 text-blue-400" />
+                    <Newspaper className="w-5 h-5 text-primary" />
                     <span>Create News Item</span>
                   </DialogTitle>
                 </DialogHeader>
-                
+
                 <form onSubmit={handleCreate} className="space-y-4">
                   <div className="space-y-2">
                     <Label className="text-muted-foreground">Title</Label>
                     <Input
                       value={formData.title}
-                      onChange={(e) => setFormData({...formData, title: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                       placeholder="Enter news title..."
                       className="bg-card/50 border-border text-white"
                       required
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label className="text-muted-foreground">Content</Label>
                     <Textarea
                       value={formData.content}
-                      onChange={(e) => setFormData({...formData, content: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                       placeholder="Enter news content..."
                       className="bg-card/50 border-border text-white min-h-[100px]"
                       rows={4}
                     />
                   </div>
-                  
+
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label className="text-muted-foreground">Priority</Label>
-                      <Select value={formData.priority} onValueChange={(value: any) => setFormData({...formData, priority: value})}>
+                      <Select value={formData.priority} onValueChange={(value: any) => setFormData({ ...formData, priority: value })}>
                         <SelectTrigger className="bg-card/50 border-border text-white">
                           <SelectValue />
                         </SelectTrigger>
@@ -250,13 +250,13 @@ const AdminNews = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label className="text-muted-foreground">Published</Label>
                       <div className="flex items-center space-x-2 pt-2">
                         <Switch
                           checked={formData.published}
-                          onCheckedChange={(checked) => setFormData({...formData, published: checked})}
+                          onCheckedChange={(checked) => setFormData({ ...formData, published: checked })}
                         />
                         <span className="text-sm text-muted-foreground">
                           {formData.published ? 'Published' : 'Draft'}
@@ -264,7 +264,7 @@ const AdminNews = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="flex justify-end space-x-3 pt-4">
                     <Button
                       type="button"
@@ -348,7 +348,7 @@ const AdminNews = () => {
                             </Badge>
                           )}
                         </div>
-                        
+
                         <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                           <span className="flex items-center space-x-1">
                             <User className="w-4 h-4" />
@@ -366,7 +366,7 @@ const AdminNews = () => {
                           )}
                         </div>
                       </div>
-                      
+
                       <div className="flex space-x-2">
                         <Button
                           size="sm"
@@ -386,7 +386,7 @@ const AdminNews = () => {
                       </div>
                     </div>
                   </CardHeader>
-                  
+
                   {item.content && (
                     <CardContent className="pt-0">
                       <p className="text-muted-foreground leading-relaxed">{item.content}</p>

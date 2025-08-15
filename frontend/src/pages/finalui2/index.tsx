@@ -64,6 +64,7 @@ const SmtpPoolPage = lazy(() => import('../pools/SmtpPoolPage'));
 const ProxyPoolPage = lazy(() => import('../pools/ProxyPoolPage'));
 const SpamTutorPage = lazy(() => import('../ai-tutor/SpamTutorPage'));
 const AnalyticsDashboard = lazy(() => import('./pages/AnalyticsDashboard'));
+const TestPage = lazy(() => import('../TestPage'));
 
 export const FinalUI2: React.FC = () => {
   return (
@@ -99,6 +100,7 @@ export const FinalUI2: React.FC = () => {
         <Route path="/ai-tutor" element={<SpamTutorPage />} />
         <Route path="/assistant" element={<AIAssistant />} />
         <Route path="/playground" element={<AIPlayground />} />
+        <Route path="/test" element={<TestPage />} />
         <Route path="/settings/*" element={<AISettings />} />
         {/* Account management */}
         <Route path="/account/*" element={<AccountRouter />} />

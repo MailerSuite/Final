@@ -3,10 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Mail, TrendingUp, RefreshCw, AlertCircle } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import useSessionStore from "@/store/session";
 import { toast } from "sonner";
 import axiosInstance from "@/http/axios";
+import { cn } from "@/lib/utils";
 
 interface EmailStats {
   total_emails: number;
@@ -33,10 +34,10 @@ export default function EmailStatsCard() {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await axiosInstance.get('/dashboard/overview');
       const data = response.data;
-      
+
       setEmailStats({
         total_emails: data.emails?.total_emails || 0,
         messages_synced: data.emails?.messages_synced || 0,
@@ -70,7 +71,7 @@ export default function EmailStatsCard() {
 
   useEffect(() => {
     fetchEmailStats();
-    
+
     // Refresh every 60 seconds
     const interval = setInterval(fetchEmailStats, 60000);
     return () => clearInterval(interval);
@@ -81,7 +82,7 @@ export default function EmailStatsCard() {
       <Card className="bg-zinc-900/50 border-zinc-800">
         <CardHeader className="pb-3">
           <CardTitle className="text-sm font-medium text-zinc-300 flex items-center gap-2">
-            <Mail className="h-4 w-4" />
+            <Icon name="Mail" size="sm" ariaLabel="Email Statistics" />
             Email Statistics
           </CardTitle>
         </CardHeader>
@@ -97,77 +98,88 @@ export default function EmailStatsCard() {
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm font-medium text-zinc-300 flex items-center gap-2">
-            <Mail className="h-4 w-4 text-blue-500" />
+            <Icon name="Mail" size="sm" className="text-blue-500" ariaLabel="Email Statistics" />
             Email Statistics
           </CardTitle>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={fetchEmailStats}
-            disabled={loading}
-            className="h-6 w-6 p-0"
-          >
-            <RefreshCw className={`h-3 w-3 ${loading ? 'animate-spin' : ''}`} />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={fetchEmailStats}
+              disabled={loading}
+              className="h-7 px-2 text-xs text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50"
+            >
+              <Icon name="RefreshCw" size="sm" className={cn("mr-1", loading && "animate-spin")} ariaLabel="Refresh" />
+              Refresh
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <div className="space-y-4">
-          {/* Total Emails - Featured Stat */}
-          <div className="text-center p-4 bg-zinc-800/30 rounded-lg">
-            <div className="text-2xl font-bold text-white mb-1">
-              {emailStats?.total_emails?.toLocaleString() || '0'}
-            </div>
-            <p className="text-sm text-zinc-400">Total Emails</p>
+        {error ? (
+          <div className="flex items-center gap-2 text-red-400 text-sm">
+            <Icon name="AlertCircle" size="sm" ariaLabel="Error" />
+            {error}
           </div>
-
-          {/* Secondary Stats */}
-          <div className="grid grid-cols-2 gap-3 text-sm">
-            <div className="space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="text-zinc-400">Delivered</span>
-                <span className="text-white font-medium">
-                  {emailStats?.messages_synced?.toLocaleString() || '0'}
-                </span>
+        ) : (
+          <div className="space-y-4">
+            {/* Main Stats Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center p-3 bg-zinc-800/30 rounded-lg">
+                <div className="text-2xl font-bold text-blue-400">{emailStats?.total_emails.toLocaleString()}</div>
+                <div className="text-xs text-zinc-400">Total Emails</div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-zinc-400">Rate</span>
-                <Badge variant="default" aria-label="Delivery rate">
-                  {emailStats?.delivery_rate?.toFixed(1) || '0'}%
-                </Badge>
+              <div className="text-center p-3 bg-zinc-800/30 rounded-lg">
+                <div className="text-2xl font-bold text-green-400">{emailStats?.delivery_rate.toFixed(1)}%</div>
+                <div className="text-xs text-zinc-400">Delivery Rate</div>
               </div>
             </div>
 
-            <div className="space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="text-zinc-400">Campaigns</span>
-                <span className="text-white font-medium">
-                  {emailStats?.campaigns?.active || 0}/{emailStats?.campaigns?.total || 0}
-                </span>
+            {/* Campaigns & Leads */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-zinc-400">Campaigns</span>
+                  <div className="flex items-center gap-1">
+                    <Icon name="TrendingUp" size="sm" className="text-green-400" ariaLabel="Active campaigns" />
+                    <span className="text-green-400 font-medium">{emailStats?.campaigns.active}</span>
+                    <span className="text-zinc-500">/</span>
+                    <span className="text-zinc-300">{emailStats?.campaigns.total}</span>
+                  </div>
+                </div>
+                <div className="w-full bg-zinc-800 rounded-full h-2">
+                  <div
+                    className="bg-green-500 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${(emailStats?.campaigns.active || 0) / (emailStats?.campaigns.total || 1) * 100}%` }}
+                  />
+                </div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-zinc-400">Valid Leads</span>
-                <span className="text-white font-medium">
-                  {emailStats?.leads?.valid?.toLocaleString() || '0'}
-                </span>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-zinc-400">Leads</span>
+                  <div className="flex items-center gap-1">
+                    <Icon name="TrendingUp" size="sm" className="text-blue-400" ariaLabel="Valid leads" />
+                    <span className="text-blue-400 font-medium">{emailStats?.leads.valid.toLocaleString()}</span>
+                    <span className="text-zinc-500">/</span>
+                    <span className="text-zinc-300">{emailStats?.leads.total.toLocaleString()}</span>
+                  </div>
+                </div>
+                <div className="w-full bg-zinc-800 rounded-full h-2">
+                  <div
+                    className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${(emailStats?.leads.valid || 0) / (emailStats?.leads.total || 1) * 100}%` }}
+                  />
+                </div>
               </div>
+            </div>
+
+            {/* Last Updated */}
+            <div className="text-xs text-zinc-500 text-center">
+              Last updated: {new Date(emailStats?.last_updated || '').toLocaleTimeString()}
             </div>
           </div>
-
-          {error && (
-            <div className="flex items-center gap-2 p-2 rounded bg-yellow-900/20 border border-yellow-800">
-              <AlertCircle className="h-4 w-4 text-yellow-400" />
-              <span className="text-xs text-yellow-400">Using cached data</span>
-            </div>
-          )}
-
-          <div className="text-xs text-zinc-500 text-center pt-2 border-t border-zinc-800">
-            Last updated: {emailStats?.last_updated ? 
-              new Date(emailStats.last_updated).toLocaleTimeString() : 
-              'Never'
-            }
-          </div>
-        </div>
+        )}
       </CardContent>
     </Card>
   );

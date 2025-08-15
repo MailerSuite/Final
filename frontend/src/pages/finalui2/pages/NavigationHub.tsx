@@ -75,7 +75,7 @@ const NavigationHub: React.FC = () => {
     });
     setRecentActivity(mockData.recentActivity.slice(0, 5));
     setUpcomingCampaigns(mockData.upcomingCampaigns);
-    
+
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1500);
@@ -716,7 +716,7 @@ const NavigationHub: React.FC = () => {
                                   <div className="text-2xl font-bold text-foreground group-hover:text-foreground transition-colors">
                                     {stat.value}
                                   </div>
-                                  <div className="text-sm font-medium text-foreground group-hover:text-muted-foreground transition-colors">
+                                  <div className="text-sm font-semibold text-foreground group-hover:text-muted-foreground transition-colors">
                                     {stat.title}
                                   </div>
                                   <div className="text-xs text-muted-foreground">

@@ -240,7 +240,7 @@ const AdminMaintenance: React.FC = () => {
       setLoading(true);
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1200));
-      
+
       const mockWindows: MaintenanceWindow[] = [
         {
           id: "1",
@@ -393,10 +393,10 @@ const AdminMaintenance: React.FC = () => {
   // Filter maintenance windows
   const filteredWindows = maintenanceWindows.filter(window => {
     const matchesSearch = window.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         window.description.toLowerCase().includes(searchTerm.toLowerCase());
+      window.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = filterType === "all" || window.type === filterType;
     const matchesStatus = filterStatus === "all" || window.status === filterStatus;
-    
+
     return matchesSearch && matchesType && matchesStatus;
   });
 
@@ -405,7 +405,7 @@ const AdminMaintenance: React.FC = () => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       const newWindow: MaintenanceWindow = {
         id: Date.now().toString(),
         ...windowFormData,
@@ -437,14 +437,14 @@ const AdminMaintenance: React.FC = () => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       const newMode = !maintenanceMode;
       setMaintenanceMode(newMode);
-      
+
       if (settings) {
         setSettings(prev => prev ? { ...prev, maintenance_mode_enabled: newMode } : null);
       }
-      
+
       toast.success(newMode ? "Maintenance mode enabled" : "Maintenance mode disabled");
     } catch (error) {
       toast.error("Failed to toggle maintenance mode");
@@ -454,8 +454,8 @@ const AdminMaintenance: React.FC = () => {
   // Handle system task execution
   const handleExecuteTask = async (taskId: string) => {
     try {
-      setSystemTasks(prev => prev.map(task => 
-        task.id === taskId 
+      setSystemTasks(prev => prev.map(task =>
+        task.id === taskId
           ? { ...task, status: "running" as const, progress: 0, started_at: new Date().toISOString() }
           : task
       ));
@@ -470,7 +470,7 @@ const AdminMaintenance: React.FC = () => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       setIsSettingsDialogOpen(false);
       toast.success("Maintenance settings updated!");
     } catch (error) {
@@ -481,10 +481,10 @@ const AdminMaintenance: React.FC = () => {
   // Get status badge color
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
-      case "completed": return "bg-green-100 text-green-800 border-green-200";
-      case "active": case "running": return "bg-blue-100 text-blue-800 border-blue-200";
-      case "scheduled": case "pending": return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "cancelled": case "failed": return "bg-red-100 text-red-800 border-red-200";
+      case "completed": return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-700/30";
+      case "active": case "running": return "bg-primary/20 text-primary-800 dark:text-primary-300 border-primary-200 dark:border-primary-700/30";
+      case "scheduled": case "pending": return "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-700/30";
+      case "cancelled": case "failed": return "bg-destructive/20 text-destructive-800 dark:text-destructive-300 border-destructive-200 dark:border-destructive-700/30";
       default: return "bg-muted text-foreground border-border";
     }
   };
@@ -492,10 +492,10 @@ const AdminMaintenance: React.FC = () => {
   // Get priority badge color
   const getPriorityBadgeColor = (priority: string) => {
     switch (priority) {
-      case "critical": return "bg-red-100 text-red-800 border-red-200";
-      case "high": return "bg-orange-100 text-orange-800 border-orange-200";
-      case "medium": return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "low": return "bg-green-100 text-green-800 border-green-200";
+      case "critical": return "bg-destructive/20 text-destructive-800 dark:text-destructive-300 border-destructive-200 dark:border-destructive-700/30";
+      case "high": return "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/20 dark:text-orange-300 dark:border-orange-700/30";
+      case "medium": return "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-700/30";
+      case "low": return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-700/30";
       default: return "bg-muted text-foreground border-border";
     }
   };
@@ -513,13 +513,13 @@ const AdminMaintenance: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-muted/20 to-muted/30 dark:from-slate-950 dark:via-muted/20 dark:to-muted/30">
         <div className="container mx-auto px-6 py-8">
           <div className="flex items-center justify-center h-64">
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full"
+              className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full"
             />
           </div>
         </div>
@@ -528,7 +528,7 @@ const AdminMaintenance: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-muted/20 to-muted/30 dark:from-slate-950 dark:via-muted/20 dark:to-muted/30">
       {/* Floating background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -541,7 +541,7 @@ const AdminMaintenance: React.FC = () => {
             repeat: Infinity,
             ease: "linear",
           }}
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-200 dark:bg-blue-900 rounded-full mix-blend-multiply filter blur-xl opacity-30"
+          className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 dark:bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-30"
         />
         <motion.div
           animate={{
@@ -553,7 +553,7 @@ const AdminMaintenance: React.FC = () => {
             repeat: Infinity,
             ease: "linear",
           }}
-          className="absolute top-3/4 right-1/4 w-96 h-96 bg-indigo-200 dark:bg-indigo-900 rounded-full mix-blend-multiply filter blur-xl opacity-20"
+          className="absolute top-3/4 right-1/4 w-96 h-96 bg-muted/20 dark:bg-muted/10 rounded-full mix-blend-multiply filter blur-xl opacity-20"
         />
       </div>
 
@@ -617,12 +617,12 @@ const AdminMaintenance: React.FC = () => {
                 System maintenance, monitoring, and operational controls
               </motion.p>
             </div>
-            
+
             <motion.div variants={itemVariants} className="flex gap-3">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button 
-                    variant={maintenanceMode ? "destructive" : "outline"} 
+                  <Button
+                    variant={maintenanceMode ? "destructive" : "outline"}
                     size="sm"
                   >
                     {maintenanceMode ? <PowerOff className="w-4 h-4 mr-2" /> : <Power className="w-4 h-4 mr-2" />}
@@ -635,7 +635,7 @@ const AdminMaintenance: React.FC = () => {
                       {maintenanceMode ? "Disable" : "Enable"} Maintenance Mode
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      {maintenanceMode 
+                      {maintenanceMode
                         ? "This will allow all users to access the application normally."
                         : "This will restrict access to administrators only. Regular users will see a maintenance message."
                       }
@@ -673,7 +673,7 @@ const AdminMaintenance: React.FC = () => {
                             <span>Enable Auto Maintenance</span>
                             <Switch
                               checked={settings.auto_maintenance_enabled}
-                              onCheckedChange={(checked) => 
+                              onCheckedChange={(checked) =>
                                 setSettings(prev => prev ? { ...prev, auto_maintenance_enabled: checked } : null)
                               }
                             />
@@ -684,7 +684,7 @@ const AdminMaintenance: React.FC = () => {
                               <Input
                                 type="time"
                                 value={settings.maintenance_window_start}
-                                onChange={(e) => 
+                                onChange={(e) =>
                                   setSettings(prev => prev ? { ...prev, maintenance_window_start: e.target.value } : null)
                                 }
                               />
@@ -694,7 +694,7 @@ const AdminMaintenance: React.FC = () => {
                               <Input
                                 type="time"
                                 value={settings.maintenance_window_end}
-                                onChange={(e) => 
+                                onChange={(e) =>
                                   setSettings(prev => prev ? { ...prev, maintenance_window_end: e.target.value } : null)
                                 }
                               />
@@ -707,7 +707,7 @@ const AdminMaintenance: React.FC = () => {
                         <h4 className="font-medium mb-4">Maintenance Message</h4>
                         <Textarea
                           value={settings.maintenance_message}
-                          onChange={(e) => 
+                          onChange={(e) =>
                             setSettings(prev => prev ? { ...prev, maintenance_message: e.target.value } : null)
                           }
                           placeholder="Enter maintenance message for users"
@@ -721,10 +721,10 @@ const AdminMaintenance: React.FC = () => {
                           <Label>Allowed IP Addresses (comma-separated)</Label>
                           <Input
                             value={settings.allowed_ips.join(", ")}
-                            onChange={(e) => 
-                              setSettings(prev => prev ? { 
-                                ...prev, 
-                                allowed_ips: e.target.value.split(",").map(ip => ip.trim()) 
+                            onChange={(e) =>
+                              setSettings(prev => prev ? {
+                                ...prev,
+                                allowed_ips: e.target.value.split(",").map(ip => ip.trim())
                               } : null)
                             }
                             placeholder="192.168.1.100, 10.0.0.0/8"
@@ -886,8 +886,8 @@ const AdminMaintenance: React.FC = () => {
                       <p className="text-sm font-medium text-muted-foreground">Active Tasks</p>
                       <p className="text-2xl font-bold text-blue-600">{stats.active_tasks}</p>
                     </div>
-                    <motion.div 
-                      variants={stats.active_tasks > 0 ? pulseVariants : { initial: { scale: 1 } }} 
+                    <motion.div
+                      variants={stats.active_tasks > 0 ? pulseVariants : { initial: { scale: 1 } }}
                       animate={stats.active_tasks > 0 ? "pulse" : "initial"}
                     >
                       <Activity className="h-8 w-8 text-blue-500" />
@@ -952,7 +952,7 @@ const AdminMaintenance: React.FC = () => {
                         Scheduled and completed maintenance activities
                       </CardDescription>
                     </div>
-                    
+
                     {/* Search and Filters */}
                     <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                       <div className="relative">
@@ -964,7 +964,7 @@ const AdminMaintenance: React.FC = () => {
                           className="pl-10 w-full sm:w-64"
                         />
                       </div>
-                      
+
                       <Select value={filterType} onValueChange={setFilterType}>
                         <SelectTrigger className="w-full sm:w-32">
                           <SelectValue placeholder="Type" />
@@ -978,7 +978,7 @@ const AdminMaintenance: React.FC = () => {
                           <SelectItem value="infrastructure">Infrastructure</SelectItem>
                         </SelectContent>
                       </Select>
-                      
+
                       <Select value={filterStatus} onValueChange={setFilterStatus}>
                         <SelectTrigger className="w-full sm:w-32">
                           <SelectValue placeholder="Status" />
@@ -994,7 +994,7 @@ const AdminMaintenance: React.FC = () => {
                     </div>
                   </div>
                 </CardHeader>
-                
+
                 <CardContent>
                   <div className="space-y-4">
                     <AnimatePresence>
@@ -1096,7 +1096,7 @@ const AdminMaintenance: React.FC = () => {
                     Monitor and execute system maintenance tasks
                   </CardDescription>
                 </CardHeader>
-                
+
                 <CardContent>
                   <div className="space-y-4">
                     <AnimatePresence>
@@ -1122,7 +1122,7 @@ const AdminMaintenance: React.FC = () => {
                                     </Badge>
                                   </div>
                                   <p className="text-muted-foreground text-sm mb-3">{task.description}</p>
-                                  
+
                                   {task.status === "running" && (
                                     <div className="mb-3">
                                       <div className="flex items-center justify-between mb-1">
@@ -1132,7 +1132,7 @@ const AdminMaintenance: React.FC = () => {
                                       <Progress value={task.progress} className="h-2" />
                                     </div>
                                   )}
-                                  
+
                                   <div className="flex items-center gap-4 text-xs text-muted-foreground">
                                     <div className="flex items-center gap-1">
                                       <Timer className="h-3 w-3" />
@@ -1151,14 +1151,14 @@ const AdminMaintenance: React.FC = () => {
                                       </div>
                                     )}
                                   </div>
-                                  
+
                                   {task.error_message && (
                                     <div className="mt-3 p-2 bg-red-50 dark:bg-red-950/50 rounded text-sm text-red-700 dark:text-red-300">
                                       <strong>Error:</strong> {task.error_message}
                                     </div>
                                   )}
                                 </div>
-                                
+
                                 <div className="flex gap-2">
                                   {task.status === "pending" && (
                                     <Button

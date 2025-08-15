@@ -4,20 +4,31 @@ import { cn } from '@/lib/utils'
 
 interface ProxyIconProps extends React.ComponentProps<'svg'> {
   status?: 'valid' | 'error' | 'untested'
+  size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl'
 }
 
-export function ProxyIcon({ status, className, ...props }: ProxyIconProps) {
-  const color =
-    status === 'valid'
-      ? 'text-green-500'
-      : status === 'error'
-        ? 'text-destructive'
-        : 'text-muted-foreground'
+export function ProxyIcon({ status, size = 'sm', className, ...props }: ProxyIconProps) {
+  const colorClass = status === 'valid'
+    ? 'text-success'
+    : status === 'error'
+      ? 'text-destructive'
+      : 'text-muted-foreground'
+
+  const sizeClass = {
+    xs: 'icon-xs',
+    sm: 'icon-sm',
+    base: 'icon-base',
+    lg: 'icon-lg',
+    xl: 'icon-xl',
+    '2xl': 'icon-2xl',
+    '3xl': 'icon-3xl'
+  }[size] || 'icon-sm'
+
   return (
     <Network
       aria-hidden
       data-testid="proxy-icon"
-      className={cn('w-4 h-4', color, className)}
+      className={cn(sizeClass, colorClass, className)}
       {...props}
     />
   )

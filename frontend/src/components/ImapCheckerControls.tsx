@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { Play, Square, Trash2 } from 'lucide-react'
+import { Icon } from '@/components/ui/icon'
 
 interface Props {
   isRunning: boolean
@@ -23,7 +23,7 @@ export default function ImapCheckerControls({
         onClick={onStart}
         disabled={isRunning}
       >
-        <Play className="w-4 h-4" />
+        <Icon name="Play" size="sm" ariaLabel="Start Test" />
       </Button>
       <Button
         variant="ghost"
@@ -32,7 +32,7 @@ export default function ImapCheckerControls({
         onClick={onStop}
         disabled={!isRunning}
       >
-        <Square className="w-4 h-4" />
+        <Icon name="Square" size="sm" ariaLabel="Stop Test" />
       </Button>
       <Button
         variant="ghost"
@@ -40,7 +40,7 @@ export default function ImapCheckerControls({
         aria-label="Clear Logs"
         onClick={onClear}
       >
-        <Trash2 className="w-4 h-4 text-destructive" />
+        <Icon name="Trash2" size="sm" className="text-destructive" ariaLabel="Clear Logs" />
       </Button>
     </div>
   )

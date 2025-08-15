@@ -71,16 +71,16 @@ const AdminDatabase = () => {
   const loadDatabaseStats = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch database health data
       const dbHealthResponse = await axios.get('/api/v1/admin/database/health');
-      
+
       // Fetch tables information
       const tablesResponse = await axios.get('/api/v1/admin/database/tables');
-      
+
       // Fetch recent queries
       const queriesResponse = await axios.get('/api/v1/admin/database/queries?limit=10');
-      
+
       // Update database stats with real data
       setDbStats({
         totalSize: dbHealthResponse.data.total_size_gb || 0,
@@ -95,10 +95,10 @@ const AdminDatabase = () => {
         backupStatus: dbHealthResponse.data.backup_status || '',
         lastBackup: dbHealthResponse.data.last_backup || ''
       });
-      
+
       // Update tables with real data
       setTables(tablesResponse.data.tables || []);
-      
+
       // Update recent queries with real data
       const formattedQueries = (queriesResponse.data.queries || []).map((query: any) => ({
         id: query.id,
@@ -110,7 +110,7 @@ const AdminDatabase = () => {
         rows: query.rows_affected
       }));
       setRecentQueries(formattedQueries);
-      
+
       toast.success('Database statistics refreshed with live data!');
     } catch (error) {
       console.error('Error loading database statistics:', error);
@@ -136,17 +136,17 @@ const AdminDatabase = () => {
   const createBackup = async () => {
     try {
       setLoading(true);
-      
+
       // Create backup via API
       const backupResponse = await axios.post('/api/v1/admin/database/backup?backup_type=full');
-      
+
       toast.success(`Database backup initiated: ${backupResponse.data.backup_id}`);
-      
+
       // Refresh database stats after backup
       setTimeout(() => {
         loadDatabaseStats();
       }, 2000);
-      
+
     } catch (error: any) {
       const errorMessage = error.response?.data?.detail || 'Failed to create database backup';
       toast.error(errorMessage);
@@ -208,8 +208,8 @@ const AdminDatabase = () => {
       <motion.div variants={itemVariants} className="flex items-center justify-between">
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg border border-green-500/30">
-              <Database className="h-6 w-6 text-green-400" />
+            <div className="p-2 bg-gradient-to-br from-primary/20 to-muted/20 rounded-lg border border-primary/30">
+              <Database className="h-6 w-6 text-primary" />
             </div>
             <div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-zinc-300 bg-clip-text text-transparent">
@@ -219,7 +219,7 @@ const AdminDatabase = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-4">
           <Button
             onClick={createBackup}
@@ -230,7 +230,7 @@ const AdminDatabase = () => {
             <Download className="h-4 w-4 mr-2" />
             Create Backup
           </Button>
-          
+
           <Button
             onClick={optimizeDatabase}
             disabled={loading}
@@ -240,11 +240,11 @@ const AdminDatabase = () => {
             <Zap className="h-4 w-4 mr-2" />
             Optimize
           </Button>
-          
+
           <Button
             onClick={loadDatabaseStats}
             disabled={loading}
-            className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500"
+            className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
             Refresh
@@ -494,7 +494,7 @@ const AdminDatabase = () => {
                       </div>
                     </AlertDescription>
                   </Alert>
-                  
+
                   <Alert className="border-blue-900 bg-blue-950/50">
                     <Database className="h-4 w-4" />
                     <AlertDescription className="text-blue-200">
@@ -532,7 +532,7 @@ const AdminDatabase = () => {
                       </div>
                     </AlertDescription>
                   </Alert>
-                  
+
                   <Alert className="border-orange-900 bg-orange-950/50">
                     <Clock className="h-4 w-4" />
                     <AlertDescription className="text-orange-200">

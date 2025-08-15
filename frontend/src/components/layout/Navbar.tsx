@@ -24,6 +24,7 @@ import {
   Menu
 } from 'lucide-react'
 import { WorkspaceSelector } from './WorkspaceSelector'
+import { motion } from 'framer-motion'
 
 interface NavbarProps {
   onMenuClick?: () => void
@@ -33,6 +34,8 @@ interface NavbarProps {
 }
 
 import { Bot, LifeBuoy } from 'lucide-react'
+
+const hoverScale = { scale: 1.05 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick, onSupportClick, className }) => {
   const [notifications] = React.useState(3) // Mock notification count
@@ -48,166 +51,204 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onAIAssistantClick,
       <div className="absolute inset-0 bg-wizard-gradient-subtle opacity-40 pointer-events-none" />
       <div className="relative flex h-full items-center px-4 md:px-6 gap-4">
         {/* Mobile Menu Button */}
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-8 w-8 p-0 md:hidden text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors"
-          onClick={onMenuClick}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1, duration: 0.3 }}
         >
-          <Menu className="h-4 w-4" />
-        </Button>
+          <motion.div whileHover={{ scale: 1.05 }}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0 md:hidden text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors"
+              onClick={onMenuClick}
+            >
+              <Menu className="h-4 w-4" />
+            </Button>
+          </motion.div>
+        </motion.div>
 
         {/* Workspace Selector */}
         <div className="hidden md:block">
-          <WorkspaceSelector />
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.15, duration: 0.3 }}
+          >
+            <WorkspaceSelector />
+          </motion.div>
         </div>
 
         {/* Search */}
-        <div className="flex-1 max-w-full sm:max-w-md">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-sidebar-foreground/70" />
-            <Input
-              placeholder="Search campaigns, templates, contacts..."
-              className="pl-10 h-9 bg-sidebar-accent/30 border border-sidebar-border text-sidebar-foreground placeholder:text-sidebar-foreground/60 focus:bg-sidebar-accent/50 focus:border-sidebar-primary/50 transition-all"
-            />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.3 }}
+        >
+          <div className="flex-1 max-w-full sm:max-w-md">
+            <motion.div
+              className="relative"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-sidebar-foreground/70" />
+              <Input
+                placeholder="Search campaigns, templates, contacts..."
+                className="pl-10 h-9 bg-sidebar-accent/30 border border-sidebar-border text-sidebar-foreground placeholder:text-sidebar-foreground/60 focus:bg-sidebar-accent/50 focus:border-sidebar-primary/50 transition-all"
+              />
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Right Section */}
-        <div className="flex items-center gap-2">
-          {/* Quick Actions */}
-          <div className="hidden lg:flex items-center gap-1">
-            <Button variant="ghost" size="sm" className="h-8 px-2 text-xs text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
-              Quick Send
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.25, duration: 0.3 }}
+        >
+          <div className="flex items-center gap-2">
+            {/* Quick Actions */}
+            <div className="hidden lg:flex items-center gap-1">
+              <motion.div whileHover={hoverScale}>
+                <Button variant="ghost" size="sm" className="h-8 px-2 text-xs text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
+                  Quick Send
+                </Button>
+              </motion.div>
+              <motion.div whileHover={hoverScale}>
+                <Button variant="ghost" size="sm" className="h-8 px-2 text-xs text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
+                  New Campaign
+                </Button>
+              </motion.div>
+              <motion.div whileHover={hoverScale}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-2 text-xs flex items-center gap-1 text-wizard-primary-accent hover:text-white bg-wizard-primary-accent/10 hover:bg-wizard-primary-accent/20 wizard-hover-glow transition-all"
+                  onClick={onAIAssistantClick}
+                >
+                  <GlowingIcon size="sm" color="blue">
+                    <Bot className="h-4 w-4" />
+                  </GlowingIcon>
+                  <span className="text-wizard-gradient font-semibold">AI Chat</span>
+                </Button>
+              </motion.div>
+              <motion.div whileHover={hoverScale}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-2 text-xs flex items-center gap-1 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors"
+                  onClick={onSupportClick}
+                >
+                  <LifeBuoy className="h-4 w-4" />
+                  Support
+                </Button>
+              </motion.div>
+            </div>
+
+            {/* Notifications */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 relative text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
+                  <Bell className="h-4 w-4" />
+                  {notifications > 0 && (
+                    <Badge
+                      className="absolute -top-1 -right-1 h-5 w-5 text-xs p-0 flex items-center justify-center bg-gradient-to-r from-sky-300 via-indigo-300 to-fuchsia-300 text-background border-0"
+                    >
+                      {notifications}
+                    </Badge>
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-80 bg-sidebar-background/95 backdrop-blur-xl border-sidebar-border">
+                <DropdownMenuLabel className="flex items-center justify-between">
+                  Notifications
+                  <Badge className="bg-gradient-to-r from-sky-300 via-indigo-300 to-fuchsia-300 text-background border-0">{notifications}</Badge>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="p-3 hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                      <span className="font-medium text-sm">Campaign completed</span>
+                    </div>
+                    <span className="text-xs text-sidebar-foreground/70">
+                      "Summer Sale 2024" sent to 1,234 contacts
+                    </span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="p-3 hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-warning rounded-full"></div>
+                      <span className="font-medium text-sm">SMTP issue detected</span>
+                    </div>
+                    <span className="text-xs text-sidebar-foreground/70">
+                      Server smtp-01 showing connection errors
+                    </span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="p-3 hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-success rounded-full"></div>
+                      <span className="font-medium text-sm">System update</span>
+                    </div>
+                    <span className="text-xs text-sidebar-foreground/70">
+                      Platform updated to v2.1.0 successfully
+                    </span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-center justify-center hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
+                  View all notifications
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Settings */}
+            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
+              <Settings className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm" className="h-8 px-2 text-xs text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
-              New Campaign
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 px-2 text-xs flex items-center gap-1 text-wizard-primary-accent hover:text-white bg-wizard-primary-accent/10 hover:bg-wizard-primary-accent/20 wizard-hover-glow transition-all"
-              onClick={onAIAssistantClick}
-            >
-              <GlowingIcon size="sm" color="blue">
-                <Bot className="h-4 w-4" />
-              </GlowingIcon>
-              <span className="text-wizard-gradient font-semibold">AI Chat</span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 px-2 text-xs flex items-center gap-1 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors"
-              onClick={onSupportClick}
-            >
-              <LifeBuoy className="h-4 w-4" />
-              Support
-            </Button>
+
+            {/* User Menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 px-2 gap-2 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
+                  <div className="w-6 h-6 rounded-full bg-sidebar-primary/10 border border-sidebar-primary/20 flex items-center justify-center shadow-[0_0_16px_rgba(59,130,246,0.25)]">
+                    <User className="h-3 w-3 text-sidebar-primary" />
+                  </div>
+                  <span className="hidden md:inline text-sm font-medium">Admin</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 bg-sidebar-background/95 backdrop-blur-xl border-sidebar-border">
+                <DropdownMenuLabel>
+                  <div className="flex flex-col">
+                    <span className="font-medium">Administrator</span>
+                    <span className="text-xs text-sidebar-foreground/70">admin@mailersuite.com</span>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="cursor-pointer hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
+                  <User className="mr-2 h-4 w-4" />
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
+                  <HelpCircle className="mr-2 h-4 w-4" />
+                  Help & Support
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="cursor-pointer text-destructive hover:bg-destructive/10 focus:bg-destructive/10">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-
-          {/* Notifications */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 relative text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
-                <Bell className="h-4 w-4" />
-                {notifications > 0 && (
-                  <Badge
-                    className="absolute -top-1 -right-1 h-5 w-5 text-xs p-0 flex items-center justify-center bg-gradient-to-r from-sky-300 via-indigo-300 to-fuchsia-300 text-background border-0"
-                  >
-                    {notifications}
-                  </Badge>
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-80 bg-sidebar-background/95 backdrop-blur-xl border-sidebar-border">
-              <DropdownMenuLabel className="flex items-center justify-between">
-                Notifications
-                <Badge className="bg-gradient-to-r from-sky-300 via-indigo-300 to-fuchsia-300 text-background border-0">{notifications}</Badge>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="p-3 hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                    <span className="font-medium text-sm">Campaign completed</span>
-                  </div>
-                  <span className="text-xs text-sidebar-foreground/70">
-                    "Summer Sale 2024" sent to 1,234 contacts
-                  </span>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="p-3 hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-warning rounded-full"></div>
-                    <span className="font-medium text-sm">SMTP issue detected</span>
-                  </div>
-                  <span className="text-xs text-sidebar-foreground/70">
-                    Server smtp-01 showing connection errors
-                  </span>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="p-3 hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-success rounded-full"></div>
-                    <span className="font-medium text-sm">System update</span>
-                  </div>
-                  <span className="text-xs text-sidebar-foreground/70">
-                    Platform updated to v2.1.0 successfully
-                  </span>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-center justify-center hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
-                View all notifications
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* Settings */}
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
-            <Settings className="h-4 w-4" />
-          </Button>
-
-          {/* User Menu */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 px-2 gap-2 text-sidebar-foreground hover:text-sidebar-primary hover:bg-sidebar-accent/20 transition-colors">
-                <div className="w-6 h-6 rounded-full bg-sidebar-primary/10 border border-sidebar-primary/20 flex items-center justify-center shadow-[0_0_16px_rgba(59,130,246,0.25)]">
-                  <User className="h-3 w-3 text-sidebar-primary" />
-                </div>
-                <span className="hidden md:inline text-sm font-medium">Admin</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-sidebar-background/95 backdrop-blur-xl border-sidebar-border">
-              <DropdownMenuLabel>
-                <div className="flex flex-col">
-                  <span className="font-medium">Administrator</span>
-                  <span className="text-xs text-sidebar-foreground/70">admin@mailersuite.com</span>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
-                <User className="mr-2 h-4 w-4" />
-                Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
-                <Settings className="mr-2 h-4 w-4" />
-                Settings
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer hover:bg-sidebar-accent/20 focus:bg-sidebar-accent/20">
-                <HelpCircle className="mr-2 h-4 w-4" />
-                Help & Support
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer text-destructive hover:bg-destructive/10 focus:bg-destructive/10">
-                <LogOut className="mr-2 h-4 w-4" />
-                Sign out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        </motion.div>
       </div>
     </header>
   )

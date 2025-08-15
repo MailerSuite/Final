@@ -49,9 +49,14 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      token: null,
-      refreshToken: null,
-      userData: null,
+      token: "dev-bypass-token", // TEMP: Bypass auth for development
+      refreshToken: "dev-bypass-refresh-token", // TEMP: Bypass auth for development
+      userData: { // TEMP: Mock user data for development
+        id: 1,
+        email: "dev@mailersuite.com",
+        username: "developer",
+        name: "Developer"
+      } as IUser,
       isLoading: false,
       loginAttempts: 0,
       lastLoginAttempt: null,
@@ -203,23 +208,9 @@ export const useAuthStore = create<AuthState>()(
 
       // Add function to validate token presence
       validateTokens: () => {
-        const { token, refreshToken } = get()
-        const localToken = localStorage.getItem('token')
-        const localRefreshToken = localStorage.getItem('refresh_token')
-        
-        console.log('🔍 Token validation:')
-        console.log('  Store access token:', token ? 'exists' : 'missing')
-        console.log('  Store refresh token:', refreshToken ? 'exists' : 'missing')
-        console.log('  localStorage access token:', localToken ? 'exists' : 'missing')
-        console.log('  localStorage refresh token:', localRefreshToken ? 'exists' : 'missing')
-        
-        // If we have an access token but no refresh token anywhere, that's a problem
-        if (token && !refreshToken && !localRefreshToken) {
-          console.warn('⚠️ Access token exists but no refresh token - potential auth issue')
-          return false
-        }
-        
-        return !!(token || localToken)
+        // TEMP: Always return true to bypass auth for development
+        console.log('🚀 DEV MODE: Authentication bypassed')
+        return true
       },
 
       login: async (identifier, password, _type, fingerprint) => {

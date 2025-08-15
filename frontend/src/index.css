@@ -165,6 +165,43 @@
     --sidebar-ring: 203 100% 45%;
   }
 }
+
+@layer components {
+  /* Icon size utilities */
+  .icon-xs {
+    @apply w-3 h-3;
+  }
+  
+  .icon-sm {
+    @apply w-4 h-4;
+  }
+  
+  .icon-base {
+    @apply w-5 h-5;
+  }
+  
+  .icon-lg {
+    @apply w-6 h-6;
+  }
+  
+  .icon-xl {
+    @apply w-8 h-8;
+  }
+  
+  .icon-2xl {
+    @apply w-10 h-10;
+  }
+  
+  .icon-3xl {
+    @apply w-12 h-12;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
  
 @layer base {
   * {
