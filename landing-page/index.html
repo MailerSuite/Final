@@ -8,7 +8,6 @@
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,16 +16,10 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/animations.css">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <!-- JavaScript -->
+    <script src="js/main.js" defer></script>
 </head>
 <body>
-    <!-- Particle Background -->
-    <div id="particles-js"></div>
-    
-    <!-- Neural Network Background -->
-    <canvas id="neural-network"></canvas>
-    
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav-container">
@@ -98,7 +91,6 @@
                         <span class="data-point" style="--i: 3"></span>
                         <span class="data-point" style="--i: 4"></span>
                         <span class="data-point" style="--i: 5"></span>
-                        <span class="data-point" style="--i: 6"></span>
                     </div>
                 </div>
             </div>
@@ -115,7 +107,7 @@
             </div>
             
             <div class="features-grid">
-                <div class="feature-card" data-aos="fade-up">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-brain"></i>
                     </div>
@@ -126,7 +118,7 @@
                     </div>
                 </div>
                 
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-server"></i>
                     </div>
@@ -137,7 +129,7 @@
                     </div>
                 </div>
                 
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
@@ -148,7 +140,7 @@
                     </div>
                 </div>
                 
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-chart-bar"></i>
                     </div>
@@ -159,7 +151,7 @@
                     </div>
                 </div>
                 
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-rocket"></i>
                     </div>
@@ -170,7 +162,7 @@
                     </div>
                 </div>
                 
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-magic"></i>
                     </div>
@@ -194,93 +186,53 @@
             </div>
             
             <div class="demo-grid">
-                <!-- SMTP Pool Terminal -->
                 <div class="demo-card">
+                    <h3>SMTP Terminal</h3>
                     <div class="terminal">
                         <div class="terminal-header">
-                            <div class="terminal-buttons">
-                                <span class="terminal-btn red"></span>
-                                <span class="terminal-btn yellow"></span>
-                                <span class="terminal-btn green"></span>
-                            </div>
-                            <span class="terminal-title">SMTP Pool Manager</span>
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
                         </div>
-                        <div class="terminal-body" id="smtp-terminal">
+                        <div class="terminal-body">
                             <div class="terminal-line">
-                                <span class="prompt">$</span> spamgpt pool status
+                                <span class="prompt">$</span>
+                                <span class="command">spamgpt --send --campaign=welcome</span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="output">✓ AI analyzing recipient patterns...</span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="output">✓ Optimal routing selected (Server: EU-01)</span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="output">✓ Campaign sent successfully!</span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="output">📊 Delivery Rate: 99.9% | Latency: 245ms</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- AI Analytics Dashboard -->
                 <div class="demo-card">
-                    <div class="dashboard-preview">
-                        <div class="dashboard-header">
-                            <h4>AI Analytics Dashboard</h4>
-                            <span class="live-badge"><span class="live-dot"></span> Live</span>
+                    <h3>Real-time Metrics</h3>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <span class="metric-label">Delivery Rate</span>
+                            <span class="metric-value">98.7%</span>
                         </div>
-                        <div class="dashboard-content">
-                            <div class="metric-grid">
-                                <div class="metric">
-                                    <span class="metric-value" id="delivery-rate">98.7%</span>
-                                    <span class="metric-label">Delivery Rate</span>
-                                    <div class="metric-chart">
-                                        <canvas id="delivery-chart"></canvas>
-                                    </div>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-value" id="active-servers">1,234</span>
-                                    <span class="metric-label">Active Servers</span>
-                                    <div class="metric-chart">
-                                        <canvas id="servers-chart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="metric">
+                            <span class="metric-label">Active Servers</span>
+                            <span class="metric-value">1,234</span>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- Email Flow Visualization -->
-                <div class="demo-card full-width">
-                    <div class="flow-visualization">
-                        <h4>Real-time Email Flow</h4>
-                        <div class="flow-container" id="email-flow">
-                            <div class="flow-node sender">
-                                <i class="fas fa-user"></i>
-                                <span>Sender</span>
-                            </div>
-                            <div class="flow-path">
-                                <div class="flow-particle"></div>
-                            </div>
-                            <div class="flow-node ai">
-                                <i class="fas fa-brain"></i>
-                                <span>AI Router</span>
-                            </div>
-                            <div class="flow-path">
-                                <div class="flow-particle"></div>
-                            </div>
-                            <div class="flow-node smtp">
-                                <i class="fas fa-server"></i>
-                                <span>SMTP Pool</span>
-                            </div>
-                            <div class="flow-path">
-                                <div class="flow-particle"></div>
-                            </div>
-                            <div class="flow-node inbox">
-                                <i class="fas fa-inbox"></i>
-                                <span>Inbox</span>
-                            </div>
+                        <div class="metric">
+                            <span class="metric-label">Emails Sent Today</span>
+                            <span class="metric-value">2.4M</span>
                         </div>
-                        <div class="flow-stats">
-                            <span class="flow-stat">
-                                <i class="fas fa-tachometer-alt"></i>
-                                <span id="flow-speed">245ms</span> avg latency
-                            </span>
-                            <span class="flow-stat">
-                                <i class="fas fa-check-circle"></i>
-                                <span id="flow-success">99.8%</span> success rate
-                            </span>
+                        <div class="metric">
+                            <span class="metric-label">Avg Response Time</span>
+                            <span class="metric-value">245ms</span>
                         </div>
                     </div>
                 </div>
@@ -293,146 +245,101 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">Pricing</span>
-                <h2 class="section-title">Choose Your <span class="gradient-text">AI Power</span></h2>
-                <p class="section-description">Flexible plans that scale with your business</p>
+                <h2 class="section-title">Choose Your <span class="gradient-text">Plan</span></h2>
+                <p class="section-description">Flexible pricing designed for businesses of all sizes</p>
             </div>
             
             <div class="pricing-grid">
                 <div class="pricing-card">
                     <div class="pricing-header">
                         <h3>Starter</h3>
-                        <div class="pricing-price">
+                        <div class="price">
                             <span class="currency">$</span>
                             <span class="amount">99</span>
                             <span class="period">/month</span>
                         </div>
-                        <p class="pricing-description">Perfect for small businesses</p>
                     </div>
                     <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> 100,000 emails/month</li>
-                        <li><i class="fas fa-check"></i> 10 SMTP servers</li>
-                        <li><i class="fas fa-check"></i> Basic AI routing</li>
-                        <li><i class="fas fa-check"></i> Email analytics</li>
-                        <li><i class="fas fa-check"></i> 24/7 support</li>
+                        <li><i class="fas fa-check"></i> 100K emails/month</li>
+                        <li><i class="fas fa-check"></i> 50 SMTP servers</li>
+                        <li><i class="fas fa-check"></i> Basic analytics</li>
+                        <li><i class="fas fa-check"></i> Email support</li>
                     </ul>
-                    <button class="pricing-btn" onclick="showPaymentModal('starter', 99)">
-                        Get Started
-                    </button>
+                    <button class="pricing-cta">Get Started</button>
                 </div>
                 
                 <div class="pricing-card featured">
-                    <div class="pricing-badge">Most Popular</div>
                     <div class="pricing-header">
                         <h3>Professional</h3>
-                        <div class="pricing-price">
+                        <div class="price">
                             <span class="currency">$</span>
                             <span class="amount">299</span>
                             <span class="period">/month</span>
                         </div>
-                        <p class="pricing-description">For growing companies</p>
                     </div>
                     <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> 1,000,000 emails/month</li>
-                        <li><i class="fas fa-check"></i> 100 SMTP servers</li>
-                        <li><i class="fas fa-check"></i> Advanced AI routing</li>
-                        <li><i class="fas fa-check"></i> Predictive analytics</li>
+                        <li><i class="fas fa-check"></i> 1M emails/month</li>
+                        <li><i class="fas fa-check"></i> 500 SMTP servers</li>
+                        <li><i class="fas fa-check"></i> Advanced analytics</li>
                         <li><i class="fas fa-check"></i> Priority support</li>
-                        <li><i class="fas fa-check"></i> Custom domains</li>
+                        <li><i class="fas fa-check"></i> AI optimization</li>
                     </ul>
-                    <button class="pricing-btn featured" onclick="showPaymentModal('professional', 299)">
-                        Get Started
-                    </button>
+                    <button class="pricing-cta">Get Started</button>
                 </div>
                 
                 <div class="pricing-card">
                     <div class="pricing-header">
                         <h3>Enterprise</h3>
-                        <div class="pricing-price">
+                        <div class="price">
                             <span class="currency">$</span>
                             <span class="amount">999</span>
                             <span class="period">/month</span>
                         </div>
-                        <p class="pricing-description">Unlimited possibilities</p>
                     </div>
                     <ul class="pricing-features">
                         <li><i class="fas fa-check"></i> Unlimited emails</li>
-                        <li><i class="fas fa-check"></i> 1,786+ SMTP servers</li>
-                        <li><i class="fas fa-check"></i> Full AI suite</li>
-                        <li><i class="fas fa-check"></i> Custom ML models</li>
-                        <li><i class="fas fa-check"></i> Dedicated support</li>
-                        <li><i class="fas fa-check"></i> SLA guarantee</li>
+                        <li><i class="fas fa-check"></i> All SMTP servers</li>
+                        <li><i class="fas fa-check"></i> Custom analytics</li>
+                        <li><i class="fas fa-check"></i> 24/7 support</li>
+                        <li><i class="fas fa-check"></i> Custom AI models</li>
                     </ul>
-                    <button class="pricing-btn" onclick="showPaymentModal('enterprise', 999)">
-                        Contact Sales
-                    </button>
+                    <button class="pricing-cta">Contact Sales</button>
                 </div>
             </div>
         </div>
     </section>
     
-    <!-- Bitcoin Payment Modal -->
-    <div id="payment-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Complete Your Purchase</h3>
-                <button class="modal-close" onclick="closePaymentModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">About</span>
+                <h2 class="section-title">The Future of <span class="gradient-text">Email</span></h2>
+                <p class="section-description">Built by engineers, powered by AI, trusted by businesses worldwide</p>
             </div>
-            <div class="modal-body">
-                <div class="payment-info">
-                    <h4>Payment Details</h4>
-                    <div class="payment-plan">
-                        <span id="selected-plan">Professional Plan</span>
-                        <span id="plan-price">$299/month</span>
-                    </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <p>SpamGPT represents the next evolution in email infrastructure. Our AI-powered platform combines cutting-edge machine learning with battle-tested engineering to deliver unprecedented email deliverability and performance.</p>
+                    <p>Founded in 2024, we've assembled a team of experts in email infrastructure, machine learning, and cybersecurity to build the most intelligent email platform ever created.</p>
                 </div>
-                
-                <div class="bitcoin-payment">
-                    <div class="btc-header">
-                        <i class="fab fa-bitcoin"></i>
-                        <h4>Pay with Bitcoin</h4>
+                <div class="about-stats">
+                    <div class="about-stat">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Countries Served</span>
                     </div>
-                    
-                    <div class="btc-amount">
-                        <span class="btc-value" id="btc-amount">0.0089</span> BTC
-                        <span class="usd-equivalent">≈ <span id="usd-amount">$299</span> USD</span>
+                    <div class="stat>
+                        <span class="stat-number">99.9%</span>
+                        <span class="stat-label">Uptime</span>
                     </div>
-                    
-                    <div class="qr-container">
-                        <div id="qr-code"></div>
-                        <p class="qr-instruction">Scan QR code to pay</p>
-                    </div>
-                    
-                    <div class="btc-address">
-                        <label>Bitcoin Address:</label>
-                        <div class="address-input">
-                            <input type="text" id="btc-address" readonly value="bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh">
-                            <button onclick="copyAddress()" class="copy-btn">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="payment-status">
-                        <div class="status-waiting" id="payment-waiting">
-                            <i class="fas fa-clock"></i>
-                            <span>Waiting for payment...</span>
-                        </div>
-                        <div class="status-confirmed" id="payment-confirmed" style="display: none;">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Payment confirmed!</span>
-                        </div>
-                    </div>
-                    
-                    <div class="payment-timer">
-                        <i class="fas fa-hourglass-half"></i>
-                        <span>Time remaining: <span id="timer">15:00</span></span>
+                    <div class="about-stat">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Support</span>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
     
     <!-- Footer -->
     <footer class="footer">
@@ -460,7 +367,7 @@
                     <a href="#">Blog</a>
                     <a href="#">Careers</a>
                     <a href="#">Contact</a>
-                </div>
+                    </div>
                 <div class="footer-links">
                     <h4>Legal</h4>
                     <a href="#">Privacy Policy</a>
@@ -473,13 +380,5 @@
             </div>
         </div>
     </footer>
-    
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="js/neural-network.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/main.js"></script>
 </body>
 </html>

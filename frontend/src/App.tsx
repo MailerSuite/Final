@@ -5,7 +5,7 @@ import PremiumMailLoader from '@/components/ui/PremiumMailLoader'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ThemeProvider } from '@/components/providers/theme-provider'
-import { Toaster } from 'sonner'
+import { Toaster } from '@/components/ui/toaster'
 import GlobalLoadingOverlay from '@/components/ui/GlobalLoadingOverlay'
 import CommandPalette, { useCommandPalette } from '@/components/ui/command-palette'
 import FloatingActionButton from '@/components/ui/floating-action-button'
@@ -62,9 +62,18 @@ const TermsPage = lazy(() => import('@/pages/legal/terms'))
 const PrivacyPage = lazy(() => import('@/pages/legal/privacy'))
 
 // Landing Pages
-const SpamGPTHero = lazy(() => import('@/components/landing/spamgpt/SpamGPTHero'))
+const SpamGPTLandingPage = lazy(() => import('@/pages/landing/spamgpt/page'))
+const OptimizerDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/OptimizerDemoPage'))
+const AnalyticsDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/AnalyticsDemoPage'))
+const TutorDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/TutorDemoPage'))
+const CampaignWizardDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/CampaignWizardDemoPage'))
+const ContentGeneratorDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/ContentGeneratorDemoPage'))
+const SMTPDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/SMTPDemoPage'))
+const DeliverabilityDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/DeliverabilityDemoPage'))
+const AssistantDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/AssistantDemoPage'))
 const LandingPageIndex = lazy(() => import('@/pages/landing'))
-const OAuthCallbackPage = lazy(() => import('@/pages/OAuthCallbackPage'))
+const AILandingPlaceholder = lazy(() => import('@/pages/landing/ai/page'))
+const AIOpenAIPlaceholder = lazy(() => import('@/pages/landing/ai-openai/page'))
 
 import SkeletonAI from '@/components/ui/SkeletonAI'
 import MainLayout from '@/layouts/MainLayout'
@@ -365,7 +374,74 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // Keep only the standalone pages that aren't handled by FinalUI2
+  // Specific routes for main navigation items
+  {
+    path: '/campaigns/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/templates/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/contacts/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/lead-bases/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/analytics/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  // AI Tools routes
+  {
+    path: '/ai-tutor/*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
   {
     path: '/workspace-test',
     element: (
@@ -384,16 +460,6 @@ const router = createBrowserRouter([
         <MainLayout>
           <AnimationDemo />
         </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  // Landing Pages
-  {
-    path: '/landing',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <LandingPageIndex />
         <AppWrapper />
       </Suspense>
     )
@@ -488,51 +554,7 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/smtp/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
     path: '/imap-inbox/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/smtp/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/imap-inbox/*',
-    element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout>
-          <FinalUI2 />
-        </MainLayout>
-        <AppWrapper />
-      </Suspense>
-    )
-  },
-  {
-    path: '/imap/*',
     element: (
       <Suspense fallback={<Loading />}>
         <MainLayout>
@@ -630,7 +652,9 @@ const router = createBrowserRouter([
       </Suspense>
     )
   },
+  // Landing Pages
   {
+    path: '/landing',
     element: (
       <Suspense fallback={<Loading />}>
         <LandingPageIndex />
@@ -639,34 +663,112 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/oauth/callback',
+    path: '/landing/ai',
     element: (
       <Suspense fallback={<Loading />}>
-        <OAuthCallbackPage />
+        <AILandingPlaceholder />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/ai-openai',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AIOpenAIPlaceholder />
         <AppWrapper />
       </Suspense>
     )
   },
 
+  // SpamGPT Landing
   {
     path: '/landing/spamgpt',
     element: (
       <Suspense fallback={<Loading />}>
-        <SpamGPTHero />
+        <SpamGPTLandingPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/optimizer',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <OptimizerDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/analytics',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AnalyticsDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/tutor',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <TutorDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/campaign-wizard',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <CampaignWizardDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/content-generator',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <ContentGeneratorDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/smtp',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <SMTPDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/deliverability',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <DeliverabilityDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/assistant',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AssistantDemoPage />
         <AppWrapper />
       </Suspense>
     )
   },
   // Mount main app at root for any remaining routes
-  // This will handle all routes not explicitly defined above
   {
     path: '/*',
     element: (
       <Suspense fallback={<Loading />}>
         <MainLayout>
-          <div className="debug-info" style={{ position: 'fixed', top: '10px', right: '10px', background: 'red', color: 'white', padding: '5px', zIndex: 9999 }}>
-            App.tsx /* route - Path: {window.location.pathname}
-          </div>
           <FinalUI2 />
         </MainLayout>
         <AppWrapper />
