@@ -75,6 +75,11 @@ export const StableRouteGuard = ({
     return <PageLoader />;
   }
 
+  // Dev bypass: allow unrestricted access in development
+  if (import.meta.env.DEV) {
+    return <>{children}</>;
+  }
+
   // If auth is required but user is not authenticated
   if (requiredAuth && !userData) {
     // 🛡️ ENHANCED LOGOUT PROTECTION: Check if logout is already in progress

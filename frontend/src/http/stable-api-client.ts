@@ -117,6 +117,9 @@ class StableAPIClient {
   private getAuthToken(): string | null {
     // Try to get token from localStorage or other sources
     if (typeof window !== 'undefined') {
+      // Prefer explicit dev bypass token if present
+      const devBypass = localStorage.getItem('token') || sessionStorage.getItem('auth_token')
+      if (devBypass) return devBypass
       return localStorage.getItem('auth_token') || 
              localStorage.getItem('token') || 
              sessionStorage.getItem('auth_token') ||
