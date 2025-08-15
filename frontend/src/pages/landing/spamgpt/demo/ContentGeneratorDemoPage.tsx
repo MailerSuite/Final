@@ -2,6 +2,7 @@ import React from 'react';
 import { LandingHeader, LandingFooter } from '@/components/landing';
 import { BackgroundEffects } from '@/components/ui/BackgroundEffects';
 import AIContentGenerator from '@/pages/finalui2/pages/AIContentGenerator';
+import DemoGuard from './components/DemoGuard';
 
 const ContentGeneratorDemoPage: React.FC = () => {
     return (
@@ -10,7 +11,9 @@ const ContentGeneratorDemoPage: React.FC = () => {
             <div className="relative z-10 flex flex-col min-h-screen">
                 <LandingHeader />
                 <main className="flex-1">
-                    <AIContentGenerator />
+                    <DemoGuard featureKey="content-generator">
+                        <AIContentGenerator />
+                    </DemoGuard>
                 </main>
                 <LandingFooter />
             </div>

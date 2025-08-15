@@ -71,6 +71,8 @@ const ContentGeneratorDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo
 const SMTPDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/SMTPDemoPage'))
 const DeliverabilityDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/DeliverabilityDemoPage'))
 const AssistantDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/AssistantDemoPage'))
+const TemplateBuilderDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/TemplateBuilderDemoPage'))
+const ProxyManagerDemoPage = lazy(() => import('@/pages/landing/spamgpt/demo/ProxyManagerDemoPage'))
 const LandingPageIndex = lazy(() => import('@/pages/landing'))
 const AILandingPlaceholder = lazy(() => import('@/pages/landing/ai/page'))
 const AIOpenAIPlaceholder = lazy(() => import('@/pages/landing/ai-openai/page'))
@@ -759,6 +761,24 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <AssistantDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/template-builder',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <TemplateBuilderDemoPage />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/landing/spamgpt/demo/proxy-manager',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <ProxyManagerDemoPage />
         <AppWrapper />
       </Suspense>
     )

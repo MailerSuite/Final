@@ -2,6 +2,7 @@ import React from 'react';
 import { LandingHeader, LandingFooter } from '@/components/landing';
 import { BackgroundEffects } from '@/components/ui/BackgroundEffects';
 import AIEmailOptimizer from '@/pages/finalui2/pages/AIEmailOptimizer';
+import DemoGuard from './components/DemoGuard';
 
 const OptimizerDemoPage: React.FC = () => {
     return (
@@ -10,7 +11,9 @@ const OptimizerDemoPage: React.FC = () => {
             <div className="relative z-10 flex flex-col min-h-screen">
                 <LandingHeader />
                 <main className="flex-1">
-                    <AIEmailOptimizer />
+                    <DemoGuard featureKey="optimizer">
+                        <AIEmailOptimizer />
+                    </DemoGuard>
                 </main>
                 <LandingFooter />
             </div>

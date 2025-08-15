@@ -2,6 +2,7 @@ import React from 'react';
 import { LandingHeader, LandingFooter } from '@/components/landing';
 import { BackgroundEffects } from '@/components/ui/BackgroundEffects';
 import { AIAssistant } from '@/pages/finalui2/pages/AIAssistant';
+import DemoGuard from './components/DemoGuard';
 
 const AssistantDemoPage: React.FC = () => {
     return (
@@ -10,7 +11,9 @@ const AssistantDemoPage: React.FC = () => {
             <div className="relative z-10 flex flex-col min-h-screen">
                 <LandingHeader />
                 <main className="flex-1">
-                    <AIAssistant />
+                    <DemoGuard featureKey="assistant">
+                        <AIAssistant />
+                    </DemoGuard>
                 </main>
                 <LandingFooter />
             </div>
