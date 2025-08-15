@@ -30,10 +30,9 @@ export const authApi = {
   updateProfile: (data: {
     username: string
     email: string
-    email: string
   }) => axios.put<User>('/api/v1/auth/me', data),
   changePassword: (data: { password: string }) =>
-    axios.put('/profile', data),
+    axios.put('/api/v1/auth/password', data),
   verify: () => axios.post<string>('/api/v1/auth/verify-token'),
 }
 
