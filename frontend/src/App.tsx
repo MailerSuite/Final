@@ -224,6 +224,37 @@ const router = createBrowserRouter([
     )
   },
   {
+    path: '/onboarding',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AuthLogin />
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/integrations',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
+    path: '/deliverability',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <MainLayout>
+          <FinalUI2 />
+        </MainLayout>
+        <AppWrapper />
+      </Suspense>
+    )
+  },
+  {
     path: '/auth/login',
     element: (
       <Suspense fallback={<Loading />}>
