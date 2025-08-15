@@ -474,19 +474,27 @@ class CampaignService:
         4. Autostart if enabled
         """
         try:
+            # First get the session to find the user_id
+            from models.base import Session
+            session_query = select(Session).where(Session.id == session_id)
+            session = await self.db.scalar(session_query)
+            if not session:
+                raise ValueError(f"Session {session_id} not found")
+            
+            # Now query template by user_id instead of session_id
             template_query = select(EmailTemplate).where(
                 EmailTemplate.id == campaign_data.template_id,
-                EmailTemplate.session_id == session_id,
+                EmailTemplate.user_id == session.user_id,
             )
             template = await self.db.scalar(template_query)
             if not template:
                 raise ValueError(
-                    f"Template {campaign_data.template_id} not found"
+                    f"Template {campaign_data.template_id} not found for user"
                 )
             if campaign_data.lead_base_ids:
                 lead_bases_query = select(LeadBase).where(
                     LeadBase.id.in_(campaign_data.lead_base_ids),
-                    LeadBase.session_id == session_id,
+                    LeadBase.user_id == session.user_id,
                 )
                 lead_bases = await self.db.scalars(lead_bases_query)
                 lead_bases_list = list(lead_bases)

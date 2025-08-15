@@ -9,7 +9,8 @@ from datetime import datetime, timedelta
 from fastapi import HTTPException
 
 from services.campaign_service import CampaignService
-from models.base import Campaign, SMTPAccount, User, EmailList
+from models.base import Campaign, SMTPAccount, User
+from models.email_lists import EmailList
 from schemas.campaigns import CampaignCreate, CampaignUpdate
 
 
@@ -27,25 +28,36 @@ class TestCampaignService:
     @pytest.fixture
     def mock_user(self):
         user = Mock(spec=User)
-        user.id = "test-user-id"
-        user.email = "test@example.com"
-        user.plan_type = "premium"
+        user.id = "550e8400-e29b-41d4-a716-446655440010"
+        user.email = "sarah.martinez@ecommerce-platform.com"
+        user.username = "sarah_marketing"
+        user.full_name = "Sarah Martinez"
+        user.company = "E-Commerce Platform Inc."
+        user.plan_type = "enterprise"
         user.is_active = True
+        user.created_at = datetime.utcnow() - timedelta(days=180)
+        user.last_login = datetime.utcnow() - timedelta(hours=2)
+        user.campaigns_sent = 47
+        user.total_emails_sent = 125000
         return user
 
     @pytest.fixture
     def mock_campaign(self):
         campaign = Mock(spec=Campaign)
-        campaign.id = "test-campaign-id"
-        campaign.name = "Test Campaign"
-        campaign.subject = "Test Subject"
-        campaign.content = "Test content"
+        campaign.id = "550e8400-e29b-41d4-a716-446655440000"
+        campaign.name = "Holiday Flash Sale 2025"
+        campaign.subject = "🎄 24-Hour Flash Sale: 60% Off Everything!"
+        campaign.sender = "promotions@retailstore.com"
+        campaign.content = "<html><head><title>Holiday Sale</title></head><body><h1>60% OFF Everything!</h1><p>One day only! Don't miss out on our biggest sale of the year.</p></body></html>"
         campaign.status = "draft"
-        campaign.user_id = "test-user-id"
+        campaign.session_id = "test-session-123"
+        campaign.template_id = "550e8400-e29b-41d4-a716-446655440001"
         campaign.created_at = datetime.utcnow()
         campaign.scheduled_at = None
-        campaign.smtp_account_id = "test-smtp-id"
-        campaign.email_list_id = "test-list-id"
+        campaign.batch_size = 250
+        campaign.delay_between_batches = 45
+        campaign.threads_count = 10
+        campaign.autostart = False
         return campaign
 
     @pytest.fixture
@@ -71,11 +83,16 @@ class TestCampaignService:
     async def test_create_campaign_success(self, campaign_service, mock_db_session, mock_user):
         """Test successful campaign creation"""
         campaign_data = CampaignCreate(
-            name="Test Campaign",
-            subject="Test Subject",
-            content="Test content",
-            smtp_account_id="test-smtp-id",
-            email_list_id="test-list-id"
+            name="Black Friday Mega Sale 2025",
+            template_id="550e8400-e29b-41d4-a716-446655440000",
+            subject="🔥 75% OFF Everything - Limited Time Only!",
+            sender="sales@ecommerce-store.com",
+            lead_base_ids=["550e8400-e29b-41d4-a716-446655440001"],
+            batch_size=200,
+            delay_between_batches=30,
+            threads_count=8,
+            autostart=False,
+            retry_limit=5
         )
         
         # Mock database operations
@@ -83,29 +100,54 @@ class TestCampaignService:
         mock_db_session.commit = AsyncMock()
         mock_db_session.refresh = AsyncMock()
         
+        # Mock the session and template queries
+        mock_session = Mock()
+        mock_session.id = "test-session-123"
+        mock_session.user_id = "550e8400-e29b-41d4-a716-446655440010"
+        
+        mock_template = Mock()
+        mock_template.id = "550e8400-e29b-41d4-a716-446655440000"
+        mock_template.name = "Black Friday Template"
+        mock_template.content = "<html><body>Black Friday Sale!</body></html>"
+        mock_template.user_id = "550e8400-e29b-41d4-a716-446655440010"
+        
+        # Mock database scalar to return different results for session and template queries
+        async def mock_scalar(query):
+            query_str = str(query)
+            if "sessions" in query_str.lower():
+                return mock_session
+            else:
+                return mock_template
+        
+        mock_db_session.scalar = AsyncMock(side_effect=mock_scalar)
+        
         with patch('models.base.Campaign') as MockCampaign:
             mock_campaign = Mock()
-            mock_campaign.id = "new-campaign-id"
+            mock_campaign.id = "550e8400-e29b-41d4-a716-446655440555"
             MockCampaign.return_value = mock_campaign
             
             result = await campaign_service.create_campaign(
                 campaign_data=campaign_data,
-                user_id="test-user-id"
+                session_id="test-session-123"
             )
             
             mock_db_session.add.assert_called_once()
             mock_db_session.commit.assert_called_once()
-            assert result.id == "new-campaign-id"
+            assert result.id == "550e8400-e29b-41d4-a716-446655440555"
 
     @pytest.mark.asyncio
     async def test_create_campaign_invalid_smtp_account(self, campaign_service, mock_db_session):
         """Test campaign creation with invalid SMTP account"""
         campaign_data = CampaignCreate(
-            name="Test Campaign",
-            subject="Test Subject",
-            content="Test content",
-            smtp_account_id="invalid-smtp-id",
-            email_list_id="test-list-id"
+            name="Failed Test Campaign 2025",
+            template_id="550e8400-e29b-41d4-a716-446655440099",
+            subject="❌ This Should Fail - Invalid Configuration",
+            sender="invalid@nonexistent-domain.com",
+            lead_base_ids=["550e8400-e29b-41d4-a716-446655440002"],
+            batch_size=50,
+            delay_between_batches=120,
+            threads_count=3,
+            autostart=False
         )
         
         # Mock SMTP account not found
