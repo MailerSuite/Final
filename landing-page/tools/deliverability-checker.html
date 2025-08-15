@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deliverability Checker - SpamGPT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form');
+            const input = document.getElementById('domain');
+            const result = document.getElementById('result');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const domain = (input.value || '').trim();
+                if (!domain) return;
+                const inbox = (60 + Math.random()*30).toFixed(0);
+                const promo = (100 - inbox - Math.random()*10).toFixed(0);
+                const spam = (100 - inbox - promo).toFixed(0);
+                result.innerHTML = `
+                    <div class="metrics-grid">
+                        <div class="metric"><span class="metric-label">Inbox</span><span class="metric-value">${inbox}%</span></div>
+                        <div class="metric"><span class="metric-label">Promotions</span><span class="metric-value">${promo}%</span></div>
+                        <div class="metric"><span class="metric-label">Spam</span><span class="metric-value">${spam}%</span></div>
+                    </div>
+                    <p class="section-description" style="margin-top:1rem">Estimate for <strong>${domain}</strong>. Improve by authenticating SPF/DKIM/DMARC and warming IPs.</p>
+                `;
+            });
+        });
+    </script>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-envelope-open-text logo-icon"></i>
+                <span class="logo-text">SpamGPT</span>
+                <span class="logo-ai-badge">Mail</span>
+            </div>
+            <a class="nav-cta" href="index.html">All Tools</a>
+        </div>
+    </nav>
+
+    <section class="tools" style="padding-top: 8rem;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Tool</span>
+                <h2 class="section-title">Deliverability <span class="gradient-text">Checker</span></h2>
+                <p class="section-description">Simulated inbox placement by folder</p>
+            </div>
+            <div class="demo-card">
+                <form id="form" class="demo-controls">
+                    <div class="control-group">
+                        <label for="domain">Domain or Sender</label>
+                        <input type="text" id="domain" placeholder="example.com">
+                    </div>
+                    <button class="btn-primary" type="submit"><i class="fas fa-magnifying-glass"></i> Check</button>
+                </form>
+                <div id="result" style="margin-top:1rem"></div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

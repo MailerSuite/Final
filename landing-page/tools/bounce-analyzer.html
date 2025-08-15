@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bounce Analyzer - SpamGPT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form');
+            const text = document.getElementById('text');
+            const result = document.getElementById('result');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const samples = [
+                    { code: '5.1.1', type: 'Hard Bounce', hint: 'Invalid recipient address' },
+                    { code: '4.4.2', type: 'Soft Bounce', hint: 'Mailbox full or temporary failure' },
+                    { code: '5.7.1', type: 'Policy Rejection', hint: 'Content or auth rejected' }
+                ];
+                const pick = samples[Math.floor(Math.random()*samples.length)];
+                result.innerHTML = `
+                    <div class="metrics-grid">
+                        <div class="metric"><span class="metric-label">Class</span><span class="metric-value">${pick.type}</span></div>
+                        <div class="metric"><span class="metric-label">DSN</span><span class="metric-value">${pick.code}</span></div>
+                        <div class="metric"><span class="metric-label">Hint</span><span class="metric-value">${pick.hint}</span></div>
+                    </div>
+                `;
+            });
+        });
+    </script>
+    <style>
+        textarea {
+            background: var(--darker-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            width: 100%;
+            min-height: 140px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-envelope-open-text logo-icon"></i>
+                <span class="logo-text">SpamGPT</span>
+                <span class="logo-ai-badge">Mail</span>
+            </div>
+            <a class="nav-cta" href="index.html">All Tools</a>
+        </div>
+    </nav>
+
+    <section class="tools" style="padding-top: 8rem;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Tool</span>
+                <h2 class="section-title">Bounce <span class="gradient-text">Analyzer</span></h2>
+                <p class="section-description">Paste a bounce message to classify (simulated)</p>
+            </div>
+            <div class="demo-card">
+                <form id="form" class="demo-controls" onsubmit="return false;">
+                    <div class="control-group" style="width:100%">
+                        <label for="text">Bounce message</label>
+                        <textarea id="text" placeholder="Paste SMTP/DSN message..."></textarea>
+                    </div>
+                    <button class="btn-primary" type="submit"><i class="fas fa-compass"></i> Analyze</button>
+                </form>
+                <div id="result" style="margin-top:1rem"></div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

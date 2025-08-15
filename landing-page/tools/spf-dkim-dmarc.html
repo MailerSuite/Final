@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPF/DKIM/DMARC - SpamGPT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form');
+            const domain = document.getElementById('domain');
+            const result = document.getElementById('result');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const d = (domain.value || '').trim();
+                if (!d) return;
+                const spf = Math.random() > 0.2;
+                const dkim = Math.random() > 0.15;
+                const dmarc = Math.random() > 0.5;
+                result.innerHTML = `
+                    <div class="metrics-grid">
+                        <div class="metric"><span class="metric-label">SPF</span><span class="metric-value" style="color:${spf ? '#10b981' : '#ef4444'}">${spf ? 'Pass' : 'Missing'}</span></div>
+                        <div class="metric"><span class="metric-label">DKIM</span><span class="metric-value" style="color:${dkim ? '#10b981' : '#ef4444'}">${dkim ? 'Pass' : 'Misconfigured'}</span></div>
+                        <div class="metric"><span class="metric-label">DMARC</span><span class="metric-value" style="color:${dmarc ? '#10b981' : '#f59e0b'}">${dmarc ? 'Enforced' : 'Not enforced'}</span></div>
+                    </div>
+                    <p class="section-description" style="margin-top:1rem">DNS authentication for <strong>${d}</strong></p>
+                `;
+            });
+        });
+    </script>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-envelope-open-text logo-icon"></i>
+                <span class="logo-text">SpamGPT</span>
+                <span class="logo-ai-badge">Mail</span>
+            </div>
+            <a class="nav-cta" href="index.html">All Tools</a>
+        </div>
+    </nav>
+
+    <section class="tools" style="padding-top: 8rem;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Tool</span>
+                <h2 class="section-title">SPF / DKIM / <span class="gradient-text">DMARC</span></h2>
+                <p class="section-description">Simulated DNS authentication check</p>
+            </div>
+            <div class="demo-card">
+                <form id="form" class="demo-controls">
+                    <div class="control-group">
+                        <label for="domain">Domain</label>
+                        <input type="text" id="domain" placeholder="example.com">
+                    </div>
+                    <button class="btn-primary" type="submit"><i class="fas fa-shield-halved"></i> Validate</button>
+                </form>
+                <div id="result" style="margin-top:1rem"></div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

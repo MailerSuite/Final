@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>List Cleaner - SpamGPT</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="../css/styles.css">
+	<link rel="stylesheet" href="../css/animations.css">
+	<script defer>
+		document.addEventListener('DOMContentLoaded', () => {
+			const form = document.getElementById('form');
+			const list = document.getElementById('list');
+			const result = document.getElementById('result');
+			form.addEventListener('submit', (e) => {
+				e.preventDefault();
+				const lines = (list.value || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+				const unique = Array.from(new Set(lines));
+				const invalid = unique.filter(s => !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s));
+				result.innerHTML = `
+					<div class=\"metrics-grid\">
+						<div class=\"metric\"><span class=\"metric-label\">Total</span><span class=\"metric-value\">${lines.length}</span></div>
+						<div class=\"metric\"><span class=\"metric-label\">Unique</span><span class=\"metric-value\">${unique.length}</span></div>
+						<div class=\"metric\"><span class=\"metric-label\">Invalid</span><span class=\"metric-value\">${invalid.length}</span></div>
+					</div>
+				`;
+			});
+		});
+	</script>
+	<style>
+		textarea {
+			background: var(--darker-bg);
+			color: var(--text-primary);
+			border: 1px solid var(--border-color);
+			border-radius: 0.5rem;
+			padding: 0.75rem;
+			width: 100%;
+			min-height: 180px;
+		}
+	</style>
+</head>
+<body>
+	<nav class="nav">
+		<div class="nav-container">
+			<div class="nav-logo">
+				<i class="fas fa-envelope-open-text logo-icon"></i>
+				<span class="logo-text">SpamGPT</span>
+				<span class="logo-ai-badge">Mail</span>
+			</div>
+			<a class="nav-cta" href="index.html">All Tools</a>
+		</div>
+	</nav>
+
+	<section class="tools" style="padding-top: 8rem;">
+		<div class="container">
+			<div class="section-header">
+				<span class="section-badge">Tool</span>
+				<h2 class="section-title">List <span class="gradient-text">Cleaner</span></h2>
+				<p class="section-description">Deduplicate and validate (simulated)</p>
+			</div>
+			<div class="demo-card">
+				<form id="form" class="demo-controls">
+					<div class="control-group" style="width:100%">
+						<label for="list">Emails (one per line)</label>
+						<textarea id="list" placeholder="a@example.com\nb@example.com\na@example.com"></textarea>
+					</div>
+					<button class="btn-primary" type="submit"><i class="fas fa-list-check"></i> Clean</button>
+				</form>
+				<div id="result" style="margin-top:1rem"></div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

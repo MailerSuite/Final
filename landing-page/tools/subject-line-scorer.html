@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Subject Line Scorer - SpamGPT</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="../css/styles.css">
+	<link rel="stylesheet" href="../css/animations.css">
+	<script defer>
+		document.addEventListener('DOMContentLoaded', () => {
+			const form = document.getElementById('form');
+			const input = document.getElementById('subject');
+			const result = document.getElementById('result');
+			form.addEventListener('submit', (e) => {
+				e.preventDefault();
+				const s = (input.value || '').trim();
+				if (!s) return;
+				const score = Math.floor(60 + Math.random()*40);
+				const tips = ['Avoid ALL CAPS', 'Keep it under 50 chars', 'Use value not clickbait', 'Personalize when possible'];
+				result.innerHTML = `
+					<div class="metrics-grid">
+						<div class="metric"><span class="metric-label">Score</span><span class="metric-value">${score}/100</span></div>
+					</div>
+					<ul style="margin-top:1rem; padding-left:1rem; color: var(--text-secondary)">
+						${tips.map(t => `<li>${t}</li>`).join('')}
+					</ul>
+				`;
+			});
+		});
+	</script>
+</head>
+<body>
+	<nav class="nav">
+		<div class="nav-container">
+			<div class="nav-logo">
+				<i class="fas fa-envelope-open-text logo-icon"></i>
+				<span class="logo-text">SpamGPT</span>
+				<span class="logo-ai-badge">Mail</span>
+			</div>
+			<a class="nav-cta" href="index.html">All Tools</a>
+		</div>
+	</nav>
+
+	<section class="tools" style="padding-top: 8rem;">
+		<div class="container">
+			<div class="section-header">
+				<span class="section-badge">Tool</span>
+				<h2 class="section-title">Subject Line <span class="gradient-text">Scorer</span></h2>
+				<p class="section-description">Estimate engagement and spam risk (simulated)</p>
+			</div>
+			<div class="demo-card">
+				<form id="form" class="demo-controls">
+					<div class="control-group" style="flex:1">
+						<label for="subject">Subject</label>
+						<input type="text" id="subject" placeholder="Welcome to SpamGPT!">
+					</div>
+					<button class="btn-primary" type="submit"><i class="fas fa-heading"></i> Score</button>
+				</form>
+				<div id="result" style="margin-top:1rem"></div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

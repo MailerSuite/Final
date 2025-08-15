@@ -24,21 +24,25 @@
     <nav class="nav">
         <div class="nav-container">
             <div class="nav-logo">
+                <i class="fas fa-envelope-open-text logo-icon"></i>
                 <span class="logo-text">SpamGPT</span>
-                <span class="logo-ai-badge">AI</span>
+                <span class="logo-ai-badge">Mail</span>
             </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
             <ul class="nav-links">
                 <li><a href="#features" class="nav-link">Features</a></li>
                 <li><a href="#demo" class="nav-link">Live Demo</a></li>
+                <li><a href="#tools" class="nav-link">Tools</a></li>
                 <li><a href="#pricing" class="nav-link">Pricing</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
             </ul>
-            <button class="nav-cta">Get Started</button>
+            <a class="nav-cta" href="tools/index.html">Get Started</a>
         </div>
     </nav>
     
     <!-- Hero Section -->
     <section class="hero">
+        <canvas id="neural-network" class="hero-canvas" aria-hidden="true"></canvas>
         <div class="hero-container">
             <div class="hero-content">
                 <div class="hero-badge">
@@ -182,19 +186,34 @@
             <div class="section-header">
                 <span class="section-badge">Live Demo</span>
                 <h2 class="section-title">See <span class="gradient-text">SpamGPT</span> in Action</h2>
-                <p class="section-description">Real-time demonstration of our AI-powered features</p>
+                <p class="section-description">Real-time demonstration of our AI-powered features, now with interactive controls</p>
             </div>
             
             <div class="demo-grid">
                 <div class="demo-card">
                     <h3>SMTP Terminal</h3>
+                    <div class="demo-controls">
+                        <div class="control-group">
+                            <label for="campaignNameInput">Campaign</label>
+                            <input type="text" id="campaignNameInput" placeholder="welcome">
+                        </div>
+                        <div class="control-group">
+                            <label for="regionSelect">Region</label>
+                            <select id="regionSelect">
+                                <option value="US">US</option>
+                                <option value="EU">EU</option>
+                                <option value="APAC">APAC</option>
+                            </select>
+                        </div>
+                        <button id="sendTestButton" class="btn-primary"><i class="fas fa-paper-plane"></i> Send Test</button>
+                    </div>
                     <div class="terminal">
                         <div class="terminal-header">
                             <span class="terminal-dot"></span>
                             <span class="terminal-dot"></span>
                             <span class="terminal-dot"></span>
                         </div>
-                        <div class="terminal-body">
+                        <div class="terminal-body" id="terminalOutput">
                             <div class="terminal-line">
                                 <span class="prompt">$</span>
                                 <span class="command">spamgpt --send --campaign=welcome</span>
@@ -217,25 +236,99 @@
                 
                 <div class="demo-card">
                     <h3>Real-time Metrics</h3>
+                    <div class="demo-controls">
+                        <div class="control-group">
+                            <label for="sendRateRange">Send Rate</label>
+                            <input type="range" id="sendRateRange" min="0" max="100" value="50">
+                        </div>
+                        <div class="control-group inline">
+                            <label for="autoMetricsToggle" class="checkbox">
+                                <input type="checkbox" id="autoMetricsToggle" checked> Live updates
+                            </label>
+                        </div>
+                    </div>
                     <div class="metrics-grid">
                         <div class="metric">
                             <span class="metric-label">Delivery Rate</span>
-                            <span class="metric-value">98.7%</span>
+                            <span class="metric-value" id="deliveryRateValue">98.7%</span>
                         </div>
                         <div class="metric">
                             <span class="metric-label">Active Servers</span>
-                            <span class="metric-value">1,234</span>
+                            <span class="metric-value" id="activeServersValue">1,234</span>
                         </div>
                         <div class="metric">
                             <span class="metric-label">Emails Sent Today</span>
-                            <span class="metric-value">2.4M</span>
+                            <span class="metric-value" id="emailsSentValue">2.4M</span>
                         </div>
                         <div class="metric">
                             <span class="metric-label">Avg Response Time</span>
-                            <span class="metric-value">245ms</span>
+                            <span class="metric-value" id="avgResponseTimeValue">245ms</span>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Tools Section -->
+    <section id="tools" class="tools">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Tools</span>
+                <h2 class="section-title">Production-ready <span class="gradient-text">Email Tools</span></h2>
+                <p class="section-description">Explore our suite of deliverability and infrastructure tools</p>
+            </div>
+            <div class="tools-grid">
+                <a class="tool-card" href="tools/deliverability-checker.html">
+                    <i class="fas fa-inbox"></i>
+                    <h3>Deliverability Checker</h3>
+                    <p>Estimate inbox placement and sender health</p>
+                </a>
+                <a class="tool-card" href="tools/smtp-checker.html">
+                    <i class="fas fa-plug"></i>
+                    <h3>SMTP Checker</h3>
+                    <p>Validate server connectivity and TLS</p>
+                </a>
+                <a class="tool-card" href="tools/blacklist-checker.html">
+                    <i class="fas fa-ban"></i>
+                    <h3>Blacklist Checker</h3>
+                    <p>Scan common RBLs for your IP/domain</p>
+                </a>
+                <a class="tool-card" href="tools/spf-dkim-dmarc.html">
+                    <i class="fas fa-shield-halved"></i>
+                    <h3>SPF/DKIM/DMARC</h3>
+                    <p>Verify DNS authentication records</p>
+                </a>
+                <a class="tool-card" href="tools/bounce-analyzer.html">
+                    <i class="fas fa-arrow-rotate-left"></i>
+                    <h3>Bounce Analyzer</h3>
+                    <p>Classify and diagnose bounces</p>
+                </a>
+                <a class="tool-card" href="tools/inbox-placement.html">
+                    <i class="fas fa-envelope-circle-check"></i>
+                    <h3>Inbox Placement</h3>
+                    <p>Simulate folder placement across ISPs</p>
+                </a>
+                <a class="tool-card" href="tools/ip-warmup-planner.html">
+                    <i class="fas fa-temperature-low"></i>
+                    <h3>IP Warmup Planner</h3>
+                    <p>Generate volume ramp schedules</p>
+                </a>
+                <a class="tool-card" href="tools/subject-line-scorer.html">
+                    <i class="fas fa-heading"></i>
+                    <h3>Subject Line Scorer</h3>
+                    <p>Score engagement and spam risk</p>
+                </a>
+                <a class="tool-card" href="tools/template-spam-score.html">
+                    <i class="fas fa-file-code"></i>
+                    <h3>Template Spam Score</h3>
+                    <p>Analyze HTML for spam triggers</p>
+                </a>
+                <a class="tool-card" href="tools/list-cleaner.html">
+                    <i class="fas fa-list-check"></i>
+                    <h3>List Cleaner</h3>
+                    <p>Validate and deduplicate lists</p>
+                </a>
             </div>
         </div>
     </section>
@@ -328,7 +421,7 @@
                         <span class="stat-number">50+</span>
                         <span class="stat-label">Countries Served</span>
                     </div>
-                    <div class="stat>
+                    <div class="about-stat">
                         <span class="stat-number">99.9%</span>
                         <span class="stat-label">Uptime</span>
                     </div>
@@ -359,7 +452,7 @@
                     <a href="#features">Features</a>
                     <a href="#pricing">Pricing</a>
                     <a href="#demo">Demo</a>
-                    <a href="#">Documentation</a>
+                    <a href="tools/index.html">Tools</a>
                 </div>
                 <div class="footer-links">
                     <h4>Company</h4>
