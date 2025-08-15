@@ -1,7 +1,7 @@
 import * as React from "react"
 import { motion } from "framer-motion"
 import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@/lib/utils"
+import { cn } from "@/utils/cn"
 
 const cardVariants = cva(
   "bg-card text-card-foreground flex flex-col rounded-lg border transition-all duration-200 relative overflow-hidden focus-within:ring-2 focus-within:ring-primary/20",

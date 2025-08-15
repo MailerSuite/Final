@@ -6,7 +6,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Shield, Sparkles } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/cn';
 
 interface LogoProps {
   variant?: 'full' | 'icon' | 'text' | 'compact' | 'hero';

@@ -11,7 +11,7 @@ import { Input } from "./input"
 import { Badge } from "./badge"
 import { ScrollArea } from "./scroll-area"
 import { Button } from "./button"
-import { cn } from "@/lib/utils"
+import { cn } from "@/utils/cn"
 import {
   MagnifyingGlassIcon,
   CommandLineIcon,
