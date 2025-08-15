@@ -63,9 +63,31 @@ def admin_headers(admin_token: str) -> dict:
 
 @pytest.fixture
 def sample_campaign_data() -> dict:
-    return {"name": "Test Campaign", "subject": "Test Subject", "content": "Test content", "status": "draft"}
+    return {
+        "name": "Summer Sale Campaign 2025",
+        "template_id": "550e8400-e29b-41d4-a716-446655440000", 
+        "subject": "🌞 Summer Sale: 50% Off All Items - Don't Miss Out!",
+        "sender": "marketing@fashionstore.com",
+        "lead_base_ids": ["550e8400-e29b-41d4-a716-446655440001"],
+        "batch_size": 150,
+        "delay_between_batches": 45,
+        "threads_count": 6,
+        "autostart": False,
+        "status": "draft",
+        "content": "<html><body><h1>Summer Sale is Here!</h1><p>Get 50% off all summer collection items. Limited time offer!</p></body></html>"
+    }
 
 
-@pytest.fixture
+@pytest.fixture  
 def sample_smtp_data() -> dict:
-    return {"host": "smtp.gmail.com", "port": 587, "username": "test@gmail.com", "password": "testpassword", "use_tls": True}
+    return {
+        "host": "smtp.sendgrid.net",
+        "port": 587,
+        "username": "apikey", 
+        "password": "SG.abc123def456ghi789jkl012mno345pqr678stu901vwx234yz567",
+        "use_tls": True,
+        "from_email": "marketing@fashionstore.com",
+        "from_name": "Fashion Store Marketing Team",
+        "daily_limit": 10000,
+        "status": "active"
+    }
